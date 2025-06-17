@@ -4,7 +4,10 @@ import Header from '../components/Header'
 declare global {
   interface Window {
     Landbot: {
-      Fullpage: new (config: { configUrl: string }) => void
+      Container: new (config: { 
+        configUrl: string
+        container: string
+      }) => void
     }
   }
 }
@@ -21,7 +24,8 @@ const ChatBot = () => {
     script.setAttribute('SameSite', 'None; Secure')
     
     script.onload = () => {
-      new window.Landbot.Fullpage({
+      const myLandbot = new window.Landbot.Container({
+        container: '#myLandbot',
         configUrl: 'https://storage.googleapis.com/landbot.online/v3/H-3001326-VOIA6ZH49TU1ZHEO/index.json',
       })
     }
@@ -53,8 +57,8 @@ const ChatBot = () => {
         </div>
       </div>
 
-      <div className="landbot-container">
-        <div id="landbot-container"></div>
+      <div className="landbot-wrapper">
+        <div id="myLandbot" className="landbot-container"></div>
       </div>
     </div>
   )

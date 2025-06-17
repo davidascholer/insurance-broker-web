@@ -1,17 +1,19 @@
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import Header from '../components/Header'
 
 const Loading = () => {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const name = searchParams.get('name') || 'your pet'
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate('/results')
+      navigate(`/results?name=${encodeURIComponent(name)}`)
     }, 3000)
 
     return () => clearTimeout(timer)
-  }, [navigate])
+  }, [navigate, name])
 
   return (
     <div className="loading-page">
@@ -19,7 +21,7 @@ const Loading = () => {
       <div className="loading-container">
         <div className="loading-content">
           <div className="loading-header">
-            <h1 className="loading-title sansita-bold">Finding your perfect pet matches...</h1>
+            <h1 className="loading-title sansita-bold">Finding insurance for {name}...</h1>
             <p className="loading-subtitle nunito-sans">We're analyzing your preferences and searching our database of trusted providers</p>
           </div>
           
