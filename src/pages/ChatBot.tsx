@@ -24,7 +24,7 @@ const ChatBot = () => {
     script.setAttribute('SameSite', 'None; Secure')
     
     script.onload = () => {
-      const myLandbot = new window.Landbot.Container({
+      new window.Landbot.Container({
         container: '#myLandbot',
         configUrl: 'https://storage.googleapis.com/landbot.online/v3/H-3001326-VOIA6ZH49TU1ZHEO/index.json',
       })
