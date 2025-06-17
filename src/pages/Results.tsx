@@ -1,84 +1,105 @@
 import { useNavigate } from 'react-router-dom'
+import Header from '../components/Header'
 
-interface Pet {
+interface InsuranceProvider {
   id: number
   name: string
-  breed: string
-  age: number
-  size: string
-  location: string
+  logo: string
+  monthlyPrice: number
+  yearlyPrice: number
   description: string
+  features: string[]
 }
 
 const Results = () => {
   const navigate = useNavigate()
 
-  const mockResults: Pet[] = [
+  const mockResults: InsuranceProvider[] = [
     {
       id: 1,
-      name: "Buddy",
-      breed: "Golden Retriever",
-      age: 3,
-      size: "Large",
-      location: "San Francisco, CA",
-      description: "Friendly and energetic dog, loves playing fetch and going on walks."
+      name: "PetGuard Pro",
+      logo: "🛡️",
+      monthlyPrice: 45,
+      yearlyPrice: 486,
+      description: "Get quotes from America's top pet insurance carriers right on your phone or desktop.",
+      features: ["24/7 Vet Support", "Emergency Coverage", "Prescription Drugs", "Preventive Care"]
     },
     {
       id: 2,
-      name: "Luna",
-      breed: "Border Collie",
-      age: 2,
-      size: "Medium",
-      location: "San Francisco, CA",
-      description: "Intelligent and active, great with kids and other pets."
+      name: "FurryFriend Insurance",
+      logo: "🐾",
+      monthlyPrice: 40,
+      yearlyPrice: 432,
+      description: "Compare pet insurance quotes without the hassle of visiting several different sites.",
+      features: ["Quick Claims", "Multi-Pet Discounts", "Hereditary Conditions", "Behavioral Therapy"]
     },
     {
       id: 3,
-      name: "Max",
-      breed: "Labrador Mix",
-      age: 4,
-      size: "Large",
-      location: "Oakland, CA",
-      description: "Gentle giant who loves cuddles and outdoor adventures."
-    },
-    {
-      id: 4,
-      name: "Bella",
-      breed: "Australian Shepherd",
-      age: 1,
-      size: "Medium",
-      location: "Berkeley, CA",
-      description: "Young and playful, looking for an active family to keep up with her energy."
+      name: "PawProtect Plus",
+      logo: "💚",
+      monthlyPrice: 48,
+      yearlyPrice: 510,
+      description: "Not sure which coverage is best? Don't worry - we'll lay out the coverage in simple terms so you know what you're buying.",
+      features: ["Comprehensive Coverage", "No Age Limits", "Cancer Treatment", "Rehabilitation"]
     }
   ]
 
   return (
-    <div className="results-container">
-      <div className="results-header">
-        <h1>Your Pet Matches</h1>
-        <p>We found {mockResults.length} perfect matches for you!</p>
-        <button onClick={() => navigate('/')} className="new-search-btn">
-          Start New Search
-        </button>
-      </div>
+    <div className="results-page">
+      <Header showNavigation={true} />
+      <div className="results-container">
+        <div className="results-hero">
+          <h1 className="results-title sansita-bold">Get quotes from trusted carriers.</h1>
+          <p className="results-subtitle nunito-sans">
+            We found {mockResults.length} perfect insurance matches for your fur baby based on your preferences.
+          </p>
+          <button onClick={() => navigate('/')} className="btn-secondary">
+            Start New Search
+          </button>
+        </div>
 
-      <div className="results-grid">
-        {mockResults.map(pet => (
-          <div key={pet.id} className="pet-card">
-            <div className="pet-image-placeholder">
-              📷 Photo
+        <div className="insurance-grid">
+          {mockResults.map((provider, index) => (
+            <div key={provider.id} className={`insurance-card ${index === 1 ? 'featured' : ''}`}>
+              <div className="card-header">
+                <div className="provider-logo">{provider.logo}</div>
+                <h3 className="provider-name sansita-bold">{provider.name}</h3>
+              </div>
+              
+              <div className="pricing">
+                <div className="price-main">
+                  <span className="price nunito-sans-bold">${provider.monthlyPrice}/month</span>
+                  <span className="price-alt nunito-sans">or ${provider.yearlyPrice}/12 months</span>
+                </div>
+              </div>
+
+              <div className="description">
+                <p className="nunito-sans">{provider.description}</p>
+              </div>
+
+              <div className="features">
+                <ul>
+                  {provider.features.map((feature, idx) => (
+                    <li key={idx} className="nunito-sans">
+                      <span className="checkmark">✓</span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <button className="btn-primary full-width">
+                Get Quote
+              </button>
             </div>
-            <div className="pet-info">
-              <h3>{pet.name}</h3>
-              <p><strong>{pet.breed}</strong></p>
-              <p>Age: {pet.age} years</p>
-              <p>Size: {pet.size}</p>
-              <p>Location: {pet.location}</p>
-              <p className="pet-description">{pet.description}</p>
-              <button className="contact-btn">Contact Shelter</button>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
+        <div className="bottom-cta">
+          <button className="btn-primary large">
+            Fetch A Quote
+          </button>
+        </div>
       </div>
     </div>
   )

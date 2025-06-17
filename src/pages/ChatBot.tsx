@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import Header from '../components/Header'
 
 declare global {
   interface Window {
@@ -36,8 +37,25 @@ const ChatBot = () => {
   }, [])
 
   return (
-    <div className="landbot-container">
-      <div id="landbot-container"></div>
+    <div className="chatbot-page">
+      <Header showNavigation={true} />
+      
+      <div className="hero-section">
+        <div className="hero-background">
+          <img src="/header.jpg" alt="Cat and Dog" className="hero-image" />
+          <div className="hero-overlay"></div>
+        </div>
+        
+        <div className="hero-content">
+          <h1 className="hero-title sansita-bold">
+            Get the insurance that works best for you and for your fur baby today.
+          </h1>
+        </div>
+      </div>
+
+      <div className="landbot-container">
+        <div id="landbot-container"></div>
+      </div>
     </div>
   )
 }
