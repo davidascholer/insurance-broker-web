@@ -14,6 +14,7 @@ interface InsuranceProvider {
   excessType: string
   goodToKnow: string[]
   beAware: string[]
+  url: string
 }
 
 const Results = () => {
@@ -52,7 +53,8 @@ const Results = () => {
         "Excess increases with pet age after 6 years",
         "Dental cover only for accidents not illness", 
         "Pre-existing conditions not covered"
-      ]
+      ],
+      url: "https://www.lemonade.com/pet"
     },
     {
       id: 2,
@@ -73,7 +75,8 @@ const Results = () => {
         "Limit on MRI scans and cruciate claims",
         "Pre-existing conditions not covered",
         "No cover for pet sitting"
-      ]
+      ],
+      url: "https://www.lemonade.com/pet"
     },
     {
       id: 3,
@@ -94,7 +97,8 @@ const Results = () => {
         "Higher monthly premium",
         "Waiting period for illness claims",
         "Some breed restrictions apply"
-      ]
+      ],
+      url: "https://www.lemonade.com/pet"
     }
   ]
 
@@ -127,7 +131,10 @@ const Results = () => {
                         <span className="price-period nunito-sans">per month</span>
                         <span className="price-period nunito-sans">or £{provider.yearlyPrice} annually</span>
                       </div>
-                      <button className="cta-button nunito-sans-bold">
+                      <button 
+                        className="cta-button nunito-sans-bold"
+                        onClick={() => window.open(provider.url, '_blank')}
+                      >
                         Let's Go
                       </button>
                     </div>

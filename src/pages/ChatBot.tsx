@@ -33,30 +33,7 @@ const ChatBot = () => {
       // Inject CSS into iframe after a delay to ensure it's loaded
       setTimeout(() => {
         const iframe = document.querySelector('#myLandbot iframe') as HTMLIFrameElement
-        if (iframe && iframe.contentDocument) {
-          const style = iframe.contentDocument.createElement('style')
-          style.textContent = `
-            .Header__Title {
-              font-family: "Sansita", cursive !important;
-              font-weight: 700 !important;
-              font-size: 3.5rem !important;
-              line-height: 1.2 !important;
-              color: white !important;
-              text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important;
-            }
-            .Branding__Container {
-              display: none !important;
-            }
-            @media (max-width: 768px) {
-              .Header__Title {
-                font-size: 2.5rem !important;
-              }
-            }
-          `
-          iframe.contentDocument.head.appendChild(style)
-          
-          // Load and insert text.png as base64 into msg-grid-container
-          setTimeout(async () => {
+        
             const msgGridContainer = iframe.contentDocument?.querySelector('.msg-grid-container')
             if (msgGridContainer) {
               try {
@@ -76,10 +53,8 @@ const ChatBot = () => {
               } catch (error) {
                 console.error('Failed to load text.png:', error)
               }
-            }
-          }, 500)
         }
-      }, 2000)
+      }, 250)
     }
 
     document.head.appendChild(script)
