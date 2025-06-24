@@ -33,26 +33,27 @@ const ChatBot = () => {
       // Inject CSS into iframe after a delay to ensure it's loaded
       setTimeout(() => {
         const iframe = document.querySelector('#myLandbot iframe') as HTMLIFrameElement
-        
-            const msgGridContainer = iframe.contentDocument?.querySelector('.msg-grid-container')
-            if (msgGridContainer) {
-              try {
-                // Fetch the image from the local server
-                const dataUrl = chatbotImageData.textPng
-                
-                // Create and insert the image
-                const img = iframe.contentDocument.createElement('img')
-                img.src = dataUrl
-                img.style.cssText = 'width: 100%; height: auto; display: block; margin: 10px 0;'
-                
-                if (msgGridContainer.firstChild) {
-                  msgGridContainer.insertBefore(img, msgGridContainer.firstChild)
-                } else {
-                  msgGridContainer.appendChild(img)
-                }
-              } catch (error) {
-                console.error('Failed to load text.png:', error)
+        if (iframe && iframe.contentDocument) {
+          const msgGridContainer = iframe.contentDocument.querySelector('.msg-grid-container')
+          if (msgGridContainer) {
+            try {
+              // Fetch the image from the local server
+              const dataUrl = chatbotImageData.textPng
+              
+              // Create and insert the image
+              const img = iframe.contentDocument.createElement('img')
+              img.src = dataUrl
+              img.style.cssText = 'width: 100%; height: auto; display: block; margin: 10px 0;'
+              
+              if (msgGridContainer.firstChild) {
+                msgGridContainer.insertBefore(img, msgGridContainer.firstChild)
+              } else {
+                msgGridContainer.appendChild(img)
               }
+            } catch (error) {
+              console.error('Failed to load text.png:', error)
+            }
+          }
         }
       }, 250)
     }
