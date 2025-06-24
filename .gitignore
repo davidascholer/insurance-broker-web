@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 # Image data with base64 content
-src/data/imageData.ts
+# src/data/imageData.ts
