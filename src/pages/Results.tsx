@@ -41,7 +41,7 @@ const Results = () => {
       yearlyPrice: 89.85,
       vetFeeLimit: "£1,000",
       annualLimit: "£1,000", 
-      excess: "£125 + 15% contribution",
+      excess: "£125 + 15%",
       excessType: "Per condition per policy year",
       goodToKnow: [
         "Comprehensive accident & illness cover",
@@ -62,7 +62,7 @@ const Results = () => {
       yearlyPrice: 97.63,
       vetFeeLimit: "£1,000",
       annualLimit: "Unlimited",
-      excess: "£85 + 30% contribution", 
+      excess: "£85 + 30%", 
       excessType: "Per condition",
       goodToKnow: [
         "No excess increases as pet ages",
@@ -107,9 +107,6 @@ const Results = () => {
           <p className="results-subtitle nunito-sans">
             We found {mockResults.length} great insurance options for {name}. Compare coverage and find the perfect fit.
           </p>
-          <button onClick={() => navigate('/')} className="btn-secondary">
-            Start New Search
-          </button>
         </div>
 
         <div className="insurance-list">
@@ -118,19 +115,25 @@ const Results = () => {
             return (
               <div key={provider.id} className="insurance-result-card">
                 <div className="card-main">
-                  <div className="provider-info">
-                    <div className="provider-logo">{provider.logo}</div>
-                    <h3 className="provider-name sansita-bold">{provider.name}</h3>
-                  </div>
-                  
-                  <div className="pricing-section">
-                    <div className="price-display">
-                      <span className="monthly-price sansita-bold">£{provider.monthlyPrice}</span>
-                      <span className="price-period nunito-sans">or £{provider.yearlyPrice} annually</span>
+                  <div className="card-header">
+                    <div className="provider-info">
+                      <div className="provider-logo">{provider.logo}</div>
+                      <h3 className="provider-name sansita-bold">{provider.name}</h3>
+                    </div>
+                    
+                    <div className="pricing-section">
+                      <div className="price-display">
+                        <span className="monthly-price sansita-bold">£{provider.monthlyPrice}</span>
+                        <span className="price-period nunito-sans">per month</span>
+                        <span className="price-period nunito-sans">or £{provider.yearlyPrice} annually</span>
+                      </div>
+                      <button className="cta-button nunito-sans-bold">
+                        Let's Go
+                      </button>
                     </div>
                   </div>
-
-                  <div className="coverage-details">
+                  
+                  <div className="coverage-grid">
                     <div className="coverage-item">
                       <span className="coverage-label nunito-sans">Vet fee per condition limit</span>
                       <span className="coverage-value nunito-sans-bold green-text">{provider.vetFeeLimit}</span>
@@ -140,13 +143,11 @@ const Results = () => {
                       <span className="coverage-label nunito-sans">Vet fee annual policy limit</span>
                       <span className="coverage-value nunito-sans-bold green-text">{provider.annualLimit}</span>
                     </div>
-                  </div>
 
-                  <div className="excess-section">
-                    <div className="excess-info">
-                      <span className="excess-label nunito-sans">Excess</span>
+                    <div className="excess-item">
+                      <span className="coverage-label nunito-sans">Excess</span>
                       <div className="excess-details">
-                        <span className="excess-amount green-text nunito-sans-bold">{provider.excess}</span>
+                        <span className="excess-amount nunito-sans-bold">{provider.excess}</span>
                         <span className="excess-type nunito-sans">{provider.excessType}</span>
                       </div>
                     </div>
@@ -196,6 +197,12 @@ const Results = () => {
               </div>
             )
           })}
+        </div>
+        
+        <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+          <button onClick={() => navigate('/')} className="btn-secondary">
+            Start New Search
+          </button>
         </div>
       </div>
     </div>

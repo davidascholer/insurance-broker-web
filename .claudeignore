@@ -1,0 +1,2 @@
+# Ignore image data file with base64 content
+src/data/imageData.ts

@@ -4,7 +4,10 @@
       "Bash(mkdir:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(cp:*)"
+      "Bash(cp:*)",
+      "Bash(rg:*)",
+      "WebFetch(domain:localhost)",
+      "Bash(ls:*)"
     ],
     "deny": []
   }
