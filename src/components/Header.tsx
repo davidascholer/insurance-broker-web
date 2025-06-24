@@ -10,7 +10,7 @@ const Header = ({ showNavigation = false }: HeaderProps) => {
     <header className="header">
       <div className="header-container">
         <div className="logo-section">
-          <img src="/logo.png" alt="PiPA Broker" className="logo" />
+          <img src="/paw-plan/logo.png" alt="PiPA Broker" className="logo" />
         </div>
         
         {showNavigation && (

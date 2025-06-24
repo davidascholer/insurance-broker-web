@@ -34,6 +34,15 @@ const ChatBot = () => {
       setTimeout(() => {
         const iframe = document.querySelector('#myLandbot iframe') as HTMLIFrameElement
         if (iframe && iframe.contentDocument) {
+          // Hide the branding container
+          const style = iframe.contentDocument.createElement('style')
+          style.textContent = `
+            .Branding__Container {
+              display: none !important;
+            }
+          `
+          iframe.contentDocument.head.appendChild(style)
+
           const msgGridContainer = iframe.contentDocument.querySelector('.msg-grid-container')
           if (msgGridContainer) {
             try {
@@ -55,7 +64,7 @@ const ChatBot = () => {
             }
           }
         }
-      }, 250)
+      }, 1000)
     }
 
     document.head.appendChild(script)
@@ -74,7 +83,7 @@ const ChatBot = () => {
       
       <div className="hero-section">
         <div className="hero-background">
-          <img src="/header.jpg" alt="Cat and Dog" className="hero-image" />
+          <img src="/paw-plan/header.jpg" alt="Cat and Dog" className="hero-image" />
           <div className="hero-overlay"></div>
         </div>
         
