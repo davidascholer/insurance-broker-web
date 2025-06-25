@@ -6,9 +6,9 @@ interface InsuranceProvider {
   id: number
   name: string
   logo: string
-  monthlyPrice: number
-  yearlyPrice: number
-  vetFeeLimit: string
+  monthlyPrice: string
+  yearlyPrice: string
+  annualDeductible: string
   annualLimit: string
   excess: string
   excessType: string
@@ -36,13 +36,13 @@ const Results = () => {
   const mockResults: InsuranceProvider[] = [
     {
       id: 1,
-      name: "Healthy Pets",
+      name: "ASPCA Pet Health Insurance",
       logo: "🧡",
-      monthlyPrice: 7.49,
-      yearlyPrice: 89.85,
-      vetFeeLimit: "£1,000",
-      annualLimit: "£1,000", 
-      excess: "£125 + 15%",
+      monthlyPrice: "$7.49",
+      yearlyPrice: "$89.85",
+      annualDeductible: "$500",
+      annualLimit: "Unlimited", 
+      excess: "80%",
       excessType: "Per condition per policy year",
       goodToKnow: [
         "Comprehensive accident & illness cover",
@@ -54,17 +54,17 @@ const Results = () => {
         "Dental cover only for accidents not illness", 
         "Pre-existing conditions not covered"
       ],
-      url: "https://www.lemonade.com/pet"
+      url: "https://www.aspcapetinsurance.com/"
     },
     {
       id: 2,
-      name: "4 Paws Insurance",
+      name: "Fetch",
       logo: "🐾", 
-      monthlyPrice: 8.14,
-      yearlyPrice: 97.63,
-      vetFeeLimit: "£1,000",
+      monthlyPrice: "$8.14",
+      yearlyPrice: "$97.63",
+      annualDeductible: "$500",
       annualLimit: "Unlimited",
-      excess: "£85 + 30%", 
+      excess: "80%", 
       excessType: "Per condition",
       goodToKnow: [
         "No excess increases as pet ages",
@@ -76,17 +76,17 @@ const Results = () => {
         "Pre-existing conditions not covered",
         "No cover for pet sitting"
       ],
-      url: "https://www.lemonade.com/pet"
+      url: "https://www.fetchpet.com/"
     },
     {
       id: 3,
-      name: "PetCare Direct", 
+      name: "Embrace", 
       logo: "💙",
-      monthlyPrice: 12.25,
-      yearlyPrice: 147.00,
-      vetFeeLimit: "£2,000",
-      annualLimit: "£5,000",
-      excess: "£99 flat rate",
+      monthlyPrice: "$12.25",
+      yearlyPrice: "$147.00",
+      annualDeductible: "$250",
+      annualLimit: "$20,000",
+      excess: "85%",
       excessType: "Per condition per year", 
       goodToKnow: [
         "Higher coverage limits",
@@ -98,7 +98,7 @@ const Results = () => {
         "Waiting period for illness claims",
         "Some breed restrictions apply"
       ],
-      url: "https://www.lemonade.com/pet"
+      url: "https://www.embracepetinsurance.com/"
     }
   ]
 
@@ -127,9 +127,9 @@ const Results = () => {
                     
                     <div className="pricing-section">
                       <div className="price-display">
-                        <span className="monthly-price sansita-bold">£{provider.monthlyPrice}</span>
+                        <span className="monthly-price sansita-bold">{provider.monthlyPrice}</span>
                         <span className="price-period nunito-sans">per month</span>
-                        <span className="price-period nunito-sans">or £{provider.yearlyPrice} annually</span>
+                        <span className="price-period nunito-sans">or {provider.yearlyPrice} annually</span>
                       </div>
                       <button 
                         className="cta-button nunito-sans-bold"
@@ -142,8 +142,8 @@ const Results = () => {
                   
                   <div className="coverage-grid">
                     <div className="coverage-item">
-                      <span className="coverage-label nunito-sans">Vet fee per condition limit</span>
-                      <span className="coverage-value nunito-sans-bold green-text">{provider.vetFeeLimit}</span>
+                      <span className="coverage-label nunito-sans">Vet fee annual annual deductible</span>
+                      <span className="coverage-value nunito-sans-bold green-text">{provider.annualDeductible}</span>
                     </div>
                     
                     <div className="coverage-item">
@@ -152,7 +152,7 @@ const Results = () => {
                     </div>
 
                     <div className="excess-item">
-                      <span className="coverage-label nunito-sans">Excess</span>
+                      <span className="coverage-label nunito-sans">Excess </span>
                       <div className="excess-details">
                         <span className="excess-amount nunito-sans-bold">{provider.excess}</span>
                         <span className="excess-type nunito-sans">{provider.excessType}</span>
