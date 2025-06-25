@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/paw-plan/static/css/main.9cb919c0.css",
-    "main.js": "/paw-plan/static/js/main.e01c3397.js",
+    "main.js": "/paw-plan/static/js/main.49beccff.js",
     "static/js/453.f8d7dd59.chunk.js": "/paw-plan/static/js/453.f8d7dd59.chunk.js",
     "index.html": "/paw-plan/index.html",
     "main.9cb919c0.css.map": "/paw-plan/static/css/main.9cb919c0.css.map",
-    "main.e01c3397.js.map": "/paw-plan/static/js/main.e01c3397.js.map",
+    "main.49beccff.js.map": "/paw-plan/static/js/main.49beccff.js.map",
     "453.f8d7dd59.chunk.js.map": "/paw-plan/static/js/453.f8d7dd59.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.9cb919c0.css",
-    "static/js/main.e01c3397.js"
+    "static/js/main.49beccff.js"
   ]
 }

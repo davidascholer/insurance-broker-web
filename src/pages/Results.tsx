@@ -142,7 +142,7 @@ const Results = () => {
                   
                   <div className="coverage-grid">
                     <div className="coverage-item">
-                      <span className="coverage-label nunito-sans">Vet fee annual annual deductible</span>
+                      <span className="coverage-label nunito-sans">Annual deductible</span>
                       <span className="coverage-value nunito-sans-bold green-text">{provider.annualDeductible}</span>
                     </div>
                     
