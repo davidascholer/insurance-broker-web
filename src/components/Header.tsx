@@ -10,15 +10,16 @@ const Header = ({ showNavigation = false }: HeaderProps) => {
     <header className="header">
       <div className="header-container">
         <div className="logo-section">
-          <img src="/paw-plan/logo.png" alt="PiPA Broker" className="logo" />
+          <a href="https://www.pipabroker.com" className="nav-link nunito-sans-medium">
+            <img src="./logo.png" alt="PiPA Broker" className="logo" />
+          </a>
         </div>
         
         {showNavigation && (
           <nav className="navigation">
-            <a href="#" className="nav-link nunito-sans-medium" onClick={(e) => { e.preventDefault(); navigate('/') }}>Home</a>
-            <a href="#" className="nav-link nunito-sans-medium">About</a>
-            <a href="#" className="nav-link nunito-sans-medium">FAQs</a>
-            <button className="btn-primary" onClick={() => navigate('/results')}>Fetch A Quote</button>
+            <a href="https://www.pipabroker.com" className="nav-link nunito-sans-medium">Home</a>
+            <a href="https://www.pipabroker.com/about" className="nav-link nunito-sans-medium">About</a>
+            <a href="https://www.pipabroker.com/faqs" className="nav-link nunito-sans-medium">FAQs</a>
           </nav>
         )}
       </div>

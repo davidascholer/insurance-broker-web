@@ -546,10 +546,15 @@ body {
 }
 
 .provider-logo {
-  font-size: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.provider-logo-img {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
 }
 
 .provider-name {

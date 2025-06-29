@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/paw-plan/static/css/main.9cb919c0.css",
-    "main.js": "/paw-plan/static/js/main.49beccff.js",
-    "static/js/453.f8d7dd59.chunk.js": "/paw-plan/static/js/453.f8d7dd59.chunk.js",
-    "index.html": "/paw-plan/index.html",
-    "main.9cb919c0.css.map": "/paw-plan/static/css/main.9cb919c0.css.map",
-    "main.49beccff.js.map": "/paw-plan/static/js/main.49beccff.js.map",
-    "453.f8d7dd59.chunk.js.map": "/paw-plan/static/js/453.f8d7dd59.chunk.js.map"
+    "main.css": "./static/css/main.bb337c10.css",
+    "main.js": "./static/js/main.9c876bf7.js",
+    "static/js/453.f8d7dd59.chunk.js": "./static/js/453.f8d7dd59.chunk.js",
+    "index.html": "./index.html",
+    "main.bb337c10.css.map": "./static/css/main.bb337c10.css.map",
+    "main.9c876bf7.js.map": "./static/js/main.9c876bf7.js.map",
+    "453.f8d7dd59.chunk.js.map": "./static/js/453.f8d7dd59.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.9cb919c0.css",
-    "static/js/main.49beccff.js"
+    "static/css/main.bb337c10.css",
+    "static/js/main.9c876bf7.js"
   ]
 }

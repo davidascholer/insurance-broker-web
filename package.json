@@ -1,7 +1,7 @@
 {
   "name": "paw-mvp-cra",
   "version": "0.1.0",
-  "homepage": "https://itsallmememe.github.io/paw-plan/",
+  "homepage": "./",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.0",

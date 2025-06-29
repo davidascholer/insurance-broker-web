@@ -37,7 +37,7 @@ const Results = () => {
     {
       id: 1,
       name: "ASPCA Pet Health Insurance",
-      logo: "🧡",
+      logo: "./aspca.png",
       monthlyPrice: "$7.49",
       yearlyPrice: "$89.85",
       annualDeductible: "$500",
@@ -59,7 +59,7 @@ const Results = () => {
     {
       id: 2,
       name: "Fetch",
-      logo: "🐾", 
+      logo: "./fetch.svg", 
       monthlyPrice: "$8.14",
       yearlyPrice: "$97.63",
       annualDeductible: "$500",
@@ -81,7 +81,7 @@ const Results = () => {
     {
       id: 3,
       name: "Embrace", 
-      logo: "💙",
+      logo: "./embrace.svg",
       monthlyPrice: "$12.25",
       yearlyPrice: "$147.00",
       annualDeductible: "$250",
@@ -121,8 +121,9 @@ const Results = () => {
                 <div className="card-main">
                   <div className="card-header">
                     <div className="provider-info">
-                      <div className="provider-logo">{provider.logo}</div>
-                      <h3 className="provider-name sansita-bold">{provider.name}</h3>
+                      <div className="provider-logo">
+                        <img src={provider.logo} alt={provider.name} className="provider-logo-img" />
+                      </div>
                     </div>
                     
                     <div className="pricing-section">
