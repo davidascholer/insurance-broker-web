@@ -17,7 +17,7 @@ const Loading = () => {
 
   return (
     <div className="loading-page">
-      <Header />
+      <Header showFetchButton={false} />
       <div className="loading-container">
         <div className="loading-content">
           <div className="loading-header">

@@ -1,16 +1,9 @@
-import { Routes, Route } from 'react-router-dom'
-import ChatBot from './pages/ChatBot'
-import Loading from './pages/Loading'
-import Results from './pages/Results'
+import AppRouter from './AppRouter'
 
 function App() {
   return (
     <div className="app">
-      <Routes>
-        <Route path="/" element={<ChatBot />} />
-        <Route path="/loading" element={<Loading />} />
-        <Route path="/results" element={<Results />} />
-      </Routes>
+      <AppRouter />
     </div>
   )
 }

@@ -79,7 +79,7 @@ const ChatBot = () => {
 
   return (
     <div className="chatbot-page">
-      <Header showNavigation={true} />
+      <Header showFetchButton={false} />
       
       <div className="hero-section">
         <div className="hero-background">

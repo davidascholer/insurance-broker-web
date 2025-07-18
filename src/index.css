@@ -109,6 +109,7 @@
   --coral-light: #f5b5af;
   --coral-pink: #f4c2c2;
   --background-light: #fef7f6;
+  --light-pink: #FDEFE6;
   --text-dark: #2d3748;
   --text-light: #718096;
   --white: #ffffff;
@@ -178,8 +179,7 @@ body {
 
 /* Header Styles */
 .header {
-  background: var(--white);
-  box-shadow: var(--shadow);
+  background: var(--light-pink);
   position: sticky;
   top: 0;
   z-index: 100;

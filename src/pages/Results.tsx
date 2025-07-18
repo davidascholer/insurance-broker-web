@@ -104,7 +104,7 @@ const Results = () => {
 
   return (
     <div className="results-page">
-      <Header showNavigation={true} />
+      <Header showFetchButton={false} />
       <div className="results-container">
         <div className="results-hero">
           <h1 className="results-title sansita-bold">Your insurance quotes for {name}</h1>
