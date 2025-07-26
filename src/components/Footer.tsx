@@ -1,22 +1,26 @@
 import { useNavigate } from "react-router-dom";
 import FetchQuoteButton from "./FetchQuoteButton";
 
-interface HeaderProps {
+interface FooterProps {
   showFetchButton?: boolean;
 }
 
-const Header = ({ showFetchButton = true }: HeaderProps) => {
+const Footer = ({ showFetchButton = true }: FooterProps) => {
   const navigate = useNavigate();
 
   return (
-    <header className="header">
-      <div className="header-container">
-        <div className="logo-section">
+    <footer className="footer-container">
+      <div className="footer-content">
+        <div>
           <a
             href="https://www.pipabroker.com"
             className="nav-link nunito-sans-medium"
           >
-            <img src="./logo.png" alt="PiPA Broker" className="logo" />
+            <img
+              src="./pipa_text_white.png"
+              alt="PiPA Broker"
+              className="logo"
+            />
           </a>
         </div>
 
@@ -29,40 +33,28 @@ const Header = ({ showFetchButton = true }: HeaderProps) => {
           <button onClick={()=>{navigate("/faqs")}} className="nav-link nunito-sans-medium link-btn">FAQs</button> */}
           {/* Old implementation. Replace with above when ready */}
           <a
-            href="https://www.pipabroker.com"
-            className="nav-link nunito-sans-medium"
-          >
-            Home
-          </a>
-          <a
-            href="https://www.pipabroker.com/about"
-            className="nav-link nunito-sans-medium"
-          >
-            About
-          </a>
-          <a
-            href="https://www.pipabroker.com/about"
-            className="nav-link nunito-sans-medium"
-          >
-            Pet Insurance Resources
-          </a>
-          <a
-            href="https://www.pipabroker.com/about"
-            className="nav-link nunito-sans-medium"
-          >
-            Contact
-          </a>
-          <a
             href="https://www.pipabroker.com/faqs"
             className="nav-link nunito-sans-medium"
           >
             FAQs
           </a>
-          {showFetchButton && <FetchQuoteButton />}
+          <a
+            href="https://www.pipabroker.com/partners"
+            className="nav-link nunito-sans-medium"
+          >
+            Partners
+          </a>
+          <a
+            href="https://www.pipabroker.com/investors"
+            className="nav-link nunito-sans-medium"
+          >
+            Investors
+          </a>
         </nav>
       </div>
-    </header>
+      <span>© Copyright 2025 PIPA. All rights reserved.</span>
+    </footer>
   );
 };
 
-export default Header;
+export default Footer;
