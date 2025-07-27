@@ -21,45 +21,17 @@ const Header = ({ showFetchButton = true }: HeaderProps) => {
         </div>
 
         <nav className="navigation">
-          {/* New implementation. Uncomment when ready */}
-          {/* <button onClick={()=>{navigate("/")}} className="nav-link nunito-sans-medium link-btn">Home</button>
+          <button onClick={()=>{navigate("/")}} className="nav-link nunito-sans-medium link-btn">Home</button>
           <button onClick={()=>{navigate("/about")}} className="nav-link nunito-sans-medium link-btn">About</button>
           <button onClick={()=>{navigate("/terminology")}} className="nav-link nunito-sans-medium link-btn">Pet Insurance Resources</button>
           <button onClick={()=>{navigate("/partners")}} className="nav-link nunito-sans-medium link-btn">Contact</button>
-          <button onClick={()=>{navigate("/faqs")}} className="nav-link nunito-sans-medium link-btn">FAQs</button> */}
-          {/* Old implementation. Replace with above when ready */}
-          <a
-            href="https://www.pipabroker.com"
-            className="nav-link nunito-sans-medium"
-          >
-            Home
-          </a>
-          <a
-            href="https://www.pipabroker.com/about"
-            className="nav-link nunito-sans-medium"
-          >
-            About
-          </a>
-          <a
-            href="https://www.pipabroker.com/about"
-            className="nav-link nunito-sans-medium"
-          >
-            Pet Insurance Resources
-          </a>
-          <a
-            href="https://www.pipabroker.com/about"
-            className="nav-link nunito-sans-medium"
-          >
-            Contact
-          </a>
-          <a
-            href="https://www.pipabroker.com/faqs"
-            className="nav-link nunito-sans-medium"
-          >
-            FAQs
-          </a>
+          <button onClick={()=>{navigate("/faqs")}} className="nav-link nunito-sans-medium link-btn">FAQs</button>
           {showFetchButton && <FetchQuoteButton />}
         </nav>
+        <div className="header-menu">
+          {/* Placeholder for mobile menu icon */}
+          <span onClick={() => alert("Menu clicked!")} style={{fontSize: '24px', cursor: 'pointer'}}>☰</span> 
+          </div>
       </div>
     </header>
   );
