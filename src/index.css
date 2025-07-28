@@ -161,6 +161,8 @@ body {
 
 .app {
   min-height: 100vh;
+  padding: 0;
+  margin: 0;
 }
 
 /* Home Page Styles */
@@ -292,6 +294,83 @@ body {
   line-height: 1.2;
   color: var(--text-dark);
   margin-bottom: 1rem;
+}
+
+/* Menu animated icon */
+
+#header-menu {
+  display: none;
+  width: 50px;
+  height: 35px;
+  position: relative;
+  margin-left: auto;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: 0.5s ease-in-out;
+  -moz-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
+  transition: 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+#header-menu span {
+  display: block;
+  position: absolute;
+  height: 7px;
+  width: 100%;
+  background: var(--text-dark);
+  border-radius: 9px;
+  opacity: 1;
+  left: 0;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: 0.25s ease-in-out;
+  -moz-transition: 0.25s ease-in-out;
+  -o-transition: 0.25s ease-in-out;
+  transition: 0.25s ease-in-out;
+}
+
+#header-menu span:nth-child(1) {
+  top: 0px;
+}
+
+#header-menu span:nth-child(2),
+#header-menu span:nth-child(3) {
+  top: 15px;
+}
+
+#header-menu span:nth-child(4) {
+  top: 30px;
+}
+
+#header-menu.open span:nth-child(1) {
+  top: 15px;
+  width: 0%;
+  left: 50%;
+}
+
+#header-menu.open span:nth-child(2) {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+#header-menu.open span:nth-child(3) {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+#header-menu.open span:nth-child(4) {
+  top: 15px;
+  width: 0%;
+  left: 50%;
 }
 
 /* Button Styles */
@@ -442,7 +521,7 @@ body {
   width: auto;
 }
 
- .header-container .navigation {
+.header-container .navigation {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -450,7 +529,7 @@ body {
   margin-left: 2rem;
 }
 
- .header-container .nav-link {
+.header-container .nav-link {
   text-decoration: none;
   color: var(--text-dark);
   font-size: 12px;
@@ -458,17 +537,13 @@ body {
   text-align: center;
 }
 @media (min-width: 950px) {
-   .header-container .nav-link {
+  .header-container .nav-link {
     font-size: 16px;
   }
 }
 
- .header-container .nav-link:hover {
+.header-container .nav-link:hover {
   color: var(--primary-teal);
-}
-
-.header-menu {
-  display: none;
 }
 
 /* Footer Styles */
@@ -524,12 +599,12 @@ body {
     display: none;
   }
 
-  .header-menu {
+  #header-menu {
     display: block;
     cursor: pointer;
   }
 
-   .header-container .logo {
+  .header-container .logo {
     height: 40px;
   }
 }

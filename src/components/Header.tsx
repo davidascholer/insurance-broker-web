@@ -8,6 +8,10 @@ interface HeaderProps {
 const Header = ({ showFetchButton = true }: HeaderProps) => {
   const navigate = useNavigate();
 
+  const handleMenuClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.currentTarget.classList.toggle("open");
+  };
+
   return (
     <header className="header">
       <div className="header-container">
@@ -21,17 +25,55 @@ const Header = ({ showFetchButton = true }: HeaderProps) => {
         </div>
 
         <nav className="navigation">
-          <button onClick={()=>{navigate("/")}} className="nav-link nunito-sans-medium link-btn">Home</button>
-          <button onClick={()=>{navigate("/about")}} className="nav-link nunito-sans-medium link-btn">About</button>
-          <button onClick={()=>{navigate("/terminology")}} className="nav-link nunito-sans-medium link-btn">Pet Insurance Resources</button>
-          <button onClick={()=>{navigate("/partners")}} className="nav-link nunito-sans-medium link-btn">Contact</button>
-          <button onClick={()=>{navigate("/faqs")}} className="nav-link nunito-sans-medium link-btn">FAQs</button>
+          <button
+            onClick={() => {
+              navigate("/");
+            }}
+            className="nav-link nunito-sans-medium link-btn"
+          >
+            Home
+          </button>
+          <button
+            onClick={() => {
+              navigate("/about");
+            }}
+            className="nav-link nunito-sans-medium link-btn"
+          >
+            About
+          </button>
+          <button
+            onClick={() => {
+              navigate("/terminology");
+            }}
+            className="nav-link nunito-sans-medium link-btn"
+          >
+            Pet Insurance Resources
+          </button>
+          <button
+            onClick={() => {
+              navigate("/partners");
+            }}
+            className="nav-link nunito-sans-medium link-btn"
+          >
+            Contact
+          </button>
+          <button
+            onClick={() => {
+              navigate("/faqs");
+            }}
+            className="nav-link nunito-sans-medium link-btn"
+          >
+            FAQs
+          </button>
           {showFetchButton && <FetchQuoteButton />}
         </nav>
-        <div className="header-menu">
-          {/* Placeholder for mobile menu icon */}
-          <span onClick={() => alert("Menu clicked!")} style={{fontSize: '24px', cursor: 'pointer'}}>☰</span> 
-          </div>
+        {/* Placeholder for mobile menu icon */}
+        <button id="header-menu" onClick={handleMenuClick}>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
     </header>
   );
