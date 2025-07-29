@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
-import Header from '../components/Header'
 import { chatbotImageData } from '../data/imageData'
+import Header from '@/components/header/Header'
 
 declare global {
   interface Window {

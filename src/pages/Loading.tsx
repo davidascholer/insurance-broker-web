@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import Header from '../components/Header'
+import Header from '../components/header/Header'
 
 const Loading = () => {
   const navigate = useNavigate()

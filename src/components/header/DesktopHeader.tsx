@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import FetchQuoteButton from "./FetchQuoteButton";
+import FetchQuoteButton from "../FetchQuoteButton";
 
 interface HeaderProps {
   showFetchButton?: boolean;
 }
 
-const Header = ({ showFetchButton = true }: HeaderProps) => {
+const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
   const navigate = useNavigate();
 
   const handleMenuClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -67,16 +67,9 @@ const Header = ({ showFetchButton = true }: HeaderProps) => {
           </button>
           {showFetchButton && <FetchQuoteButton />}
         </nav>
-        {/* Placeholder for mobile menu icon */}
-        <button id="header-menu" onClick={handleMenuClick}>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
       </div>
     </header>
   );
 };
 
-export default Header;
+export default DesktopHeader;

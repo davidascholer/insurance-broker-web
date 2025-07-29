@@ -1,7 +1,7 @@
 import CoverageItem from "../components/CoverageItem";
 import FetchQuoteButton from "../components/FetchQuoteButton";
 import Footer from "../components/Footer";
-import Header from "../components/Header";
+import Header from "../components/header/Header";
 import InsurerItem from "../components/InsurerItem";
 
 const Home = () => {
@@ -86,6 +86,9 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+            <button className="animate-wiggle bg-blue-500">hi</button>
+
       <Footer />
     </div>
   );
