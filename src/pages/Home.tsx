@@ -86,9 +86,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-            <button className="animate-wiggle bg-blue-500">hi</button>
-
       <Footer />
     </div>
   );
