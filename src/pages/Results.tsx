@@ -208,7 +208,7 @@ const Results = () => {
         </div>
         
         <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-          <button onClick={() => navigate('/')} className="btn-secondary">
+          <button onClick={() => navigate('/')}>
             Start New Search
           </button>
         </div>

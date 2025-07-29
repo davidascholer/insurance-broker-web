@@ -9,6 +9,8 @@ interface HeaderProps {
 
 const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [resoureLinkOpen, setResoureLinkOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleMenuClick = () => {
@@ -71,7 +73,7 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
           <button
             className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
             onClick={() => {
-              navigate("/terminology");
+              setResoureLinkOpen(true);
             }}
           >
             Pet Insurance Resources
@@ -79,7 +81,7 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
           <button
             className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
             onClick={() => {
-              navigate("/partners");
+              setContactOpen(true);
             }}
           >
             Contact
@@ -93,6 +95,111 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
             FAQs
           </button>
           {showFetchButton && <FetchQuoteButton />}
+        </nav>
+      </div>
+      {/* Resources Menu */}
+      <div
+        className={cn(
+          "fixed bg-(--light-pink) z-99 flex flex-col items-center w-screen top-20 bottom-0 min-h-[400px]",
+          resoureLinkOpen ? "animate-fade-in" : "animate-fade-out"
+        )}
+      >
+        <nav
+          className={cn(
+            "flex flex-col items-center flex-1 justify-center gap-10 nunito-sans-medium sansita-bold text-4xl transition-transform duration-200 ease-in-out",
+            resoureLinkOpen ? "animate-slide-down" : "animate-slide-up"
+          )}
+        >
+          <button
+            className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
+            onClick={() => {
+              navigate("/terminology");
+            }}
+          >
+            Pet Insurance 101 - Terminology
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setResoureLinkOpen(false);
+            }}
+            className="cursor-pointer text-2xl bg-(--light-pink) nunito-sans-medium sansita-bold font-medium text-center flex flex-col items-center "
+          >
+            <svg
+              className="w-14 h-14 mt-8"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 12h14M5 12l4-4m-4 4 4 4"
+              />
+            </svg>
+          </button>
+        </nav>
+      </div>
+      {/* Contact Menu */}
+      <div
+        className={cn(
+          "fixed bg-(--light-pink) z-99 flex flex-col items-center w-screen top-20 bottom-0 min-h-[400px]",
+          contactOpen ? "animate-fade-in" : "animate-fade-out"
+        )}
+      >
+        <nav
+          className={cn(
+            "flex flex-col items-center flex-1 justify-center gap-10 nunito-sans-medium sansita-bold text-4xl transition-transform duration-200 ease-in-out",
+            contactOpen ? "animate-slide-down" : "animate-slide-up"
+          )}
+        >
+          <button
+            className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
+            onClick={() => {
+              navigate("/partners");
+            }}
+          >
+            Partners
+          </button>
+          <button
+            className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
+            onClick={() => {
+              navigate("/investors");
+            }}
+          >
+            Investors
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setContactOpen(false);
+            }}
+            className="cursor-pointer text-2xl bg-(--light-pink) nunito-sans-medium sansita-bold font-medium text-center flex flex-col items-center "
+          >
+            <svg
+              className="w-14 h-14 mt-8"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 12h14M5 12l4-4m-4 4 4 4"
+              />
+            </svg>
+          </button>
         </nav>
       </div>
     </>
