@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import ChatBot from "./pages/ChatBot";
+import InfoForm from "./pages/InfoForm";
 import Loading from "./pages/Loading";
 import Results from "./pages/Results";
 import Home from "./pages/Home";
@@ -18,7 +18,7 @@ function AppRouter() {
       <Route path="/terminology" element={<Terminology />} />
       <Route path="/partners" element={<PartnerContact />} />
       <Route path="/investors" element={<InvestorContact />} />
-      <Route path="/quotes" element={<ChatBot />} />
+      <Route path="/quotes" element={<InfoForm />} />
       <Route path="/loading" element={<Loading />} />
       <Route path="/results" element={<Results />} />
     </Routes>
