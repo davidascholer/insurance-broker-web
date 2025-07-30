@@ -11,7 +11,7 @@ const Home = () => {
         <Header />
         <div id="home-page-landing-overlay">
           <div id="home-page-landing-content">
-            <h1 className="sansita-bold large-heading">
+            <h1 className="sansita-bold large-heading mt-36 sm:mt-20 md:mt-24 max-w-[300px] md:max-w-[1000px]">
               Get the insurance that works best for you and for your fur baby
               today.
             </h1>
