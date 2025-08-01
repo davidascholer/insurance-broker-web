@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import InfoForm from "./pages/InfoForm";
+import InfoForm from "./pages/quotes/InfoForm";
 import Loading from "./pages/Loading";
 import Results from "./pages/Results";
 import Home from "./pages/Home";

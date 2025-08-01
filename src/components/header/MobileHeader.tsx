@@ -45,7 +45,7 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
       <div
         className={cn(
           "fixed bg-(--light-pink) z-99 flex flex-col items-center w-screen top-20 bottom-0 min-h-[400px]",
-          menuOpen ? "animate-fade-in" : "animate-fade-out"
+          menuOpen ? "animate-appear" : "animate-disappear"
         )}
       >
         <nav
@@ -101,7 +101,7 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
       <div
         className={cn(
           "fixed bg-(--light-pink) z-99 flex flex-col items-center w-screen top-20 bottom-0 min-h-[400px]",
-          resoureLinkOpen ? "animate-fade-in" : "animate-fade-out"
+          resoureLinkOpen ? "animate-appear" : "animate-disappear"
         )}
       >
         <nav
@@ -150,7 +150,7 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
       <div
         className={cn(
           "fixed bg-(--light-pink) z-99 flex flex-col items-center w-screen top-20 bottom-0 min-h-[400px]",
-          contactOpen ? "animate-fade-in" : "animate-fade-out"
+          contactOpen ? "animate-appear" : "animate-disappear"
         )}
       >
         <nav
