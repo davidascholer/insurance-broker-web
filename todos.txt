@@ -1,0 +1,4 @@
+A running list of todos.
+
+- Tests (all)
+- Convert images to svg and webp (format appropriate sizes for webp)
