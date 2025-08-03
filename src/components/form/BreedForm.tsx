@@ -42,13 +42,13 @@ const BreedForm = ({
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-[200px] justify-between"
+            className="justify-between"
           >
             {breed ? breedList.find((b) => b === breed) : "Select breed..."}
             <ChevronsUpDown className="opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0">
+        <PopoverContent className="p-0">
           <Command>
             <CommandInput placeholder="Search breeds..." className="h-9" />
             <CommandList>
@@ -85,7 +85,7 @@ const BreedForm = ({
         </PopoverContent>
       </Popover>
       <Button
-        className="cursor-pointer w-[200px]"
+        className="cursor-pointer"
         onClick={handleSubmit}
         disabled={!breed}
       >

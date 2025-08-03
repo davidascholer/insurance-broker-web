@@ -33,6 +33,20 @@ export const findCurrentQuestionProperty = (
   return "finish";
 };
 
+export const findCurrentQuestionIndex = (answers: AnswersType | undefined) => {
+  if (!answers) return 0;
+  if (!answers.name.firstName || !answers.name.lastName) return 0;
+  if (!answers.email) return 1;
+  if (!answers.zip) return 2;
+  if (!answers.petName) return 3;
+  if (!answers.animal) return 4;
+  if (!answers.gender) return 5;
+  if (!answers.age || answers.age?.value === 0) return 6;
+  if (!answers.breed) return 7;
+  if (!answers.reference) return 8;
+  return 9; // finish
+};
+
 export const findAgeString = (ageInDays: number) => {
   if (ageInDays < 7) {
     return `${ageInDays} day${ageInDays === 1 ? "" : "s"}`;

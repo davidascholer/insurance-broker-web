@@ -100,6 +100,7 @@ body {
   background-color: var(--background-light);
   color: var(--text-dark);
   line-height: 1.6;
+  overflow:hidden;
 }
 
 /* Home Page Styles */

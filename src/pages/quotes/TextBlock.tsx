@@ -6,16 +6,25 @@ interface TextBlockProps {
   ref: React.RefObject<HTMLDivElement | null>;
   nextQuestion: string;
   prevAnswer: string;
+  onEditClicked: () => void;
 }
 
-const TextBlock = ({ ref, nextQuestion, prevAnswer }: TextBlockProps) => {
+const TextBlock = ({
+  ref,
+  nextQuestion,
+  prevAnswer,
+  onEditClicked,
+}: TextBlockProps) => {
   return (
     <>
-      <div className="flex flex-row items-center justify-start gap-2 text-(--text-dark) ">
+      <div
+        className="flex flex-row items-center justify-start gap-2 text-(--text-dark) cursor-pointer"
+        onClick={onEditClicked}
+      >
         <span>{prevAnswer}</span>
         <EditIcon />
       </div>
-      <div className="mt-8" ref={ref}>
+      <div className="mt-12" ref={ref}>
         <TypewriterEffect
           cursorClassName="hidden"
           className="h-auto flex-1 font-bold"

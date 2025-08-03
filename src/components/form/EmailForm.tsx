@@ -48,8 +48,8 @@ const EmailForm = ({
         />
         <Button
           type="submit"
+          className="cursor-pointer" 
           disabled={!form.formState.isValid}
-          className="nunito-sans-medium bg-(--primary-teal) hover:bg-(--primary-teal-dark) cursor-pointer transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 tracking-wide"
         >
           Here ya go!
         </Button>

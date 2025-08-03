@@ -73,7 +73,7 @@ body {
       opacity: 1;
     }
   }
-  --animate-fade-out: fade-out .25s ease-in-out 1 forwards;
+  --animate-fade-out: fade-out 0.25s ease-in-out 1 forwards;
   @keyframes fade-out {
     0% {
       opacity: 1;
@@ -118,6 +118,24 @@ body {
     }
     100% {
       transform: translateY(0);
+    }
+  }
+  --animate-circle-expand: circle-expand 1s ease-out 1 forwards;
+  @keyframes circle-expand {
+    0% {
+      transform: scale(5);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  --animate-circle-shrink: circle-shrink 1s ease-out 1 forwards;
+  @keyframes circle-shrink {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(5);
     }
   }
 }
@@ -165,6 +183,7 @@ body {
   --background-light: #fef7f6;
   --light-pink: #fdefe6;
   --light-pink-transparent: #fdefe699;
+  --primary-teal-dark: #0c5163;
 }
 
 @layer base {
@@ -186,5 +205,9 @@ body {
   .no-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
+  }
+
+  .scrollbar-theme-color {
+    scrollbar-color: var(--primary-coral) var(--color-background);
   }
 }
