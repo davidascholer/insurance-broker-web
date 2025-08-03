@@ -13,7 +13,6 @@ import { findCurrentQuestionProperty } from "@/lib/utils";
 import type { AnswersType } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import AppDialog from "@/components/AppDialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import ProgressGrid from "@/components/ProgressGrid";
 
 const defaultAnswers: AnswersType = {
@@ -97,7 +96,7 @@ const InfoForm = () => {
   };
 
   const handleEditConfirmed = (currentQuestion: string) => {
-    console.debug("Editing from question:", currentQuestion);
+    // console.debug("Editing from question:", currentQuestion);
     const newAnswers = { ...answers };
     switch (currentQuestion) {
       case "name":
@@ -176,8 +175,8 @@ const InfoForm = () => {
         setIsOpen={setDialogOpen}
       />
 
-      <div className="flex bg-(--light-pink) h-screen overflow-hidden w-full relative">
-        <aside className="flex flex-col items-center justify-start p-4 h-screen max-w-48 fixed left-[10px] top-[10px] w-[140px]">
+      <div className="flex bg-(--light-pink) h-screen min-h-[400px] overflow-hidden w-full relative">
+        <aside className="flex flex-col items-center justify-start p-4 h-screen max-w-48 fixed left-[10px] top-[10px] w-[100px]">
           <a href="https://www.pipabroker.com" className="nunito-sans-medium">
             <img src="./logo.png" alt="PiPA Broker" className="w-full" />
           </a>
@@ -185,7 +184,7 @@ const InfoForm = () => {
             <ProgressGrid answers={answers} />
           </div>
         </aside>
-        <main className="flex-1 w-full ml-[150px] mr-[50px] py-8 overflow-scroll no-scrollbar mask-y-from-85% mask-y-to-90%">
+        <main className="flex-1 w-full ml-[100px] max-[400px]:mr-[0px] mr-[50px] py-8 px-1 overflow-scroll no-scrollbar mask-y-from-85% mask-y-to-90%">
           <Questions
             answers={answers}
             currentQuestion={currentQuestion}
@@ -198,7 +197,7 @@ const InfoForm = () => {
             />
           </Questions>
         </main>
-        <div className="p-4 fixed top-[10px] right-[10px] w-[40px]">
+        <div className="p-4 fixed top-[10px] right-[10px] w-[40px] max-[400px]:hidden">
           <Popover>
             <PopoverTrigger className="nunito-sans-medium flex items-center text-center text-2xl tracking-widest cursor-pointer">
               ...

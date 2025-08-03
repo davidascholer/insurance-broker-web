@@ -33,7 +33,7 @@ const AgeForm = ({ onSubmit }: { onSubmit: Function }) => {
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-[200px] justify-between"
+            className="max-w-[200px] justify-between"
           >
             {item.label
               ? ageList.find((age) => age.label === item.label)?.label
@@ -41,7 +41,7 @@ const AgeForm = ({ onSubmit }: { onSubmit: Function }) => {
             <ChevronsUpDown className="opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0">
+        <PopoverContent className="max-w-[200px] p-0">
           <Command>
             <CommandInput placeholder="Search ages..." className="h-9" />
             <CommandList>

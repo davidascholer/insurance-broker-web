@@ -135,10 +135,10 @@ const Questions = ({
   };
 
   return (
-    <ScrollArea className=" min-h-[300px] overflow-scroll">
-      <div className="flex flex-row justify-start items-start gap-4 overflow-scroll pt-24 pb-36 min-h-2/3">
+    <div className=" min-h-[300px] overflow-scroll no-scrollbar border-none">
+      <div className="flex flex-row justify-start items-start gap-4 pt-24 pb-36 min-h-2/3">
         <PipaIcon
-          className="min-w-[40px] -mt-24"
+          className="min-w-[40px] -mt-28"
           style={{
             transform: `translate(0, ${iconMarginTop}px)`,
             transition: "transform 1s ease",
@@ -262,7 +262,7 @@ const Questions = ({
           {children}
         </div>
       </div>
-    </ScrollArea>
+    </div>
   );
 };
 
