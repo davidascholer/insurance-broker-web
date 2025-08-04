@@ -8,6 +8,7 @@ import PartnerContact from "./pages/contact/PartnerContact";
 import InvestorContact from "./pages/contact/InvestorContact";
 import About from "./pages/About";
 import FAQs from "./pages/FAQs";
+import Quotes from "./pages/quotes/Quotes";
 
 function AppRouter() {
   return (
@@ -18,7 +19,8 @@ function AppRouter() {
       <Route path="/terminology" element={<Terminology />} />
       <Route path="/partners" element={<PartnerContact />} />
       <Route path="/investors" element={<InvestorContact />} />
-      <Route path="/quotes" element={<InfoForm />} />
+      <Route path="/info" element={<InfoForm />} />
+      <Route path="/quotes" element={<Quotes />} />
       <Route path="/loading" element={<Loading />} />
       <Route path="/results" element={<Results />} />
     </Routes>

@@ -2,3 +2,4 @@ A running list of todos.
 
 - Tests (all)
 - Convert images to svg and webp (format appropriate sizes for webp)
+- Clean up question fields logic to a single source of truth to make it configurable and more readable.

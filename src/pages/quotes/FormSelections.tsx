@@ -10,6 +10,7 @@ import FinishForm from "@/components/form/FinishForm";
 import NameForm from "@/components/form/NameForm";
 import EmailForm from "@/components/form/EmailForm";
 import ZipForm from "@/components/form/ZipForm";
+import { useNavigate } from "react-router-dom";
 
 const FormSelections = ({
   currentQuestion,
@@ -21,6 +22,7 @@ const FormSelections = ({
   setAnswers: React.Dispatch<React.SetStateAction<AnswersType>>;
 }) => {
   const optionsRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Animate the form
@@ -94,13 +96,15 @@ const FormSelections = ({
   };
 
   const handleFinishSubmit = () => {
-    console.debug(answers);
+    navigate("/quotes", { state: answers });
   };
 
   return (
     <div ref={optionsRef} className="opacity-0">
       {currentQuestion === "name" && <NameForm onSubmit={handleNameSubmit} />}
-      {currentQuestion === "email" && <EmailForm onSubmit={handleEmailSubmit} />}
+      {currentQuestion === "email" && (
+        <EmailForm onSubmit={handleEmailSubmit} />
+      )}
       {currentQuestion === "zip" && <ZipForm onSubmit={handleZipSubmit} />}
       {currentQuestion === "petName" && (
         <PetNameForm onSubmit={handlePetNameSubmit} />

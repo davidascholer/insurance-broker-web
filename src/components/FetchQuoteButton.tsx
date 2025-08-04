@@ -4,7 +4,7 @@ const FetchQuoteButton = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/quotes");
+    navigate("/info");
   };
   return (
     <button

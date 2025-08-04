@@ -14,3 +14,5 @@ export type AnswersType = {
   breed: (typeof catBreeds)[number] | (typeof dogBreeds)[number] | "";
   reference: string;
 };
+
+export type Quote = { provider: string; price: string };

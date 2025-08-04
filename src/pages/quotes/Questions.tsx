@@ -4,7 +4,6 @@ import TextBlock from "./TextBlock";
 import { formatArray } from "@/lib/utils";
 import PipaIcon from "@/components/icons/PipaIcon";
 import type { AnswersType } from "@/lib/types";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 type QuestionsProps = {
   answers: AnswersType;

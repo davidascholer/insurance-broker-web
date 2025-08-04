@@ -14,6 +14,7 @@ import type { AnswersType } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import AppDialog from "@/components/AppDialog";
 import ProgressGrid from "@/components/ProgressGrid";
+import { useNavigate } from "react-router-dom";
 
 const defaultAnswers: AnswersType = {
   name: { firstName: "", lastName: "" },
@@ -63,6 +64,7 @@ const InfoForm = () => {
     confirmText: string;
     onConfirmSubmit: () => void;
   }>(resetDialogConfig);
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.debug("Answers updated:", answers);
@@ -96,7 +98,6 @@ const InfoForm = () => {
   };
 
   const handleEditConfirmed = (currentQuestion: string) => {
-    // console.debug("Editing from question:", currentQuestion);
     const newAnswers = { ...answers };
     switch (currentQuestion) {
       case "name":
@@ -177,8 +178,9 @@ const InfoForm = () => {
 
       <div className="flex bg-(--light-pink) h-screen min-h-[400px] overflow-hidden w-full relative">
         <aside className="flex flex-col items-center justify-start p-4 h-screen max-w-48 fixed left-[10px] top-[10px] w-[100px]">
-          <a href="https://www.pipabroker.com" className="nunito-sans-medium">
-            <img src="./logo.png" alt="PiPA Broker" className="w-full" />
+    
+          <a href="https://www.pipabroker.com" className="nunito-sans-medium ">
+            <img src="./logo_vert.webp" alt="PiPA Broker" className="w-[100px] p-[5px]" />
           </a>
           <div className="w-full">
             <ProgressGrid answers={answers} />
