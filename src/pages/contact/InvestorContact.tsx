@@ -7,7 +7,7 @@ const InvestorContact = () => {
     <div className="bg-(--light-pink)">
       <Header />
       <div className="flex flex-col p-10 pt-36 lg:flex-row justify-start items-center max-w-5xl mx-auto min-h-screen">
-        <div className="flex flex-col justify-start items-start gap-8 p-2 ">
+        <div className="flex flex-col justify-start items-start gap-8 p-2 w-[320px] min-[400px]:w-[400px] min-[500px]:w-[500px] max-w-[600px]">
           <h1 className="text-(--primary-teal-dark) text-5xl sansita-bold whitespace-pre-wrap">
             Contact Us
           </h1>

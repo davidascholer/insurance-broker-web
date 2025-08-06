@@ -3,7 +3,7 @@ const ContactForm = () => {
     <form className="flex flex-col gap-4 w-full p-4">
       <div className="flex flex-col gap-0.5">
         <label className="text-(--primary-teal-dark)">Name (required)</label>
-        <div className="flex flex-row gap-4 w-full">
+        <div className="flex flex-col min-[500px]:flex-row gap-4 w-full">
           <div className="flex flex-col gap-0.5 flex-1">
             <label className="text-(--primary-teal-dark)">First Name</label>
             <input
