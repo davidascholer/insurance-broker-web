@@ -15,4 +15,31 @@ export type AnswersType = {
   reference: string;
 };
 
-export type Quote = { provider: string; price: string };
+export type ProviderIdTypes =
+  | "figo"
+  | "pumpkin"
+  | "petsbest"
+  | "embrace"
+  | "fetch"
+  | "metlife";
+
+// Type for individual quote data item on the server
+export type DataQuoteItem = {
+  deductible: number;
+  reimbursementPercentage: number;
+  coverageLimit: number;
+  monthlyPrice: number;
+};
+
+// Full object type on the server
+export type DataResponseItem = {
+  providerId: ProviderIdTypes;
+  providerName: string;
+  quotes: DataQuoteItem[];
+};
+
+// Data response type from the server
+export type DataResponse = DataResponseItem[];
+
+// Local parsing type mutated from the server types
+export type QuoteItem = DataQuoteItem & { providerId: ProviderIdTypes };

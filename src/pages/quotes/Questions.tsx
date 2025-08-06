@@ -35,7 +35,6 @@ const Questions = ({
 
   const setNewMargin = () => {
     let newMargin: number = 0;
-    console.debug("currentQuestion:", currentQuestion);
     if (currentQuestion === "name") {
       nameRef.current?.scrollIntoView({
         behavior: "smooth",

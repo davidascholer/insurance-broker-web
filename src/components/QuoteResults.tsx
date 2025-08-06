@@ -1,0 +1,335 @@
+import { useEffect, useId, useRef, useState } from "react";
+import { AnimatePresence, motion, MotionValue } from "motion/react";
+import { useOutsideClick } from "@/hooks/useOutsideClick";
+import type { QuoteItem } from "@/lib/types";
+
+// Keys must match the providerId in the QuoteItem type
+const providers = new Map();
+providers.set("fetch", {
+  providerName: "Fetch",
+  imgUrl: "/carrier_logo_fetch.svg",
+  src: "https://www.fetchpet.com/",
+  content:
+    "At Fetch, we understand how special your pet is to you (and vice-versa). That’s why we built a plan that covers more of the care your pet needs. Having more coverage means you’ll never have to choose between a vet bill and your pet’s health — so they can have a longer, happier life, and you can both have more good days together.",
+});
+providers.set("petsbest", {
+  providerName: "PetsBest",
+  imgUrl: "/carrier_logo_petsbest.svg",
+  src: "https://www.petsbest.com/",
+  content:
+    "Pets Best Insurance was founded in 2005 by Dr. Jack Stephens. Their mission is to end economic euthanasia by helping to ensure pet parents are financially prepared when their pets need unexpected veterinary care.",
+});
+providers.set("figo", {
+  providerName: "Figo",
+  imgUrl: "/carrier_logo_figo.svg",
+  src: "https://figopetinsurance.com/",
+  content:
+    "Figo: Pet Insurance with Soul. Let's face it— being a pet parent is awesome, but it has its share of surprises. Your pet insurance plan shouldn't be one of them. Born out of frustration with one-size-fits-all policies, Figo was founded by pet moms and dads who wanted better. We've ditched the jargon and stuffy approach, creating a refreshingly simple experience that fits your lifestyle—not the other way around. We're here to help enhance your pet's wellness, your peace of mind, and your finances. With fewer barriers, and perks (like an all-in-one pet parent app) that go beyond just helping cover vet bills, we're bringing pet insurance into the 21st century. Welcome to insurance that just gets it. Welcome to Figo.",
+});
+providers.set("metlife", {
+  providerName: "MetLife",
+  imgUrl: "/carrier_logo_metlife.svg",
+  src: "https://www.metlifepetinsurance.com/",
+  content:
+    "At MetLife Pet Insurance, we understand that pets are like family. With customizable coverage, a 24/7 vet chat, and quick claims processing, your dog or cat can be covered by one of our award-winning pet insurance policies. MetLife Pet Insurance’s comprehensive policies ensure that your pet — no matter their breed or age — can be covered, with no initial exams or vet records required to enroll. MetLife Pet offers some of the shortest waiting periods for accident and illness coverage, and allows you to use any licensed vet in America. Call or visit us today to get started with a free quote or learn more.",
+});
+providers.set("embrace", {
+  providerName: "Embrace",
+  imgUrl: "/carrier_logo_embrace.svg",
+  src: "https://www.embracepetinsurance.com/",
+  content:
+    "Pet insurance from Embrace saves you up to 90% back on vet bills from unexpected illness and medical expenses. Get a tailored cat or dog insurance quote in seconds.",
+});
+providers.set("pumpkin", {
+  providerName: "Pumpkin",
+  imgUrl: "/carrier_logo_pumpkin.svg",
+  src: "https://get.petinsurancequotes.com/quote/",
+  content:
+    "At Pumpkin, we believe it's just as important to keep healthy pets healthy as it is to help hurt or sick pets get better! That's why we provide families with the extensive pet health insurance and essential preventive care their pets need to live a healthy life, now and fur-ever.",
+});
+
+function QuoteResults({ cards }: { cards: QuoteItem[] }) {
+  const [active, setActive] = useState<
+    (QuoteItem & { key: number }) | boolean | null
+  >(null);
+  const ref = useRef<HTMLDivElement>(null) as React.RefObject<HTMLDivElement>;
+  const id = useId();
+
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setActive(false);
+      }
+    }
+
+    if (active && typeof active === "object") {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [active]);
+
+  useOutsideClick(ref, () => setActive(null));
+
+  return (
+    <>
+      <AnimatePresence>
+        {active && typeof active === "object" && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/20 h-full w-full z-10"
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {active && typeof active === "object" ? (
+          <div className="fixed inset-0  grid place-items-center z-[100]">
+            <motion.button
+              key={`button-${active.providerId}-${id}-${active.key}`}
+              layout
+              initial={{
+                opacity: 0,
+              }}
+              animate={{
+                opacity: 1,
+              }}
+              exit={{
+                opacity: 0,
+                transition: {
+                  duration: 0.05,
+                },
+              }}
+              className="flex absolute top-2 right-2 items-center justify-center bg-(--primary-teal-dark) rounded-full h-12 w-12 cursor-pointer border-1 border-neutral-50 shadow-sm"
+              onClick={() => setActive(null)}
+            >
+              <CloseIcon />
+            </motion.button>
+            <motion.div
+              layoutId={`card-${active.providerId}-${id}-${active.key}`}
+              ref={ref}
+              className="w-full max-w-[500px] h-full md:h-fit flex flex-col bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-scroll scrollbar-theme-color max-h-screen"
+            >
+              <motion.div
+                layoutId={`image-${active.providerId}-${id}-${active.key}`}
+                className="flex items-center justify-center pt-8 px-8"
+              >
+                <img
+                  src={providers.get(active.providerId)?.imgUrl || ""}
+                  alt={providers.get(active.providerId)?.providerName || ""}
+                  className="aspect-3/2 w-full sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top p-4"
+                />
+              </motion.div>
+
+              <div className="p-4">
+                <div className="flex flex-col min-[500px]:flex-row justify-between items-center">
+                  <div className="">
+                    <motion.h3
+                      layoutId={`title-${active.providerId}-deductible-${id}-${active.key}`}
+                      className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left sansita-bold"
+                    >
+                      {"Deductible"}
+                    </motion.h3>
+                    <motion.p
+                      layoutId={`content-${active.providerId}-deductible-${id}-${active.key}`}
+                      className="nunito-sans-bold px-4 py-3 text-sm rounded-3xl font-bold text-center w-full"
+                    >
+                      {active.deductible || ""}
+                    </motion.p>
+                  </div>
+                  <div className="">
+                    <motion.h3
+                      layoutId={`title-${active.providerId}-reimbursement-${id}-${active.key}`}
+                      className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left sansita-bold"
+                    >
+                      {"Reimbursement"}
+                    </motion.h3>
+                    <motion.p
+                      layoutId={`content-${active.providerId}-reimbursement-${id}-${active.key}`}
+                      className="nunito-sans-bold px-4 py-3 text-sm rounded-3xl font-bold text-center w-full"
+                    >
+                      {active.reimbursementPercentage}
+                    </motion.p>
+                  </div>
+                  <div className="">
+                    <motion.h3
+                      layoutId={`title-${active.providerId}-coverage-${id}-${active.key}`}
+                      className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left sansita-bold"
+                    >
+                      {"Coverage Limit"}
+                    </motion.h3>
+                    <motion.p
+                      layoutId={`content-${active.providerId}-coverage-${id}-${active.key}`}
+                      className="nunito-sans-bold px-4 py-3 text-sm rounded-3xl font-bold text-center w-full"
+                    >
+                      {active.coverageLimit}
+                    </motion.p>
+                  </div>
+                  <div className="">
+                    <motion.h3
+                      layoutId={`title-${active.providerId}-monthly-${id}-${active.key}`}
+                      className="font-medium text-2xl text-(--primary-coral) dark:text-neutral-200 text-center md:text-left sansita-bold"
+                    >
+                      {"Monthly Price"}
+                    </motion.h3>
+                    <motion.p
+                      layoutId={`content-${active.providerId}-monthly-${id}-${active.key}`}
+                      className="nunito-sans-bold text-lg px-4 py-3 rounded-full font-bold bg-(--coral-light) text-center w-full"
+                    >
+                      {active.monthlyPrice}
+                    </motion.p>
+                  </div>
+                </div>
+
+                <div className="flex-1 flex items-center justify-center mt-4 w-full">
+                  <motion.a
+                    layoutId={`button-${active.providerId}-${id}-${active.key}`}
+                    href={providers.get(active.providerId).src}
+                    target="_blank"
+                    className="px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
+                  >
+                    Go to {providers.get(active.providerId).providerName}
+                  </motion.a>
+                </div>
+
+                <div className="relative p-4 overflow-scroll">
+                  <motion.div
+                    layout
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="text-neutral-600 text-xs md:text-sm lg:text-base md:h-fit flex flex-col items-start gap-4 dark:text-neutral-400 overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
+                  >
+                    <span >
+                      {providers.get(active.providerId).content}
+                    </span>
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        ) : null}
+      </AnimatePresence>
+      <ul className="mx-auto w-full gap-4">
+        {cards.map((card: QuoteItem, key: number) => (
+          <motion.div
+            layoutId={`card-${card.providerId}-${id}-${key}`}
+            key={`card-${card.providerId}-${id}-${key}`}
+            onClick={() => setActive({ ...card, key })}
+            className="mt-3 p-4 pb-1 bg-white hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer border-2 border-(--primary-coral) hover:shadow-lg transition-all duration-300 ease max-w-4xl mx-auto"
+          >
+            {/* <h1 className="w-full m-auto">
+              {providers.get(card.providerId)?.providerName}
+            </h1> */}
+            <div className="flex gap-1 flex-col md:flex-row items-center md:items-start justify-center w-full max-w-4xl">
+              <motion.div layoutId={`image-${card.providerId}-${id}-${key}`}>
+                <img
+                  src={providers.get(card.providerId)?.imgUrl}
+                  alt={providers.get(card.providerId)?.name}
+                  className="aspect-3/2 min-w-32 rounded-lg object-cover object-top p-2"
+                />
+              </motion.div>
+              <div className="flex flex-col min-[500px]:flex-row gap-4 w-full justify-evenly">
+                <div className="">
+                  <motion.h3
+                    layoutId={`title-${card.providerId}-deductible-${id}-${key}`}
+                    className="sansita-bold font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left"
+                  >
+                    {"Deductible"}
+                  </motion.h3>
+                  <motion.p
+                    layoutId={`content-${card.providerId}-deductible-${id}-${key}`}
+                    className="nunito-sans-bold text-neutral-600 dark:text-neutral-400 text-center"
+                  >
+                    {card.deductible}
+                  </motion.p>
+                </div>
+                <div className="">
+                  <motion.h3
+                    layoutId={`title-${card.providerId}-reimbursement-${id}-${key}`}
+                    className="sansita-bold font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left"
+                  >
+                    {"Reimbursement"}
+                  </motion.h3>
+                  <motion.p
+                    layoutId={`content-${card.providerId}-reimbursement-${id}-${key}`}
+                    className="nunito-sans-bold text-neutral-600 dark:text-neutral-400 text-center"
+                  >
+                    {card.reimbursementPercentage}
+                  </motion.p>
+                </div>
+                <div className="">
+                  <motion.h3
+                    layoutId={`title-${card.providerId}-coverage-${id}-${key}`}
+                    className="sansita-bold font-medium text-neutral-800 dark:text-neutral-200 text-center"
+                  >
+                    {"Coverage Limit"}
+                  </motion.h3>
+                  <motion.p
+                    layoutId={`content-${card.providerId}-coverage-${id}-${key}`}
+                    className="nunito-sans-bold text-neutral-600 dark:text-neutral-400 text-center"
+                  >
+                    {card.coverageLimit}
+                  </motion.p>
+                </div>
+                <div className="">
+                  <motion.h3
+                    layoutId={`title-${card.providerId}-price-${id}-${key}`}
+                    className="sansita-bold text-xl text-(--primary-coral) dark:text-neutral-200 text-center"
+                  >
+                    {"Monthly Price"}
+                  </motion.h3>
+                  <motion.p
+                    layoutId={`content-${card.providerId}-price-${id}-${key}`}
+                    className="nunito-sans-bold text-xl text-neutral-600 dark:text-neutral-400 text-center"
+                  >
+                    {card.monthlyPrice}
+                  </motion.p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </ul>
+    </>
+  );
+}
+
+export const CloseIcon = () => {
+  return (
+    <motion.svg
+      initial={{
+        opacity: 0,
+      }}
+      animate={{
+        opacity: 1,
+      }}
+      exit={{
+        opacity: 0,
+        transition: {
+          duration: 0.05,
+        },
+      }}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-4 w-4 text-white"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M18 6l-12 12" />
+      <path d="M6 6l12 12" />
+    </motion.svg>
+  );
+};
+
+export default QuoteResults;

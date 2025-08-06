@@ -67,9 +67,7 @@ const InfoForm = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.debug("Answers updated:", answers);
     const currentQ = findCurrentQuestionProperty(answers);
-    console.debug("newCurrentQuestion:", currentQ);
     setCurrentQuestion(currentQ);
     // Save answers to localStorage
     localStorage.setItem("pipa-quote", JSON.stringify(answers));

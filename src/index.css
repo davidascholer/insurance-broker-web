@@ -138,6 +138,17 @@ body {
       transform: scale(5);
     }
   }
+
+  --animate-bot-forwards: animate-bot 0.4s ease-in-out 1 forwards;
+  --animate-bot-reverse: animate-bot 0.4s ease-in-out 1 reverse;
+  @keyframes animate-bot {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(100%);
+    }
+  }
 }
 
 @theme inline {
@@ -182,6 +193,7 @@ body {
   --coral-pink: #f4c2c2;
   --background-light: #fef7f6;
   --light-pink: #fdefe6;
+  --primary-coral-transparent: #ed9690ee;
   --light-pink-transparent: #fdefe699;
   --primary-teal-dark: #0c5163;
 }
@@ -192,6 +204,108 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+  /* Font Classes */
+  .nunito-sans {
+    font-family: "Nunito Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings: "wdth" 100, "YTLC" 500;
+  }
+
+  .nunito-sans-light {
+    font-family: "Nunito Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    font-variation-settings: "wdth" 100, "YTLC" 500;
+  }
+
+  .nunito-sans-medium {
+    font-family: "Nunito Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-variation-settings: "wdth" 100, "YTLC" 500;
+  }
+
+  .nunito-sans-semibold {
+    font-family: "Nunito Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    font-variation-settings: "wdth" 100, "YTLC" 500;
+  }
+
+  .nunito-sans-bold {
+    font-family: "Nunito Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    font-variation-settings: "wdth" 100, "YTLC" 500;
+  }
+
+  .sansita-regular {
+    font-family: "Sansita", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .sansita-bold {
+    font-family: "Sansita", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    white-space: pre-wrap;
+  }
+
+  .sansita-extrabold {
+    font-family: "Sansita", sans-serif;
+    font-weight: 800;
+    font-style: normal;
+  }
+
+  .sansita-black {
+    font-family: "Sansita", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+  }
+
+  .sansita-regular-italic {
+    font-family: "Sansita", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .sansita-bold-italic {
+    font-family: "Sansita", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+  }
+
+  .sansita-extrabold-italic {
+    font-family: "Sansita", sans-serif;
+    font-weight: 800;
+    font-style: italic;
+  }
+
+  .sansita-black-italic {
+    font-family: "Sansita", sans-serif;
+    font-weight: 900;
+    font-style: italic;
+  }
+
+  /* Global Styles */
+  body {
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+      "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+      "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--background-light);
+    color: var(--text-dark);
+    line-height: 1.6;
+    /* overflow:hidden; */
   }
 }
 

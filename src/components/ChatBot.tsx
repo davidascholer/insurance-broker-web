@@ -2,27 +2,32 @@ import { useState } from "react";
 import PipaIcon from "./icons/PipaIcon";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
+import { TypewriterEffect } from "./ui/TypewriterEffect";
+import { formatArray } from "@/lib/utils";
 
 const ChatBot = () => {
-  const [isHidden, setIsHidden] = useState(true);
+  const [isHidden, setIsHidden] = useState(false);
   return (
-    <div className="flex flex-col gap-4 p-4 max-w-md mx-auto">
+    <div className="flex flex-row gap-4 p-4 mx-auto select-none cursor-pointer">
       <div className="flex flex-row justify-start items-center gap-4">
         <PipaIcon className="min-w-[40px]" />
-        <Textarea className="flex-1 w-[200px]" />
+        {/* <Textarea className="flex-1 w-[200px]" /> */}
+        <TypewriterEffect
+          cursorClassName="hidden"
+          className="h-auto flex-1 font-bold slect-none text-sm max-[550px]:text-xs"
+          words={formatArray(
+            `Hello, I am PipaBot, Pipa Broker's AI assistant. How can I help you today?`,
+          )}
+        />
       </div>
-      <Button
+      {/* <Button
         type="submit"
         disabled={false}
         className="cursor-pointer"
         onClick={() => setIsHidden(false)}
       >
         Talk to PipaBot
-      </Button>
-
-      <p className={isHidden ? "hidden" : ""}>
-        What type of flowers would you like to order?
-      </p>
+      </Button> */}
     </div>
   );
 };

@@ -1,38 +1,45 @@
-import FullScreenLoader from "@/components/FullScreenLoader";
-import type { AnswersType, Quote } from "@/lib/types";
+import Loader from "@/components/Loader";
+import type {
+  AnswersType,
+  DataQuoteItem,
+  DataResponse,
+  QuoteItem,
+} from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import QuoteResult from "@/components/QuoteResult";
-import ChatBot from "@/components/ChatBot";
+import QuoteResults from "@/components/QuoteResults";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
+import useIsOnline from "@/hooks/useIsOnline";
+import ChatbotHeader from "./ChatBotHeader";
 
 const Quotes = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [quoteData, setQuoteData] = useState<Quote[] | null>(null);
+  const [quoteData, setQuoteData] = useState<QuoteItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const isOnline = useIsOnline();
 
   const URL = "https://pipa-server-41b9ae62ecfa.herokuapp.com/";
   // const URL = "http://localhost:3000"; // Local development
 
-  const fetchQuotes = async (answers: AnswersType): Promise<Quote[]> => {
-    console.debug("Fetching quotes with answers:", answers);
+  const fetchQuotes = async (answers: AnswersType): Promise<DataResponse> => {
     const response = await fetch(URL + "api/quotes", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": URL,
+        // "Access-Control-Allow-Origin": "*", // Not needed for POST requests
       },
-      // Automatically converted to "username=example&password=password"
       body: JSON.stringify(answers),
-      // …
     });
     if (!response.ok) {
       setError(`Error fetching quotes: ${response}`);
     }
     setError(null);
-    const { quotes } = (await response.json()) as { quotes: Quote[] };
-    setIsLoading(false); // Todo: move this
+    const { quotes } = await response.json();
+    setTimeout(() => {
+      setIsLoading(false); // Todo: move this
+    }, 3000); // Simulate loading delay
     return quotes;
   };
 
@@ -71,19 +78,41 @@ const Quotes = () => {
       navigate("/info");
     } else {
       // Fetch quotes based on the answers
-      fetchQuotes(answers as AnswersType).then((data) => {
-        setQuoteData(data);
+      fetchQuotes(answers as AnswersType).then((data: DataResponse) => {
+        for (const dataItem of data) {
+          for (const dataQuoteItem of dataItem.quotes) {
+            const newQuote: QuoteItem = {
+              ...dataQuoteItem,
+              providerId: dataItem.providerId,
+            };
+            setQuoteData((prev) => [...prev, newQuote]);
+          }
+        }
       });
     }
   }, [location.state]);
 
-  if (isLoading) return <FullScreenLoader />;
-  if (error) return <div>{error}</div>;
   return (
-    <div>
-      {JSON.stringify(quoteData)}
-      <ChatBot />
-      <QuoteResult />
+    <div className="flex flex-col items-center justify-start w-full min-h-screen p-4 space-y-4 bg-(--background-light) h-screen pt-20">
+      <ChatbotHeader />
+      {!isOnline && (
+        <div>
+          <p>
+            You do not appear to be online. Please check your connection and
+            refresh the page.
+          </p>
+        </div>
+      )}
+      {isLoading && isOnline && <Loader />}
+      {error && <div className="text-red-600">{error}</div>}
+      {!error && !isLoading && (
+        <>
+          {/* <ChatBot /> */}
+          <ScrollArea className="flex-1 w-full overflow-scroll no-scrollbar">
+            <QuoteResults cards={quoteData} />
+          </ScrollArea>
+        </>
+      )}
     </div>
   );
 };
