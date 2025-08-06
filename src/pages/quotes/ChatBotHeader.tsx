@@ -27,16 +27,12 @@ const ChatbotHeader = () => {
   const [botHidden, setBotHidden] = useState(true);
   const modal = useRef<HTMLDivElement>(null);
 
-  const handleHeaderClick = () => {
+  const handleBotClick = () => {
     setBotHidden((prev) => !prev);
-    // modal.current?.classList.remove("animate-bot-reverse");
-    // modal.current?.classList.add("animate-bot-forward");
   };
 
   const handleHideModal = () => {
     setBotHidden(true);
-    // modal.current?.classList.remove("animate-bot");
-    // modal.current?.classList.add("animate-bot-reverse");
   };
 
   return (
@@ -108,15 +104,16 @@ const ChatbotHeader = () => {
           </ScrollArea>
         </div>
       </div>
-      <header
-        className="z-20 w-full mb-4 shadow-md fixed top-0 left-0 bg-white p-4 cursor-pointer"
-        onClick={handleHeaderClick}
-      >
+      <header className="z-20 w-full mb-4 shadow-md fixed top-0 left-0 bg-white p-4">
         <div className="flex items-center justify-between max-w-4xl mx-auto h-12">
           <a href="https://www.pipabroker.com" className="nunito-sans-medium">
-            <img src="./logo.png" alt="PiPA Broker" className="w-[120px] aspect-8/3" />
+            <img
+              src="./logo.png"
+              alt="PiPA Broker"
+              className="w-[120px] aspect-8/3"
+            />
           </a>
-          <ChatBot />
+          <ChatBot handleClick={handleBotClick} />
         </div>
       </header>
     </>

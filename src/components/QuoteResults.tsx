@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion, MotionValue } from "motion/react";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import type { QuoteItem } from "@/lib/types";
+import InfoTooltip from "./InfoTooltip";
 
 // Keys must match the providerId in the QuoteItem type
 const providers = new Map();
@@ -128,12 +129,15 @@ function QuoteResults({ cards }: { cards: QuoteItem[] }) {
               <div className="p-4">
                 <div className="flex flex-col min-[500px]:flex-row justify-between items-center">
                   <div className="">
-                    <motion.h3
-                      layoutId={`title-${active.providerId}-deductible-${id}-${active.key}`}
-                      className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left sansita-bold"
-                    >
-                      {"Deductible"}
-                    </motion.h3>
+                    <div className="flex flex-col gap-1 justify-center items-center">
+                      <InfoTooltip msg="The deductible is the amount you pay out of pocket for veterinary care before your pet insurance starts to pay. For example, if your plan has a $100 deductible, you'll need to pay the first $100 of your vet bill before your insurance coverage kicks in." />
+                      <motion.h3
+                        layoutId={`title-${active.providerId}-deductible-${id}-${active.key}`}
+                        className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left sansita-bold"
+                      >
+                        {"Deductible"}
+                      </motion.h3>
+                    </div>
                     <motion.p
                       layoutId={`content-${active.providerId}-deductible-${id}-${active.key}`}
                       className="nunito-sans-bold px-4 py-3 text-sm rounded-3xl font-bold text-center w-full"
@@ -142,12 +146,15 @@ function QuoteResults({ cards }: { cards: QuoteItem[] }) {
                     </motion.p>
                   </div>
                   <div className="">
-                    <motion.h3
-                      layoutId={`title-${active.providerId}-reimbursement-${id}-${active.key}`}
-                      className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left sansita-bold"
-                    >
-                      {"Reimbursement"}
-                    </motion.h3>
+                    <div className="flex flex-col gap-1 justify-center items-center">
+                      <InfoTooltip msg="Reimbursement percentage is the portion of your vet bill that your pet insurance will cover after you've met your deductible. For example, if your plan has a 90% reimbursement rate and you've met your deductible, the insurance will pay 90% of the eligible vet bill, and you'll be responsible for the remaining 10%." />
+                      <motion.h3
+                        layoutId={`title-${active.providerId}-reimbursement-${id}-${active.key}`}
+                        className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left sansita-bold"
+                      >
+                        {"Reimbursement"}
+                      </motion.h3>
+                    </div>
                     <motion.p
                       layoutId={`content-${active.providerId}-reimbursement-${id}-${active.key}`}
                       className="nunito-sans-bold px-4 py-3 text-sm rounded-3xl font-bold text-center w-full"
@@ -156,12 +163,15 @@ function QuoteResults({ cards }: { cards: QuoteItem[] }) {
                     </motion.p>
                   </div>
                   <div className="">
-                    <motion.h3
-                      layoutId={`title-${active.providerId}-coverage-${id}-${active.key}`}
-                      className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left sansita-bold"
-                    >
-                      {"Coverage Limit"}
-                    </motion.h3>
+                    <div className="flex flex-col gap-1 justify-center items-center">
+                      <InfoTooltip msg="Coverage limit is the maximum amount your pet insurance will pay for covered veterinary expenses within a specified period, such as annually or per condition. For example, if your plan has a $10,000 annual coverage limit, the insurance will cover up to $10,000 of eligible vet bills in a year. Any costs beyond that limit would be your responsibility." />
+                      <motion.h3
+                        layoutId={`title-${active.providerId}-coverage-${id}-${active.key}`}
+                        className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left sansita-bold"
+                      >
+                        Coverage Limit
+                      </motion.h3>
+                    </div>
                     <motion.p
                       layoutId={`content-${active.providerId}-coverage-${id}-${active.key}`}
                       className="nunito-sans-bold px-4 py-3 text-sm rounded-3xl font-bold text-center w-full"
@@ -204,9 +214,7 @@ function QuoteResults({ cards }: { cards: QuoteItem[] }) {
                     exit={{ opacity: 0 }}
                     className="text-neutral-600 text-xs md:text-sm lg:text-base md:h-fit flex flex-col items-start gap-4 dark:text-neutral-400 overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
                   >
-                    <span >
-                      {providers.get(active.providerId).content}
-                    </span>
+                    <span>{providers.get(active.providerId).content}</span>
                   </motion.div>
                 </div>
               </div>
