@@ -1,7 +1,9 @@
 import Footer from "@/components/Footer";
 import Header from "../components/header/Header";
+import { useNavigate } from "react-router-dom";
 
 const Terms = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <Header />
@@ -458,9 +460,9 @@ const Terms = () => {
         </p>
         <p className="whitespace-pre-wrap">
           Your privacy is very important to us.&nbsp;&nbsp;Our&nbsp;
-          <a href="/privacy">
+          <button onClick={() => navigate("/privacy")}>
             <span className="underline">Privacy Policy</span>
-          </a>
+          </button>
           &nbsp;explains how we collect, store, use, protect, and when we share
           personal information and other data with others.&nbsp;&nbsp;You are
           responsible for maintaining the confidentiality of your account
@@ -482,9 +484,9 @@ const Terms = () => {
           your use of the Services.&nbsp;&nbsp;PIPA also uses Google Analytics
           for certain purposes related to advertising.&nbsp;&nbsp;For more
           information on this please see the PIPA&nbsp;
-          <a href="/privacy">
+          <button onClick={() => navigate("/privacy")}>
             <span className="underline">Privacy Policy</span>
-          </a>
+          </button>
           .&nbsp;&nbsp;To prevent Google Analytics from using your information
           for analytics, you may install the Google Analytics&nbsp;
           <a href="https://tools.google.com/dlpage/gaoptout" target="">

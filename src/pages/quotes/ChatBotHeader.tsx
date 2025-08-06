@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const BotMessage = ({ message }: { message: string }) => {
   return (
@@ -26,6 +27,7 @@ const ClientMessage = ({ message }: { message: string }) => {
 const ChatbotHeader = () => {
   const [botHidden, setBotHidden] = useState(true);
   const modal = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   const handleBotClick = () => {
     setBotHidden((prev) => !prev);
@@ -106,13 +108,13 @@ const ChatbotHeader = () => {
       </div>
       <header className="z-20 w-full mb-4 shadow-md fixed top-0 left-0 bg-white p-4">
         <div className="flex items-center justify-between max-w-4xl mx-auto h-12">
-          <a href="https://www.pipabroker.com" className="nunito-sans-medium">
+          <button onClick={() => navigate("/")} className="nunito-sans-medium cursor-pointer">
             <img
               src="./logo.png"
               alt="PiPA Broker"
               className="w-[120px] aspect-8/3"
             />
-          </a>
+          </button>
           <ChatBot handleClick={handleBotClick} />
         </div>
       </header>

@@ -1,7 +1,9 @@
 import Footer from "@/components/Footer";
 import Header from "../components/header/Header";
+import { useNavigate } from "react-router-dom";
 
 const FAQs = () => {
+  const navigate = useNavigate();
   return (
     <div className="bg-(--light-pink) ">
       <Header />
@@ -30,12 +32,12 @@ const FAQs = () => {
             quotes, and we help them bind a great deal from a trusted brand. For
             more about us, like our mission, qualifications, and licensing
             information,{" "}
-            <a
-              href="/about"
+            <button
+              onClick={() => navigate("/about")}
               className="text-(--primary-coral) font-semibold underline"
             >
               click here
-            </a>
+            </button>
             .
           </p>
           <h4 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap">
@@ -251,13 +253,14 @@ const FAQs = () => {
           </ul>
           <p className="whitespace-pre-wrap">
             The best way to know what price to expect is to{" "}
-            <a
-              href="https://quotes.pipabroker.com"
-              target="_blank"
+            <button
+              onClick={() => {
+                navigate("/info");
+              }}
               className="text-(--primary-coral) font-semibold underline"
             >
               compare quotes between pet insurance carriers
-            </a>
+            </button>
             . That’s what PIPA does best.
           </p>
           <h4 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap">

@@ -11,16 +11,18 @@ const Footer = () => {
     <footer className="footer-container">
       <div className="footer-content">
         <div>
-          <a
-            href="https://www.pipabroker.com"
-            className="nav-link nunito-sans-medium"
+          <button
+            onClick={() => {
+              navigate("/");
+            }}
+            className="nav-link nunito-sans-medium cursor-pointer"
           >
             <img
               src="./pipa_text_white.png"
               alt="PiPA Broker"
               className="w-32 mb-2"
             />
-          </a>
+          </button>
         </div>
 
         <nav className="navigation flex flex-row flex-wrap justify-center items-center gap-4 p-2">
@@ -85,7 +87,9 @@ const Footer = () => {
         policy premium for any policy is determined by the underwriting
         insurance company following application.
       </p>
-      <span className="text-xl">© Copyright 2025 PIPA. All rights reserved.</span>
+      <span className="text-xl">
+        © Copyright 2025 PIPA. All rights reserved.
+      </span>
     </footer>
   );
 };

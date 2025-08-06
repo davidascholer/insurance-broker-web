@@ -1,7 +1,9 @@
 import Footer from "@/components/Footer";
 import Header from "../components/header/Header";
+import { useNavigate } from "react-router-dom";
 
 const About = () => {
+  const navigate = useNavigate();
   return (
     <div className="bg-(--light-pink)">
       <Header />
@@ -35,12 +37,14 @@ const About = () => {
               policies are typically required to hold a license in each state
               they operate. These individuals are commonly referred to as
               “insurance producers.”{" "}
-              <a
-                href="/licenses"
+              <button
+                onClick={() => {
+                  navigate("/licenses");
+                }}
                 className="text-(--primary-coral) font-semibold underline "
               >
                 Here
-              </a>{" "}
+              </button>
               is a summary of states in which we hold active licenses.
             </p>
             <p className="whitespace-pre-wrap">

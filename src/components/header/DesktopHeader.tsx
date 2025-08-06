@@ -4,7 +4,7 @@ import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/components/ui/hover-card"
+} from "@/components/ui/hover-card";
 
 interface HeaderProps {
   showFetchButton?: boolean;
@@ -16,9 +16,9 @@ const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
   return (
     <header className="bg-(--light-pink) fixed top-0 left-0 right-0 z-100 h-24 shadow-md text-center flex items-center justify-center">
       <div className="flex max-w-[1200px] h-full px-4 items-center w-full justify-between">
-        <a href="https://www.pipabroker.com" className="nunito-sans-medium">
+        <button onClick={() => navigate("/")} className="nunito-sans-medium cursor-pointer">
           <img src="./logo.png" alt="PiPA Broker" className="max-h-20" />
-        </a>
+        </button>
         <nav className="flex w-full gap-8 align-center justify-evenly max-w-[800px] ml-8">
           <div
             className="nunito-sans-medium cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center"
@@ -75,14 +75,14 @@ const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
             </HoverCardContent>
           </HoverCard>
 
-            <button
-              onClick={() => {
-                navigate("/faqs");
-              }}
-              className="-sans-medium cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center"
-            >
-              FAQs
-            </button>
+          <button
+            onClick={() => {
+              navigate("/faqs");
+            }}
+            className="-sans-medium cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center"
+          >
+            FAQs
+          </button>
 
           {showFetchButton && (
             <div className="flex items-center justify-center">

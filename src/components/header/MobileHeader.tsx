@@ -22,12 +22,14 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
       <header className="bg-(--light-pink) fixed top-0 left-0 right-0 z-100 h-20">
         <div className="flex h-full items-center align-middle p-4 max-w-[1200px] mx-auto">
           <div className="flex items-center">
-            <a
-              href="https://www.pipabroker.com"
-              className="nav-link nunito-sans-medium"
+            <button
+              onClick={() => {
+                navigate("/");
+              }}
+              className="nav-link nunito-sans-medium cursor-pointer"
             >
               <img src="./logo.png" alt="PiPA Broker" className="h-16" />
-            </a>
+            </button>
           </div>
 
           <button
