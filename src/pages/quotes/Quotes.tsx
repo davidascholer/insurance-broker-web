@@ -1,7 +1,6 @@
 import Loader from "@/components/Loader";
 import type {
   AnswersType,
-  DataQuoteItem,
   DataResponse,
   QuoteItem,
 } from "@/lib/types";

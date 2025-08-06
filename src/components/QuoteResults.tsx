@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { AnimatePresence, motion, MotionValue } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import type { QuoteItem } from "@/lib/types";
 import InfoTooltip from "./InfoTooltip";

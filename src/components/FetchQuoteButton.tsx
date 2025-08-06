@@ -17,25 +17,3 @@ const FetchQuoteButton = () => {
 };
 
 export default FetchQuoteButton;
-// .btn-primary {
-//   background: var(--primary-coral);
-//   color: white;
-//   border: none;
-//   padding: 22px 32px;
-//   border-radius: 30px;
-//   font-family: "Nunito Sans", sans-serif;
-//   font-weight: 600;
-//   font-size: 16px;
-//   cursor: pointer;
-//   transition: all 0.3s ease;
-//   box-shadow: var(--shadow);
-//   text-transform: uppercase;
-//   letter-spacing: 0.5px;
-//   max-width: 200px;
-// }
-
-// .btn-primary:hover {
-//   background: #e88580;
-//   transform: translateY(-2px);
-//   box-shadow: var(--shadow-lg);
-// }

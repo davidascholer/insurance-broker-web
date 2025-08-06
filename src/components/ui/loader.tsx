@@ -1,6 +1,4 @@
-"use client";
-import { motion } from "motion/react";
-import React from "react";
+import { motion, easeInOut } from "motion/react";
 
 export const LoaderOne = () => {
   const transition = (x: number) => {
@@ -9,7 +7,7 @@ export const LoaderOne = () => {
       repeat: Infinity,
       repeatType: "loop" as const,
       delay: x * 0.2,
-      ease: "easeInOut",
+      ease: easeInOut,
     };
   };
   return (
@@ -48,6 +46,7 @@ export const LoaderOne = () => {
   );
 };
 
+
 export const LoaderTwo = () => {
   const transition = (x: number) => {
     return {
@@ -55,7 +54,7 @@ export const LoaderTwo = () => {
       repeat: Infinity,
       repeatType: "loop" as const,
       delay: x * 0.2,
-      ease: "easeInOut",
+      ease: easeInOut,
     };
   };
   return (
@@ -129,7 +128,7 @@ export const LoaderFour = ({ text = "Loading..." }: { text?: string }) => {
     <div className="relative font-bold text-black [perspective:1000px] dark:text-white">
       <motion.span
         animate={{
-          skew: [0, -40, 0],
+          skewX: [0, -40, 0],
           scaleX: [1, 2, 1],
         }}
         transition={{
@@ -192,12 +191,10 @@ export const LoaderFive = ({ text }: { text: string }) => {
           initial={{ scale: 1, opacity: 0.5 }}
           animate={{
             scale: [1, 1.1, 1],
-            textShadow: [
-              "0 0 0 var(--shadow-color)",
-              "0 0 1px var(--shadow-color)",
-              "0 0 0 var(--shadow-color)",
-            ],
             opacity: [0.5, 1, 0.5],
+          }}
+          style={{
+            textShadow: "0 0 0 var(--shadow-color)",
           }}
           transition={{
             duration: 0.5,

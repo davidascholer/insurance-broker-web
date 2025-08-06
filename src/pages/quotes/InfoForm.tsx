@@ -14,7 +14,6 @@ import type { AnswersType } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import AppDialog from "@/components/AppDialog";
 import ProgressGrid from "@/components/ProgressGrid";
-import { useNavigate } from "react-router-dom";
 
 const defaultAnswers: AnswersType = {
   name: { firstName: "", lastName: "" },
@@ -64,7 +63,6 @@ const InfoForm = () => {
     confirmText: string;
     onConfirmSubmit: () => void;
   }>(resetDialogConfig);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const currentQ = findCurrentQuestionProperty(answers);

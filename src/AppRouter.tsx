@@ -9,6 +9,8 @@ import InvestorContact from "./pages/contact/InvestorContact";
 import About from "./pages/About";
 import FAQs from "./pages/FAQs";
 import Quotes from "./pages/quotes/Quotes";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 
 function AppRouter() {
   return (
@@ -23,6 +25,8 @@ function AppRouter() {
       <Route path="/quotes" element={<Quotes />} />
       <Route path="/loading" element={<Loading />} />
       <Route path="/results" element={<Results />} />
+      <Route path="/terms" element={<Terms />} />
+      <Route path="/privacy" element={<Privacy />} />
     </Routes>
   );
 }
