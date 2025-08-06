@@ -11,6 +11,7 @@ import FAQs from "./pages/FAQs";
 import Quotes from "./pages/quotes/Quotes";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import Licenses from "./pages/Licenses";
 
 function AppRouter() {
   return (
@@ -27,6 +28,7 @@ function AppRouter() {
       <Route path="/results" element={<Results />} />
       <Route path="/terms" element={<Terms />} />
       <Route path="/privacy" element={<Privacy />} />
+      <Route path="/licenses" element={<Licenses />} />
     </Routes>
   );
 }

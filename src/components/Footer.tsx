@@ -64,6 +64,14 @@ const Footer = () => {
           >
             Privacy
           </button>
+          <button
+            onClick={() => {
+              navigate("/licenses");
+            }}
+            className="nunito-sans-medium cursor-pointer"
+          >
+            Licenses
+          </button>
         </nav>
       </div>
       <hr className="w-full" />

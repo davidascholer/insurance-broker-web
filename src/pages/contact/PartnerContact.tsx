@@ -1,9 +1,15 @@
+import Footer from "@/components/Footer";
+import Header from "@/components/header/Header";
+
 const PartnerContact = () => {
   return (
-    <div className="partner-contact">
-      <h2>Contact Our Partners</h2>
-    </div>
-  );
+    <div>
+      <Header />
+      <div
+        className="p-6 pt-36 flex flex-col gap-8 bg-(--light-pink)"
+      ></div>
+      <Footer />
+    </div>  );
 };
 
 export default PartnerContact;

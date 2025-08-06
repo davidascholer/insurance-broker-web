@@ -1,9 +1,15 @@
+import Footer from "@/components/Footer";
+import Header from "@/components/header/Header";
+
 const InvestorContact = () => {
   return (
-    <div className="investor-contact">
-      <h2>Contact Our Investores</h2>
-    </div>
-  );
+    <div>
+      <Header />
+      <div
+        className="p-6 pt-36 flex flex-col gap-8 bg-(--light-pink)"
+      ></div>
+      <Footer />
+    </div>  );
 };
 
 export default InvestorContact;
