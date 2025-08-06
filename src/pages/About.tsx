@@ -41,11 +41,11 @@ const About = () => {
                 onClick={() => {
                   navigate("/licenses");
                 }}
-                className="text-(--primary-coral) font-semibold underline "
+                className="text-(--primary-coral) font-semibold underline cursor-pointer"
               >
                 Here
               </button>
-              is a summary of states in which we hold active licenses.
+              {" "}is a summary of states in which we hold active licenses.
             </p>
             <p className="whitespace-pre-wrap">
               All solicitations to apply for insurance and applications for
