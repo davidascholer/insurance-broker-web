@@ -20,7 +20,7 @@ const TerminologySection = ({
           {headerText}
         </h2>
       </div>
-      <p className="whitespace-pre-wrap ml-[50px]">{children}</p>
+      <div className="whitespace-pre-wrap ml-[50px]">{children}</div>
     </div>
   );
 };
