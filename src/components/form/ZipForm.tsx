@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "../ui/input";
-import { zips } from "@/lib/data";
+import { zips } from "@/data/zips";
 
 const FormSchema = z.object({
   zip: z.string().regex(/^\d{5}$/, "Invalid 5-digit ZIP code."),

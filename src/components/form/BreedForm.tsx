@@ -15,13 +15,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useState } from "react";
-import { catBreeds, dogBreeds } from "@/lib/data";
+import { catBreeds } from "@/data/catBreeds";
+import { dogBreeds } from "@/data/dogBreeds";
 
 const BreedForm = ({
   onSubmit,
   animal,
 }: {
-  onSubmit: Function;
+  onSubmit: (breed: string) => void;
   animal: string;
 }) => {
   const [open, setOpen] = useState<boolean>(false);

@@ -6,7 +6,7 @@ const Privacy = () => {
     <div>
       <Header />
       <div
-        className="p-6 pt-36 flex flex-col gap-8 bg-(--light-pink)"
+        className="p-6 pt-36 flex flex-col gap-4 bg-(--light-pink)"
         data-sqsp-text-block-content=""
       >
         <p className="whitespace-pre-wrap">

@@ -34,7 +34,7 @@ const FAQs = () => {
             information,{" "}
             <button
               onClick={() => navigate("/about")}
-              className="text-(--primary-coral) font-semibold underline"
+              className="text-(--primary-coral) font-semibold underline cursor-pointer"
             >
               click here
             </button>
@@ -257,7 +257,7 @@ const FAQs = () => {
               onClick={() => {
                 navigate("/info");
               }}
-              className="text-(--primary-coral) font-semibold underline"
+              className="text-(--primary-coral) font-semibold underline cursor-pointer"
             >
               compare quotes between pet insurance carriers
             </button>

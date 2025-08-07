@@ -14,16 +14,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Link } from "react-router-dom";
 
-const items = [
-  {
-    id: "terms",
-    label: "Agree to the terms of service",
-  },
-] as const;
+const item = {
+  id: "terms",
+};
 
 const FormSchema = z.object({
-  items: z.array(z.string()).refine((value) => value.some((item) => item), {
+  item: z.array(z.string()).refine((value) => value.some((item) => item), {
     message: "Please agree to the terms and conditions.",
   }),
 });
@@ -31,12 +29,12 @@ const FormSchema = z.object({
 function FinishForm({
   onSubmit,
 }: {
-  onSubmit: SubmitHandler<{ items: string[] }>;
+  onSubmit: SubmitHandler<{ item: string[] }>;
 }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      items: [],
+      item: ["terms"],
     },
   });
 
@@ -49,43 +47,50 @@ function FinishForm({
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="items"
+          name="item"
           render={() => (
             <FormItem>
               <div className="mb-4"></div>
-              {items.map((item) => (
-                <FormField
-                  key={item.id}
-                  control={form.control}
-                  name="items"
-                  render={({ field }) => {
-                    return (
-                      <FormItem
-                        key={item.id}
-                        className="flex flex-row items-center gap-2"
-                      >
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value?.includes(item.id)}
-                            onCheckedChange={(checked) => {
-                              return checked
-                                ? field.onChange([...field.value, item.id])
-                                : field.onChange(
-                                    field.value?.filter(
-                                      (value) => value !== item.id
-                                    )
-                                  );
-                            }}
-                          />
-                        </FormControl>
-                        <FormLabel className="text-sm font-normal">
-                          {item.label}
-                        </FormLabel>
-                      </FormItem>
-                    );
-                  }}
-                />
-              ))}
+              <FormField
+                control={form.control}
+                name="item"
+                render={({ field }) => {
+                  return (
+                    <FormItem
+                      key={item.id}
+                      className="flex flex-row items-center gap-2"
+                    >
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value?.includes(item.id)}
+                          onCheckedChange={(checked) => {
+                            return checked
+                              ? field.onChange([...field.value, item.id])
+                              : field.onChange(
+                                  field.value?.filter(
+                                    (value) => value !== item.id
+                                  )
+                                );
+                          }}
+                        />
+                      </FormControl>
+                      <FormLabel className="text-sm font-normal">
+                        <span>
+                          Agree to the{" "}
+                          <Link
+                            to="/terms"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="cursor-pointer text-(--primary-coral) font-semibold"
+                          >
+                            terms of service
+                          </Link>
+                        </span>
+                      </FormLabel>
+                    </FormItem>
+                  );
+                }}
+              />
               <FormMessage />
             </FormItem>
           )}

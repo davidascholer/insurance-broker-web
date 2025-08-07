@@ -15,9 +15,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useState } from "react";
-import { ageList } from "@/lib/data";
+import { petAges } from "@/data/petAges";
 
-const AgeForm = ({ onSubmit }: { onSubmit: Function }) => {
+type AgeItem = { value: number; label: string };
+
+const AgeForm = ({ onSubmit }: { onSubmit: (item: AgeItem) => void }) => {
   const [open, setOpen] = useState(false);
   const [item, setItem] = useState({ value: 0, label: "" });
 
@@ -36,7 +38,7 @@ const AgeForm = ({ onSubmit }: { onSubmit: Function }) => {
             className="max-w-[200px] justify-between"
           >
             {item.label
-              ? ageList.find((age) => age.label === item.label)?.label
+              ? petAges.find((age) => age.label === item.label)?.label
               : "Select age..."}
             <ChevronsUpDown className="opacity-50" />
           </Button>
@@ -47,7 +49,7 @@ const AgeForm = ({ onSubmit }: { onSubmit: Function }) => {
             <CommandList>
               <CommandEmpty>No matching age found.</CommandEmpty>
               <CommandGroup>
-                {ageList.map((age) => (
+                {petAges.map((age) => (
                   <CommandItem
                     key={age.label}
                     value={age.label}
@@ -55,7 +57,7 @@ const AgeForm = ({ onSubmit }: { onSubmit: Function }) => {
                       if (currentLabel === item.label) {
                         setItem({ value: 0, label: "" });
                       } else {
-                        const selectedAge = ageList.find((a) => a.label === currentLabel);
+                        const selectedAge = petAges.find((a) => a.label === currentLabel);
                         if (selectedAge) setItem(selectedAge);
                       }
                       setOpen(false);
