@@ -33,7 +33,7 @@ const formSchema = z.object({
       message: "String must contain only letters.",
     })
     .max(30, {
-      message: "First name must be at most 30 characters.",
+      message: "Last name must be at most 30 characters.",
     }),
 });
 
@@ -62,7 +62,7 @@ const NameForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="First Name" {...field} />
+                <Input placeholder="First Name" {...field} className="max-w-[200px]"/>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -74,7 +74,7 @@ const NameForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Last Name" {...field} />
+                <Input placeholder="Last Name" {...field} className="max-w-[200px]"/>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -83,7 +83,6 @@ const NameForm = ({
         <Button
           type="submit"
           className="cursor-pointer" 
-          disabled={!form.formState.isValid}
         >
           Let's begin!
         </Button>

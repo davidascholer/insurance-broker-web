@@ -19,9 +19,9 @@ const formSchema = z.object({
     .min(1, {
       message: "Pet name must be at least 1 character.",
     })
-    .regex(/^[a-zA-Z0-9]+$/, {
+    .regex(/^[^ ]+$/, {
       message:
-        "String must contain only alphanumeric characters (a-z, A-Z, 0-9).",
+        "Pet name cannot contain spaces. Please enter a valid name.",
     }),
 });
 
@@ -41,7 +41,7 @@ const PetNameForm = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 w-full my-8 p-2"
+        className="space-y-8 my-8 p-2"
       >
         <FormField
           control={form.control}
@@ -49,7 +49,7 @@ const PetNameForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Pet Name" {...field} />
+                <Input placeholder="Pet Name" {...field} className="max-w-[200px]" />
               </FormControl>
               <FormDescription>Enter your pet's name</FormDescription>
               <FormMessage />
@@ -59,7 +59,6 @@ const PetNameForm = ({
         <Button
           type="submit"
           className="cursor-pointer" 
-          disabled={!form.formState.isValid}
         >
           Confirm my pet's name
         </Button>

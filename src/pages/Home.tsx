@@ -11,7 +11,7 @@ const Home = () => {
         <Header />
         <div id="home-page-landing-overlay">
           <div id="home-page-landing-content">
-            <h1 className="sansita-bold large-heading mt-36 sm:mt-20 md:mt-4 max-w-[300px] md:max-w-[1000px]">
+            <h1 className="sansita-bold text-5xl mt-36 sm:mt-20 md:mt-4 max-w-[300px] md:max-w-[1000px]">
               Get the insurance that works best for you and for your fur baby
               today.
             </h1>
@@ -21,7 +21,7 @@ const Home = () => {
       </section>
       <section id="home-page-about">
         <div id="home-page-about-content">
-          <h1 className="sansita-bold large-heading">
+          <h1 className="sansita-bold text-5xl text-(--primary-teal-dark-transparent)">
             Hi, we’re your modern day pet insurance broker.
           </h1>
           <p>
@@ -37,29 +37,32 @@ const Home = () => {
       </div>
       <section id="home-page-carriers">
         <div id="home-page-carriers-content">
-          <h1 className="sansita-bold large-heading pink">
+          <h1 className="sansita-bold text-5xl text-(--primary-coral) pink m-2">
             Get quotes from trusted carriers.
           </h1>
           <div className="flex-row-center">
             <InsurerItem
               imagePath="./aspca_title.jpg"
               altImageText="ASPCA logo"
-              priceText="$45/month or $486/12 months"
+              priceText="$45/month or $486/12 months*"
               details="Get quotes from America’s top pet insurance carriers right on your phone or desktop."
             />
             <InsurerItem
               imagePath="./fetch_title.jpg"
               altImageText="Fetch logo"
-              priceText="$40/month or $432/12 months"
+              priceText="$40/month or $432/12 months*"
               details="Compare pet insurance quotes without the hassle of visiting several different sites."
             />
             <InsurerItem
               imagePath="./embrace_title.png"
               altImageText="Embrace logo"
-              priceText="$48/month or $510/12 months"
+              priceText="$48/month or $510/12 months*"
               details="Not sure which coverage is best?  Don’t worry - as your pet insurance broker we’ll lay out the coverage in simple terms so you know what you’re buying."
             />
           </div>
+          <span className="text-sm text-(--primary-coral) italic">
+            *Illustrative purposes only; click “fetch a quote” for live policy quotes.
+          </span>
         </div>
       </section>
       <section id="home-page-coverage-container">

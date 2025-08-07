@@ -11,6 +11,7 @@ import NameForm from "@/components/form/NameForm";
 import EmailForm from "@/components/form/EmailForm";
 import ZipForm from "@/components/form/ZipForm";
 import { useNavigate } from "react-router-dom";
+import WeightForm from "@/components/form/WeightForm";
 
 const FormSelections = ({
   currentQuestion,
@@ -81,6 +82,13 @@ const FormSelections = ({
     }));
   };
 
+  const handleWeightSubmit = (data: { weight: string }) => {
+    setAnswers((prev) => ({
+      ...prev,
+      weight: data.weight,
+    }));
+  };
+
   const handleBreedSubmit = (breed: AnswersType["breed"]) => {
     setAnswers((prev) => ({
       ...prev,
@@ -116,6 +124,7 @@ const FormSelections = ({
         <GenderForm onSubmit={handleGenderSubmit} />
       )}
       {currentQuestion === "age" && <AgeForm onSubmit={handleAgeSubmit} />}
+      {currentQuestion === "weight" && <WeightForm onSubmit={handleWeightSubmit} petName={answers.petName} />}
       {currentQuestion === "breed" && (
         <BreedForm onSubmit={handleBreedSubmit} animal={answers.animal} />
       )}

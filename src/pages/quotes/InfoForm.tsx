@@ -24,15 +24,16 @@ const defaultAnswers: AnswersType = {
   animal: "",
   gender: "",
   age: { value: 0, label: "" },
+  weight: "",
   breed: "",
   reference: "",
 };
 
 const resetDialogConfig = {
-  title: "Start over?",
+  title: "Start new quote?",
   description:
     "Clicking yes will require you to re-answer all of the questions.",
-  confirmText: "Yes, start over",
+  confirmText: "Yes, start new quote.",
   onConfirmSubmit: () => {},
 };
 
@@ -109,6 +110,7 @@ const InfoForm = () => {
         newAnswers.animal = "";
         newAnswers.gender = "";
         newAnswers.age = { value: 0, label: "" };
+        newAnswers.weight = "";
         newAnswers.breed = "";
         newAnswers.reference = "";
         setAnswers(newAnswers);
@@ -119,6 +121,8 @@ const InfoForm = () => {
         newAnswers.animal = "";
         newAnswers.gender = "";
         newAnswers.age = { value: 0, label: "" };
+        newAnswers.weight = "";
+
         newAnswers.breed = "";
         newAnswers.reference = "";
         setAnswers(newAnswers);
@@ -128,6 +132,8 @@ const InfoForm = () => {
         newAnswers.animal = "";
         newAnswers.gender = "";
         newAnswers.age = { value: 0, label: "" };
+        newAnswers.weight = "";
+
         newAnswers.breed = "";
         newAnswers.reference = "";
         setAnswers(newAnswers);
@@ -136,6 +142,7 @@ const InfoForm = () => {
         newAnswers.animal = "";
         newAnswers.gender = "";
         newAnswers.age = { value: 0, label: "" };
+        newAnswers.weight = "";
         newAnswers.breed = "";
         newAnswers.reference = "";
         setAnswers(newAnswers);
@@ -143,12 +150,20 @@ const InfoForm = () => {
       case "gender":
         newAnswers.gender = "";
         newAnswers.age = { value: 0, label: "" };
+        newAnswers.weight = "";
         newAnswers.breed = "";
         newAnswers.reference = "";
         setAnswers(newAnswers);
         break;
       case "age":
         newAnswers.age = { value: 0, label: "" };
+        newAnswers.weight = "";
+        newAnswers.breed = "";
+        newAnswers.reference = "";
+        setAnswers(newAnswers);
+        break;
+      case "weight":
+        newAnswers.weight = "";
         newAnswers.breed = "";
         newAnswers.reference = "";
         setAnswers(newAnswers);
@@ -175,20 +190,50 @@ const InfoForm = () => {
         setIsOpen={setDialogOpen}
       />
 
-      <div className="flex bg-(--light-pink) h-screen min-h-[400px] overflow-hidden w-full relative">
-        <aside className="flex flex-col items-center justify-start p-4 h-screen max-w-48 fixed left-[10px] top-[10px] w-[100px]">
-          <button onClick={() => navigate("/")} className="nunito-sans-medium cursor-pointer">
+      <div className="flex flex-col bg-(--light-pink) min-h-screen overflow-hidden w-full">
+        <header className="flex flex-row gap-8 flex-wrap items-center justify-between p-8 w-full fixed top-0 z-100 pb-18 mask-b-from-65% bg-(--light-pink)">
+          <button
+            onClick={() => navigate("/")}
+            className="nunito-sans-medium cursor-pointer"
+          >
             <img
               src="./logo_vert.webp"
               alt="PiPA Broker"
-              className="w-[100px] p-[5px]"
+              className="w-[50px] ml-4"
             />
           </button>
-          <div className="w-full">
+          <div className="p-4">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="cursor-pointer nunito-sans-medium transition-transform duration-200 ease hover:-translate-y-0.5 flex flex-col items-center justify-center text-(--primary-coral) hover:text-(--primary-coral) px-4 text:xs rounded-full hover:shadow-lg hover:bg-neutral-50"
+                  onClick={handleResetDialog}
+                >
+                  start new quote
+                </Button>
+              </PopoverTrigger>
+              <PopoverClose asChild>
+                <PopoverContent className="z-100 bg-white p-2 cursor-pointer m-1">
+                  <div className="flex flex-col gap-4 p-1">
+                    <Button
+                      variant="ghost"
+                      className="cursor-pointer nunito-sans-medium transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center justify-center text-(--text-dark) text-nowrap"
+                      onClick={handleResetDialog}
+                    >
+                      <EditIcon />
+                      &nbsp;&nbsp;Start over
+                    </Button>
+                  </div>
+                </PopoverContent>
+              </PopoverClose>
+            </Popover>
+          </div>
+          <div className="flex items-center justify-center h-full flex-4 max-w-10/12 w-full mx-auto">
             <ProgressGrid answers={answers} />
           </div>
-        </aside>
-        <main className="flex-1 w-full ml-[100px] max-[400px]:mr-[0px] mr-[50px] py-8 px-1 overflow-scroll no-scrollbar mask-y-from-85% mask-y-to-90%">
+        </header>
+        <main className="flex-1 w-full my-4 p-8 overflow-scroll scrollbar-theme-color min-h-[400px] ">
           <Questions
             answers={answers}
             currentQuestion={currentQuestion}
@@ -201,27 +246,6 @@ const InfoForm = () => {
             />
           </Questions>
         </main>
-        <div className="p-4 fixed top-[10px] right-[10px] w-[40px] max-[400px]:hidden">
-          <Popover>
-            <PopoverTrigger className="nunito-sans-medium flex items-center text-center text-2xl tracking-widest cursor-pointer">
-              ...
-            </PopoverTrigger>
-            <PopoverClose asChild>
-              <PopoverContent className="z-100 bg-white p-2 cursor-pointer m-1">
-                <div className="flex flex-col gap-4 p-1">
-                  <Button
-                    variant="ghost"
-                    className="cursor-pointer nunito-sans-medium transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center justify-center text-(--text-dark) text-nowrap"
-                    onClick={handleResetDialog}
-                  >
-                    <EditIcon />
-                    &nbsp;&nbsp;Start over
-                  </Button>
-                </div>
-              </PopoverContent>
-            </PopoverClose>
-          </Popover>
-        </div>
       </div>
     </>
   );

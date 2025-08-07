@@ -17,12 +17,11 @@ const TextBlock = ({
 }: TextBlockProps) => {
   return (
     <>
-      <div
-        className="flex flex-row items-center justify-start gap-2 text-(--text-dark) cursor-pointer"
-        onClick={onEditClicked}
-      >
-        <span>{prevAnswer}</span>
-        <EditIcon />
+      <div className="flex flex-row items-center justify-start gap-2 text-(--text-dark)">
+        <span onClick={onEditClicked} className="cursor-pointer flex flex-row items-center gap-2 p-2">
+          {prevAnswer}
+          <EditIcon />
+        </span>
       </div>
       <div className="mt-12" ref={ref}>
         <TypewriterEffect

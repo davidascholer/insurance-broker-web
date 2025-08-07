@@ -1,21 +1,22 @@
+import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 
 // interface FooterProps {
 //   showFetchButton?: boolean;
 // }
 
-const Footer = () => {
+const Footer = ({ className }: { className?: string }) => {
   const navigate = useNavigate();
 
   return (
-    <footer className="footer-container">
+    <footer className={cn("footer-container", className)}>
       <div className="footer-content">
         <div>
           <button
             onClick={() => {
               navigate("/");
             }}
-            className="nav-link nunito-sans-medium cursor-pointer"
+            className="nav-link nunito-sans-medium cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5"
           >
             <img
               src="./pipa_text_white.png"
@@ -30,7 +31,7 @@ const Footer = () => {
             onClick={() => {
               navigate("/faqs");
             }}
-            className="nunito-sans-medium cursor-pointer"
+            className="nunito-sans-medium cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5"
           >
             FAQs
           </button>
@@ -38,7 +39,7 @@ const Footer = () => {
             onClick={() => {
               navigate("/partners");
             }}
-            className="nunito-sans-medium cursor-pointer"
+            className="nunito-sans-medium cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5"
           >
             Partners
           </button>
@@ -46,7 +47,7 @@ const Footer = () => {
             onClick={() => {
               navigate("/investors");
             }}
-            className="nunito-sans-medium cursor-pointer"
+            className="nunito-sans-medium cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5"
           >
             Investors
           </button>
@@ -54,7 +55,7 @@ const Footer = () => {
             onClick={() => {
               navigate("/terms");
             }}
-            className="nunito-sans-medium cursor-pointer"
+            className="nunito-sans-medium cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5"
           >
             Terms
           </button>
@@ -62,7 +63,7 @@ const Footer = () => {
             onClick={() => {
               navigate("/privacy");
             }}
-            className="nunito-sans-medium cursor-pointer"
+            className="nunito-sans-medium cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5"
           >
             Privacy
           </button>
@@ -70,7 +71,7 @@ const Footer = () => {
             onClick={() => {
               navigate("/licenses");
             }}
-            className="nunito-sans-medium cursor-pointer"
+            className="nunito-sans-medium cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5"
           >
             Licenses
           </button>
@@ -88,7 +89,7 @@ const Footer = () => {
         insurance company following application.
       </p>
       <span className="text-xl">
-        © Copyright 2025 PIPA. All rights reserved.
+        © Copyright 2025 PIPA Broker, LLC. All rights reserved.
       </span>
     </footer>
   );

@@ -14,12 +14,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "../ui/input";
 import { zips } from "@/data/zips";
+import { useState } from "react";
 
 const FormSchema = z.object({
   zip: z.string().regex(/^\d{5}$/, "Invalid 5-digit ZIP code."),
 });
 
 function ZipForm({ onSubmit }: { onSubmit: SubmitHandler<{ zip: string }> }) {
+  const [formValid, setFormValid] = useState(true);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -31,7 +33,6 @@ function ZipForm({ onSubmit }: { onSubmit: SubmitHandler<{ zip: string }> }) {
     const zipExists = zips.some((zipcode) => zipcode === data.zip);
     if (zipExists) {
       onSubmit(data);
-      console.log("Zip exists:", data.zip);
       return;
     }
     // If zip does not exist, set a manual error
@@ -39,6 +40,26 @@ function ZipForm({ onSubmit }: { onSubmit: SubmitHandler<{ zip: string }> }) {
       type: "manual",
       message: "That zip code is not a valid US zip code.",
     });
+  }
+
+  function handlZipChange(value: string) {
+    console.log(value.length);
+    if (value.length !== 5) {
+      form.clearErrors("zip");
+      return;
+    }
+    const zipExists = zips.some((zipcode) => zipcode === value);
+    if (!zipExists) {
+      // If zip does not exist, set a manual error
+      setFormValid(false);
+      form.setError("zip", {
+        type: "manual",
+        message: "That zip code is not a valid US zip code.",
+      });
+    } else {
+      setFormValid(true);
+      form.clearErrors("zip");
+    }
   }
 
   return (
@@ -53,7 +74,17 @@ function ZipForm({ onSubmit }: { onSubmit: SubmitHandler<{ zip: string }> }) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="5-digit zipcode" {...field} />
+                <Input
+                  placeholder="5-digit zipcode"
+                  {...field}
+                  className="max-w-[200px]"
+                  onChange={(e) => {
+                    // Only allow numeric input
+                    if (/\D/.test(e.target.value)) return;
+                    handlZipChange(String(e.target.value));
+                    field.onChange(e);
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -61,8 +92,8 @@ function ZipForm({ onSubmit }: { onSubmit: SubmitHandler<{ zip: string }> }) {
         />
         <Button
           type="submit"
-          disabled={!form.formState.isValid}
           className="cursor-pointer"
+          disabled={!form.formState.isValid || !formValid}
         >
           Here's our stomping ground
         </Button>

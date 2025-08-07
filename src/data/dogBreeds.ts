@@ -208,8 +208,6 @@ export const dogBreeds = [
   "Decker Terrier",
   "Deerhound",
   "Designer / Hybrid",
-  "Designer / Hybrid",
-  "Designer / Hybrid",
   "Dingo",
   "Doberman Pinscher",
   "Dogo Argentino",

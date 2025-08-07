@@ -8,7 +8,7 @@ const Terms = () => {
     <div>
       <Header />
       <div
-        className="px-10 pb-10 pt-36 flex flex-col gap-8 bg-(--light-pink)"
+        className="px-10 pb-10 pt-36 flex flex-col gap-4 bg-(--light-pink)"
         data-sqsp-text-block-content=""
       >
         <p className="whitespace-pre-wrap">
@@ -127,7 +127,10 @@ const Terms = () => {
           other users, third parties, or to us.&nbsp;&nbsp;When you use the
           Services, you may not:
         </p>
-        <ul data-rte-list="default">
+        <ul
+          data-rte-list="default"
+          className="list-disc pl-12 flex flex-col gap-2"
+        >
           <li>
             <p className="whitespace-pre-wrap">
               violate any law or regulation or use the Services for any
@@ -275,7 +278,10 @@ const Terms = () => {
           the Services.
         </p>
         <p className="whitespace-pre-wrap">You promise that:</p>
-        <ul data-rte-list="default">
+        <ul
+          data-rte-list="default"
+          className="list-disc pl-12 flex flex-col gap-2"
+        >
           <li>
             <p className="whitespace-pre-wrap">
               you own all rights to your User Content or, alternatively, that
@@ -353,7 +359,10 @@ const Terms = () => {
           infringement, please forward the following information to the
           Copyright Agent named below:
         </p>
-        <ul data-rte-list="default">
+        <ul
+          data-rte-list="default"
+          className="list-disc pl-12 flex flex-col gap-2"
+        >
           <li>
             <p className="whitespace-pre-wrap">
               Your address, telephone number, and email address.
@@ -406,7 +415,10 @@ const Terms = () => {
           the Copyright Agent address listed above containing the following
           information:
         </p>
-        <ul data-rte-list="default">
+        <ul
+          data-rte-list="default"
+          className="list-disc pl-12 flex flex-col gap-2"
+        >
           <li>
             <p className="whitespace-pre-wrap">
               Your physical or electronic signature;
@@ -461,7 +473,9 @@ const Terms = () => {
         <p className="whitespace-pre-wrap">
           Your privacy is very important to us.&nbsp;&nbsp;Our&nbsp;
           <button onClick={() => navigate("/privacy")}>
-            <span className="underline">Privacy Policy</span>
+            <span className="underline text-(--primary-coral) pointer-cursor">
+              Privacy Policy
+            </span>
           </button>
           &nbsp;explains how we collect, store, use, protect, and when we share
           personal information and other data with others.&nbsp;&nbsp;You are
@@ -485,11 +499,18 @@ const Terms = () => {
           for certain purposes related to advertising.&nbsp;&nbsp;For more
           information on this please see the PIPA&nbsp;
           <button onClick={() => navigate("/privacy")}>
-            <span className="underline">Privacy Policy</span>
+            <span className="underline text-(--primary-coral) pointer-cursor">
+              Privacy Policy
+            </span>
           </button>
           .&nbsp;&nbsp;To prevent Google Analytics from using your information
           for analytics, you may install the Google Analytics&nbsp;
-          <a href="https://tools.google.com/dlpage/gaoptout" target="">
+          <a
+            href="https://tools.google.com/dlpage/gaoptout"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline text-(--primary-coral) pointer-cursor"
+          >
             Opt-Out Browser Add-on
           </a>
           .
@@ -784,8 +805,13 @@ const Terms = () => {
           dispute resolution provider, and conducted under AAA’s most current
           version of the Commercial Arbitration Rules and procedures available
           at&nbsp;
-          <a href="http://www.adr.org/sites/default/files/CommercialRules_Web.pdf">
-            http://www.adr.org/sites/default/files/CommercialRules_Web.pdf
+          <a
+            href="https://go.adr.org/rs/294-SFS-516/images/Commercial_Rules_Web.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline text-(--primary-coral) pointer-cursor"
+          >
+            https://go.adr.org/rs/294-SFS-516/images/Commercial_Rules_Web.pdf
           </a>
           .&nbsp;&nbsp;AAA’s rules are also available by calling AAA at
           800-778-7879. If AAA is not available to arbitrate, the parties will

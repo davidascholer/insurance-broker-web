@@ -40,7 +40,7 @@ const EmailForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Email Address" {...field}/>
+                <Input placeholder="Email Address" {...field} className="max-w-[200px]"/>
               </FormControl>
               <FormMessage />
             </FormItem>

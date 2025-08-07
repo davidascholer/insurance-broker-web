@@ -259,9 +259,9 @@ const FAQs = () => {
               }}
               className="text-(--primary-coral) font-semibold underline cursor-pointer"
             >
-              compare quotes between pet insurance carriers
+              compare quotes
             </button>
-            . That’s what PIPA does best.
+            {" "}between pet insurance carriers. That’s what PIPA does best.
           </p>
           <h4 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap">
             What pets are able to be insured?

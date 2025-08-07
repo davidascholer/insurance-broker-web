@@ -28,6 +28,7 @@ export const findCurrentQuestionProperty = (
   if (!answers.animal) return "animal";
   if (!answers.gender) return "gender";
   if (!answers.age || answers.age?.value === 0) return "age";
+  if (!answers.weight) return "weight";
   if (!answers.breed) return "breed";
   if (!answers.reference) return "reference";
   return "finish";
@@ -42,9 +43,10 @@ export const findCurrentQuestionIndex = (answers: AnswersType | undefined) => {
   if (!answers.animal) return 4;
   if (!answers.gender) return 5;
   if (!answers.age || answers.age?.value === 0) return 6;
-  if (!answers.breed) return 7;
-  if (!answers.reference) return 8;
-  return 9; // finish
+  if (!answers.weight) return 7;
+  if (!answers.breed) return 8;
+  if (!answers.reference) return 9;
+  return 10; // finish
 };
 
 export const findAgeString = (ageInDays: number) => {

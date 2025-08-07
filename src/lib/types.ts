@@ -1,4 +1,5 @@
-import type { catBreeds, dogBreeds } from "./data";
+import type { catBreeds } from "@/data/catBreeds";
+import type { dogBreeds } from "@/data/dogBreeds";
 
 export type NameType = { firstName: string; lastName: string };
 export type AgeType = { value: number; label: string };
@@ -11,6 +12,7 @@ export type AnswersType = {
   animal: "cat" | "dog" | "";
   gender: "male" | "female" | "";
   age: AgeType;
+  weight: string;
   breed: (typeof catBreeds)[number] | (typeof dogBreeds)[number] | "";
   reference: string;
 };
