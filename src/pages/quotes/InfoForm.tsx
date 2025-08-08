@@ -210,7 +210,7 @@ const InfoForm = () => {
                   className="cursor-pointer nunito-sans-medium transition-transform duration-200 ease hover:-translate-y-0.5 flex flex-col items-center justify-center text-(--primary-coral) hover:text-(--primary-coral) px-4 text:xs rounded-full hover:shadow-lg hover:bg-neutral-50"
                   onClick={handleResetDialog}
                 >
-                  start new quote
+                  Refresh Form
                 </Button>
               </PopoverTrigger>
               <PopoverClose asChild>

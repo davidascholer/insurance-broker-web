@@ -472,10 +472,11 @@ const Terms = () => {
         </p>
         <p className="whitespace-pre-wrap">
           Your privacy is very important to us.&nbsp;&nbsp;Our&nbsp;
-          <button onClick={() => navigate("/privacy")}>
-            <span className="underline text-(--primary-coral) pointer-cursor">
-              Privacy Policy
-            </span>
+          <button
+            onClick={() => navigate("/privacy")}
+            className="underline text-(--primary-coral) cursor-pointer"
+          >
+            Privacy Policy
           </button>
           &nbsp;explains how we collect, store, use, protect, and when we share
           personal information and other data with others.&nbsp;&nbsp;You are
@@ -498,10 +499,11 @@ const Terms = () => {
           your use of the Services.&nbsp;&nbsp;PIPA also uses Google Analytics
           for certain purposes related to advertising.&nbsp;&nbsp;For more
           information on this please see the PIPA&nbsp;
-          <button onClick={() => navigate("/privacy")}>
-            <span className="underline text-(--primary-coral) pointer-cursor">
-              Privacy Policy
-            </span>
+          <button
+            onClick={() => navigate("/privacy")}
+            className="underline text-(--primary-coral) cursor-pointer"
+          >
+            Privacy Policy
           </button>
           .&nbsp;&nbsp;To prevent Google Analytics from using your information
           for analytics, you may install the Google Analytics&nbsp;
@@ -509,7 +511,7 @@ const Terms = () => {
             href="https://tools.google.com/dlpage/gaoptout"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline text-(--primary-coral) pointer-cursor"
+            className="underline text-(--primary-coral) cursor-pointer"
           >
             Opt-Out Browser Add-on
           </a>
@@ -809,7 +811,7 @@ const Terms = () => {
             href="https://go.adr.org/rs/294-SFS-516/images/Commercial_Rules_Web.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline text-(--primary-coral) pointer-cursor"
+            className="underline text-(--primary-coral) cursor-pointer"
           >
             https://go.adr.org/rs/294-SFS-516/images/Commercial_Rules_Web.pdf
           </a>

@@ -266,50 +266,6 @@
   font-weight: 700;
 }
 
-/* Footer Styles */
-.footer-container {
-  background-color: var(--primary-teal-dark);
-  position: sticky;
-  top: 0;
-  z-index: 98;
-  padding: 20px;
-}
-
-.footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem 2rem;
-  display: flex;
-  align-items: center;
-  color: var(--primary-coral);
-  justify-content: space-between;
-}
-
-.footer-content .navigation {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-}
-
-.footer-content .nav-link {
-  text-decoration: none;
-  color: var(--primary-coral);
-  font-size: 1rem;
-  transition: color 0.3s ease;
-}
-
-.footer-content .nav-link:hover {
-  color: var(--coral-light);
-}
-
-.footer-container span {
-  display: flex;
-  justify-content: center;
-  margin: auto 40px;
-  font-size: 0.9rem;
-  color: #fff;
-}
-
 /* Hero Section */
 .hero-section {
   position: relative;
