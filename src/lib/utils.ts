@@ -63,3 +63,23 @@ export const findAgeString = (ageInDays: number) => {
     return `${years} year${years === 1 ? "" : "s"}`;
   }
 };
+
+export const verifyAnswers = (answers: AnswersType | undefined) => {
+  if (
+    !answers ||
+    !answers.name.firstName ||
+    !answers.name.lastName ||
+    !answers.email ||
+    !answers.zip ||
+    !answers.petName ||
+    !answers.animal ||
+    !answers.gender ||
+    !answers.age ||
+    answers.age?.value === 0 ||
+    !answers.weight ||
+    !answers.breed ||
+    !answers.reference
+  )
+    return false;
+  return true;
+};

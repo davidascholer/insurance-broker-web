@@ -4,15 +4,16 @@ import MobileHeader from "./MobileHeader";
 
 interface HeaderProps {
   showFetchButton?: boolean;
+  showChatBot?: boolean;
 }
 
-const Header = ({ showFetchButton = true }: HeaderProps) => {
+const Header = ({ showFetchButton = true, showChatBot = false }: HeaderProps) => {
   const width = useWindowWidth();
 
   if (width >= 768) {
-    return <DesktopHeader showFetchButton={showFetchButton} />;
+    return <DesktopHeader showFetchButton={showFetchButton} showChatBot={showChatBot} />;
   }
-  return <MobileHeader showFetchButton={showFetchButton} />;
+  return <MobileHeader showFetchButton={showFetchButton} showChatBot={showChatBot} />;
 };
 
 export default Header;

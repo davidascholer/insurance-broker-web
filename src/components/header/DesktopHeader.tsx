@@ -5,18 +5,26 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import ChatBotIcon from "../ChatBotIcon";
 
 interface HeaderProps {
   showFetchButton?: boolean;
+  showChatBot?: boolean;
 }
 
-const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
+const DesktopHeader = ({
+  showFetchButton = true,
+  showChatBot = false,
+}: HeaderProps) => {
   const navigate = useNavigate();
 
   return (
     <header className="bg-(--light-pink) fixed top-0 left-0 right-0 z-100 h-24 shadow-md text-center flex items-center justify-center">
       <div className="flex max-w-[1200px] h-full px-4 items-center w-full justify-between">
-        <button onClick={() => navigate("/")} className="nunito-sans-medium cursor-pointer">
+        <button
+          onClick={() => navigate("/")}
+          className="nunito-sans-medium cursor-pointer"
+        >
           <img src="./logo.png" alt="PiPA Broker" className="max-h-20" />
         </button>
         <nav className="flex w-full gap-8 align-center justify-evenly max-w-[800px] ml-8">
@@ -87,6 +95,13 @@ const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
           {showFetchButton && (
             <div className="flex items-center justify-center">
               <FetchQuoteButton />
+            </div>
+          )}
+          {showChatBot && (
+            <div className="flex items-center justify-center">
+              <ChatBotIcon
+                handleClick={() => console.log("chatbot not implemented")}
+              />
             </div>
           )}
         </nav>
