@@ -21,7 +21,7 @@ const PartnerContact = () => {
         </div>
         <img
           src="./contact-partner.webp"
-          alt="PiPA Broker"
+          alt="PIPA Broker"
           className="w-96 self-center"
         />
       </div>

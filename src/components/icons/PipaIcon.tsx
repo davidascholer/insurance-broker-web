@@ -1,4 +1,4 @@
-// Create a React component that renders the PiPA icon as a circular image with a light pink background and a white border.
+// Create a React component that renders the PIPA icon as a circular image with a light pink background and a white border.
 import { cn } from "@/lib/utils";
 import React from "react";
 
@@ -16,8 +16,8 @@ const PipaIcon = React.forwardRef<
       style={style}
     >
       <img
-        src="./logo192.png" // assuming the PiPA logo is in the public folder
-        alt="PiPA Logo"
+        src="./logo192.png" // assuming the PIPA logo is in the public folder
+        alt="PIPA Logo"
         className="w-[32px] object-contain mt-[4px]"
       />
     </div>

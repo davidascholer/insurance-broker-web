@@ -25,7 +25,7 @@ const DesktopHeader = ({
           onClick={() => navigate("/")}
           className="sansita-regular cursor-pointer"
         >
-          <img src="./logo.png" alt="PiPA Broker" className="max-h-20" />
+          <img src="./logo.png" alt="PIPA Broker" className="max-h-20" />
         </button>
         <nav className="flex w-full gap-8 align-center justify-evenly max-w-[800px] ml-8">
           <div

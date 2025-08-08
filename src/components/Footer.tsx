@@ -43,7 +43,7 @@ const Footer = ({ className }: { className?: string }) => {
           >
             <img
               src="./pipa_text_white.png"
-              alt="PiPA Broker"
+              alt="PIPA Broker"
               className="w-32 mb-2"
             />
           </button>

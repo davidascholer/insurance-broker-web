@@ -198,7 +198,7 @@ const InfoForm = () => {
           >
             <img
               src="./logo_vert.webp"
-              alt="PiPA Broker"
+              alt="PIPA Broker"
               className="w-[50px] ml-4"
             />
           </button>

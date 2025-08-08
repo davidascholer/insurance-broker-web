@@ -111,7 +111,7 @@ const ChatbotHeader = () => {
           <button onClick={() => navigate("/")} className="nunito-sans-medium cursor-pointer">
             <img
               src="./logo.png"
-              alt="PiPA Broker"
+              alt="PIPA Broker"
               className="w-[120px] aspect-8/3"
             />
           </button>

@@ -22,7 +22,7 @@ const InvestorContact = () => {
         </div>
         <img
           src="./contact-investor.webp"
-          alt="PiPA Broker"
+          alt="PIPA Broker"
           className="w-96 self-center"
         />
       </div>

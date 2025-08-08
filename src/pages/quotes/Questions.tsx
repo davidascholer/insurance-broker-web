@@ -255,7 +255,7 @@ const Questions = ({ answers, onEditClicked, children }: QuestionsProps) => {
               cursorClassName="hidden"
               className="h-auto flex-1 font-bold"
               words={formatArray(
-                `Hi! Thank you for trusting PiPA Broker to help find the right pet insurance policy for you and your furry family member. So let’s get started... What is your name?`
+                `Hi! Thank you for trusting PIPA Broker to help find the right pet insurance policy for you and your furry family member. So let’s get started... What is your name?`
               )}
             />
           </div>
