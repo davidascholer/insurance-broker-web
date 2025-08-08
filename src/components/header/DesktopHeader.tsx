@@ -23,25 +23,25 @@ const DesktopHeader = ({
       <div className="flex max-w-[1200px] h-full px-4 items-center w-full justify-between">
         <button
           onClick={() => navigate("/")}
-          className="nunito-sans-medium cursor-pointer"
+          className="sansita-regular cursor-pointer"
         >
           <img src="./logo.png" alt="PiPA Broker" className="max-h-20" />
         </button>
         <nav className="flex w-full gap-8 align-center justify-evenly max-w-[800px] ml-8">
           <div
-            className="nunito-sans-medium cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center"
+            className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center"
             onClick={() => navigate("/")}
           >
             Home
           </div>
           <div
-            className="nunito-sans-medium cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center"
+            className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center"
             onClick={() => navigate("/about")}
           >
             About
           </div>
           <HoverCard>
-            <HoverCardTrigger className="nunito-sans-medium flex items-center cursor-default text-center">
+            <HoverCardTrigger className="sansita-regular flex items-center cursor-default text-center">
               Pet Insurance Resources
             </HoverCardTrigger>
             <HoverCardContent className="z-100 bg-(--light-pink) w-[300px]">
@@ -50,7 +50,7 @@ const DesktopHeader = ({
                   onClick={() => {
                     navigate("/terminology");
                   }}
-                  className="nunito-sans-medium cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center justify-center text-(--text-dark) text-nowrap"
+                  className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center justify-center text-(--text-dark) text-nowrap"
                 >
                   Pet Insurance 101 - Terminology
                 </button>
@@ -58,7 +58,7 @@ const DesktopHeader = ({
             </HoverCardContent>
           </HoverCard>
           <HoverCard>
-            <HoverCardTrigger className="nunito-sans-medium flex items-center cursor-default">
+            <HoverCardTrigger className="sansita-regular flex items-center cursor-default">
               Contact
             </HoverCardTrigger>
             <HoverCardContent className="z-100 bg-(--light-pink)">
@@ -67,7 +67,7 @@ const DesktopHeader = ({
                   onClick={() => {
                     navigate("/partners");
                   }}
-                  className="nunito-sans-medium cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 text-(--text-dark)"
+                  className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 text-(--text-dark)"
                 >
                   Partners
                 </button>
@@ -75,7 +75,7 @@ const DesktopHeader = ({
                   onClick={() => {
                     navigate("/investors");
                   }}
-                  className="nunito-sans-medium cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 text-(--text-dark)"
+                  className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 text-(--text-dark)"
                 >
                   Investors
                 </button>
@@ -87,7 +87,7 @@ const DesktopHeader = ({
             onClick={() => {
               navigate("/faqs");
             }}
-            className="-sans-medium cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center"
+            className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center"
           >
             FAQs
           </button>

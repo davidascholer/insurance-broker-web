@@ -53,7 +53,7 @@ const Quotes = () => {
   }, [location.state, navigate]);
 
   return (
-    <div className="flex flex-col items-center justify-start w-full min-h-screen p-4 space-y-4 bg-(--background-light) h-screen pt-20">
+    <div className="flex flex-col items-center justify-start w-full min-h-screen p-4 pt-24 space-y-4 bg-(--light-pink) h-screen">
       <Header showFetchButton={false} showChatBot={true} />
       {!isOnline && (
         <div>
