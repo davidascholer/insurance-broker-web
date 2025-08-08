@@ -191,7 +191,7 @@ const InfoForm = () => {
       />
 
       <div className="flex flex-col bg-(--light-pink) min-h-screen overflow-hidden w-full">
-        <header className="flex flex-row gap-8 flex-wrap items-center justify-between p-8 w-full fixed top-0 z-100 pb-18 mask-b-from-65% bg-(--light-pink)">
+        <header className="flex flex-row gap-8 flex-wrap items-center justify-start p-8 w-full fixed top-0 z-100 pb-18 mask-b-from-65% bg-(--light-pink)">
           <button
             onClick={() => navigate("/")}
             className="nunito-sans-medium cursor-pointer"
@@ -229,7 +229,7 @@ const InfoForm = () => {
               </PopoverClose>
             </Popover>
           </div>
-          <div className="flex items-center justify-center h-full flex-4 max-w-10/12 w-full mx-auto">
+          <div className="flex items-center justify-center h-full flex-4 w-full max-w-[600px]">
             <ProgressGrid answers={answers} />
           </div>
         </header>

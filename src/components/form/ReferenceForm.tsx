@@ -42,7 +42,7 @@ const ReferenceForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="e.g. Google, LinkedIn, etc." {...field} />
+                <Input placeholder="e.g. Google, LinkedIn, etc." {...field} className="max-w-lg" />
               </FormControl>
               <FormMessage />
             </FormItem>

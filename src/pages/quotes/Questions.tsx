@@ -12,13 +12,11 @@ type QuestionsProps = {
   children?: React.ReactNode;
 };
 
-const Questions = ({
-  answers,
-  currentQuestion,
-  onEditClicked,
-  children,
-}: QuestionsProps) => {
+const Questions = ({ answers, onEditClicked, children }: QuestionsProps) => {
   const [iconMarginTop, setIconMarginTop] = useState<number>(0);
+  const [currentIndex, setCurrentIndex] = useState(
+    findCurrentQuestionIndex(answers)
+  );
 
   const nameRef = useRef<HTMLDivElement>(null);
   const emailRef = useRef<HTMLDivElement>(null);
@@ -34,139 +32,206 @@ const Questions = ({
   const iconRef = useRef<HTMLDivElement>(null);
   const initialRender = useRef(true);
 
-  // const setNewMargin = () => {
-  //   let newMargin: number = 0;
-  //   const currentIndex = findCurrentQuestionIndex(answers);
-
-  //   if (currentIndex <= 0) {
-  //     newMargin = nameRef.current?.offsetTop || 0;
-  //   } else if (currentIndex === 1) {
-  //     newMargin = emailRef.current?.offsetTop || 0;
-  //   } else if (currentIndex === 2) {
-  //     newMargin = zipRef.current?.offsetTop || 0;
-  //   } else if (currentIndex === 3) {
-  //     newMargin = petNameRef.current?.offsetTop || 0;
-  //   } else if (currentIndex === 4) {
-  //     newMargin = animalRef.current?.offsetTop || 0;
-  //   } else if (currentIndex === 5) {
-  //     newMargin = genderRef.current?.offsetTop || 0;
-  //   } else if (currentIndex === 6) {
-  //     newMargin = ageRef.current?.offsetTop || 0;
-  //   } else if (currentIndex === 7) {
-  //     newMargin = weightRef.current?.offsetTop || 0;
-  //   } else if (currentIndex === 8) {
-  //     newMargin = breedRef.current?.offsetTop || 0;
-  //   } else if (currentIndex === 9) {
-  //     newMargin = referenceRef.current?.offsetTop || 0;
-  //   } else if (currentIndex >= 10) {
-  //     newMargin = finishRef.current?.offsetTop || 0;
-  //   }
-  //   setTimeout(() => {
-  //     setIconMarginTop(newMargin);
-  //   }, 750);
-  // };
-
-  const setNewMargin = () => {
+  const setNewMargin = (curIndex: number) => {
     let newMargin: number = 0;
-    const currentIndex = findCurrentQuestionIndex(answers);
 
-    if (currentIndex <= 0) {
+    if (curIndex <= 0) {
       newMargin = nameRef.current?.offsetTop || 0;
-      nameRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    } else if (currentIndex === 1) {
+    } else if (curIndex === 1) {
       newMargin = emailRef.current?.offsetTop || 0;
-      emailRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    } else if (currentIndex === 2) {
+    } else if (curIndex === 2) {
       newMargin = zipRef.current?.offsetTop || 0;
-      zipRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    } else if (currentIndex === 3) {
+    } else if (curIndex === 3) {
       newMargin = petNameRef.current?.offsetTop || 0;
-      petNameRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    } else if (currentIndex === 4) {
+    } else if (curIndex === 4) {
       newMargin = animalRef.current?.offsetTop || 0;
-      animalRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    } else if (currentIndex === 5) {
+    } else if (curIndex === 5) {
       newMargin = genderRef.current?.offsetTop || 0;
-      genderRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    } else if (currentIndex === 6) {
+    } else if (curIndex === 6) {
       newMargin = ageRef.current?.offsetTop || 0;
-      ageRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    } else if (currentIndex === 7) {
+    } else if (curIndex === 7) {
       newMargin = weightRef.current?.offsetTop || 0;
-      weightRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    } else if (currentIndex === 8) {
+    } else if (curIndex === 8) {
       newMargin = breedRef.current?.offsetTop || 0;
-      breedRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    } else if (currentIndex === 9) {
+    } else if (curIndex === 9) {
       newMargin = referenceRef.current?.offsetTop || 0;
-      referenceRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    } else if (currentIndex >= 10) {
+    } else if (curIndex >= 10) {
       newMargin = finishRef.current?.offsetTop || 0;
-      finishRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
     }
     setTimeout(() => {
       setIconMarginTop(newMargin);
     }, 750);
   };
 
-  const setNewMarginDebounced = () => {
-    setTimeout(() => {
-      initialRender.current = false;
-      setNewMargin();
-    }, 2000);
+  const scrollIntoView = () => {
+    if (currentIndex <= 0) {
+      nameRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    } else if (currentIndex === 1) {
+      emailRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    } else if (currentIndex === 2) {
+      zipRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    } else if (currentIndex === 3) {
+      petNameRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    } else if (currentIndex === 4) {
+      animalRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    } else if (currentIndex === 5) {
+      genderRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    } else if (currentIndex === 6) {
+      ageRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    } else if (currentIndex === 7) {
+      weightRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    } else if (currentIndex === 8) {
+      breedRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    } else if (currentIndex === 9) {
+      referenceRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    } else if (currentIndex >= 10) {
+      finishRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
   };
 
+  // const setNewMargin = () => {
+  //   let newMargin: number = 0;
+  //   const currentIndex = findCurrentQuestionIndex(answers);
+
+  //   if (currentIndex <= 0) {
+  //     newMargin = nameRef.current?.offsetTop || 0;
+  //     nameRef.current?.scrollIntoView({
+  //       behavior: "smooth",
+  //       block: "center",
+  //     });
+  //   } else if (currentIndex === 1) {
+  //     newMargin = emailRef.current?.offsetTop || 0;
+  //     emailRef.current?.scrollIntoView({
+  //       behavior: "smooth",
+  //       block: "center",
+  //     });
+  //   } else if (currentIndex === 2) {
+  //     newMargin = zipRef.current?.offsetTop || 0;
+  //     zipRef.current?.scrollIntoView({
+  //       behavior: "smooth",
+  //       block: "center",
+  //     });
+  //   } else if (currentIndex === 3) {
+  //     newMargin = petNameRef.current?.offsetTop || 0;
+  //     petNameRef.current?.scrollIntoView({
+  //       behavior: "smooth",
+  //       block: "center",
+  //     });
+  //   } else if (currentIndex === 4) {
+  //     newMargin = animalRef.current?.offsetTop || 0;
+  //     animalRef.current?.scrollIntoView({
+  //       behavior: "smooth",
+  //       block: "center",
+  //     });
+  //   } else if (currentIndex === 5) {
+  //     newMargin = genderRef.current?.offsetTop || 0;
+  //     genderRef.current?.scrollIntoView({
+  //       behavior: "smooth",
+  //       block: "center",
+  //     });
+  //   } else if (currentIndex === 6) {
+  //     newMargin = ageRef.current?.offsetTop || 0;
+  //     ageRef.current?.scrollIntoView({
+  //       behavior: "smooth",
+  //       block: "center",
+  //     });
+  //   } else if (currentIndex === 7) {
+  //     newMargin = weightRef.current?.offsetTop || 0;
+  //     weightRef.current?.scrollIntoView({
+  //       behavior: "smooth",
+  //       block: "center",
+  //     });
+  //   } else if (currentIndex === 8) {
+  //     newMargin = breedRef.current?.offsetTop || 0;
+  //     breedRef.current?.scrollIntoView({
+  //       behavior: "smooth",
+  //       block: "center",
+  //     });
+  //   } else if (currentIndex === 9) {
+  //     newMargin = referenceRef.current?.offsetTop || 0;
+  //     referenceRef.current?.scrollIntoView({
+  //       behavior: "smooth",
+  //       block: "center",
+  //     });
+  //   } else if (currentIndex >= 10) {
+  //     newMargin = finishRef.current?.offsetTop || 0;
+  //     finishRef.current?.scrollIntoView({
+  //       behavior: "smooth",
+  //       block: "center",
+  //     });
+  //   }
+  //   setTimeout(() => {
+  //     setIconMarginTop(newMargin);
+  //   }, 750);
+  // };
+
   useEffect(() => {
-    window.addEventListener("resize", setNewMarginDebounced);
-    window.addEventListener("visibilitychange", setNewMarginDebounced);
+    window.addEventListener("resize", () => setNewMargin(currentIndex));
+    // window.addEventListener("visibilitychange", () =>
+    //   setNewMargin(currentIndex)
+    // );
 
     return () => {
-      window.removeEventListener("resize", setNewMarginDebounced);
-      window.removeEventListener("visibilitychange", setNewMarginDebounced);
+      window.removeEventListener("resize", () => setNewMargin(currentIndex));
+      // window.removeEventListener("visibilitychange", () =>
+      //   setNewMargin(currentIndex)
+      // );
     };
+    // disable exhaustive-deps rule as we only wnat this to run once
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      scrollIntoView();
+    }, 1000);
+    setCurrentIndex(findCurrentQuestionIndex(answers));
+  }, [answers]);
 
   useEffect(() => {
     // Animate the icon
     if (initialRender.current) {
-      setNewMarginDebounced();
+      setTimeout(() => {
+        initialRender.current = false;
+        setNewMargin(currentIndex);
+      }, 2000);
     } else {
-      setNewMargin();
+      setNewMargin(currentIndex);
     }
-  }, [currentQuestion]);
+  }, [currentIndex]);
 
   const handleEditClicked = (currentQuestion: string) => {
     onEditClicked(currentQuestion);
