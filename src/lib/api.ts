@@ -4,6 +4,7 @@ import type { AnswersType, DataResponse } from "./types";
 export const getQuotes = async (
   answers: AnswersType
 ): Promise<DataResponse> => {
+    console.debug("Fetching quotes with answers:", answers);
   const response = await fetch(PIPA_QUOTES_URL, {
     method: "POST",
     headers: {

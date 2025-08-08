@@ -43,7 +43,7 @@ providers.set("embrace", {
 providers.set("pumpkin", {
   providerName: "Pumpkin",
   imgUrl: "/carrier_logo_pumpkin.svg",
-  src: "https://get.petinsurancequotes.com/quote/",
+  src: "https://www.pumpkin.care/",
   content:
     "At Pumpkin, we believe it's just as important to keep healthy pets healthy as it is to help hurt or sick pets get better! That's why we provide families with the extensive pet health insurance and essential preventive care their pets need to live a healthy life, now and fur-ever.",
 });
