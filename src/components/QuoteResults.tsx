@@ -22,7 +22,7 @@ providers.set("petsbest", {
 providers.set("figo", {
   providerName: "Figo",
   imgUrl: "/carrier_logo_figo.svg",
-  src: "https://figopetinsurance.com/",
+  src: "https://figopetinsurance.com/get-started?PetName={petName}",
   content:
     "Figo: Pet Insurance with Soul. Let's face it— being a pet parent is awesome, but it has its share of surprises. Your pet insurance plan shouldn't be one of them. Born out of frustration with one-size-fits-all policies, Figo was founded by pet moms and dads who wanted better. We've ditched the jargon and stuffy approach, creating a refreshingly simple experience that fits your lifestyle—not the other way around. We're here to help enhance your pet's wellness, your peace of mind, and your finances. With fewer barriers, and perks (like an all-in-one pet parent app) that go beyond just helping cover vet bills, we're bringing pet insurance into the 21st century. Welcome to insurance that just gets it. Welcome to Figo.",
 });
