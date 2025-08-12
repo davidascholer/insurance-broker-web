@@ -15,6 +15,7 @@
 - AWS SES for submitting emails from the site
 ### Static resources
 - cached 
+    - Static assets such as images and SVGs are located in the `public/` directory.
 - migrate to S3 when applicable
 
 ## Available Scripts
@@ -49,17 +50,3 @@ Runs ESLint to analyze code for potential errors and code style issues.
 - **TypeScript:** Configured via `tsconfig.json` and related files.
 - **Vite:** Fast development server and build tool, configured in `vite.config.mjs`.
 - **ESLint:** Linting rules are defined in `eslint.config.js`.
-
-## Assets
-
-Static assets such as images and SVGs are located in the `public/` directory.
-
-## Learn More
-
-- [React documentation](https://reactjs.org/)
-- [Vite documentation](https://vitejs.dev/)
-- [TypeScript documentation](https://www.typescriptlang.org/)
-
-## License
-
-This project is for prototyping and demonstration purposes.
