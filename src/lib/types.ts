@@ -45,3 +45,12 @@ export type DataResponse = DataResponseItem[];
 
 // Local parsing type mutated from the server types
 export type QuoteItem = DataQuoteItem & { providerId: ProviderIdTypes };
+
+export type ContactFormType = {
+  firstName: string;
+  lastName: string;
+  phone?: string;
+  message: string;
+  email: string;
+  type: "investor" | "partner";
+};

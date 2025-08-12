@@ -18,7 +18,7 @@ const InvestorContact = () => {
           <p>
             admin@pipabroker.com<br></br>(747) 276-8262
           </p>
-          <ContactForm />
+          <ContactForm type={"investor"} />
         </div>
         <img
           src="./contact-investor.webp"
