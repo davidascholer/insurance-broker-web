@@ -1,46 +1,65 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Pipa Web
+
+## DevOps
+### Front end
+- S3 and Cloudfront
+### Back end
+- Heroku (for now)
+### DNS
+- Route 53
+### Nameserver
+- GoDaddy
+### Email
+- GoDaddy for rx/tx
+- AWS SES for submitting emails from the site
+### Static resources
+- cached 
+- migrate to S3 when applicable
 
 ## Available Scripts
 
 In the project directory, you can run:
 
 ### `npm start`
+Runs the app in production mode.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### `npm dev`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Runs the app in development mode.  
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.  
+The page will reload if you make edits. You will also see any lint errors in the console.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner in interactive watch mode.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
+Builds the app for production to the `build` folder.  
 It correctly bundles React in production mode and optimizes the build for the best performance.
+Build then deploy the `dist` folder to S3
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### `npm run lint`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Runs ESLint to analyze code for potential errors and code style issues.
 
-### `npm run eject`
+## Configuration
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- **TypeScript:** Configured via `tsconfig.json` and related files.
+- **Vite:** Fast development server and build tool, configured in `vite.config.mjs`.
+- **ESLint:** Linting rules are defined in `eslint.config.js`.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Assets
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Static assets such as images and SVGs are located in the `public/` directory.
 
 ## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- [React documentation](https://reactjs.org/)
+- [Vite documentation](https://vitejs.dev/)
+- [TypeScript documentation](https://www.typescriptlang.org/)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## License
+
+This project is for prototyping and demonstration purposes.
