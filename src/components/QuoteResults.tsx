@@ -49,7 +49,13 @@ providers.set("pumpkin", {
     "At Pumpkin, we believe it's just as important to keep healthy pets healthy as it is to help hurt or sick pets get better! That's why we provide families with the extensive pet health insurance and essential preventive care their pets need to live a healthy life, now and fur-ever.",
 });
 
-function QuoteResults({ cards }: { cards: QuoteItem[] }) {
+function QuoteResults({
+  cards,
+  showFullResults,
+}: {
+  cards: QuoteItem[];
+  showFullResults: boolean;
+}) {
   const [active, setActive] = useState<
     (QuoteItem & { key: number }) | boolean | null
   >(null);
@@ -174,7 +180,9 @@ function QuoteResults({ cards }: { cards: QuoteItem[] }) {
                       layoutId={`content-${active.providerId}-coverage-${id}-${active.key}`}
                       className="nunito-sans-bold px-4 py-3 text-sm rounded-3xl font-bold text-center w-full"
                     >
-                      {formatNumberToPrice(active.coverageLimit)}
+                      {active.coverageLimit === 999999
+                        ? "unlimited"
+                        : formatNumberToPrice(active.coverageLimit)}
                     </motion.p>
                   </div>
                   <div className="">
@@ -221,85 +229,92 @@ function QuoteResults({ cards }: { cards: QuoteItem[] }) {
         ) : null}
       </AnimatePresence>
       <ul className="mx-auto w-full gap-4">
-        {cards.map((card: QuoteItem, key: number) => (
-          <motion.div
-            layoutId={`card-${card.providerId}-${id}-${key}`}
-            key={`card-${card.providerId}-${id}-${key}`}
-            onClick={() => setActive({ ...card, key })}
-            className="mt-3 p-4 pb-1 bg-white hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer border-2 border-(--primary-coral) hover:shadow-lg transition-all duration-300 ease max-w-4xl mx-auto"
-          >
-            {/* <h1 className="w-full m-auto">
+        {cards.map((card: QuoteItem, key: number) => {
+          if (!showFullResults && key >= 10) {
+            return null;
+          }
+          return (
+            <motion.div
+              layoutId={`card-${card.providerId}-${id}-${key}`}
+              key={`card-${card.providerId}-${id}-${key}`}
+              onClick={() => setActive({ ...card, key })}
+              className="mt-3 p-4 pb-1 bg-white hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer border-2 border-(--primary-coral) hover:shadow-lg transition-all duration-300 ease max-w-4xl mx-auto"
+            >
+              {/* <h1 className="w-full m-auto">
               {providers.get(card.providerId)?.providerName}
             </h1> */}
-            <div className="flex gap-1 flex-col md:flex-row items-center md:items-start justify-center w-full max-w-4xl">
-              <motion.div layoutId={`image-${card.providerId}-${id}-${key}`}>
-                <img
-                  src={providers.get(card.providerId)?.imgUrl}
-                  alt={providers.get(card.providerId)?.name}
-                  className="aspect-3/2 min-w-32 rounded-lg object-cover object-top p-2"
-                />
-              </motion.div>
-              <div className="flex flex-col min-[500px]:flex-row gap-4 w-full justify-evenly">
-                <div className="">
-                  <motion.h3
-                    layoutId={`title-${card.providerId}-deductible-${id}-${key}`}
-                    className="sansita-bold font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left"
-                  >
-                    {"Deductible"}
-                  </motion.h3>
-                  <motion.p
-                    layoutId={`content-${card.providerId}-deductible-${id}-${key}`}
-                    className="nunito-sans-bold text-neutral-600 dark:text-neutral-400 text-center"
-                  >
-                    {formatNumberToPrice(card.deductible)}
-                  </motion.p>
-                </div>
-                <div className="">
-                  <motion.h3
-                    layoutId={`title-${card.providerId}-reimbursement-${id}-${key}`}
-                    className="sansita-bold font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left"
-                  >
-                    {"Reimbursement"}
-                  </motion.h3>
-                  <motion.p
-                    layoutId={`content-${card.providerId}-reimbursement-${id}-${key}`}
-                    className="nunito-sans-bold text-neutral-600 dark:text-neutral-400 text-center"
-                  >
-                    {formatNumberToPercent(card.reimbursementPercentage)}
-                  </motion.p>
-                </div>
-                <div className="">
-                  <motion.h3
-                    layoutId={`title-${card.providerId}-coverage-${id}-${key}`}
-                    className="sansita-bold font-medium text-neutral-800 dark:text-neutral-200 text-center"
-                  >
-                    {"Coverage Limit"}
-                  </motion.h3>
-                  <motion.p
-                    layoutId={`content-${card.providerId}-coverage-${id}-${key}`}
-                    className="nunito-sans-bold text-neutral-600 dark:text-neutral-400 text-center"
-                  >
-                    {formatNumberToPrice(card.coverageLimit)}
-                  </motion.p>
-                </div>
-                <div className="">
-                  <motion.h3
-                    layoutId={`title-${card.providerId}-price-${id}-${key}`}
-                    className="sansita-bold text-xl text-(--primary-coral) dark:text-neutral-200 text-center"
-                  >
-                    {"Monthly Price"}
-                  </motion.h3>
-                  <motion.p
-                    layoutId={`content-${card.providerId}-price-${id}-${key}`}
-                    className="nunito-sans-bold text-xl text-neutral-600 dark:text-neutral-400 text-center"
-                  >
-                    {formatNumberToPrice(card.monthlyPrice, true)}
-                  </motion.p>
+              <div className="flex gap-1 flex-col md:flex-row items-center md:items-start justify-center w-full max-w-4xl">
+                <motion.div layoutId={`image-${card.providerId}-${id}-${key}`}>
+                  <img
+                    src={providers.get(card.providerId)?.imgUrl}
+                    alt={providers.get(card.providerId)?.name}
+                    className="aspect-3/2 min-w-32 rounded-lg object-cover object-top p-2"
+                  />
+                </motion.div>
+                <div className="flex flex-col min-[500px]:flex-row gap-4 w-full justify-evenly">
+                  <div className="">
+                    <motion.h3
+                      layoutId={`title-${card.providerId}-deductible-${id}-${key}`}
+                      className="sansita-bold font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left"
+                    >
+                      {"Deductible"}
+                    </motion.h3>
+                    <motion.p
+                      layoutId={`content-${card.providerId}-deductible-${id}-${key}`}
+                      className="nunito-sans-bold text-neutral-600 dark:text-neutral-400 text-center"
+                    >
+                      {formatNumberToPrice(card.deductible)}
+                    </motion.p>
+                  </div>
+                  <div className="">
+                    <motion.h3
+                      layoutId={`title-${card.providerId}-reimbursement-${id}-${key}`}
+                      className="sansita-bold font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left"
+                    >
+                      {"Reimbursement"}
+                    </motion.h3>
+                    <motion.p
+                      layoutId={`content-${card.providerId}-reimbursement-${id}-${key}`}
+                      className="nunito-sans-bold text-neutral-600 dark:text-neutral-400 text-center"
+                    >
+                      {formatNumberToPercent(card.reimbursementPercentage)}
+                    </motion.p>
+                  </div>
+                  <div className="">
+                    <motion.h3
+                      layoutId={`title-${card.providerId}-coverage-${id}-${key}`}
+                      className="sansita-bold font-medium text-neutral-800 dark:text-neutral-200 text-center"
+                    >
+                      {"Coverage Limit"}
+                    </motion.h3>
+                    <motion.p
+                      layoutId={`content-${card.providerId}-coverage-${id}-${key}`}
+                      className="nunito-sans-bold text-neutral-600 dark:text-neutral-400 text-center"
+                    >
+                      {card.coverageLimit === 999999
+                        ? "unlimited"
+                        : formatNumberToPrice(card.coverageLimit)}
+                    </motion.p>
+                  </div>
+                  <div className="">
+                    <motion.h3
+                      layoutId={`title-${card.providerId}-price-${id}-${key}`}
+                      className="sansita-bold text-xl text-(--primary-coral) dark:text-neutral-200 text-center"
+                    >
+                      {"Monthly Price"}
+                    </motion.h3>
+                    <motion.p
+                      layoutId={`content-${card.providerId}-price-${id}-${key}`}
+                      className="nunito-sans-bold text-xl text-neutral-600 dark:text-neutral-400 text-center"
+                    >
+                      {formatNumberToPrice(card.monthlyPrice, true)}
+                    </motion.p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          );
+        })}
       </ul>
     </>
   );

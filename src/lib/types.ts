@@ -34,14 +34,15 @@ export type DataQuoteItem = {
 };
 
 // Full object type on the server
-export type DataResponseItem = {
-  providerId: ProviderIdTypes;
-  providerName: string;
+export type DataResponse = {
   quotes: DataQuoteItem[];
 };
 
-// Data response type from the server
-export type DataResponse = DataResponseItem[];
+export type QuotesResultType = {
+  success: boolean;
+  quotes?: DataQuoteItem[];
+  error?: string;
+};
 
 // Local parsing type mutated from the server types
 export type QuoteItem = DataQuoteItem & { providerId: ProviderIdTypes };
@@ -60,7 +61,12 @@ export type ChatMessageType = {
   message: string;
 };
 
-export type InsurerOptionsType = { label: string, providerId: ProviderIdTypes };
+export type InsurerOptionsType = { label: string; providerId: ProviderIdTypes };
 export type DeductibleOptionType = { value: number; label: string };
-export type ReimbursementRateOptionType = { value: number; label: string };
+export type ReimbursementRateOptionType = {
+  value: number | "unlimited";
+  label: string;
+};
 export type AnnualLimitOptionType = { value: number; label: string };
+
+export type SortItemType = "deductible" | "reimbursement" | "limit" | "price";

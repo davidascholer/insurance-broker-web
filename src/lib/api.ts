@@ -1,11 +1,16 @@
 import { PIPA_EMAIL_URL, PIPA_QUOTES_URL } from "./constants";
-import type { AnswersType, ContactFormType, DataResponse } from "./types";
+import type {
+  AnswersType,
+  ContactFormType,
+  ProviderIdTypes,
+  QuotesResultType,
+} from "./types";
 
 export const getQuotes = async (
-  answers: AnswersType
-): Promise<DataResponse> => {
-  console.debug("Fetching quotes with answers:", answers);
-  const response = await fetch(PIPA_QUOTES_URL, {
+  answers: AnswersType,
+  insurer: ProviderIdTypes
+): Promise<QuotesResultType> => {
+  const response = await fetch(PIPA_QUOTES_URL + "/" + insurer, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -14,10 +19,13 @@ export const getQuotes = async (
     body: JSON.stringify(answers),
   });
   if (!response.ok) {
-    return Promise.reject(`Error: ${response.status} ${response.statusText}`);
+    return {
+      success: false,
+      error: `Error: ${response.status} ${response.statusText}`,
+    };
   }
   const { quotes } = await response.json();
-  return quotes;
+  return { quotes: quotes, success: true };
 };
 
 export const sendEmail = async (
