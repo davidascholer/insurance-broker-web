@@ -146,7 +146,7 @@ function QuoteResults({
                     </div>
                     <motion.p
                       layoutId={`content-${active.providerId}-deductible-${id}-${active.key}`}
-                      className="nunito-sans-bold px-4 py-3 text-sm rounded-3xl font-bold text-center w-full"
+                      className="nunito-sans-bold px-4 py-3 text-lg rounded-3xl font-bold text-center w-full"
                     >
                       {formatNumberToPrice(active.deductible) || ""}
                     </motion.p>
@@ -162,7 +162,7 @@ function QuoteResults({
                     </div>
                     <motion.p
                       layoutId={`content-${active.providerId}-reimbursement-${id}-${active.key}`}
-                      className="nunito-sans-bold px-4 py-3 text-sm rounded-3xl font-bold text-center w-full"
+                      className="nunito-sans-bold px-4 py-3 text-lg rounded-3xl font-bold text-center w-full"
                     >
                       {formatNumberToPercent(active.reimbursementPercentage)}
                     </motion.p>
@@ -178,7 +178,7 @@ function QuoteResults({
                     </div>
                     <motion.p
                       layoutId={`content-${active.providerId}-coverage-${id}-${active.key}`}
-                      className="nunito-sans-bold px-4 py-3 text-sm rounded-3xl font-bold text-center w-full"
+                      className="nunito-sans-bold px-4 py-3 text-lg rounded-3xl font-bold text-center w-full"
                     >
                       {active.coverageLimit === 999999
                         ? "unlimited"
@@ -194,7 +194,7 @@ function QuoteResults({
                     </motion.h3>
                     <motion.p
                       layoutId={`content-${active.providerId}-monthly-${id}-${active.key}`}
-                      className="nunito-sans-bold text-lg px-4 py-3 rounded-full font-bold bg-(--coral-light) text-center w-full"
+                      className="nunito-sans-bold px-4 py-3 text-lg rounded-3xl font-bold text-center w-full"
                     >
                       {formatNumberToPrice(active.monthlyPrice, true)}
                     </motion.p>
