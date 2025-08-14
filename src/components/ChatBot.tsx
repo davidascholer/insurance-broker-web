@@ -95,40 +95,7 @@ const ChatBot = ({
   };
 
   useEffect(() => {
-    setChatMessages([
-      {
-        from: "client",
-        message: "client message 1",
-      },
-      {
-        from: "bot",
-        message: "bot message 2",
-      },
-      {
-        from: "client",
-        message: "client message 2",
-      },
-      {
-        from: "bot",
-        message: "bot message 3",
-      },
-      {
-        from: "client",
-        message: "client message 3",
-      },
-      {
-        from: "bot",
-        message: "bot message 4",
-      },
-      {
-        from: "client",
-        message: "client message 4",
-      },
-      {
-        from: "bot",
-        message: "bot message 5",
-      },
-    ]);
+    setChatMessages([]);
   }, []);
 
   return (
@@ -178,6 +145,34 @@ const ChatBot = ({
             }}
             className="cursor-pointer"
           />
+          <div>
+            <TypewriterEffect
+              cursorClassName="hidden"
+              className="h-auto font-bold text-(--light-pink) text-sm self-end mt-2"
+              words={formatArray("Ask me questions such as:")}
+            />
+            <TypewriterEffect
+              cursorClassName="hidden"
+              className="h-auto font-bold text-(--light-pink) text-sm self-end mt-2"
+              words={formatArray(
+                "How much on average does it cost to insure a dog/cat?"
+              )}
+            />
+            <TypewriterEffect
+              cursorClassName="hidden"
+              className="h-auto font-bold text-(--light-pink) text-sm self-end mt-2"
+              words={formatArray(
+                "What is a reimbursement rate?\nWhat are the most expensive breeds for a dog/cat?"
+              )}
+            />
+            <TypewriterEffect
+              cursorClassName="hidden"
+              className="h-auto font-bold text-(--light-pink) text-sm self-end mt-2"
+              words={formatArray(
+                "Why are the premiums I see higher than the average pet insurance premium for a dog/cat?"
+              )}
+            />
+          </div>
           {chatMessages.map((msg: ChatMessageType, index: number) => (
             <Message key={index} from={msg.from} message={msg.message} />
           ))}
@@ -188,7 +183,7 @@ const ChatBot = ({
                 message=""
                 className="italic text-(--light-pink) opacity-70"
               />
-              <Loader/>
+              <Loader className="size-3" />
             </div>
           )}
           <hr className="size-0 mt-14" />

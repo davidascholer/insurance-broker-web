@@ -1,11 +1,10 @@
 import { LoaderOne } from "@/components/ui/loader";
-import { cn } from "@/lib/utils";
 
-const Loader = ({size}:{size?:string}) => {
+const Loader = ({ className }: { className?: string }) => {
   return (
     <div role="status">
-      <LoaderOne />
-      <span className={cn("sr-only", size)}>Loading...</span>
+      <LoaderOne className={className} />
+      <span className="sr-only">Loading...</span>
     </div>
   );
 };

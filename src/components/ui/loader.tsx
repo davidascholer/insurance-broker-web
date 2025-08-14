@@ -1,6 +1,7 @@
+import { cn } from "@/lib/utils";
 import { motion, easeInOut } from "motion/react";
 
-export const LoaderOne = () => {
+export const LoaderOne = ({className}:{className?:string}) => {
   const transition = (x: number) => {
     return {
       duration: 1,
@@ -20,7 +21,7 @@ export const LoaderOne = () => {
           y: [0, 10, 0],
         }}
         transition={transition(0)}
-        className="h-4 w-4 rounded-full border border-(--background-light) bg-gradient-to-b from-(--primary-coral) to-(--light-pink)"
+        className={cn("size-4 rounded-full border border-(--background-light) bg-gradient-to-b from-(--primary-coral) to-(--light-pink)",className)}
       />
       <motion.div
         initial={{
@@ -30,7 +31,7 @@ export const LoaderOne = () => {
           y: [0, 10, 0],
         }}
         transition={transition(1)}
-        className="h-4 w-4 rounded-full border border-(--background-light) bg-gradient-to-b from-(--primary-coral) to-(--light-pink)"
+        className={cn("size-4 rounded-full border border-(--background-light) bg-gradient-to-b from-(--primary-coral) to-(--light-pink)",className)}
       />
       <motion.div
         initial={{
@@ -40,7 +41,7 @@ export const LoaderOne = () => {
           y: [0, 10, 0],
         }}
         transition={transition(2)}
-        className="h-4 w-4 rounded-full border border-(--background-light) bg-gradient-to-b from-(--primary-coral) to-(--light-pink)"
+        className={cn("size-4 rounded-full border border-(--background-light) bg-gradient-to-b from-(--primary-coral) to-(--light-pink)",className)}
       />
     </div>
   );

@@ -1,4 +1,3 @@
-import Loader from "@/components/Loader";
 import type {
   AnnualLimitOptionType,
   AnswersType,
@@ -23,10 +22,13 @@ import {
   ANNUAL_LIMIT_OPTIONS,
   DEDUCTIBLE_OPTIONS,
   INSURER_OPTIONS,
-  // DEV,
+  DEV,
   REIMBURSEMENT_RATE_OPTIONS,
 } from "@/lib/constants";
 import { ChevronsDown } from "lucide-react";
+import LoadingQuotes from "@/components/LoadingQuotes";
+
+const LOAD_TIMER = 20; // seconds
 
 const Quotes = () => {
   const navigate = useNavigate();
@@ -163,7 +165,7 @@ const Quotes = () => {
     const timeout = setTimeout(() => {
       setIsLoading(false);
       return clearTimeout(timeout);
-    }, 5000);
+    }, LOAD_TIMER * 1000); // e.g., 20 seconds
     const figoResult: QuotesResultType = await getQuotes(answers, "figo");
     const fetchResult: QuotesResultType = await getQuotes(answers, "fetch");
     const embraceResult: QuotesResultType = await getQuotes(answers, "embrace");
@@ -173,20 +175,20 @@ const Quotes = () => {
       "petsbest"
     );
     const metlifeResult: QuotesResultType = await getQuotes(answers, "metlife");
-    // If PROD, you can stop the loading early if the server has responded from all providers
-    // if (!DEV) {
-    if (
-      figoResult &&
-      fetchResult &&
-      embraceResult &&
-      pumpkinResult &&
-      petsBestResult &&
-      metlifeResult
-    ) {
-      setIsLoading(false);
-      clearTimeout(timeout);
+    // If DEV, you can stop the loading early if the server has responded from all providers
+    if (DEV) {
+      if (
+        figoResult &&
+        fetchResult &&
+        embraceResult &&
+        pumpkinResult &&
+        petsBestResult &&
+        metlifeResult
+      ) {
+        setIsLoading(false);
+        clearTimeout(timeout);
+      }
     }
-    // }
     const fetchedQuotes: QuoteItem[] = [];
     if (figoResult.success && figoResult.quotes) {
       setInsurerOptionOnFetch("figo");
@@ -250,7 +252,6 @@ const Quotes = () => {
     }
     setQuoteData(fetchedQuotes);
     setActiveQuoteData(fetchedQuotes);
-    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -309,7 +310,7 @@ const Quotes = () => {
           </p>
         </div>
       )}
-      {isLoading && isOnline && <Loader />}
+      {isLoading && isOnline && <LoadingQuotes progressTimerSeconds={LOAD_TIMER}/>}
       {error && <div className="text-red-600">{error}</div>}
       {!error && !isLoading && (
         <>
