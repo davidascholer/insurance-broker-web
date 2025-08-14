@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import type { QuoteItem } from "@/lib/types";
+import { formatNumberToPercent, formatNumberToPrice } from "@/lib/utils";
 
 // Keys must match the providerId in the QuoteItem type
 const providers = new Map();
@@ -130,7 +131,6 @@ function QuoteResults({ cards }: { cards: QuoteItem[] }) {
                 <div className="flex flex-col min-[500px]:flex-row justify-between items-center">
                   <div className="">
                     <div className="flex flex-col gap-1 justify-center items-center">
-                      {/* <InfoTooltip msg="The deductible is the amount you pay out of pocket for veterinary care before your pet insurance starts to pay. For example, if your plan has a $100 deductible, you'll need to pay the first $100 of your vet bill before your insurance coverage kicks in." /> */}
                       <motion.h3
                         layoutId={`title-${active.providerId}-deductible-${id}-${active.key}`}
                         className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left sansita-bold"
@@ -142,12 +142,11 @@ function QuoteResults({ cards }: { cards: QuoteItem[] }) {
                       layoutId={`content-${active.providerId}-deductible-${id}-${active.key}`}
                       className="nunito-sans-bold px-4 py-3 text-sm rounded-3xl font-bold text-center w-full"
                     >
-                      {active.deductible || ""}
+                      {formatNumberToPrice(active.deductible) || ""}
                     </motion.p>
                   </div>
                   <div className="">
                     <div className="flex flex-col gap-1 justify-center items-center">
-                      {/* <InfoTooltip msg="Reimbursement percentage is the portion of your vet bill that your pet insurance will cover after you've met your deductible. For example, if your plan has a 90% reimbursement rate and you've met your deductible, the insurance will pay 90% of the eligible vet bill, and you'll be responsible for the remaining 10%." /> */}
                       <motion.h3
                         layoutId={`title-${active.providerId}-reimbursement-${id}-${active.key}`}
                         className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left sansita-bold"
@@ -159,12 +158,11 @@ function QuoteResults({ cards }: { cards: QuoteItem[] }) {
                       layoutId={`content-${active.providerId}-reimbursement-${id}-${active.key}`}
                       className="nunito-sans-bold px-4 py-3 text-sm rounded-3xl font-bold text-center w-full"
                     >
-                      {active.reimbursementPercentage}
+                      {formatNumberToPercent(active.reimbursementPercentage)}
                     </motion.p>
                   </div>
                   <div className="">
                     <div className="flex flex-col gap-1 justify-center items-center">
-                      {/* <InfoTooltip msg="Coverage limit is the maximum amount your pet insurance will pay for covered veterinary expenses within a specified period, such as annually or per condition. For example, if your plan has a $10,000 annual coverage limit, the insurance will cover up to $10,000 of eligible vet bills in a year. Any costs beyond that limit would be your responsibility." /> */}
                       <motion.h3
                         layoutId={`title-${active.providerId}-coverage-${id}-${active.key}`}
                         className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left sansita-bold"
@@ -176,7 +174,7 @@ function QuoteResults({ cards }: { cards: QuoteItem[] }) {
                       layoutId={`content-${active.providerId}-coverage-${id}-${active.key}`}
                       className="nunito-sans-bold px-4 py-3 text-sm rounded-3xl font-bold text-center w-full"
                     >
-                      {active.coverageLimit}
+                      {formatNumberToPrice(active.coverageLimit)}
                     </motion.p>
                   </div>
                   <div className="">
@@ -190,7 +188,7 @@ function QuoteResults({ cards }: { cards: QuoteItem[] }) {
                       layoutId={`content-${active.providerId}-monthly-${id}-${active.key}`}
                       className="nunito-sans-bold text-lg px-4 py-3 rounded-full font-bold bg-(--coral-light) text-center w-full"
                     >
-                      {active.monthlyPrice}
+                      {formatNumberToPrice(active.monthlyPrice, true)}
                     </motion.p>
                   </div>
                 </div>
@@ -253,7 +251,7 @@ function QuoteResults({ cards }: { cards: QuoteItem[] }) {
                     layoutId={`content-${card.providerId}-deductible-${id}-${key}`}
                     className="nunito-sans-bold text-neutral-600 dark:text-neutral-400 text-center"
                   >
-                    {card.deductible}
+                    {formatNumberToPrice(card.deductible)}
                   </motion.p>
                 </div>
                 <div className="">
@@ -267,7 +265,7 @@ function QuoteResults({ cards }: { cards: QuoteItem[] }) {
                     layoutId={`content-${card.providerId}-reimbursement-${id}-${key}`}
                     className="nunito-sans-bold text-neutral-600 dark:text-neutral-400 text-center"
                   >
-                    {card.reimbursementPercentage}
+                    {formatNumberToPercent(card.reimbursementPercentage)}
                   </motion.p>
                 </div>
                 <div className="">
@@ -281,7 +279,7 @@ function QuoteResults({ cards }: { cards: QuoteItem[] }) {
                     layoutId={`content-${card.providerId}-coverage-${id}-${key}`}
                     className="nunito-sans-bold text-neutral-600 dark:text-neutral-400 text-center"
                   >
-                    {card.coverageLimit}
+                    {formatNumberToPrice(card.coverageLimit)}
                   </motion.p>
                 </div>
                 <div className="">
@@ -295,7 +293,7 @@ function QuoteResults({ cards }: { cards: QuoteItem[] }) {
                     layoutId={`content-${card.providerId}-price-${id}-${key}`}
                     className="nunito-sans-bold text-xl text-neutral-600 dark:text-neutral-400 text-center"
                   >
-                    {card.monthlyPrice}
+                    {formatNumberToPrice(card.monthlyPrice, true)}
                   </motion.p>
                 </div>
               </div>

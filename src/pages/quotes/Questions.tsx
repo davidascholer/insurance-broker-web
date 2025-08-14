@@ -280,7 +280,7 @@ const Questions = ({ answers, onEditClicked, children }: QuestionsProps) => {
               onEditClicked={() => handleEditClicked("email")}
               ref={zipRef}
               prevAnswer={answers.email}
-              nextQuestion={`To help get the most accurate quote, what is your 5-digit ZIP code?`}
+              nextQuestion={`To help get the most accurate quotes, what is your 5-digit ZIP code?`}
             />
           )}
 

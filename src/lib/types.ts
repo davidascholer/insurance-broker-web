@@ -54,3 +54,13 @@ export type ContactFormType = {
   email: string;
   type: "investor" | "partner";
 };
+
+export type ChatMessageType = {
+  from: "client" | "bot";
+  message: string;
+};
+
+export type InsurerOptionsType = { label: string, providerId: ProviderIdTypes };
+export type DeductibleOptionType = { value: number; label: string };
+export type ReimbursementRateOptionType = { value: number; label: string };
+export type AnnualLimitOptionType = { value: number; label: string };

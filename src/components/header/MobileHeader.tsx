@@ -2,17 +2,13 @@ import { useNavigate } from "react-router-dom";
 import FetchQuoteButton from "../FetchQuoteButton";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import ChatBotIcon from "../ChatBotIcon";
 
 interface HeaderProps {
   showFetchButton?: boolean;
   showChatBot?: boolean;
 }
 
-const MobileHeader = ({
-  showFetchButton = true,
-  showChatBot = false,
-}: HeaderProps) => {
+const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [resoureLinkOpen, setResoureLinkOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
@@ -101,13 +97,6 @@ const MobileHeader = ({
           >
             FAQs
           </button>
-          {showChatBot && (
-            <div className="flex items-center justify-center">
-              <ChatBotIcon
-                handleClick={() => console.log("chatbot not implemented")}
-              />
-            </div>
-          )}
           {showFetchButton && <FetchQuoteButton />}
         </nav>
       </div>

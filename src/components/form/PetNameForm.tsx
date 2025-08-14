@@ -13,6 +13,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "../ui/input";
 
+/*
+Todo: allow for spaces
+*/
 const formSchema = z.object({
   petName: z
     .string()

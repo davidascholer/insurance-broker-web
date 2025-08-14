@@ -17,6 +17,17 @@ export const formatArray = (str: string) => {
   return returnArray;
 };
 
+export const formatNumberToPrice = (num: number, decimal: boolean = false) => {
+  if (decimal) return `$${num.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}`;
+  return `$${Math.round(num)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+};
+
+export const formatNumberToPercent = (num: number) => {
+  return `${Math.round(num)}%`;
+};
+
 export const findCurrentQuestionProperty = (
   answers: AnswersType | undefined
 ) => {

@@ -8,8 +8,9 @@
     "lib": ["dom", "es2020"],
     "noEmitOnError": false,
     "baseUrl": ".",
+    "types":["node", "vite/client"],
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
   }
 }

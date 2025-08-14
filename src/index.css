@@ -314,6 +314,8 @@ body {
   /* For Chrome, Safari, and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
+    scrollbar-width: none;
+    scrollbar-hidden: true;
   }
 
   /* For IE, Edge, and Firefox */

@@ -7,13 +7,13 @@ interface HeaderProps {
   showChatBot?: boolean;
 }
 
-const Header = ({ showFetchButton = true, showChatBot = false }: HeaderProps) => {
+const Header = ({ showFetchButton = true }: HeaderProps) => {
   const width = useWindowWidth();
 
   if (width >= 768) {
-    return <DesktopHeader showFetchButton={showFetchButton} showChatBot={showChatBot} />;
+    return <DesktopHeader showFetchButton={showFetchButton} />;
   }
-  return <MobileHeader showFetchButton={showFetchButton} showChatBot={showChatBot} />;
+  return <MobileHeader showFetchButton={showFetchButton} />;
 };
 
 export default Header;

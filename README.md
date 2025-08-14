@@ -33,10 +33,6 @@
 
 - In the project directory, you can run:
 
-### `npm start`
-
-- Runs the app in production mode.
-
 ### `npm dev`
 
 - Toggle dev mode to true in src/lib/constants.ts
