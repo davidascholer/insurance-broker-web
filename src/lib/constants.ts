@@ -8,6 +8,7 @@ export const PIPA_API_URL = DEV
   : "https://pipa-server-41b9ae62ecfa.herokuapp.com/";
 export const PIPA_QUOTES_URL = PIPA_API_URL + "api/quotes";
 export const PIPA_EMAIL_URL = PIPA_API_URL + "api/email";
+export const PIPA_BOT_URL = PIPA_API_URL + "api/bot";
 
 export const DEDUCTIBLE_OPTIONS = [
   { value: 100, label: "up to $100" },

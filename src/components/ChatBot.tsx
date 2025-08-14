@@ -1,4 +1,4 @@
-import { cn, formatArray } from "@/lib/utils";
+import { cn, formatArray, generateRandomAlphanumeric } from "@/lib/utils";
 import ChatBotIcon from "./ChatBotIcon";
 import { TypewriterEffect } from "./ui/TypewriterEffect";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
@@ -6,6 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import type { ChatMessageType } from "@/lib/types";
 import BotMessageForm from "./BotMessageForm";
 import Loader from "./Loader";
+import { chatWithBot } from "@/lib/api";
+import { Button } from "./ui/button";
 
 const Message = ({
   from,
@@ -21,7 +23,7 @@ const Message = ({
   return (
     <div
       className={cn(
-        "flex flex-row gap-4 justify-center items-start mt-4 sansita-regular",
+        "flex flex-row gap-4 justify-center items-start mt-4 sansita-regular z-100",
         className
       )}
       onClick={onClick}
@@ -72,8 +74,13 @@ const ChatBot = ({
   firstClick,
   setFirstClick,
 }: ChatBotProps) => {
-  const [chatMessages, setChatMessages] = useState<ChatMessageType[]>([]);
+  const [chatMessages, setChatMessages] = useState<ChatMessageType[]>(
+    localStorage.getItem("pipaChat")
+      ? JSON.parse(localStorage.getItem("pipaChat") as string)
+      : []
+  );
   const [botLoading, setBotLoading] = useState<boolean>(false);
+
   const ref = useRef<HTMLDivElement>(null) as React.RefObject<HTMLDivElement>;
   useOutsideClick(ref, () => setOpen(false));
   const handleClick = () => {
@@ -82,21 +89,65 @@ const ChatBot = ({
     }
     setOpen(!open);
   };
+  const sessionId =
+    localStorage.getItem("pipaChatSessionId") || generateRandomAlphanumeric(9);
 
-  const handleMessageClicked = ({ botMessage }: { botMessage: string }) => {
-    console.log("MESSAGE SUBMITTED", botMessage);
-    const newClientMessage: ChatMessageType = {
+  const handleMessageClicked = async ({
+    botMessage,
+  }: {
+    botMessage: string;
+  }) => {
+    const clientChatMessage: ChatMessageType = {
       from: "client",
       message: botMessage,
     };
+    console.log("Client message:", clientChatMessage);
+    setChatMessages((prev) => [...prev, clientChatMessage]);
     setBotLoading(true);
+    const newBotMessage = await chatWithBot({
+      message: botMessage,
+      sessionId: sessionId,
+    });
 
-    setChatMessages((prev) => [...prev, newClientMessage]);
+    if (!newBotMessage.success) {
+      const errorMessage: ChatMessageType = {
+        from: "bot",
+        message: `Sorry, I am having trouble responding right now. (${newBotMessage.msg})`,
+      };
+      setChatMessages((prev) => [...prev, errorMessage]);
+      setBotLoading(false);
+      return;
+    }
+
+    const botChatMessage: ChatMessageType = {
+      from: "bot",
+      message: newBotMessage.msg,
+    };
+    setBotLoading(false);
+    setChatMessages((prev) => [...prev, botChatMessage]);
   };
 
   useEffect(() => {
-    setChatMessages([]);
+    const savedMessaged = localStorage.getItem("pipaChat");
+    const messages = savedMessaged ? JSON.parse(savedMessaged) : [];
+    setChatMessages(messages);
   }, []);
+
+  useEffect(() => {
+    // Save to local storage
+    localStorage.setItem("pipaChatSessionId", sessionId);
+  }, [sessionId]);
+
+  useEffect(() => {
+    // Save to local storage
+    localStorage.setItem("pipaChat", JSON.stringify(chatMessages));
+  }, [chatMessages]);
+
+  const handleClearChat = () => {
+    setChatMessages([]);
+    localStorage.removeItem("pipaChat");
+    localStorage.setItem("pipaChatSessionId", generateRandomAlphanumeric(9));
+  };
 
   return (
     <div
@@ -191,6 +242,12 @@ const ChatBot = ({
             onSubmit={handleMessageClicked}
             submitDisabled={botLoading}
           />
+          <Button
+            className="nunito-sans-bold cursor-pointer mx-auto bg-(--primary-teal-dark) hover:bg-(--primary-teal) text-(--light-pink)"
+            onClick={handleClearChat}
+          >
+            Clear Chat
+          </Button>
         </div>
       </div>
     </div>

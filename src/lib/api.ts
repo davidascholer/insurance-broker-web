@@ -1,6 +1,7 @@
-import { PIPA_EMAIL_URL, PIPA_QUOTES_URL } from "./constants";
+import { PIPA_BOT_URL, PIPA_EMAIL_URL, PIPA_QUOTES_URL } from "./constants";
 import type {
   AnswersType,
+  BotRequestType,
   ContactFormType,
   ProviderIdTypes,
   QuotesResultType,
@@ -45,4 +46,24 @@ export const sendEmail = async (
     };
   }
   return { success: true, msg: "Email sent successfully!" };
+};
+
+export const chatWithBot = async (
+  botInfo: BotRequestType
+): Promise<{ success: boolean; msg: string }> => {
+  const response = await fetch(PIPA_BOT_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(botInfo),
+  });
+  if (!response.ok) {
+    return {
+      success: false,
+      msg: `Error: ${response.statusText}`,
+    };
+  }
+  const data = await response.json();
+  return { success: true, msg: data.message };
 };

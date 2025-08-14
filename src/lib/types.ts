@@ -61,6 +61,11 @@ export type ChatMessageType = {
   message: string;
 };
 
+export type BotRequestType = {
+  message: string;
+  sessionId: string;
+};
+
 export type InsurerOptionsType = { label: string; providerId: ProviderIdTypes };
 export type DeductibleOptionType = { value: number; label: string };
 export type ReimbursementRateOptionType = {

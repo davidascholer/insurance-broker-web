@@ -337,8 +337,9 @@ const Quotes = () => {
             />
             <button
               className={cn(
-                "flex-1 flex flex-col justify-center items-center sansita-bold cursor-pointer mx-auto mt-6 animate-pulse transition-transform duration-200 ease hover:-translate-y-0.5",
-                showFullResults && "hidden"
+                "flex-1 flex flex-col justify-center items-center sansita-bold cursor-pointer mx-auto mt-6 animate-pulse transition-transform duration-200 ease hover:-translate-y-0.5 z-1",
+                showFullResults && "hidden",
+                activeQuoteData.length < 10 && "hidden"
               )}
               onClick={() => setShowFullResults(true)}
             >

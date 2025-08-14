@@ -67,7 +67,7 @@ const BotMessageForm = ({
         <Button
           type="submit"
           disabled={submitDisabled}
-          className="nunito-sans cursor-pointer mx-auto bg-(--primary-teal-dark) hover:bg-(--primary-teal) text-(--light-pink)"
+          className="nunito-sans-bold cursor-pointer mx-auto bg-(--primary-teal-dark) hover:bg-(--primary-teal) text-(--light-pink) w-full"
         >
           Send!
         </Button>
