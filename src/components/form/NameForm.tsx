@@ -18,7 +18,7 @@ const formSchema = z.object({
     .min(1, {
       message: "First name must be at least 1 character.",
     })
-    .regex(/^[a-zA-Z]+$/, {
+    .regex(/^[a-zA-Z ]+$/, {
       message: "String must contain only letters.",
     })
     .max(30, {
@@ -29,7 +29,7 @@ const formSchema = z.object({
     .min(1, {
       message: "Last name must be at least 1 character.",
     })
-    .regex(/^[a-zA-Z]+$/, {
+    .regex(/^[a-zA-Z ]+$/, {
       message: "String must contain only letters.",
     })
     .max(30, {

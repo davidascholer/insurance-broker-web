@@ -190,7 +190,7 @@ const InfoForm = () => {
         setIsOpen={setDialogOpen}
       />
 
-      <div className="flex flex-col bg-(--light-pink) min-h-screen overflow-hidden w-full">
+      <div className="flex flex-col bg-(--light-pink) min-h-screen overflow-hidden w-full m-0">
         <header className="flex flex-row gap-8 flex-wrap items-center justify-start p-8 w-full fixed top-0 z-100 pb-18 mask-b-from-65% bg-(--light-pink)">
           <button
             onClick={() => navigate("/")}
@@ -233,7 +233,7 @@ const InfoForm = () => {
             <ProgressGrid answers={answers} />
           </div>
         </header>
-        <main className="flex-1 w-full my-4 p-8 overflow-scroll scrollbar-theme-color min-h-[400px] ">
+        <main className="flex-1 w-full p-8 min-h-[400px] ">
           <Questions
             answers={answers}
             currentQuestion={currentQuestion}

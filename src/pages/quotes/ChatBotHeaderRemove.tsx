@@ -1,4 +1,7 @@
-import ChatBot from "@/components/ChatBot";
+/*
+Keeping this for reference until positive it's not needed.
+*/
+// import ChatBot from "@/components/ChatBot";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,9 +32,9 @@ const ChatbotHeader = () => {
   const modal = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  const handleBotClick = () => {
-    setBotHidden((prev) => !prev);
-  };
+  // const handleBotClick = () => {
+  //   setBotHidden((prev) => !prev);
+  // };
 
   const handleHideModal = () => {
     setBotHidden(true);
@@ -115,7 +118,7 @@ const ChatbotHeader = () => {
               className="w-[120px] aspect-8/3"
             />
           </button>
-          <ChatBot handleClick={handleBotClick} />
+          {/* <ChatBot handleClick={handleBotClick} /> */}
         </div>
       </header>
     </>

@@ -74,6 +74,7 @@ const ChatBot = ({
   firstClick,
   setFirstClick,
 }: ChatBotProps) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [chatMessages, setChatMessages] = useState<ChatMessageType[]>(
     localStorage.getItem("pipaChat")
       ? JSON.parse(localStorage.getItem("pipaChat") as string)
@@ -101,7 +102,6 @@ const ChatBot = ({
       from: "client",
       message: botMessage,
     };
-    console.log("Client message:", clientChatMessage);
     setChatMessages((prev) => [...prev, clientChatMessage]);
     setBotLoading(true);
     const newBotMessage = await chatWithBot({
@@ -178,14 +178,14 @@ const ChatBot = ({
       />
       <div
         className={cn(
-          "absolute overflow-hidden p-4 top-[20px] right-[20px] bg-(--primary-coral) rounded-tl-xl rounded-tr-xl rounded-sm transition-all duration-500 ease-in-out transform ",
+          "absolute overflow-hidden p-4 top-[20px] right-[20px] bg-(--coral-light) rounded-tl-xl rounded-tr-xl rounded-sm transition-all duration-500 ease-in-out transform ",
           open
             ? " max-[400px]:w-[220px] max-[468px]:w-[320px] max-[600px]:w-[380px] max-[800px]:w-[340px] w-[540px] max-[400px]:right-[55px] max-[468px]:right-[0px] max-[600px]:-right-[30px] right[0px] h-[470px] [@media(max-height:665px)]:h-[275px] opacity-100"
             : "w-0 h-0 opacity-0",
           firstClick && "max-[400px]:h-40 h-24"
         )}
       >
-        <div className="overflow-y-scroll w-full h-full no-scrollbar rounded-md p-2 flex flex-col gap-4">
+        <div className="overflow-y-scroll w-full h-full no-scrollbar rounded-md p-2 flex flex-col gap-4" ref={scrollRef}>
           <Message
             from="bot"
             message="Hi! I'm your AI PIPA Broker - Ask me anything about pet insurance!"
@@ -241,10 +241,12 @@ const ChatBot = ({
           <BotMessageForm
             onSubmit={handleMessageClicked}
             submitDisabled={botLoading}
+            scrollRef={scrollRef}
           />
           <Button
-            className="nunito-sans-bold cursor-pointer mx-auto bg-(--primary-teal-dark) hover:bg-(--primary-teal) text-(--light-pink)"
+            className="nunito-sans-bold cursor-pointer mx-auto text-(--primary-teal-dark) hover:text-(--primary-teal)"
             onClick={handleClearChat}
+            variant={"ghost"}
           >
             Clear Chat
           </Button>

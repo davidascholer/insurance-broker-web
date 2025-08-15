@@ -15,7 +15,7 @@ export const DEDUCTIBLE_OPTIONS = [
   { value: 250, label: "$250" },
   { value: 500, label: "$500" },
   { value: 750, label: "$750" },
-  { value: 1000, label: "$1000" },
+  { value: 1000, label: "$1,000" },
 ];
 export const REIMBURSEMENT_RATE_OPTIONS = [
   { value: 90, label: "90%" },

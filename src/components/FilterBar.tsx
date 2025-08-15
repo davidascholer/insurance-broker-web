@@ -1,20 +1,14 @@
 // Create a full width filter bar with a light pink background and rounded corners that contains dropdowns for filtering quotes
 import { cn } from "@/lib/utils";
 import ChatBot from "./ChatBot";
-import { ArrowUpDown, ListFilter } from "lucide-react";
-import { useRef, useState } from "react";
+import { ListFilter } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import {
   ANNUAL_LIMIT_OPTIONS,
   DEDUCTIBLE_OPTIONS,
   REIMBURSEMENT_RATE_OPTIONS,
 } from "@/lib/constants";
-import type {
-  AnnualLimitOptionType,
-  DeductibleOptionType,
-  InsurerOptionsType,
-  ReimbursementRateOptionType,
-  SortItemType,
-} from "@/lib/types";
+import type { FilterOptionType, SortItemType } from "@/lib/types";
 import InfoTooltip from "./InfoTooltip";
 import {
   DropdownMenu,
@@ -23,34 +17,119 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const FilterBar = ({
-  insurerOptions,
-  insurers,
-  handleInsurerClicked,
-  deductibles,
-  handleDeductibleClicked,
-  reimbursementRates,
-  handleReimbursementRateClicked,
-  annualLimits,
-  handleAnnualLimitClicked,
-  sortItems,
-  sortItemSelected
+const FilterOptions = ({
+  options,
+  selectedOption,
+  handleClick,
 }: {
-  insurerOptions: InsurerOptionsType[];
-  insurers: InsurerOptionsType[];
-  handleInsurerClicked: (insurer: string) => void;
-  deductibles: DeductibleOptionType[];
-  handleDeductibleClicked: (deductible: string) => void;
-  reimbursementRates: ReimbursementRateOptionType[];
-  handleReimbursementRateClicked: (rate: string) => void;
-  annualLimits: AnnualLimitOptionType[];
-  handleAnnualLimitClicked: (limit: string) => void;
+  options: FilterOptionType[];
+  selectedOption: FilterOptionType;
+  handleClick: (option: FilterOptionType) => void;
+}) => {
+  return (
+    <div>
+      <DropdownMenu>
+        <DropdownMenuTrigger className="mr-auto text-(--coral-light) hover:text-(--coral-light) transition-colors duration-300 cursor-pointer nunito-sans-medium outline-none">
+          <div
+            className={cn(
+              "text-sm text-(--primary-teal-dark) w-24 text-center lowercase px-2 py-1 m-1 rounded-2xl shadow-md hover:shadow-lg transition-shadow cursor-pointer nunito-sans-medium bg-(--coral-light) hover:bg-(--primary-coral)"
+            )}
+          >
+            {selectedOption.label}
+          </div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="ml-4 text-center mr-auto transition-colors duration-300 cursor-pointer nunito-sans-bold bg-(--primary-teal-dark) text-(--coral-light)">
+          {options.map((option, key) => (
+            <DropdownMenuItem
+              key={key}
+              className={cn(
+                "sansita-bold cursor-pointer p-2 mt-1 rounded-full justify-center focus:bg-(--primary-coral)",
+                option.value === selectedOption.value &&
+                  "bg-(--coral-light) text-(--primary-teal-dark)"
+              )}
+              onClick={() => handleClick(option)}
+            >
+              {option.label}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
+};
+
+const FilterSection = ({
+  children,
+  title,
+  tooltip,
+}: {
+  children: React.ReactNode;
+  title: string;
+  tooltip: React.ReactNode;
+}) => {
+  return (
+    <div className="flex flex-col justify-center items-center gap-2">
+      <div className="flex flex-row items-center justify-center gap-2">
+        <span className="sansita-bold text-2xl upp">{title}</span>
+        {tooltip}
+      </div>
+      {children}
+    </div>
+  );
+};
+
+const FilterBar = ({
+  handleDeductibleClicked,
+  handleReimbursementRateClicked,
+  handleAnnualLimitClicked,
+  selectedDeductible,
+  selectedReimbursement,
+  selectedLimit,
+}: // sortItems,
+// sortItemSelected,
+{
+  handleDeductibleClicked: (deductible: FilterOptionType) => void;
+  handleReimbursementRateClicked: (rate: FilterOptionType) => void;
+  handleAnnualLimitClicked: (limit: FilterOptionType) => void;
+  selectedDeductible: FilterOptionType;
+  selectedReimbursement: FilterOptionType;
+  selectedLimit: FilterOptionType;
   sortItems: (item: SortItemType) => void;
   sortItemSelected?: SortItemType;
 }) => {
   const filterButtonRef = useRef<HTMLButtonElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
   const [chatbotOpen, setChatbotOpen] = useState(true);
+  const [backToTopTransparent, setBackToTopTransparent] = useState(true);
+  const [backToTopHidden, setBackToTopHidden] = useState(true);
   const [firstClick, setFirstClick] = useState(true);
+
+  const handleScroll = () => {
+    const scrollContainer = document.getElementById("quotes-scroll-container");
+    const rect = filterButtonRef.current?.getBoundingClientRect();
+    if (!scrollContainer || !rect) return;
+
+    const stickyPos = scrollContainer.scrollTop;
+    if (stickyPos <= 111) {
+      // Initial state
+      setBackToTopTransparent(true);
+    } else {
+      setBackToTopHidden(false);
+      setBackToTopTransparent(false);
+    }
+  };
+  useEffect(() => {
+    const scrollContainer = document.getElementById("quotes-scroll-container");
+
+    if (scrollContainer) {
+      scrollContainer.addEventListener("scroll", handleScroll);
+    }
+    return () => {
+      if (scrollContainer) {
+        scrollContainer.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []); 
 
   const handleFilterButtonClick = () => {
     const scrollContainer = document.getElementById("quotes-scroll-container");
@@ -67,173 +146,144 @@ const FilterBar = ({
     }
   };
 
-  const handleSortItemClicked = (item: SortItemType) => {
-    sortItems(item);
-  };
+  // const handleSortItemClicked = (item: SortItemType) => {
+  //   sortItems(item);
+  // };
 
   return (
     <>
       <div
         className={cn(
-          "w-full max-w-4xl pb-4 mx-auto mt-4 text-(--primary-coral) bg-(--primary-teal-dark) rounded-t-lg p-4 flex flex-col gap-2 md:gap-6 items-center justify-between shadow-md "
+          "w-full max-w-4xl pb-4 mx-auto mt-4 text-(--coral-light) bg-(--primary-teal-dark) rounded-t-lg p-4 flex flex-col gap-2 md:gap-6 items-center justify-between shadow-md "
         )}
       >
         <div className="flex flex-row flex-wrap justify-evenly items-start w-full gap-12">
-          <div className="flex flex-col justify-center items-center gap-2">
-            <span className="sansita-bold text-2xl upp">insurers</span>
-            {insurerOptions.map((insurer) => (
-              <button
-                key={insurer.label}
-                className={cn(
-                  "text-sm text-(--primary-teal-dark) w-24 text-center lowercase px-2 py-1 m-1 rounded-2xl shadow-md hover:shadow-lg transition-shadow cursor-pointer nunito-sans-medium hover:bg-(--coral-light)",
-                  insurers.some((i) => i.label === insurer.label)
-                    ? "bg-(--primary-coral)"
-                    : "bg-(--primary-coral) opacity-60"
-                )}
-                onClick={() => handleInsurerClicked(insurer.label)}
-              >
-                {insurer.label}
-              </button>
-            ))}
-          </div>
-          <div className="flex flex-col justify-center items-center gap-2">
-            <div className="flex flex-row items-center justify-center gap-2">
-              <span className="sansita-bold text-2xl upp">deductible</span>
-              <InfoTooltip msg="The deductible is the amount you pay out of pocket for veterinary care before your pet insurance starts to pay. For example, if your plan has a $100 deductible, you'll need to pay the first $100 of your vet bills before your insurance coverage kicks in. Lower is better." />
-            </div>
-            {DEDUCTIBLE_OPTIONS.map((deductible: { label: string }) => (
-              <button
-                key={deductible.label}
-                className={cn(
-                  "text-sm text-(--primary-teal-dark) w-24 text-center lowercase px-2 py-1 m-1 rounded-2xl shadow-md hover:shadow-lg transition-shadow cursor-pointer nunito-sans-medium hover:bg-(--coral-light)",
-                  deductibles.some((i) => i.label === deductible.label)
-                    ? "bg-(--primary-coral)"
-                    : "bg-(--primary-coral) opacity-60"
-                )}
-                onClick={() => handleDeductibleClicked(deductible.label)}
-              >
-                {deductible.label}
-              </button>
-            ))}
-          </div>
-          <div className="flex flex-col justify-center items-center gap-2">
-            <div className="flex flex-row items-center justify-center gap-2">
-              <span className="sansita-bold text-2xl">reimbursement rate</span>
-              <InfoTooltip msg="Reimbursement percentage is the portion of your vet bill that your pet insurance will cover after you've met your deductible. For example, if your plan has a 90% reimbursement rate and you've met your deductible, the insurance will pay 90% of the eligible vet bill, and you'll be responsible for the remaining 10%. Higher is better." />
-            </div>
-            {REIMBURSEMENT_RATE_OPTIONS.map(
-              (reimbursementRate: ReimbursementRateOptionType) => (
-                <button
-                  key={reimbursementRate.label}
-                  className={cn(
-                    "text-sm text-(--primary-teal-dark) w-24 text-center lowercase px-2 py-1 m-1 rounded-2xl shadow-md hover:shadow-lg transition-shadow cursor-pointer nunito-sans-medium hover:bg-(--coral-light)",
-                    reimbursementRates.some(
-                      (i) => i.label === reimbursementRate.label
-                    )
-                      ? "bg-(--primary-coral)"
-                      : "bg-(--primary-coral) opacity-60"
-                  )}
-                  onClick={() =>
-                    handleReimbursementRateClicked(reimbursementRate.label)
-                  }
-                >
-                  {reimbursementRate.label}
-                </button>
-              )
-            )}
-          </div>
-          <div className="flex flex-col justify-center items-center gap-2">
-            <div className="flex flex-row items-center justify-center gap-2">
-              <span className="sansita-bold text-2xl upp">annual limit</span>
-              <InfoTooltip msg="Annual limit is the maximum coverage amount your pet insurance will pay for covered veterinary expenses within a specified period, such as annually or per condition. For example, if your plan has a $10,000 annual coverage limit, the insurance will cover up to $10,000 of eligible vet bills in a year. Any costs beyond that limit would be your responsibility. Higher is better." />
-            </div>
-            {ANNUAL_LIMIT_OPTIONS.map((annulLimit: { label: string }) => (
-              <button
-                key={annulLimit.label}
-                className={cn(
-                  "text-sm text-(--primary-teal-dark) w-24 text-center lowercase px-2 py-1 m-1 rounded-2xl shadow-md hover:shadow-lg transition-shadow cursor-pointer nunito-sans-medium hover:bg-(--coral-light)",
-                  annualLimits.some((i) => i.label === annulLimit.label)
-                    ? "bg-(--primary-coral)"
-                    : "bg-(--primary-coral) opacity-60"
-                )}
-                onClick={() => handleAnnualLimitClicked(annulLimit.label)}
-              >
-                {annulLimit.label}
-              </button>
-            ))}
-          </div>
+          <FilterSection
+            title="Annual Deductible"
+            tooltip={
+              <InfoTooltip msg="The deductible is the amount you pay out of pocket for veterinary care before your pet insurance starts to pay. For example, if your plan has a $100 deductible, you'll need to pay the first $100 of your vet bills before your insurance coverage kicks in. Lower is better but usually leads to higher dues." />
+            }
+          >
+            <FilterOptions
+              options={DEDUCTIBLE_OPTIONS}
+              selectedOption={selectedDeductible}
+              handleClick={(option: FilterOptionType) => {
+                handleDeductibleClicked(option);
+              }}
+            />
+          </FilterSection>
+          <FilterSection
+            title="Reimbursement Rate"
+            tooltip={
+              <InfoTooltip msg="Reimbursement percentage is the portion of your vet bill that your pet insurance will cover after you've met your deductible. For example, if your plan has a 90% reimbursement rate and you've met your deductible, the insurance will pay 90% of the eligible vet bill, and you'll be responsible for the remaining 10%. Higher is better but usually leads to higher dues." />
+            }
+          >
+            <FilterOptions
+              options={REIMBURSEMENT_RATE_OPTIONS}
+              selectedOption={selectedReimbursement}
+              handleClick={(option: FilterOptionType) => {
+                handleReimbursementRateClicked(option);
+              }}
+            />
+          </FilterSection>
+          <FilterSection
+            title="Annual Limit"
+            tooltip={
+              <InfoTooltip msg="Annual limit is the maximum coverage amount your pet insurance will pay for covered veterinary expenses within a specified period, such as annually or per condition. For example, if your plan has a $10,000 annual coverage limit, the insurance will cover up to $10,000 of eligible vet bills in a year. Any costs beyond that limit would be your responsibility. Higher is better but usually leads to higher dues." />
+            }
+          >
+            <FilterOptions
+              options={ANNUAL_LIMIT_OPTIONS}
+              selectedOption={selectedLimit}
+              handleClick={(option: FilterOptionType) => {
+                handleAnnualLimitClicked(option);
+              }}
+            />
+          </FilterSection>
         </div>
       </div>
 
-      <div className="w-full -mt-4 max-w-4xl mx-auto rounded-b-lg p-4 items-center flex flex-col gap-4 min-[600px]:flex-row bg-(--primary-teal-dark) min-h-[60px] sticky top-0">
-        <button
-          ref={filterButtonRef}
-          className="flex-1 flex flex-col justify-center items-center min-[600px]:pr-[60px] cursor-pointer"
-          onClick={handleFilterButtonClick}
-        >
-          <ListFilter size={30} className="text-(--primary-coral)" />
-        </button>
+      <div
+        ref={stickyRef}
+        className="w-full -mt-4 max-w-4xl mx-auto rounded-b-lg p-4 items-center justify-center flex flex-col gap-4 min-[600px]:flex-row bg-(--primary-teal-dark) min-h-[60px] sticky top-0"
+      >
+        {/* <div>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="mr-auto text-(--coral-light) hover:text-(--coral-light) transition-colors duration-300 cursor-pointer nunito-sans-medium outline-none">
+              <div className="flex flex-row gap-2 items-center justify-center transition-transform duration-200 ease hover:-translate-y-0.5">
+                <span className="">Sort</span>
+                <ArrowUpDown size={25} className="" />
+              </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="ml-4 text-center mr-auto transition-colors duration-300 cursor-pointer nunito-sans-bold bg-(--primary-teal-dark) text-(--coral-light)">
+              <DropdownMenuItem
+                className={cn(
+                  "sansita-bold cursor-pointer p-2 mt-1",
+                  sortItemSelected === "price" &&
+                    "bg-(--coral-light) text-(--primary-teal-dark)"
+                )}
+                onClick={() => handleSortItemClicked("price")}
+              >
+                Monthly Price
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className={cn(
+                  "sansita-bold cursor-pointer p-2 mt-1",
+                  sortItemSelected === "deductible" &&
+                    "bg-(--coral-light) text-(--primary-teal-dark)"
+                )}
+                onClick={() => handleSortItemClicked("deductible")}
+              >
+                Annual Deductible
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className={cn(
+                  "sansita-bold cursor-pointer p-2 mt-1",
+                  sortItemSelected === "reimbursement" &&
+                    "bg-(--coral-light) text-(--primary-teal-dark)"
+                )}
+                onClick={() => handleSortItemClicked("reimbursement")}
+              >
+                Reimbursement Rate
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className={cn(
+                  "sansita-bold cursor-pointer p-2 mt-1",
+                  sortItemSelected === "limit" &&
+                    "bg-(--coral-light) text-(--primary-teal-dark)"
+                )}
+                onClick={() => handleSortItemClicked("limit")}
+              >
+                Annual Limit
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div> */}
+
+        <div className="flex-1 flex justify-center items-center">
+          <button
+            ref={filterButtonRef}
+            className={cn(
+              "flex flex-col select-none justify-center items-center min-[600px]:pr-[60px] cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5",
+              backToTopHidden
+                ? "hidden"
+                : backToTopTransparent
+                ? "animate-fade-out-long pointer-events-none"
+                : "animate-fade-in"
+            )}
+            onClick={handleFilterButtonClick}
+          >
+            <span className="text-(--coral-light) text-sm">Back To Top</span>
+            <ListFilter size={20} className="text-(--coral-light)" />
+          </button>
+        </div>
         <ChatBot
-          className=""
+          className="justify-self-end"
           open={chatbotOpen}
           setOpen={setChatbotOpen}
           firstClick={firstClick}
           setFirstClick={setFirstClick}
         />
-      </div>
-      <div className={cn("w-full max-w-4xl mx-auto mt-4")}>
-        <DropdownMenu>
-          <DropdownMenuTrigger className="mr-auto text-(--primary-teal-dark) hover:text-(--primary-teal) transition-colors duration-300 cursor-pointer nunito-sans-bold mb-4">
-            <div className="flex flex-row gap-2 items-center justify-center transition-transform duration-200 ease hover:-translate-y-0.5">
-              <span className="">Sort</span>
-              <ArrowUpDown size={25} className="" />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="ml-4 text-center mr-auto transition-colors duration-300 cursor-pointer nunito-sans-bold bg-(--primary-teal-dark) text-(--primary-coral)">
-            {/* <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator /> */}
-            <DropdownMenuItem
-              className={cn(
-                "sansita-bold cursor-pointer p-2 mt-1",
-                sortItemSelected === "price" &&
-                  "bg-(--coral-light) text-(--primary-teal-dark)"
-              )}
-              onClick={() => handleSortItemClicked("price")}
-            >
-              monthly price
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className={cn(
-                "sansita-bold cursor-pointer p-2 mt-1",
-                sortItemSelected === "deductible" &&
-                  "bg-(--coral-light) text-(--primary-teal-dark)"
-              )}
-              onClick={() => handleSortItemClicked("deductible")}
-            >
-              deductible
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className={cn(
-                "sansita-bold cursor-pointer p-2 mt-1",
-                sortItemSelected === "reimbursement" &&
-                  "bg-(--coral-light) text-(--primary-teal-dark)"
-              )}
-              onClick={() => handleSortItemClicked("reimbursement")}
-            >
-              reimbursement rate
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className={cn(
-                "sansita-bold cursor-pointer p-2 mt-1",
-                sortItemSelected === "limit" &&
-                  "bg-(--coral-light) text-(--primary-teal-dark)"
-              )}
-              onClick={() => handleSortItemClicked("limit")}
-            >
-              annual limit
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
     </>
   );

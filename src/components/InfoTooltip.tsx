@@ -10,7 +10,7 @@ export function InfoTooltip({ msg }: { msg?: string }) {
     <Popover>
       <PopoverTrigger
         asChild
-        className="bg-(--primary-coral) text-(--primary-teal-dark) hover:bg-(--coral-light) w-4 h-4 text-sm rounded-full "
+        className="bg-(--coral-light) text-(--primary-teal-dark) hover:bg-(--primary-coral) size-5 text-sm rounded-full "
       >
         <Button variant="ghost" className="sansita-regular cursor-pointer p-0">
           i

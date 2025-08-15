@@ -1,8 +1,14 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
-import type { QuoteItem } from "@/lib/types";
+import type { ProviderIdTypes, QuoteItem } from "@/lib/types";
 import { formatNumberToPercent, formatNumberToPrice } from "@/lib/utils";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 // Keys must match the providerId in the QuoteItem type
 const providers = new Map();
@@ -49,6 +55,29 @@ providers.set("pumpkin", {
     "At Pumpkin, we believe it's just as important to keep healthy pets healthy as it is to help hurt or sick pets get better! That's why we provide families with the extensive pet health insurance and essential preventive care their pets need to live a healthy life, now and fur-ever.",
 });
 
+const BottomDrawer = ({ providerId }: { providerId: ProviderIdTypes }) => {
+  return (
+    <div>
+      <Accordion
+        type="single"
+        collapsible
+        className="w-full"
+        defaultValue="item-1"
+      >
+        <AccordionItem value="item-1">
+          <AccordionTrigger
+            triggerClassName="size-6"
+            className="justify-center items-center flex cursor-pointer animate-[wiggle_1s_ease-in-out_infinite]"
+          ></AccordionTrigger>
+          <AccordionContent className="flex flex-col gap-4 text-balance">
+            <p className="p-4 w-full">{providers.get(providerId).content}</p>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    </div>
+  );
+};
+
 function QuoteResults({
   cards,
   showFullResults,
@@ -61,6 +90,30 @@ function QuoteResults({
   >(null);
   const ref = useRef<HTMLDivElement>(null) as React.RefObject<HTMLDivElement>;
   const id = useId();
+
+  const [isPortrait, setIsPortrait] = useState(
+    window.matchMedia("(orientation: portrait)").matches
+  );
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(orientation: portrait)");
+
+    interface OrientationChangeEvent extends Event {
+      matches: boolean;
+    }
+
+    const handleOrientationChange = (e: OrientationChangeEvent) => {
+      setIsPortrait(e.matches);
+    };
+
+    mediaQuery.addEventListener("change", handleOrientationChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleOrientationChange);
+    };
+  }, []);
+
+  console.log("isPortrait:", isPortrait);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -141,7 +194,7 @@ function QuoteResults({
                         layoutId={`title-${active.providerId}-deductible-${id}-${active.key}`}
                         className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left sansita-bold"
                       >
-                        {"Deductible"}
+                        {"Annual Deductible"}
                       </motion.h3>
                     </div>
                     <motion.p
@@ -157,7 +210,7 @@ function QuoteResults({
                         layoutId={`title-${active.providerId}-reimbursement-${id}-${active.key}`}
                         className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left sansita-bold"
                       >
-                        {"Reimbursement"}
+                        {"Reimbursement Ratge"}
                       </motion.h3>
                     </div>
                     <motion.p
@@ -173,7 +226,7 @@ function QuoteResults({
                         layoutId={`title-${active.providerId}-coverage-${id}-${active.key}`}
                         className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left sansita-bold"
                       >
-                        Coverage Limit
+                        Annual Limit
                       </motion.h3>
                     </div>
                     <motion.p
@@ -228,7 +281,7 @@ function QuoteResults({
           </div>
         ) : null}
       </AnimatePresence>
-      <ul className="mx-auto w-full gap-4">
+      <ul id="quotes-list" className="mx-auto w-full gap-4">
         {cards.map((card: QuoteItem, key: number) => {
           if (!showFullResults && key >= 10) {
             return null;
@@ -237,7 +290,7 @@ function QuoteResults({
             <motion.div
               layoutId={`card-${card.providerId}-${id}-${key}`}
               key={`card-${card.providerId}-${id}-${key}`}
-              onClick={() => setActive({ ...card, key })}
+              onClick={() => isPortrait && setActive({ ...card, key })}
               className="mt-3 p-4 pb-1 bg-white hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer border-2 border-(--primary-coral) hover:shadow-lg transition-all duration-300 ease max-w-4xl mx-auto"
             >
               {/* <h1 className="w-full m-auto">
@@ -257,7 +310,7 @@ function QuoteResults({
                       layoutId={`title-${card.providerId}-deductible-${id}-${key}`}
                       className="sansita-bold font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left"
                     >
-                      {"Deductible"}
+                      {"Annual Deductible"}
                     </motion.h3>
                     <motion.p
                       layoutId={`content-${card.providerId}-deductible-${id}-${key}`}
@@ -271,7 +324,7 @@ function QuoteResults({
                       layoutId={`title-${card.providerId}-reimbursement-${id}-${key}`}
                       className="sansita-bold font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left"
                     >
-                      {"Reimbursement"}
+                      {"Reimbursement Rate"}
                     </motion.h3>
                     <motion.p
                       layoutId={`content-${card.providerId}-reimbursement-${id}-${key}`}
@@ -285,7 +338,7 @@ function QuoteResults({
                       layoutId={`title-${card.providerId}-coverage-${id}-${key}`}
                       className="sansita-bold font-medium text-neutral-800 dark:text-neutral-200 text-center"
                     >
-                      {"Coverage Limit"}
+                      {"Annual Limit"}
                     </motion.h3>
                     <motion.p
                       layoutId={`content-${card.providerId}-coverage-${id}-${key}`}
@@ -312,6 +365,19 @@ function QuoteResults({
                   </div>
                 </div>
               </div>
+              <div className="flex-1 flex items-center justify-center m-4 px-8 w-full">
+                <motion.a
+                  layoutId={`button-link-${card.providerId}-${id}-${key}`}
+                  href={providers.get(card.providerId).src}
+                  target="_blank"
+                  className="px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
+                >
+                  Go to {providers.get(card.providerId).providerName}
+                </motion.a>
+              </div>
+              {!isPortrait ? (
+                <BottomDrawer key={`bottom-drawer-${key}`} providerId={card.providerId} />
+              ) : null}
             </motion.div>
           );
         })}

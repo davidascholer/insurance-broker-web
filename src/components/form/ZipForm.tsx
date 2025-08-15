@@ -43,7 +43,6 @@ function ZipForm({ onSubmit }: { onSubmit: SubmitHandler<{ zip: string }> }) {
   }
 
   function handlZipChange(value: string) {
-    console.log(value.length);
     if (value.length !== 5) {
       form.clearErrors("zip");
       return;

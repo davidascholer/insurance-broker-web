@@ -18,14 +18,10 @@ Todo: allow for spaces
 */
 const formSchema = z.object({
   petName: z
-    .string()
+    .string().trim()
     .min(1, {
       message: "Pet name must be at least 1 character.",
     })
-    .regex(/^[^ ]+$/, {
-      message:
-        "Pet name cannot contain spaces. Please enter a valid name.",
-    }),
 });
 
 const PetNameForm = ({

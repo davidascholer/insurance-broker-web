@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -10,11 +9,11 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Textarea } from "./ui/textarea";
+import CommentBox from "./CommentBox";
 
 const formSchema = z.object({
   botMessage: z
-    .string()
+    .string().trim()
     .min(1, {
       message: "Message must be at least 1 character.",
     })
@@ -27,9 +26,11 @@ const formSchema = z.object({
 const BotMessageForm = ({
   onSubmit,
   submitDisabled = false,
+  scrollRef,
 }: {
   onSubmit: SubmitHandler<{ botMessage: string }>;
   submitDisabled?: boolean;
+  scrollRef?: React.RefObject<HTMLDivElement | null>;
 }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -41,6 +42,11 @@ const BotMessageForm = ({
   const handleSubmit = (data: z.infer<typeof formSchema>) => {
     onSubmit(data);
     form.reset();
+    setTimeout(() => {
+      if (scrollRef && scrollRef.current) {
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      }
+    }, 100);
   };
 
   return (
@@ -55,8 +61,10 @@ const BotMessageForm = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Textarea
-                  className="bg-(--light-pink) mt-auto min-h-24 nunito-sans"
+                <CommentBox
+                  onSubmit={form.handleSubmit(handleSubmit)}
+                  className="bg-(--light-pink) mt-auto nunito-sans"
+                  submitDisabled={submitDisabled}
                   {...field}
                 />
               </FormControl>
@@ -64,13 +72,6 @@ const BotMessageForm = ({
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          disabled={submitDisabled}
-          className="nunito-sans-bold cursor-pointer mx-auto bg-(--primary-teal-dark) hover:bg-(--primary-teal) text-(--light-pink) w-full"
-        >
-          Send!
-        </Button>
       </form>
     </Form>
   );

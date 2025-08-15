@@ -82,6 +82,15 @@ body {
       opacity: 0;
     }
   }
+  --animate-fade-out-long: fade-out 0.5s ease-in-out 1 forwards;
+  @keyframes fade-out-long {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
   --animate-appear: appear 0.4s ease-in-out 1 forwards;
   @keyframes appear {
     0% {
