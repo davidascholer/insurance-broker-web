@@ -315,7 +315,12 @@ body {
     background-color: var(--background-light);
     color: var(--text-dark);
     line-height: 1.6;
+
     /* overflow:hidden; */
+  }
+
+  .important-z {
+    z-index: 0 !important;
   }
 }
 

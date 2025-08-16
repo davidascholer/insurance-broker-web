@@ -2,13 +2,14 @@ import { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import type { ProviderIdTypes, QuoteItem } from "@/lib/types";
-import { formatNumberToPercent, formatNumberToPrice } from "@/lib/utils";
+import { cn, formatNumberToPercent, formatNumberToPrice } from "@/lib/utils";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
-  AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Button } from "./ui/button";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 // Keys must match the providerId in the QuoteItem type
 const providers = new Map();
@@ -55,22 +56,56 @@ providers.set("pumpkin", {
     "At Pumpkin, we believe it's just as important to keep healthy pets healthy as it is to help hurt or sick pets get better! That's why we provide families with the extensive pet health insurance and essential preventive care their pets need to live a healthy life, now and fur-ever.",
 });
 
-const BottomDrawer = ({ providerId }: { providerId: ProviderIdTypes }) => {
+const BottomDrawer = ({
+  providerId,
+  keyId,
+}: {
+  providerId: ProviderIdTypes;
+  keyId: number;
+}) => {
+  const [value, setValue] = useState<string | undefined>();
   return (
-    <div>
+    <div key={`bottom-drawer-${keyId}`}>
       <Accordion
         type="single"
         collapsible
         className="w-full"
-        defaultValue="item-1"
+        value={value}
+        onValueChange={setValue}
       >
-        <AccordionItem value="item-1">
-          <AccordionTrigger
-            triggerClassName="size-6"
-            className="justify-center items-center flex cursor-pointer animate-[wiggle_1s_ease-in-out_infinite]"
-          ></AccordionTrigger>
+        <AccordionItem value={keyId + ""} className="">
+          <Button
+            className={cn(
+              "justify-center items-center flex cursor-pointer z-0 w-full hover:bg-none h-14"
+            )}
+            variant={"ghost"}
+            onClick={() => setValue((prev) => (prev ? undefined : keyId + ""))}
+          >
+            {value ? (
+              <div className="flex flex-col items-center justify-center">
+                <span>Hide</span>
+                <ChevronUp className={cn("size-6")} />
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center">
+                <span>More Info</span>
+                <ChevronDown className={cn("size-6")} />
+              </div>
+            )}
+
+            {/* <ChevronDown
+              className={cn(
+                "size-6",
+                value
+                  ? "transition-all duration-500 ease-in-out transform relative z-0"
+                  : "rotate-0"
+              )}
+            /> */}
+          </Button>
           <AccordionContent className="flex flex-col gap-4 text-balance">
-            <p className="p-4 w-full">{providers.get(providerId).content}</p>
+            <p className="p-4 w-full font-medium text-neutral-800 dark:text-neutral-200 text-left sansita-bold">
+              {providers.get(providerId).content}
+            </p>
           </AccordionContent>
         </AccordionItem>
       </Accordion>
@@ -112,8 +147,6 @@ function QuoteResults({
       mediaQuery.removeEventListener("change", handleOrientationChange);
     };
   }, []);
-
-  console.log("isPortrait:", isPortrait);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -376,7 +409,7 @@ function QuoteResults({
                 </motion.a>
               </div>
               {!isPortrait ? (
-                <BottomDrawer key={`bottom-drawer-${key}`} providerId={card.providerId} />
+                <BottomDrawer keyId={key} providerId={card.providerId} />
               ) : null}
             </motion.div>
           );

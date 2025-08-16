@@ -24,12 +24,13 @@ function CommentBox({
   return (
     <div
       className={cn(
-        "relative w-full h-full p-xl min-h-20 rounded-xl",
+        "relative w-full h-full p-xl min-h-12 rounded-xl",
         className
       )}
     >
       {/* <div style={{ position: "relative", width: "300px", height: "150px" }}> */}
       <textarea
+        id="bot-comment-box"
         data-slot="textarea"
         className={cn(
           "p-xl h-full border-input placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 flex field-sizing-content w-full rounded-md border bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
@@ -43,7 +44,7 @@ function CommentBox({
         disabled={submitDisabled}
         className="absolute bottom-2 right-2 p-0 cursor-pointer"
       >
-        <Send className="size-8" />
+        <Send className="size-7" />
       </Button>
     </div>
   );

@@ -21,13 +21,16 @@ const FilterOptions = ({
   options,
   selectedOption,
   handleClick,
+  tooltip,
 }: {
   options: FilterOptionType[];
   selectedOption: FilterOptionType;
   handleClick: (option: FilterOptionType) => void;
+  tooltip?: React.ReactNode;
 }) => {
   return (
-    <div>
+    <div className={"flex flex-row gap-2 justify-center items-center"}>
+      {tooltip}
       <DropdownMenu>
         <DropdownMenuTrigger className="mr-auto text-(--coral-light) hover:text-(--coral-light) transition-colors duration-300 cursor-pointer nunito-sans-medium outline-none">
           <div
@@ -61,17 +64,14 @@ const FilterOptions = ({
 const FilterSection = ({
   children,
   title,
-  tooltip,
 }: {
   children: React.ReactNode;
   title: string;
-  tooltip: React.ReactNode;
 }) => {
   return (
     <div className="flex flex-col justify-center items-center gap-2">
       <div className="flex flex-row items-center justify-center gap-2">
         <span className="sansita-bold text-2xl upp">{title}</span>
-        {tooltip}
       </div>
       {children}
     </div>
@@ -129,7 +129,7 @@ const FilterBar = ({
         scrollContainer.removeEventListener("scroll", handleScroll);
       }
     };
-  }, []); 
+  }, []);
 
   const handleFilterButtonClick = () => {
     const scrollContainer = document.getElementById("quotes-scroll-container");
@@ -158,46 +158,40 @@ const FilterBar = ({
         )}
       >
         <div className="flex flex-row flex-wrap justify-evenly items-start w-full gap-12">
-          <FilterSection
-            title="Annual Deductible"
-            tooltip={
-              <InfoTooltip msg="The deductible is the amount you pay out of pocket for veterinary care before your pet insurance starts to pay. For example, if your plan has a $100 deductible, you'll need to pay the first $100 of your vet bills before your insurance coverage kicks in. Lower is better but usually leads to higher dues." />
-            }
-          >
+          <FilterSection title="Annual Deductible">
             <FilterOptions
               options={DEDUCTIBLE_OPTIONS}
               selectedOption={selectedDeductible}
               handleClick={(option: FilterOptionType) => {
                 handleDeductibleClicked(option);
               }}
+              tooltip={
+                <InfoTooltip msg="The deductible is the amount you pay out of pocket for veterinary care before your pet insurance starts to pay. For example, if your plan has a $100 deductible, you'll need to pay the first $100 of your vet bills before your insurance coverage kicks in. Lower is better but usually leads to higher dues." />
+              }
             />
           </FilterSection>
-          <FilterSection
-            title="Reimbursement Rate"
-            tooltip={
-              <InfoTooltip msg="Reimbursement percentage is the portion of your vet bill that your pet insurance will cover after you've met your deductible. For example, if your plan has a 90% reimbursement rate and you've met your deductible, the insurance will pay 90% of the eligible vet bill, and you'll be responsible for the remaining 10%. Higher is better but usually leads to higher dues." />
-            }
-          >
+          <FilterSection title="Reimbursement Rate">
             <FilterOptions
               options={REIMBURSEMENT_RATE_OPTIONS}
               selectedOption={selectedReimbursement}
               handleClick={(option: FilterOptionType) => {
                 handleReimbursementRateClicked(option);
               }}
+              tooltip={
+                <InfoTooltip msg="Reimbursement percentage is the portion of your vet bill that your pet insurance will cover after you've met your deductible. For example, if your plan has a 90% reimbursement rate and you've met your deductible, the insurance will pay 90% of the eligible vet bill, and you'll be responsible for the remaining 10%. Higher is better but usually leads to higher dues." />
+              }
             />
           </FilterSection>
-          <FilterSection
-            title="Annual Limit"
-            tooltip={
-              <InfoTooltip msg="Annual limit is the maximum coverage amount your pet insurance will pay for covered veterinary expenses within a specified period, such as annually or per condition. For example, if your plan has a $10,000 annual coverage limit, the insurance will cover up to $10,000 of eligible vet bills in a year. Any costs beyond that limit would be your responsibility. Higher is better but usually leads to higher dues." />
-            }
-          >
+          <FilterSection title="Annual Limit">
             <FilterOptions
               options={ANNUAL_LIMIT_OPTIONS}
               selectedOption={selectedLimit}
               handleClick={(option: FilterOptionType) => {
                 handleAnnualLimitClicked(option);
               }}
+              tooltip={
+                <InfoTooltip msg="Annual limit is the maximum coverage amount your pet insurance will pay for covered veterinary expenses within a specified period, such as annually or per condition. For example, if your plan has a $10,000 annual coverage limit, the insurance will cover up to $10,000 of eligible vet bills in a year. Any costs beyond that limit would be your responsibility. Higher is better but usually leads to higher dues." />
+              }
             />
           </FilterSection>
         </div>

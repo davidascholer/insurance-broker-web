@@ -23,7 +23,7 @@ const Message = ({
   return (
     <div
       className={cn(
-        "flex flex-row gap-4 justify-center items-start mt-4 sansita-regular z-100",
+        "flex flex-row gap-4 justify-center items-start sansita-regular z-100",
         className
       )}
       onClick={onClick}
@@ -33,7 +33,7 @@ const Message = ({
           <ChatBotIcon
             handleClick={() => {}}
             className={cn(
-              "size-8 bg-(--primary-teal-dark) cursor-default",
+              "size-6 bg-(--primary-teal-dark) cursor-default",
               "-scale-x-100"
             )}
           />
@@ -52,13 +52,43 @@ const Message = ({
           />
           <ChatBotIcon
             handleClick={() => {}}
-            className={cn("size-8 bg-(--primary-teal) cursor-default", "")}
+            className={cn("size-6 bg-(--primary-teal) cursor-default", "")}
           />
         </div>
       )}
     </div>
   );
 };
+
+const QuestionButton = ({ msg }: { msg: string }) => {
+  const handleClick = () => {
+    const formInput = document.getElementById(
+      "bot-comment-box"
+    ) as HTMLTextAreaElement;
+
+    if (formInput) {
+      console.log("Setting form input to:", msg);
+      console.log(formInput);
+      formInput.value = msg;
+      formInput.focus();
+    }
+  };
+
+  return (
+    <button
+      onClick={handleClick}
+      className="pointer-events-none"
+      // className="border-(--primary-teal-dark) border-2 hover:bg-(--primary-coral)  transition-colors duration-300 ease-in-out cursor-pointer px-4 pt-1 pb-2 rounded-full text-sm mt-2 nunito-sans-bold "
+    >
+      <TypewriterEffect
+        cursorClassName="hidden"
+        className="h-auto font-bold text-sm self-end mt-2 "
+        words={formatArray(msg)}
+      />
+    </button>
+  );
+};
+
 interface ChatBotProps {
   className?: string;
   open: boolean;
@@ -152,7 +182,7 @@ const ChatBot = ({
   return (
     <div
       className={cn(
-        "w-[50x] h-[40px] relative transition-all duration-500 ease-in-out transform",
+        "w-[50x] h-[40px] relative transition-all duration-500 ease-in-out transform important-z",
         open ? "max-[800px]:w-[320px] w-[500px]" : "w-[50px]",
         className
       )}
@@ -178,14 +208,17 @@ const ChatBot = ({
       />
       <div
         className={cn(
-          "absolute overflow-hidden p-4 top-[20px] right-[20px] bg-(--coral-light) rounded-tl-xl rounded-tr-xl rounded-sm transition-all duration-500 ease-in-out transform ",
+          "absolute overflow-hidden p-2 top-[20px] right-[20px] bg-(--coral-light) rounded-tl-xl rounded-tr-xl rounded-sm transition-all duration-500 ease-in-out transform z-100",
           open
             ? " max-[400px]:w-[220px] max-[468px]:w-[320px] max-[600px]:w-[380px] max-[800px]:w-[340px] w-[540px] max-[400px]:right-[55px] max-[468px]:right-[0px] max-[600px]:-right-[30px] right[0px] h-[470px] [@media(max-height:665px)]:h-[275px] opacity-100"
             : "w-0 h-0 opacity-0",
           firstClick && "max-[400px]:h-40 h-24"
         )}
       >
-        <div className="overflow-y-scroll w-full h-full no-scrollbar rounded-md p-2 flex flex-col gap-4" ref={scrollRef}>
+        <div
+          className="overflow-y-scroll w-full h-full no-scrollbar rounded-md p-2 flex flex-col gap-4"
+          ref={scrollRef}
+        >
           <Message
             from="bot"
             message="Hi! I'm your AI PIPA Broker - Ask me anything about pet insurance!"
@@ -202,27 +235,9 @@ const ChatBot = ({
               className="h-auto font-bold text-(--light-pink) text-sm self-end mt-2"
               words={formatArray("Ask me questions such as:")}
             />
-            <TypewriterEffect
-              cursorClassName="hidden"
-              className="h-auto font-bold text-(--light-pink) text-sm self-end mt-2"
-              words={formatArray(
-                "How much on average does it cost to insure a dog/cat?"
-              )}
-            />
-            <TypewriterEffect
-              cursorClassName="hidden"
-              className="h-auto font-bold text-(--light-pink) text-sm self-end mt-2"
-              words={formatArray(
-                "What is a reimbursement rate?\nWhat are the most expensive breeds for a dog/cat?"
-              )}
-            />
-            <TypewriterEffect
-              cursorClassName="hidden"
-              className="h-auto font-bold text-(--light-pink) text-sm self-end mt-2"
-              words={formatArray(
-                "Why are the premiums I see higher than the average pet insurance premium for a dog/cat?"
-              )}
-            />
+            <QuestionButton msg="How much on average does it cost to insure a dog/cat?" />
+            <QuestionButton msg="What are the most expensive breeds for a dog/cat?" />
+            <QuestionButton msg="What is a reimbursement rate?" />
           </div>
           {chatMessages.map((msg: ChatMessageType, index: number) => (
             <Message key={index} from={msg.from} message={msg.message} />
