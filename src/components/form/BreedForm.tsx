@@ -15,8 +15,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useState } from "react";
-import { catBreeds } from "@/data/catBreeds";
 import { dogBreeds } from "@/data/dogBreeds";
+import clientCatBreeds from "@/data/catBreeds";
 
 const BreedForm = ({
   onSubmit,
@@ -29,7 +29,7 @@ const BreedForm = ({
   const [breed, setBreed] = useState<string>("");
 
   const breedList =
-    animal === "cat" ? catBreeds : animal === "dog" ? dogBreeds : [];
+    animal === "cat" ? clientCatBreeds : animal === "dog" ? dogBreeds : [];
 
   const handleSubmit = () => {
     onSubmit(breed);

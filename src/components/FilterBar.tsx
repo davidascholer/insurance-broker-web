@@ -8,7 +8,7 @@ import {
   DEDUCTIBLE_OPTIONS,
   REIMBURSEMENT_RATE_OPTIONS,
 } from "@/lib/constants";
-import type { FilterOptionType, SortItemType } from "@/lib/types";
+import type { FilterOptionType } from "@/lib/types";
 import InfoTooltip from "./InfoTooltip";
 import {
   DropdownMenu,
@@ -94,8 +94,8 @@ const FilterBar = ({
   selectedDeductible: FilterOptionType;
   selectedReimbursement: FilterOptionType;
   selectedLimit: FilterOptionType;
-  sortItems: (item: SortItemType) => void;
-  sortItemSelected?: SortItemType;
+  // sortItems: (item: SortItemType) => void;
+  // sortItemSelected?: SortItemType;
 }) => {
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);

@@ -234,7 +234,7 @@ function QuoteResults({
                       layoutId={`content-${active.providerId}-deductible-${id}-${active.key}`}
                       className="nunito-sans-bold px-4 py-3 text-lg rounded-3xl font-bold text-center w-full"
                     >
-                      {formatNumberToPrice(active.deductible) || ""}
+                      {formatNumberToPrice(active.deductibleOption) || ""}
                     </motion.p>
                   </div>
                   <div className="">
@@ -250,7 +250,7 @@ function QuoteResults({
                       layoutId={`content-${active.providerId}-reimbursement-${id}-${active.key}`}
                       className="nunito-sans-bold px-4 py-3 text-lg rounded-3xl font-bold text-center w-full"
                     >
-                      {formatNumberToPercent(active.reimbursementPercentage)}
+                      {formatNumberToPercent(active.reimbursementPercentageOption)}
                     </motion.p>
                   </div>
                   <div className="">
@@ -266,9 +266,9 @@ function QuoteResults({
                       layoutId={`content-${active.providerId}-coverage-${id}-${active.key}`}
                       className="nunito-sans-bold px-4 py-3 text-lg rounded-3xl font-bold text-center w-full"
                     >
-                      {active.coverageLimit === 999999
+                      {active.reimbursementLimitOption === 999999
                         ? "unlimited"
-                        : formatNumberToPrice(active.coverageLimit)}
+                        : formatNumberToPrice(active.reimbursementLimitOption)}
                     </motion.p>
                   </div>
                   <div className="">
@@ -349,7 +349,7 @@ function QuoteResults({
                       layoutId={`content-${card.providerId}-deductible-${id}-${key}`}
                       className="nunito-sans-bold text-neutral-600 dark:text-neutral-400 text-center"
                     >
-                      {formatNumberToPrice(card.deductible)}
+                      {formatNumberToPrice(card.deductibleOption)}
                     </motion.p>
                   </div>
                   <div className="">
@@ -363,7 +363,7 @@ function QuoteResults({
                       layoutId={`content-${card.providerId}-reimbursement-${id}-${key}`}
                       className="nunito-sans-bold text-neutral-600 dark:text-neutral-400 text-center"
                     >
-                      {formatNumberToPercent(card.reimbursementPercentage)}
+                      {formatNumberToPercent(card.reimbursementPercentageOption)}
                     </motion.p>
                   </div>
                   <div className="">
@@ -377,9 +377,9 @@ function QuoteResults({
                       layoutId={`content-${card.providerId}-coverage-${id}-${key}`}
                       className="nunito-sans-bold text-neutral-600 dark:text-neutral-400 text-center"
                     >
-                      {card.coverageLimit === 999999
+                      {card.reimbursementLimitOption === 999999
                         ? "unlimited"
-                        : formatNumberToPrice(card.coverageLimit)}
+                        : formatNumberToPrice(card.reimbursementLimitOption)}
                     </motion.p>
                   </div>
                   <div className="">

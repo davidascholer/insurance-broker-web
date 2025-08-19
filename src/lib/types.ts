@@ -1,4 +1,4 @@
-import type { catBreeds } from "@/data/catBreeds";
+import type clientCatBreeds from "@/data/catBreeds";
 import type { dogBreeds } from "@/data/dogBreeds";
 
 export type NameType = { firstName: string; lastName: string };
@@ -13,7 +13,7 @@ export type AnswersType = {
   gender: "male" | "female" | "";
   age: AgeType;
   weight: string;
-  breed: (typeof catBreeds)[number] | (typeof dogBreeds)[number] | "";
+  breed: (typeof clientCatBreeds)[number] | (typeof dogBreeds)[number] | "";
   reference: string;
 };
 
@@ -27,9 +27,9 @@ export type ProviderIdTypes =
 
 // Type for individual quote data item on the server
 export type DataQuoteItem = {
-  deductible: number;
-  reimbursementPercentage: number;
-  coverageLimit: number;
+  deductibleOption: number;
+  reimbursementPercentageOption: number;
+  reimbursementLimitOption: number;
   monthlyPrice: number;
 };
 
@@ -40,7 +40,9 @@ export type DataResponse = {
 
 export type QuotesResultType = {
   success: boolean;
-  quotes?: DataQuoteItem[];
+  quotes?: {
+    coverageOptions: DataQuoteItem[];
+  };
   error?: string;
 };
 

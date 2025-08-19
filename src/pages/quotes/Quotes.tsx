@@ -3,7 +3,7 @@ import type {
   FilterOptionType,
   QuoteItem,
   QuotesResultType,
-  SortItemType,
+  // SortItemType,
 } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -29,8 +29,8 @@ const Quotes = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [quoteData, setQuoteData] = useState<QuoteItem[]>([]);
-  const [sortItemSelected, setSortItemSelected] =
-    useState<SortItemType>("price");
+  // const [sortItemSelected, setSortItemSelected] =
+  //   useState<SortItemType>("price");
   const [activeQuoteData, setActiveQuoteData] = useState<QuoteItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -38,7 +38,7 @@ const Quotes = () => {
   const [showFullResults, setShowFullResults] = useState<boolean>(false);
   const [selectedDeductible, setSelectedDeductible] =
     useState<FilterOptionType>(
-      DEDUCTIBLE_OPTIONS.find((d) => d.value === 500) || DEDUCTIBLE_OPTIONS[0]
+      DEDUCTIBLE_OPTIONS.find((d) => d.value === 100) || DEDUCTIBLE_OPTIONS[0]
     );
   const [selectedReimbursement, setSelectedReimbursement] =
     useState<FilterOptionType>(
@@ -81,39 +81,39 @@ const Quotes = () => {
     setAnnualLimits(filteredList);
   };
 
-  const handleSortItemClicked = (item: SortItemType) => {
-    setSortItemSelected(item);
+  // const handleSortItemClicked = (item: SortItemType) => {
+  //   setSortItemSelected(item);
 
-    switch (item) {
-      case "deductible":
-        setActiveQuoteData((prev) =>
-          [...prev].sort((a, b) => a.deductible - b.deductible)
-        );
-        break;
-      case "reimbursement":
-        setActiveQuoteData((prev) =>
-          [...prev].sort(
-            (a, b) => b.reimbursementPercentage - a.reimbursementPercentage
-          )
-        );
-        break;
-      case "limit":
-        setActiveQuoteData((prev) =>
-          [...prev].sort((a, b) => b.coverageLimit - a.coverageLimit)
-        );
-        break;
-      case "price":
-        setActiveQuoteData((prev) =>
-          [...prev].sort((a, b) => a.monthlyPrice - b.monthlyPrice)
-        );
-        break;
-      default:
-        setActiveQuoteData((prev) =>
-          [...prev].sort((a, b) => a.monthlyPrice - b.monthlyPrice)
-        );
-        break;
-    }
-  };
+  //   switch (item) {
+  //     case "deductible":
+  //       setActiveQuoteData((prev) =>
+  //         [...prev].sort((a, b) => a.deductible - b.deductible)
+  //       );
+  //       break;
+  //     case "reimbursement":
+  //       setActiveQuoteData((prev) =>
+  //         [...prev].sort(
+  //           (a, b) => b.reimbursementPercentage - a.reimbursementPercentage
+  //         )
+  //       );
+  //       break;
+  //     case "limit":
+  //       setActiveQuoteData((prev) =>
+  //         [...prev].sort((a, b) => b.coverageLimit - a.coverageLimit)
+  //       );
+  //       break;
+  //     case "price":
+  //       setActiveQuoteData((prev) =>
+  //         [...prev].sort((a, b) => a.monthlyPrice - b.monthlyPrice)
+  //       );
+  //       break;
+  //     default:
+  //       setActiveQuoteData((prev) =>
+  //         [...prev].sort((a, b) => a.monthlyPrice - b.monthlyPrice)
+  //       );
+  //       break;
+  //   }
+  // };
 
   const fetchQuotes = async (answers: AnswersType) => {
     setIsLoading(true);
@@ -126,21 +126,21 @@ const Quotes = () => {
     const figoResult: QuotesResultType = await getQuotes(answers, "figo");
     const fetchResult: QuotesResultType = await getQuotes(answers, "fetch");
     const embraceResult: QuotesResultType = await getQuotes(answers, "embrace");
-    const pumpkinResult: QuotesResultType = await getQuotes(answers, "pumpkin");
-    const petsBestResult: QuotesResultType = await getQuotes(
-      answers,
-      "petsbest"
-    );
-    const metlifeResult: QuotesResultType = await getQuotes(answers, "metlife");
+    // const pumpkinResult: QuotesResultType = await getQuotes(answers, "pumpkin");
+    // const petsBestResult: QuotesResultType = await getQuotes(
+    //   answers,
+    //   "petsbest"
+    // );
+    // const metlifeResult: QuotesResultType = await getQuotes(answers, "metlife");
     // If DEV, you can stop the loading early if the server has responded from all providers
     if (DEV) {
       if (
         figoResult &&
         fetchResult &&
-        embraceResult &&
-        pumpkinResult &&
-        petsBestResult &&
-        metlifeResult
+        embraceResult
+        // pumpkinResult &&
+        // petsBestResult &&
+        // metlifeResult
       ) {
         setIsLoading(false);
         clearTimeout(timeout);
@@ -149,7 +149,7 @@ const Quotes = () => {
     const fetchedQuotes: QuoteItem[] = [];
     if (figoResult.success && figoResult.quotes) {
       // setInsurerOptionOnFetch("figo");
-      const figoQuotes = figoResult.quotes.map((quote) => ({
+      const figoQuotes = figoResult.quotes.coverageOptions.map((quote) => ({
         ...quote,
         providerId: "figo" as const,
       }));
@@ -159,54 +159,55 @@ const Quotes = () => {
     }
     if (fetchResult.success && fetchResult.quotes) {
       // setInsurerOptionOnFetch("fetch");
-      const fetchQuotes = fetchResult.quotes.map((quote) => ({
+      const fetchQuotes = fetchResult.quotes.coverageOptions.map((quote) => ({
         ...quote,
         providerId: "fetch" as const,
       }));
+      console.log("fetchQuotes", fetchQuotes);
       if (fetchQuotes) {
         fetchedQuotes.push(...fetchQuotes);
       }
     }
     if (embraceResult.success && embraceResult.quotes) {
       // setInsurerOptionOnFetch("embrace");
-      const embraceQuotes = embraceResult.quotes.map((quote) => ({
-        ...quote,
+      const embraceQuotes = embraceResult.quotes.coverageOptions.map((option) => ({
+        ...option,
         providerId: "embrace" as const,
       }));
       if (embraceQuotes) {
         fetchedQuotes.push(...embraceQuotes);
       }
     }
-    if (pumpkinResult.success && pumpkinResult.quotes) {
-      // setInsurerOptionOnFetch("pumpkin");
-      const pumpkinQuotes = pumpkinResult.quotes.map((quote) => ({
-        ...quote,
-        providerId: "pumpkin" as const,
-      }));
-      if (pumpkinQuotes) {
-        fetchedQuotes.push(...pumpkinQuotes);
-      }
-    }
-    if (petsBestResult.success && petsBestResult.quotes) {
-      // setInsurerOptionOnFetch("petsbest");
-      const petsBestQuotes = petsBestResult.quotes.map((quote) => ({
-        ...quote,
-        providerId: "petsbest" as const,
-      }));
-      if (petsBestQuotes) {
-        fetchedQuotes.push(...petsBestQuotes);
-      }
-    }
-    if (metlifeResult.success && metlifeResult.quotes) {
-      // setInsurerOptionOnFetch("metlife");
-      const metlifeQuotes = metlifeResult.quotes.map((quote) => ({
-        ...quote,
-        providerId: "metlife" as const,
-      }));
-      if (metlifeQuotes) {
-        fetchedQuotes.push(...metlifeQuotes);
-      }
-    }
+    // if (pumpkinResult.success && pumpkinResult.quotes) {
+    //   // setInsurerOptionOnFetch("pumpkin");
+    //   const pumpkinQuotes = pumpkinResult.quotes.map((quote) => ({
+    //     ...quote,
+    //     providerId: "pumpkin" as const,
+    //   }));
+    //   if (pumpkinQuotes) {
+    //     fetchedQuotes.push(...pumpkinQuotes);
+    //   }
+    // }
+    // if (petsBestResult.success && petsBestResult.quotes) {
+    //   // setInsurerOptionOnFetch("petsbest");
+    //   const petsBestQuotes = petsBestResult.quotes.map((quote) => ({
+    //     ...quote,
+    //     providerId: "petsbest" as const,
+    //   }));
+    //   if (petsBestQuotes) {
+    //     fetchedQuotes.push(...petsBestQuotes);
+    //   }
+    // }
+    // if (metlifeResult.success && metlifeResult.quotes) {
+    //   // setInsurerOptionOnFetch("metlife");
+    //   const metlifeQuotes = metlifeResult.quotes.map((quote) => ({
+    //     ...quote,
+    //     providerId: "metlife" as const,
+    //   }));
+    //   if (metlifeQuotes) {
+    //     fetchedQuotes.push(...metlifeQuotes);
+    //   }
+    // }
     setQuoteData(fetchedQuotes);
     setActiveQuoteData(fetchedQuotes);
   };
@@ -227,44 +228,72 @@ const Quotes = () => {
   }, [location.state, navigate]);
 
   useEffect(() => {
+    // const populatedDeductibles =
+    //   deductibles.length > 0
+    //     ? deductibles
+    //     : quoteData.filter((i) => {
+    //         return i.deductibleOption === selectedDeductible.value;
+    //       });
+    // const populatedReimbursementRates =
+    //   reimbursementRates.length > 0
+    //     ? reimbursementRates
+    //     : quoteData.filter(
+    //         (i) => i.reimbursementPercentage === selectedReimbursement.value
+    //       );
+    // const populatedAnnualLimits =
+    //   annualLimits.length > 0
+    //     ? annualLimits
+    //     : quoteData.filter(
+    //         (i) => i.reimbursementLimitOption === selectedLimit.value
+    //       );
 
-    // Populate the arrays with the default values if they are empty (i.e., no filters selected)
-    const populatedDeductibles =
-      deductibles.length > 0
-        ? deductibles
-        : DEDUCTIBLE_OPTIONS.filter(
-            (i) => i.value === selectedDeductible.value
-          );
-    const populatedReimbursementRates =
-      reimbursementRates.length > 0
-        ? reimbursementRates
-        : REIMBURSEMENT_RATE_OPTIONS.filter(
-            (i) => i.value === selectedReimbursement.value
-          );
-    const populatedAnnualLimits =
-      annualLimits.length > 0
-        ? annualLimits
-        : ANNUAL_LIMIT_OPTIONS.filter((i) => i.value === selectedLimit.value);
+    // const whiteList = quoteData.filter((quote) => {
+    //   const deductibleMatch =
+    //     quote.deductibleOption <= 100
+    //       ? populatedDeductibles.some((i) => (i.value as number) <= 100)
+    //       : populatedDeductibles.some(
+    //           (i) => quote.deductibleOption === i.value
+    //         );
 
-    const whiteList = quoteData.filter((quote) => {
-      const deductibleMatch =
-        quote.deductible <= 100
-          ? populatedDeductibles.some((i) => (i.value as number) <= 100)
-          : populatedDeductibles.some((i) => quote.deductible === i.value);
+    //   const reimbursementMatch = populatedReimbursementRates.some((i) => {
+    //     return i.value === quote.reimbursementPercentage;
+    //   });
 
-      const reimbursementMatch = populatedReimbursementRates.some((i) => {
-        return i.value === quote.reimbursementPercentage;
-      });
+    //   const annualLimitMatch = populatedAnnualLimits.some(
+    //     (i) => i.value === quote.reimbursementLimitOption
+    //   );
 
-      const annualLimitMatch = populatedAnnualLimits.some(
-        (i) => i.value === quote.coverageLimit
+    //   return deductibleMatch && reimbursementMatch && annualLimitMatch;
+    // });
+    console.log("selectedDeductible", selectedDeductible);
+    console.log("selectedReimbursement", selectedReimbursement);
+    console.log("selectedLimit", selectedLimit);
+    // const whiteList = quoteData.filter(
+    //   (quote) =>
+    //     quote.deductibleOption === selectedDeductible.value &&
+    //     quote.reimbursementPercentageOption === selectedReimbursement.value &&
+    //     quote.reimbursementLimitOption === selectedLimit.value
+    // );
+    const selectedDeductibles = quoteData.filter(
+      (quote) => quote.deductibleOption === selectedDeductible.value
+    );
+    console.log("selectedDeductibles", selectedDeductibles);
+
+    const selectedReimbursements = selectedDeductibles.filter((quote) => {
+      return (
+        quote.reimbursementPercentageOption === selectedReimbursement.value
       );
-
-      return deductibleMatch && reimbursementMatch && annualLimitMatch;
     });
+    console.log("selectedReimbursements", selectedReimbursements);
 
-    setActiveQuoteData(whiteList);
-    handleSortItemClicked("price");
+    const selectedLimits = selectedReimbursements.filter((quote) => {
+      return quote.reimbursementLimitOption === selectedLimit.value;
+    });
+    console.log("selectedLimits", selectedLimits);
+
+    console.log("whiteList", selectedLimits);
+    setActiveQuoteData(selectedLimits);
+    // handleSortItemClicked("price");
   }, [annualLimits, deductibles, quoteData, reimbursementRates]);
 
   return (
@@ -292,11 +321,11 @@ const Quotes = () => {
               handleDeductibleClicked={handleDeductibleClicked}
               handleReimbursementRateClicked={handleReimbursementRateClicked}
               handleAnnualLimitClicked={handleAnnualLimitClick}
-              sortItems={handleSortItemClicked}
+              // sortItems={handleSortItemClicked}
               selectedDeductible={selectedDeductible}
               selectedReimbursement={selectedReimbursement}
               selectedLimit={selectedLimit}
-              sortItemSelected={sortItemSelected}
+              // sortItemSelected={sortItemSelected}
             />
             <QuoteResults
               cards={activeQuoteData}

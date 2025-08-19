@@ -1,4 +1,8 @@
-import { PIPA_BOT_URL, PIPA_EMAIL_URL, PIPA_QUOTES_URL } from "./constants";
+import {
+  PIPA_BOT_URL,
+  PIPA_EMAIL_URL,
+  PIPA_FALLBACK_QUOTES_URL,
+} from "./constants";
 import type {
   AnswersType,
   BotRequestType,
@@ -11,7 +15,7 @@ export const getQuotes = async (
   answers: AnswersType,
   insurer: ProviderIdTypes
 ): Promise<QuotesResultType> => {
-  const response = await fetch(PIPA_QUOTES_URL + "/" + insurer, {
+  const response = await fetch(PIPA_FALLBACK_QUOTES_URL + "/" + insurer, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -25,8 +29,10 @@ export const getQuotes = async (
       error: `Error: ${response.status} ${response.statusText}`,
     };
   }
-  const { quotes } = await response.json();
-  return { quotes: quotes, success: true };
+  const formattedResponse = await response.json();
+  const options = formattedResponse.data;
+  console.log("RESPONSE FROM options", insurer, options);
+  return { quotes: options, success: true };
 };
 
 export const sendEmail = async (
