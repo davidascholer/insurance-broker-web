@@ -59,3 +59,17 @@ Runs ESLint to analyze code for potential errors and code style issues.
 - **TypeScript:** Configured via `tsconfig.json` and related files.
 - **Vite:** Fast development server and build tool, configured in `vite.config.mjs`.
 - **ESLint:** Linting rules are defined in `eslint.config.js`.
+
+## Adding a page to the project
+
+- Create the new page
+  - Copy and paste the SamplePage.tsx file located at `src/pages/SamplePage.tsx`
+  - Rename `SamplePage copy.tsx` to a name you desire e.g. `YourNewPage.tsx`
+  - Not required but recommended, change the name inside SamplePage.tsx to YourNewPage i.e. `export default function YourNewPage() {...`
+  - Edit the contents of MyNewPage.tsx to whatever you want.
+- Add the new page to the router
+  - locate and open the file at `src/AppRouter.tsx`
+  - add `import YourPageName from "./pages/YourPageName";` to the top of the file with the other imports
+  - add `<Route path="/your-route-page" element={<YourPageName />} />` inside of the `<Routes>`
+- Your new page will now be accessible at `/your-new-page` e.g. `http://localhost:5173/sample-page` or `https://pipabroker.com/sample-page` when live on dev/production
+- For a complete list of tailwind class selectors, see the tailwind docs: e.g. *https://tailwindcss.com/docs/font-size*
