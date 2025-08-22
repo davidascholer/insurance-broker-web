@@ -12,11 +12,12 @@ export const PIPA_EMAIL_URL = PIPA_API_URL + "api/email";
 export const PIPA_BOT_URL = PIPA_API_URL + "api/bot";
 
 export const DEDUCTIBLE_OPTIONS = [
-  { value: 100, label: "up to $100" },
-  { value: 250, label: "$250" },
-  { value: 500, label: "$500" },
-  { value: 750, label: "$750" },
-  { value: 1000, label: "$1,000" },
+  { value: 0, label: "up to $100" },
+  { value: 100, label: "$100 - $250" },
+  { value: 250, label: "$250 - $500" },
+  { value: 500, label: "$500 - $750" },
+  { value: 750, label: "$750 - $1,000" },
+  { value: 1000, label: "$1,000 and up" },
 ];
 export const REIMBURSEMENT_RATE_OPTIONS = [
   { value: 90, label: "90%" },

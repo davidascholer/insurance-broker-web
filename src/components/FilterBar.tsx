@@ -29,34 +29,40 @@ const FilterOptions = ({
   tooltip?: React.ReactNode;
 }) => {
   return (
-    <div className={"flex flex-row gap-2 justify-center items-center"}>
+    <div
+      className={
+        "flex flex-row gap-2 justify-center items-center"
+      }
+    >
       {tooltip}
-      <DropdownMenu>
-        <DropdownMenuTrigger className="mr-auto text-(--coral-light) hover:text-(--coral-light) transition-colors duration-300 cursor-pointer nunito-sans-medium outline-none">
-          <div
-            className={cn(
-              "text-sm text-(--primary-teal-dark) w-24 text-center lowercase px-2 py-1 m-1 rounded-2xl shadow-md hover:shadow-lg transition-shadow cursor-pointer nunito-sans-medium bg-(--coral-light) hover:bg-(--primary-coral)"
-            )}
-          >
-            {selectedOption.label}
-          </div>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="ml-4 text-center mr-auto transition-colors duration-300 cursor-pointer nunito-sans-bold bg-(--primary-teal-dark) text-(--coral-light)">
-          {options.map((option, key) => (
-            <DropdownMenuItem
-              key={key}
+      <div className="flex-1">
+        <DropdownMenu>
+          <DropdownMenuTrigger className="mr-auto text-(--coral-light) hover:text-(--coral-light) transition-colors duration-300 cursor-pointer nunito-sans-medium outline-none">
+            <div
               className={cn(
-                "sansita-bold cursor-pointer p-2 mt-1 rounded-full justify-center focus:bg-(--primary-coral)",
-                option.value === selectedOption.value &&
-                  "bg-(--coral-light) text-(--primary-teal-dark)"
+                "flex-1 text-sm text-(--primary-teal-dark) text-center lowercase px-4 py-2 rounded-2xl shadow-md hover:shadow-lg transition-shadow cursor-pointer nunito-sans-medium bg-(--coral-light) hover:bg-(--primary-coral)"
               )}
-              onClick={() => handleClick(option)}
             >
-              {option.label}
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
+              {selectedOption.label}
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="ml-4 text-center mr-auto transition-colors duration-300 cursor-pointer nunito-sans-bold bg-(--primary-teal-dark) text-(--coral-light)">
+            {options.map((option, key) => (
+              <DropdownMenuItem
+                key={key}
+                className={cn(
+                  "sansita-bold cursor-pointer p-2 mt-1 rounded-full justify-center focus:bg-(--primary-coral)",
+                  option.value === selectedOption.value &&
+                    "bg-(--coral-light) text-(--primary-teal-dark)"
+                )}
+                onClick={() => handleClick(option)}
+              >
+                {option.label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </div>
   );
 };

@@ -212,7 +212,7 @@ const ChatBot = ({
           open
             ? " max-[400px]:w-[220px] max-[468px]:w-[320px] max-[600px]:w-[380px] max-[800px]:w-[340px] w-[540px] max-[400px]:right-[55px] max-[468px]:right-[0px] max-[600px]:-right-[30px] right[0px] h-[470px] [@media(max-height:665px)]:h-[275px] opacity-100"
             : "w-0 h-0 opacity-0",
-          firstClick && "max-[400px]:h-40 h-24"
+          firstClick && "max-[400px]:h-24 h-16"
         )}
       >
         <div

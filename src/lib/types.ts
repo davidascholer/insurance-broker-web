@@ -70,7 +70,7 @@ export type BotRequestType = {
 
 export type InsurerOptionsType = { label: string; providerId: ProviderIdTypes };
 export type FilterOptionType = {
-  value: number | "unlimited";
+  value: number;
   label: string;
 };
 

@@ -38,7 +38,7 @@ const Quotes = () => {
   const [showFullResults, setShowFullResults] = useState<boolean>(false);
   const [selectedDeductible, setSelectedDeductible] =
     useState<FilterOptionType>(
-      DEDUCTIBLE_OPTIONS.find((d) => d.value === 100) || DEDUCTIBLE_OPTIONS[0]
+      DEDUCTIBLE_OPTIONS.find((d) => d.value === 250) || DEDUCTIBLE_OPTIONS[0]
     );
   const [selectedReimbursement, setSelectedReimbursement] =
     useState<FilterOptionType>(
@@ -46,7 +46,7 @@ const Quotes = () => {
         REIMBURSEMENT_RATE_OPTIONS[0]
     );
   const [selectedLimit, setSelectedLimit] = useState<FilterOptionType>(
-    ANNUAL_LIMIT_OPTIONS.find((al) => al.value === 999999) ||
+    ANNUAL_LIMIT_OPTIONS.find((al) => al.value === 10000) ||
       ANNUAL_LIMIT_OPTIONS[0]
   );
 
@@ -153,6 +153,8 @@ const Quotes = () => {
         ...quote,
         providerId: "figo" as const,
       }));
+      if (DEV) console.log("figoQuotes", figoQuotes);
+
       if (figoQuotes) {
         fetchedQuotes.push(...figoQuotes);
       }
@@ -163,17 +165,19 @@ const Quotes = () => {
         ...quote,
         providerId: "fetch" as const,
       }));
-      console.log("fetchQuotes", fetchQuotes);
+      if (DEV) console.log("fetchQuotes", fetchQuotes);
       if (fetchQuotes) {
         fetchedQuotes.push(...fetchQuotes);
       }
     }
     if (embraceResult.success && embraceResult.quotes) {
       // setInsurerOptionOnFetch("embrace");
-      const embraceQuotes = embraceResult.quotes.coverageOptions.map((option) => ({
-        ...option,
-        providerId: "embrace" as const,
-      }));
+      const embraceQuotes = embraceResult.quotes.coverageOptions.map(
+        (option) => ({
+          ...option,
+          providerId: "embrace" as const,
+        })
+      );
       if (embraceQuotes) {
         fetchedQuotes.push(...embraceQuotes);
       }
@@ -228,70 +232,40 @@ const Quotes = () => {
   }, [location.state, navigate]);
 
   useEffect(() => {
-    // const populatedDeductibles =
-    //   deductibles.length > 0
-    //     ? deductibles
-    //     : quoteData.filter((i) => {
-    //         return i.deductibleOption === selectedDeductible.value;
-    //       });
-    // const populatedReimbursementRates =
-    //   reimbursementRates.length > 0
-    //     ? reimbursementRates
-    //     : quoteData.filter(
-    //         (i) => i.reimbursementPercentage === selectedReimbursement.value
-    //       );
-    // const populatedAnnualLimits =
-    //   annualLimits.length > 0
-    //     ? annualLimits
-    //     : quoteData.filter(
-    //         (i) => i.reimbursementLimitOption === selectedLimit.value
-    //       );
+    // under 100, 100-250, 250-500, 500-1000, 1000+
+    const selectedDeductibles = quoteData.filter((quote) => {
+      const isLastDeductible =
+        selectedDeductible.value ===
+        DEDUCTIBLE_OPTIONS[DEDUCTIBLE_OPTIONS.length - 1].value;
 
-    // const whiteList = quoteData.filter((quote) => {
-    //   const deductibleMatch =
-    //     quote.deductibleOption <= 100
-    //       ? populatedDeductibles.some((i) => (i.value as number) <= 100)
-    //       : populatedDeductibles.some(
-    //           (i) => quote.deductibleOption === i.value
-    //         );
+      if (isLastDeductible) {
+        return quote.deductibleOption >= selectedDeductible.value;
+      }
 
-    //   const reimbursementMatch = populatedReimbursementRates.some((i) => {
-    //     return i.value === quote.reimbursementPercentage;
-    //   });
+      const nextDeductibleIndex =
+        DEDUCTIBLE_OPTIONS.indexOf(selectedDeductible) + 1;
+      const nextDeductible = DEDUCTIBLE_OPTIONS[nextDeductibleIndex];
 
-    //   const annualLimitMatch = populatedAnnualLimits.some(
-    //     (i) => i.value === quote.reimbursementLimitOption
-    //   );
-
-    //   return deductibleMatch && reimbursementMatch && annualLimitMatch;
-    // });
-    console.log("selectedDeductible", selectedDeductible);
-    console.log("selectedReimbursement", selectedReimbursement);
-    console.log("selectedLimit", selectedLimit);
-    // const whiteList = quoteData.filter(
-    //   (quote) =>
-    //     quote.deductibleOption === selectedDeductible.value &&
-    //     quote.reimbursementPercentageOption === selectedReimbursement.value &&
-    //     quote.reimbursementLimitOption === selectedLimit.value
-    // );
-    const selectedDeductibles = quoteData.filter(
-      (quote) => quote.deductibleOption === selectedDeductible.value
-    );
-    console.log("selectedDeductibles", selectedDeductibles);
+      return (
+        quote.deductibleOption >= selectedDeductible.value &&
+        quote.deductibleOption <= nextDeductible.value
+      );
+    });
+    if (DEV) console.log("selectedDeductibles", selectedDeductibles);
 
     const selectedReimbursements = selectedDeductibles.filter((quote) => {
       return (
         quote.reimbursementPercentageOption === selectedReimbursement.value
       );
     });
-    console.log("selectedReimbursements", selectedReimbursements);
+    if (DEV) console.log("selectedReimbursements", selectedReimbursements);
 
     const selectedLimits = selectedReimbursements.filter((quote) => {
       return quote.reimbursementLimitOption === selectedLimit.value;
     });
-    console.log("selectedLimits", selectedLimits);
+    if (DEV) console.log("selectedLimits", selectedLimits);
 
-    console.log("whiteList", selectedLimits);
+    if (DEV) console.log("whiteList", selectedLimits);
     setActiveQuoteData(selectedLimits);
     // handleSortItemClicked("price");
   }, [annualLimits, deductibles, quoteData, reimbursementRates]);
