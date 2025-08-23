@@ -1,2 +1,4 @@
 A running list of todos.
 - add instructions on how to add a page in the readme
+
+edit for git example
