@@ -10,7 +10,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import QuoteResults from "@/components/QuoteResults";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import useIsOnline from "@/hooks/useIsOnline";
-import { getQuotes } from "@/lib/api";
+import { getQuotes } from "@/api/api";
 import { cn, verifyAnswers } from "@/lib/utils";
 import Header from "@/components/header/Header";
 import FilterBar from "@/components/FilterBar";

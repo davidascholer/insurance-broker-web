@@ -2,14 +2,14 @@ import {
   PIPA_BOT_URL,
   PIPA_EMAIL_URL,
   PIPA_FALLBACK_QUOTES_URL,
-} from "./constants";
+} from "../lib/constants";
 import type {
   AnswersType,
   BotRequestType,
   ContactFormType,
   ProviderIdTypes,
   QuotesResultType,
-} from "./types";
+} from "../lib/types";
 
 export const getQuotes = async (
   answers: AnswersType,
@@ -73,3 +73,5 @@ export const chatWithBot = async (
   const data = await response.json();
   return { success: true, msg: data.message };
 };
+
+// Trackers

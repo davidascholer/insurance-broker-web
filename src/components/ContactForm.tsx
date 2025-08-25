@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { sendEmail } from "@/lib/api";
+import { sendEmail } from "@/api/api";
 import type { ContactFormType } from "@/lib/types";
 import { Textarea } from "./ui/textarea";
 import { useEffect, useState } from "react";

@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import type { ChatMessageType } from "@/lib/types";
 import BotMessageForm from "./BotMessageForm";
 import Loader from "./Loader";
-import { chatWithBot } from "@/lib/api";
+import { chatWithBot } from "@/api/api";
 import { Button } from "./ui/button";
 
 const Message = ({

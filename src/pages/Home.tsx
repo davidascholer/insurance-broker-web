@@ -1,10 +1,27 @@
+import { useEffect } from "react";
 import CoverageItem from "../components/CoverageItem";
 import FetchQuoteButton from "../components/FetchQuoteButton";
 import Footer from "../components/Footer";
 import Header from "../components/header/Header";
 import InsurerItem from "../components/InsurerItem";
+import { hitsTracker } from "@/api/trackers";
+import { useLocation } from "react-router-dom";
 
 const Home = () => {
+  const location = useLocation();
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+
+    const origin = queryParams.get("fbclid")
+      ? "facebook/instagram"
+      : queryParams.get("origin")
+      ? queryParams.get("origin")
+      : "";
+    console.log("Origin location:", origin);
+    const referrer = document.referrer ? document.referrer : "";
+    hitsTracker({ referrer: referrer || "", origin: origin || "" });
+  }, []);
+
   return (
     <div>
       <section id="home-page-landing">
@@ -12,8 +29,7 @@ const Home = () => {
         <div id="home-page-landing-overlay">
           <div id="home-page-landing-content">
             <h1 className="sansita-bold text-5xl mt-36 sm:mt-20 md:mt-4 max-w-[300px] md:max-w-[1000px]">
-              Get the insurance that works best for you and your fur baby
-              today.
+              Get the insurance that works best for you and your fur baby today.
             </h1>
             <FetchQuoteButton />
           </div>
@@ -61,7 +77,8 @@ const Home = () => {
             />
           </div>
           <span className="text-sm text-(--primary-coral) italic">
-            *Illustrative purposes only; click “fetch a quote” for live policy quotes.
+            *Illustrative purposes only; click “fetch a quote” for live policy
+            quotes.
           </span>
         </div>
       </section>
