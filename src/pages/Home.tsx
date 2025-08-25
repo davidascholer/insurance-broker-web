@@ -7,23 +7,32 @@ import InsurerItem from "../components/InsurerItem";
 import { hitsTracker } from "@/api/trackers";
 import { useLocation } from "react-router-dom";
 import AppThemeContext from "@/theme/AppThemeContext";
+import { PIPA_VISITED_KEY } from "@/lib/constants";
 
 const Home = () => {
   const location = useLocation();
-  const {theme} = useContext(AppThemeContext);
+  const { theme } = useContext(AppThemeContext);
 
   console.log("Current theme:", theme);
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
+    /*
+    Note:
+    This is a temporary implementation to check that the user has been to the site before.
+    This will be replaced after we add user data to the terms and/or privacy policy pages.
+    */
+    if (!localStorage.getItem(PIPA_VISITED_KEY)) {
+      const queryParams = new URLSearchParams(location.search);
 
-    const origin = queryParams.get("fbclid")
-      ? "facebook/instagram"
-      : queryParams.get("origin")
-      ? queryParams.get("origin")
-      : "";
-    const referrer = document.referrer ? document.referrer : "";
-    hitsTracker({ referrer: referrer || "", origin: origin || "" });
+      const origin = queryParams.get("fbclid")
+        ? "facebook/instagram"
+        : queryParams.get("origin")
+        ? queryParams.get("origin")
+        : "";
+      const referrer = document.referrer ? document.referrer : "";
+      hitsTracker({ referrer: referrer || "", origin: origin || "" });
+      localStorage.setItem(PIPA_VISITED_KEY, "true");
+    }
   }, [location.search]);
 
   return (
