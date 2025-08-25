@@ -6,6 +6,8 @@ import type {
   QuotesResultType,
 } from "../lib/types";
 import {
+  PIPA_ADMIN_URL,
+  PIPA_ANALYTICS_URL,
   PIPA_BOT_URL,
   PIPA_EMAIL_URL,
   PIPA_FALLBACK_QUOTES_URL,
@@ -74,4 +76,35 @@ export const chatWithBot = async (
   return { success: true, msg: data.message };
 };
 
-// Trackers
+export const getHits = async (token: string) => {
+  const data = await fetch(PIPA_ANALYTICS_URL + "/get-hits", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      // "Access-Control-Allow-Origin": "*", // Not needed for POST requests
+    },
+    body: JSON.stringify({ token }),
+  });
+  console.log("getHits token:", token);
+  if (!data.ok) {
+    throw new Error(`Error: ${data.status} ${data.statusText}`);
+  }
+  const parsedData = await data.json();
+  return parsedData.data;
+};
+
+export const adminEmailPassword = async (email: string) => {
+  const data = await fetch(PIPA_ADMIN_URL + "/auth/email-password", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      // "Access-Control-Allow-Origin": "*", // Not needed for POST requests
+    },
+    body: JSON.stringify({ email: email }),
+  });
+  if (!data.ok) {
+    throw new Error(`Error: ${data.status} ${data.statusText}`);
+  }
+  const parsedData = await data.json();
+  return parsedData.data;
+};

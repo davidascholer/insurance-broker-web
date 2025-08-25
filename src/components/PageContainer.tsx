@@ -1,13 +1,16 @@
 import Header from "./header/Header";
 import Footer from "./Footer";
+import { cn } from "@/lib/utils";
 
 export default function PageContainer({
   children,
+  className
 }: {
   children: React.ReactNode;
+  className?: string;
 }) {
   return (
-    <div className="flex flex-col min-h-screen bg-(--light-pink)">
+    <div className={cn("flex flex-col min-h-screen bg-(--light-pink)",className)}>
       <Header />
       <main
         id="these-styles-are-important"

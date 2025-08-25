@@ -24,6 +24,9 @@ API
 Later...
 - Email people 1 day after they check their quote (CRON)
 
+OTHER
+- Create instructions on how to add a new page in the README.md
+
 BACK END
 - Create anayltics feature
 - Set up POSTGRES database

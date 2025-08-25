@@ -77,3 +77,10 @@ export type FilterOptionType = {
 export type SortItemType = "deductible" | "reimbursement" | "limit" | "price";
 
 export type ColorThemeType = "light" | "dark" | "system";
+
+export type HitsDataType = {
+  referrer: string;
+  origin: string;
+  ip: string;
+  timestamp: string;
+};

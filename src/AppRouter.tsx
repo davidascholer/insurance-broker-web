@@ -15,6 +15,7 @@ import Licenses from "./pages/Licenses";
 
 import React, { useLayoutEffect } from "react";
 import { useLocation } from "react-router-dom";
+import Admin from "./pages/Admin";
 
 const RouterWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -46,6 +47,7 @@ const AppRouter = () => {
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/licenses" element={<Licenses />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </RouterWrapper>
   );
