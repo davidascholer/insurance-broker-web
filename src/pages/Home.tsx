@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import CoverageItem from "../components/CoverageItem";
 import FetchQuoteButton from "../components/FetchQuoteButton";
 import Footer from "../components/Footer";
@@ -6,9 +6,14 @@ import Header from "../components/header/Header";
 import InsurerItem from "../components/InsurerItem";
 import { hitsTracker } from "@/api/trackers";
 import { useLocation } from "react-router-dom";
+import AppThemeContext from "@/theme/AppThemeContext";
 
 const Home = () => {
   const location = useLocation();
+  const {theme} = useContext(AppThemeContext);
+
+  console.log("Current theme:", theme);
+
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
 
@@ -17,10 +22,9 @@ const Home = () => {
       : queryParams.get("origin")
       ? queryParams.get("origin")
       : "";
-    console.log("Origin location:", origin);
     const referrer = document.referrer ? document.referrer : "";
     hitsTracker({ referrer: referrer || "", origin: origin || "" });
-  }, []);
+  }, [location.search]);
 
   return (
     <div>

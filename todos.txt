@@ -1,4 +1,32 @@
 A running list of todos.
-- add instructions on how to add a page in the readme
 
+
+UI
+- Put in estimated vs exact cost results (show more) option
+- Shrink together Loading screen and make sure to add margin to account for header
+- Take out pointer (hand) cursor on landscape
+- Save form object to JSON ls string
+- If they have an id AND saved object, load query string right away
+- Enter in pet information on results page with option to go back to the form.
+- Default do not accept terms and conditions
+- Create UI for admin
+- Bot 
+    - style paw icon and text on open loader
+    - Allow the predetermined questions in chatbot to copy and paste into the form
+- Later...
+- Color theme
+
+API
+- Save id upon email form submission
+- Track id of item clicked along with vendor
+- Hook up db
+- Set up auth
+Later...
+- Email people 1 day after they check their quote (CRON)
+
+BACK END
+- Create anayltics feature
+- Set up POSTGRES database
+- Implement Prisma into back end
 - add server listeners on email form submitted, provider link clicked, ...
+

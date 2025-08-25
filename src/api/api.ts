@@ -1,8 +1,3 @@
-import {
-  PIPA_BOT_URL,
-  PIPA_EMAIL_URL,
-  PIPA_FALLBACK_QUOTES_URL,
-} from "../lib/constants";
 import type {
   AnswersType,
   BotRequestType,
@@ -10,6 +5,11 @@ import type {
   ProviderIdTypes,
   QuotesResultType,
 } from "../lib/types";
+import {
+  PIPA_BOT_URL,
+  PIPA_EMAIL_URL,
+  PIPA_FALLBACK_QUOTES_URL,
+} from "./constants";
 
 export const getQuotes = async (
   answers: AnswersType,

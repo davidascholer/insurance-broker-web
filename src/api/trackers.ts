@@ -1,4 +1,4 @@
-import { PIPA_ANALYTICS_URL } from "@/lib/constants";
+import { PIPA_ANALYTICS_URL } from "./constants";
 
 export const hitsTracker = async (reqBody: {
   origin: string;

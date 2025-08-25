@@ -75,3 +75,5 @@ export type FilterOptionType = {
 };
 
 export type SortItemType = "deductible" | "reimbursement" | "limit" | "price";
+
+export type ColorThemeType = "light" | "dark" | "system";
