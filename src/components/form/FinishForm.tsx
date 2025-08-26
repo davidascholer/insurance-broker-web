@@ -15,6 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const item = {
   id: "terms",
@@ -31,6 +32,7 @@ function FinishForm({
 }: {
   onSubmit: SubmitHandler<{ item: string[] }>;
 }) {
+  const [formValid, setFormValid] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -62,8 +64,10 @@ function FinishForm({
                     >
                       <FormControl>
                         <Checkbox
-                          checked={field.value?.includes(item.id)}
+                          // checked={field.value?.includes(item.id)}
+                          defaultChecked={false}
                           onCheckedChange={(checked) => {
+                            setFormValid(!!checked);
                             return checked
                               ? field.onChange([...field.value, item.id])
                               : field.onChange(
@@ -97,7 +101,7 @@ function FinishForm({
         />
         <Button
           type="submit"
-          disabled={!form.formState.isValid}
+          disabled={!form.formState.isValid || form.formState.isSubmitting || !formValid}
           className="cursor-pointer"
         >
           Fetch my quotes!
