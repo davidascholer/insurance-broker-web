@@ -94,6 +94,40 @@ export const getHits = async (token: string) => {
   return parsedData.data;
 };
 
+export const getLinksClicked = async (token: string) => {
+  const data = await fetch(PIPA_ANALYTICS_URL + "/get-links-clicked", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      // "Access-Control-Allow-Origin": "*", // Not needed for POST requests
+    },
+    body: JSON.stringify({ token }),
+  });
+  console.log("getHits token:", token);
+  if (!data.ok) {
+    throw new Error(`Error: ${data.status} ${data.statusText}`);
+  }
+  const parsedData = await data.json();
+  return parsedData.data;
+};
+
+export const getUserObjects = async (token: string) => {
+  const data = await fetch(PIPA_ANALYTICS_URL + "/get-user-pet-objects", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      // "Access-Control-Allow-Origin": "*", // Not needed for POST requests
+    },
+    body: JSON.stringify({ token }),
+  });
+  console.log("getHits token:", token);
+  if (!data.ok) {
+    throw new Error(`Error: ${data.status} ${data.statusText}`);
+  }
+  const parsedData = await data.json();
+  return parsedData.data;
+};
+
 export const adminEmailPassword = async (email: string) => {
   const data = await fetch(PIPA_AUTH_URL + "/send-token", {
     method: "POST",

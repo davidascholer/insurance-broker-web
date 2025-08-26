@@ -2,6 +2,8 @@ import { adminEmailPassword, getHits } from "@/api/api";
 import AdminLoginForm from "@/components/admin/AdminLoginForm";
 import AdminTokenForm from "@/components/admin/AdminTokenForm";
 import HitsDataTable from "@/components/datatables/HitsDataTable";
+import LinksClickedDataTable from "@/components/datatables/LinksClickedDataTable";
+import UserInfoDataTable from "@/components/datatables/UserInfoDataTable";
 import Loader from "@/components/Loader";
 import PageContainer from "@/components/PageContainer";
 import type { HitsDataType } from "@/lib/types";
@@ -67,6 +69,8 @@ const Admin = () => {
   return (
     <PageContainer>
       <HitsDataTable data={hitsData} />
+      <LinksClickedDataTable data={hitsData} />
+      <UserInfoDataTable data={hitsData} />
     </PageContainer>
   );
 };

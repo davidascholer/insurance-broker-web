@@ -2,15 +2,16 @@ A running list of todos.
 
 
 UI
-- Save form object to JSON string
-- Enter in pet information on results page with option to go back to the form.
-- If they have an id AND saved object, load query string right away
 - Browser test for arrows on scrollbars (Windows Chrome)
 - Bot 
     - style paw icon and text on open loader
     - Allow the predetermined questions in chatbot to copy and paste into the form
 - Later...
     - Color theme
+IN PROGRESS - Implement new analytics into admin
+DONE - Save form object to JSON string
+DONE - Enter in pet information on results page with option to go back to the form.
+DONE - If they have an id AND saved object, load query string right away
 DONE - Refactor code for easier maintainability
 DONE - Default do not accept terms and conditions
 DONE - Take out pointer (hand) cursor on landscape
@@ -22,16 +23,16 @@ DONE - Phase out old CSS implementation
 DONE - Less padding on Home page <p> elements (mobile view)
 
 API
-- Save id upon email form submission
-- Track id of item clicked along with vendor
 Later...
-- Email people 1 day after they check their quote (CRON)
+- CRON email jobs
+DONE - Save id upon email form submission
+DONE - Track id of item clicked along with vendor
 DONE - Set up auth
 
 OTHER
 DONE - Create instructions on how to add a new page in the README.md
 
 BACK END
-- Create anayltics features
-- add server listeners on email form submitted, provider link clicked, etc.
+DONE - Create anayltics features
+DONE - add server listeners on email form submitted, provider link clicked, etc.
 
