@@ -14,7 +14,7 @@ import type { AnswersType } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import AppDialog from "@/components/AppDialog";
 import ProgressGrid from "@/components/ProgressGrid";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { PIPA_PET_KEY } from "@/lib/constants";
 
 const defaultAnswers: AnswersType = {
@@ -48,6 +48,8 @@ const editDialogConfig = {
 
 const InfoForm = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
   // const [answersVerified, setAnswersVerified] = useState(false);
   const [answers, setAnswers] = useState(() => {
     const savedAnswers = localStorage.getItem(PIPA_PET_KEY);
@@ -68,6 +70,30 @@ const InfoForm = () => {
     confirmText: string;
     onConfirmSubmit: () => void;
   }>(resetDialogConfig);
+
+  useEffect(() => {
+    // Check if all answers are filled out
+    const allAnswered = Object.values(answers).every((answer) => {
+      if (typeof answer === "string") {
+        return answer.trim() !== "";
+      } else if (typeof answer === "object" && answer !== null) {
+        // For object types (like name and age), check if all properties are filled
+        return Object.values(answer).every(
+          (prop) =>
+            (typeof prop === "string" && prop.trim() !== "") ||
+            (typeof prop === "number" && prop > 0)
+        );
+      }
+      return false;
+    });
+
+    if (!allAnswered) return;
+
+    // Check for ?edit=question in URL to edit a specific question
+    const queryParams = new URLSearchParams(location.search);
+    const edit = queryParams.get("edit");
+    if (!edit) navigate("/quotes");
+  }, []);
 
   useEffect(() => {
     // // Determine if all of the answers are filled out

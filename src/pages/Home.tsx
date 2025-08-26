@@ -23,7 +23,6 @@ const Home = () => {
     This will be replaced after we add user data to the terms and/or privacy policy pages.
     */
     if (!localStorage.getItem(PIPA_USER_ID_KEY)) {
-      console.log("Tracking hit.");
 
       const queryParams = new URLSearchParams(location.search);
 

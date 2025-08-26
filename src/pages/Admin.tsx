@@ -17,7 +17,6 @@ const Admin = () => {
       const token = localStorage.getItem("pipa-data-token");
       if (!token) return;
       const fetchedHits = await getHits(token);
-      console.log("Fetched hits:", fetchedHits);
       if (fetchedHits && Array.isArray(fetchedHits)) {
         setHitsData(fetchedHits);
       }
