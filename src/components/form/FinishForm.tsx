@@ -23,7 +23,7 @@ const item = {
 
 const FormSchema = z.object({
   item: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: "Please agree to the terms and conditions.",
+    message: "Please agree to the terms of service.",
   }),
 });
 

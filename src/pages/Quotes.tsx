@@ -5,8 +5,8 @@ import type {
   QuotesResultType,
   // SortItemType,
 } from "@/lib/types";
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import QuoteResults from "@/components/QuoteResults";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import useIsOnline from "@/hooks/useIsOnline";
@@ -18,16 +18,17 @@ import {
   ANNUAL_LIMIT_OPTIONS,
   DEDUCTIBLE_OPTIONS,
   DEV,
+  PIPA_PET_KEY,
   REIMBURSEMENT_RATE_OPTIONS,
 } from "@/lib/constants";
 import { ChevronsDown } from "lucide-react";
 import LoadingQuotes from "@/components/LoadingQuotes";
+import { providerClickedTracker } from "@/api/trackers";
 
 const LOAD_TIMER = 20; // seconds
 
 const Quotes = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [quoteData, setQuoteData] = useState<QuoteItem[]>([]);
   // const [sortItemSelected, setSortItemSelected] =
   //   useState<SortItemType>("price");
@@ -56,6 +57,11 @@ const Quotes = () => {
   >([]);
   const [annualLimits, setAnnualLimits] = useState<FilterOptionType[]>([]);
 
+  const petObject: AnswersType = useMemo(() => {
+    const pet = localStorage.getItem(PIPA_PET_KEY);
+    return pet ? JSON.parse(pet) : null;
+  }, []);
+
   // Set a list of all deductible options that match the selected deductible
   const handleDeductibleClicked = (deductible: FilterOptionType) => {
     setSelectedDeductible(deductible);
@@ -81,6 +87,10 @@ const Quotes = () => {
     setAnnualLimits(filteredList);
   };
 
+  /*
+  KEEP THIS CODE IN HERE
+  This is the future implementation for sorting the quotes once we have APIs
+  */
   // const handleSortItemClicked = (item: SortItemType) => {
   //   setSortItemSelected(item);
 
@@ -128,16 +138,12 @@ const Quotes = () => {
     const embraceResult: QuotesResultType = await getQuotes(answers, "embrace");
 
     // If DEV, you can stop the loading early if the server has responded from all providers
-    // if (DEV) {
-    //   if (
-    //     figoResult &&
-    //     fetchResult &&
-    //     embraceResult
-    //   ) {
-    //     setIsLoading(false);
-    //     clearTimeout(timeout);
-    //   }
-    // }
+    if (DEV) {
+      if (figoResult && fetchResult && embraceResult) {
+        setIsLoading(false);
+        clearTimeout(timeout);
+      }
+    }
 
     const fetchedQuotes: QuoteItem[] = [];
     if (figoResult.success && figoResult.quotes) {
@@ -176,26 +182,31 @@ const Quotes = () => {
     setActiveQuoteData(fetchedQuotes);
   };
 
-  const handleYoungerPetClicked = () => {
-    const answers = location.state as AnswersType;
+  const handleInsurerClicked = (insurer: string) => {
+    providerClickedTracker({ insurer, petObject });
+  };
 
-    fetchQuotes({ ...answers, age: { value: 18, label: "8 weeks" } });
+  const handleYoungerPetClicked = () => {
+    if (!petObject) return;
+
+    fetchQuotes({ ...petObject, age: { value: 18, label: "8 weeks" } });
   };
 
   useEffect(() => {
-    if (!location.state) navigate("/info");
+    if (!petObject) {
+      navigate("/info");
+      return;
+    }
     // Validate the answers to ensure they are complete
-    const answers = location.state as AnswersType;
-
-    const answersVerified = verifyAnswers(answers);
+    const answersVerified = verifyAnswers(petObject);
     if (!answersVerified) {
       // If answers are missing or incomplete, redirect to /info
       navigate("/info");
     } else {
       // Fetch quotes based on the answers
-      fetchQuotes(answers);
+      fetchQuotes(petObject);
     }
-  }, [location.state, navigate]);
+  }, [petObject, navigate]);
 
   useEffect(() => {
     // under 100, 100-250, 250-500, 500-1000, 1000+
@@ -264,10 +275,16 @@ const Quotes = () => {
               selectedReimbursement={selectedReimbursement}
               selectedLimit={selectedLimit}
             />
+            <div className="text-start w-full max-w-4xl sansita-regular px-2 mt-4 text-lg">
+              <Link to="/info" className="text-(--primary-teal-dark)">
+                Edit {petObject.petName}'s information
+              </Link>
+            </div>
             <QuoteResults
               cards={activeQuoteData}
               showFullResults={showFullResults}
               handleYoungerPetClicked={handleYoungerPetClicked}
+              handleInsurerClicked={handleInsurerClicked}
             />
             <button
               className={cn(

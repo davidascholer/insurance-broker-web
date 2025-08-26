@@ -10,20 +10,22 @@ import FinishForm from "@/components/form/FinishForm";
 import NameForm from "@/components/form/NameForm";
 import EmailForm from "@/components/form/EmailForm";
 import ZipForm from "@/components/form/ZipForm";
-import { useNavigate } from "react-router-dom";
 import WeightForm from "@/components/form/WeightForm";
+import { userPetTracker } from "@/api/trackers";
+import { PIPA_USER_ID_KEY } from "@/lib/constants";
 
 const FormSelections = ({
   currentQuestion,
   answers,
   setAnswers,
+  handleSubmit,
 }: {
   currentQuestion: string;
   answers: AnswersType;
   setAnswers: React.Dispatch<React.SetStateAction<AnswersType>>;
+  handleSubmit: () => void;
 }) => {
   const optionsRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Animate the form
@@ -42,11 +44,13 @@ const FormSelections = ({
   };
 
   const handleEmailSubmit = (data: { email: string }) => {
-    setAnswers((prev) => ({
-      ...prev,
-      email: data.email,
-    }));
+    const updatedAnswers = { ...answers, email: data.email };
+    setAnswers(updatedAnswers);
+    // Track the user pet object submission
+    const userId = localStorage.getItem(PIPA_USER_ID_KEY);
+    if (userId) userPetTracker({ id: userId, petObject: updatedAnswers });
   };
+
   const handleZipSubmit = (data: { zip: string }) => {
     setAnswers((prev) => ({
       ...prev,
@@ -104,7 +108,10 @@ const FormSelections = ({
   };
 
   const handleFinishSubmit = () => {
-    navigate("/quotes", { state: answers });
+    // Track the user pet object submission
+    const userId = localStorage.getItem(PIPA_USER_ID_KEY);
+    if (userId) userPetTracker({ id: userId, petObject: answers });
+    handleSubmit();
   };
 
   return (
@@ -124,7 +131,9 @@ const FormSelections = ({
         <GenderForm onSubmit={handleGenderSubmit} />
       )}
       {currentQuestion === "age" && <AgeForm onSubmit={handleAgeSubmit} />}
-      {currentQuestion === "weight" && <WeightForm onSubmit={handleWeightSubmit} petName={answers.petName} />}
+      {currentQuestion === "weight" && (
+        <WeightForm onSubmit={handleWeightSubmit} petName={answers.petName} />
+      )}
       {currentQuestion === "breed" && (
         <BreedForm onSubmit={handleBreedSubmit} animal={answers.animal} />
       )}

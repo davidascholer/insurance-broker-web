@@ -7,7 +7,8 @@ import InsurerItem from "../components/InsurerItem";
 import { hitsTracker } from "@/api/trackers";
 import { useLocation } from "react-router-dom";
 import AppThemeContext from "@/theme/AppThemeContext";
-import { PIPA_VISITED_KEY } from "@/lib/constants";
+import { PIPA_USER_ID_KEY } from "@/lib/constants";
+import { generateRandomAlphanumeric } from "@/lib/utils";
 
 const Home = () => {
   const location = useLocation();
@@ -21,7 +22,7 @@ const Home = () => {
     This is a temporary implementation to check that the user has been to the site before.
     This will be replaced after we add user data to the terms and/or privacy policy pages.
     */
-    if (!localStorage.getItem(PIPA_VISITED_KEY)) {
+    if (!localStorage.getItem(PIPA_USER_ID_KEY)) {
       console.log("Tracking hit.");
 
       const queryParams = new URLSearchParams(location.search);
@@ -33,9 +34,9 @@ const Home = () => {
         : "";
       const referrer = document.referrer ? document.referrer : "";
       hitsTracker({ referrer: referrer || "", origin: origin || "" });
-      setTimeout(() => {
-        localStorage.setItem(PIPA_VISITED_KEY, "true");
-      }, 2000); // Set visited after 2 seconds
+      // Set the user to a random 16 char alphanumeric string used for tacking. 
+      // Duplicates are possible but unlikely and ok if so.
+      localStorage.setItem(PIPA_USER_ID_KEY, generateRandomAlphanumeric(16));
     } else {
       console.log("User has visited before, not tracking hit.");
     }

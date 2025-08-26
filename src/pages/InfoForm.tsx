@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import AppDialog from "@/components/AppDialog";
 import ProgressGrid from "@/components/ProgressGrid";
 import { useNavigate } from "react-router-dom";
+import { PIPA_PET_KEY } from "@/lib/constants";
 
 const defaultAnswers: AnswersType = {
   name: { firstName: "", lastName: "" },
@@ -47,8 +48,9 @@ const editDialogConfig = {
 
 const InfoForm = () => {
   const navigate = useNavigate();
+  // const [answersVerified, setAnswersVerified] = useState(false);
   const [answers, setAnswers] = useState(() => {
-    const savedAnswers = localStorage.getItem("pipa-quote");
+    const savedAnswers = localStorage.getItem(PIPA_PET_KEY);
     if (savedAnswers) {
       const parsedAnswers = JSON.parse(savedAnswers) as AnswersType;
       return parsedAnswers;
@@ -68,10 +70,27 @@ const InfoForm = () => {
   }>(resetDialogConfig);
 
   useEffect(() => {
+    // // Determine if all of the answers are filled out
+    // const allAnswered = Object.values(answers).every((answer) => {
+    //   if (typeof answer === "string") {
+    //     return answer.trim() !== "";
+    //   } else if (typeof answer === "object" && answer !== null) {
+    //     // For object types (like name and age), check if all properties are filled
+    //     return Object.values(answer).every(
+    //       (prop) =>
+    //         (typeof prop === "string" && prop.trim() !== "") ||
+    //         (typeof prop === "number" && prop > 0)
+    //     );
+    //   }
+    //   return false;
+    // });
+    // setAnswersVerified(allAnswered);
+
+    // Find the current question based on answers
     const currentQ = findCurrentQuestionProperty(answers);
     setCurrentQuestion(currentQ);
     // Save answers to localStorage
-    localStorage.setItem("pipa-quote", JSON.stringify(answers));
+    localStorage.setItem(PIPA_PET_KEY, JSON.stringify(answers));
   }, [answers]);
 
   const handleResetDialog = () => {
@@ -183,6 +202,10 @@ const InfoForm = () => {
     }
   };
 
+  const onSubmit = () => {
+    navigate("/quotes");
+  };
+
   return (
     <>
       <AppDialog
@@ -244,6 +267,7 @@ const InfoForm = () => {
               currentQuestion={currentQuestion}
               answers={answers}
               setAnswers={setAnswers}
+              handleSubmit={onSubmit}
             />
           </Questions>
         </main>

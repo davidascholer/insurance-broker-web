@@ -5,7 +5,8 @@ import type { ProviderIdTypes } from "./types";
 export const DEV = import.meta.env.DEV;
 export const PIPA_STORAGE_PREFIX = "pipa-";
 export const PIPA_COLOR_THEME_KEY = PIPA_STORAGE_PREFIX + "color-theme";
-export const PIPA_VISITED_KEY = PIPA_STORAGE_PREFIX + "visit-id";
+export const PIPA_USER_ID_KEY = PIPA_STORAGE_PREFIX + "user-id";
+export const PIPA_PET_KEY = PIPA_STORAGE_PREFIX + "pet";
 
 export const DEDUCTIBLE_OPTIONS = [
   { value: 0, label: "up to $100" },

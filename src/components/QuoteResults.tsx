@@ -92,22 +92,14 @@ const BottomDrawer = ({
                 <ChevronDown className={cn("size-6")} />
               </div>
             )}
-
-            {/* <ChevronDown
-              className={cn(
-                "size-6",
-                value
-                  ? "transition-all duration-500 ease-in-out transform relative z-0"
-                  : "rotate-0"
-              )}
-            /> */}
           </Button>
           <AccordionContent className="flex flex-col gap-4">
             <p className="px-4 pt-4 w-full font-medium text-(--primary-teal-dark) dark:text-neutral-200 text-left sansita-bold">
               {providers.get(providerId).content}
             </p>
             <p className="px-4 w-full font-medium dark:text-neutral-200 text-xs sansita-regular-italic">
-              * This quote is an estimated cost. Actual coverage cost factors include your pet's breed, location, condition, and other details.
+              * This quote is an estimated cost. Actual coverage cost factors
+              include your pet's breed, location, condition, and other details.
             </p>
           </AccordionContent>
         </AccordionItem>
@@ -119,10 +111,12 @@ const BottomDrawer = ({
 function QuoteResults({
   cards,
   showFullResults,
+  handleInsurerClicked,
 }: // handleYoungerPetClicked
 {
   cards: QuoteItem[];
   showFullResults: boolean;
+  handleInsurerClicked: (insurer: string) => void;
   handleYoungerPetClicked: () => void;
 }) {
   const [active, setActive] = useState<
@@ -313,6 +307,11 @@ function QuoteResults({
                       <motion.a
                         layoutId={`button-${active.providerId}-${id}-${active.key}`}
                         href={providers.get(active.providerId).src}
+                        onClick={() =>
+                          handleInsurerClicked(
+                            providers.get(active.providerId).providerName
+                          )
+                        }
                         target="_blank"
                         className="px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
                       >
@@ -431,6 +430,11 @@ function QuoteResults({
                       layoutId={`button-link-${card.providerId}-${id}-${key}`}
                       href={providers.get(card.providerId).src}
                       target="_blank"
+                      onClick={() =>
+                        handleInsurerClicked(
+                          providers.get(card.providerId).providerName
+                        )
+                      }
                       className="px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
                     >
                       Go to {providers.get(card.providerId).providerName}
