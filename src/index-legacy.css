@@ -1,6 +1,4 @@
-/* Original implementation of css. Still needed until refactored. */
-
-
+/* Original implementation of css. Keeping for reference. Delete when comfortable. */
 
 /* Home Page Styles */
 #home-page-landing {
@@ -123,83 +121,6 @@
   width: 100%;
   background-color: var(--light-pink);
   height: 100%;
-}
-
-/* Menu animated icon */
-
-#mobile-header-menu {
-  width: 40px;
-  height: 35px;
-  position: relative;
-  margin-left: auto;
-  margin-right: 20px;
-  -webkit-transform: rotate(0deg);
-  -moz-transform: rotate(0deg);
-  -o-transform: rotate(0deg);
-  transform: rotate(0deg);
-  -webkit-transition: 0.5s ease-in-out;
-  -moz-transition: 0.5s ease-in-out;
-  -o-transition: 0.5s ease-in-out;
-  transition: 0.5s ease-in-out;
-  cursor: pointer;
-}
-
-#mobile-header-menu span {
-  display: block;
-  position: absolute;
-  height: 7px;
-  width: 100%;
-  background: var(--text-dark);
-  border-radius: 4px;
-  opacity: 1;
-  left: 0;
-  -webkit-transform: rotate(0deg);
-  -moz-transform: rotate(0deg);
-  -o-transform: rotate(0deg);
-  transform: rotate(0deg);
-  -webkit-transition: 0.25s ease-in-out;
-  -moz-transition: 0.25s ease-in-out;
-  -o-transition: 0.25s ease-in-out;
-  transition: 0.25s ease-in-out;
-}
-
-#mobile-header-menu span:nth-child(1) {
-  top: 3px;
-}
-
-#mobile-header-menu span:nth-child(2),
-#mobile-header-menu span:nth-child(3) {
-  top: 14px;
-}
-
-#mobile-header-menu span:nth-child(4) {
-  top: 25px;
-}
-
-#mobile-header-menu.open span:nth-child(1) {
-  top: 7px;
-  width: 0%;
-  left: 50%;
-}
-
-#mobile-header-menu.open span:nth-child(2) {
-  -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  -o-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-
-#mobile-header-menu.open span:nth-child(3) {
-  -webkit-transform: rotate(-45deg);
-  -moz-transform: rotate(-45deg);
-  -o-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-}
-
-#mobile-header-menu.open span:nth-child(4) {
-  top: 15px;
-  width: 0%;
-  left: 50%;
 }
 
 /* Insurer Item Component Styles */
@@ -341,7 +262,6 @@
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
 }
 
-
 @media (max-width: 768px) {
   .hero-section {
     height: 50vh;
@@ -355,7 +275,6 @@
   .hero-content {
     padding: 1rem;
   }
-
 }
 
 /* Loading Styles */
@@ -847,4 +766,3 @@
     padding: 1rem 1rem 250px 1rem;
   }
 }
-

@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
-import { useNavigate } from "react-router-dom";
+import { Facebook, Instagram } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 // interface FooterProps {
 //   showFetchButton?: boolean;
@@ -8,28 +9,10 @@ import { useNavigate } from "react-router-dom";
 const Footer = ({ className }: { className?: string }) => {
   const navigate = useNavigate();
 
-  /* Footer Styles */
-
-  // .footer-content {
-  // }
-
-  // .footer-content .navigation {
-  //   display: flex;
-  //   align-items: center;
-  //   gap: 2rem;
-  // }
-
-  // .footer-content .nav-link {
-  // }
-
-  // .footer-content .nav-link:hover {
-  //   color: var(--coral-light);
-  // }
-
   return (
     <footer
       className={cn(
-        "bg-(--primary-teal-dark) sticky top-0 z-100 px-16 pb-2 pt-4",
+        "bg-(--primary-teal-dark) sticky top-0 z-100 px-8 pb-2 pt-4",
         className
       )}
     >
@@ -98,6 +81,22 @@ const Footer = ({ className }: { className?: string }) => {
           >
             Licenses
           </button>
+          <div className="w-full flex justify-center items-center mt-4 gap-10">
+            <Link
+              to="https://www.facebook.com/profile.php?id=61579696327519"
+              target="_blank"
+              className="sansita-regular cursor-pointer nunito-sans-medium transition-transform duration-200 ease hover:-translate-y-0.5"
+            >
+              <Facebook className="inline-block mb-1 mr-1" size={24} />
+            </Link>
+            <Link
+              to="https://www.instagram.com/pipabroker/"
+              target="_blank"
+              className="sansita-regular cursor-pointer nunito-sans-medium transition-transform duration-200 ease hover:-translate-y-0.5"
+            >
+              <Instagram className="inline-block mb-1 mr-1" size={24} />
+            </Link>
+          </div>
         </nav>
       </div>
       <hr className="w-full" />

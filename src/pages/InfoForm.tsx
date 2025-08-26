@@ -6,8 +6,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { PopoverClose } from "@radix-ui/react-popover";
-import Questions from "./Questions";
-import FormSelections from "./FormSelections";
+import Questions from "../components/quotes/Questions";
+import FormSelections from "../components/quotes/FormSelections";
 
 import { findCurrentQuestionProperty } from "@/lib/utils";
 import type { AnswersType } from "@/lib/types";
@@ -99,6 +99,7 @@ const InfoForm = () => {
   const handleEditConfirmed = (currentQuestion: string) => {
     const newAnswers = { ...answers };
 
+    // Reset all answers that follow the current question including the current question
     switch (currentQuestion) {
       case "name":
         setAnswers(defaultAnswers);

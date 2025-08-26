@@ -2,10 +2,9 @@ A running list of todos.
 
 
 UI
-- Save form object to JSON ls string
+- Save form object to JSON string
 - If they have an id AND saved object, load query string right away
 - Enter in pet information on results page with option to go back to the form.
-- Default do not accept terms and conditions
 - Browser test for arrows on scrollbars (Windows Chrome)
 - Less padding on Home page <p> elements (mobile view)
 - Bot 
@@ -13,6 +12,7 @@ UI
     - Allow the predetermined questions in chatbot to copy and paste into the form
 - Later...
     - Color theme
+DONE - Default do not accept terms and conditions
 DONE - Take out pointer (hand) cursor on landscape
 DONE - Create UI for admin
 DONE - Shrink together Loading screen and make sure to add margin to account for header

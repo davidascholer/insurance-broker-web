@@ -43,10 +43,10 @@ const Home = () => {
 
   return (
     <div>
-      <section id="home-page-landing">
+      <section className="w-screen h-screen bg-[url('/header.jpg')] bg-no-repeat bg-cover bg-[70%_0%] relative">
         <Header />
-        <div id="home-page-landing-overlay">
-          <div id="home-page-landing-content">
+        <div className="top-0 left-0 right-0 bottom-0 bg-(--light-pink-transparent) absolute">
+          <div className="flex flex-col gap-12 justify-center ml-4 md:ml-20 max-w-[600px] text-(--text-dark) mt-12">
             <h1 className="sansita-bold text-5xl mt-36 sm:mt-20 md:mt-4 max-w-[300px] md:max-w-[1000px]">
               Get the insurance that works best for you and your fur baby today.
             </h1>
@@ -54,9 +54,9 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section id="home-page-about">
-        <div id="home-page-about-content">
-          <h1 className="sansita-bold text-5xl text-(--primary-teal-dark-transparent)">
+      <section className="bg-(--light-pink)">
+        <div className="p-8 flex flex-col items-center text-center gap-12">
+          <h1 className="sansita-bold text-5xl text-(--primary-teal-dark-transparent) mt-4">
             Hi, we’re your modern day pet insurance broker.
           </h1>
           <p>
@@ -67,15 +67,17 @@ const Home = () => {
           <FetchQuoteButton />
         </div>
       </section>
-      <div className="chevron-bg-container">
-        <div className="chevron-bg"></div>
+
+      <div className="bg-white w-full h-[90px]">
+        <div className="w-full bg-(--light-pink) h-full background-clip"></div>
       </div>
-      <section id="home-page-carriers">
-        <div id="home-page-carriers-content">
-          <h1 className="sansita-bold text-5xl text-(--primary-coral) pink m-2">
+
+      <section className="bg-white">
+        <div className="flex flex-col items-center text-center gap-12 p-4 text-(--text-dark)">
+          <h1 className="sansita-bold text-5xl text-(--primary-coral) pink m-2 p-4">
             Get quotes from trusted carriers.
           </h1>
-          <div className="flex-row-center">
+          <div className="flex flex-row justify-evenly items-start gap-5 flex-wrap mt-5">
             <InsurerItem
               imagePath="./aspca_title.jpg"
               altImageText="ASPCA logo"
@@ -101,12 +103,12 @@ const Home = () => {
           </span>
         </div>
       </section>
-      <section id="home-page-coverage-container">
-        <div id="home-page-coverage-content">
-          <h1 className="sansita-bold large-heading">
+      <section className="bg-(--primary-coral) w-full">
+        <div className="px-2 py-24 flex flex-col gap-5 text-white">
+          <h1 className="sansita-bold large-heading text-white text-3xl mx-16 flex flex-row justify-center items-center gap-4 flex-wrap">
             What does pet insurance cover?
           </h1>
-          <div className="flex-row-center">
+          <div className="flex flex-row justify-evenly items-start gap-5 flex-wrap mt-5">
             <CoverageItem
               imagePath="./diagnostics_pet.jpeg"
               title="Diagnostics"

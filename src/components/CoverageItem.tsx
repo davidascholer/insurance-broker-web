@@ -8,9 +8,9 @@ const CoverageItem = ({
   details: string;
 }) => {
   return (
-    <div className="coverage-item-container">
-      <img src={imagePath} alt="pet" />
-      <p className="bold sansita-bold">{title}</p>
+    <div className="flex flex-row flex-wrap gap-5 justify-start, items-center p-2 max-w-[300px] min-w-[150px] text-start">
+      <img src={imagePath} alt="pet" className="min-w-[100px] max-w-[300px] aspect-1 text-sm justify-self-center mt-2" />
+      <p className="sansita-bold text-lg mt-2">{title}</p>
       <p>{details}</p>
     </div>
   );

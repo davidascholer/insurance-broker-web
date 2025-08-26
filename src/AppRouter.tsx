@@ -1,7 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import InfoForm from "./components/quotes/InfoForm";
-import Loading from "./pages/Loading";
-import Results from "./pages/Results";
+import InfoForm from "./pages/InfoForm";
 import Home from "./pages/Home";
 import Terminology from "./pages/Terminology";
 import PartnerContact from "./pages/contact/PartnerContact";
@@ -42,8 +40,6 @@ const AppRouter = () => {
         <Route path="/investors" element={<InvestorContact />} />
         <Route path="/info" element={<InfoForm />} />
         <Route path="/quotes" element={<Quotes />} />
-        <Route path="/loading" element={<Loading />} />
-        <Route path="/results" element={<Results />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/licenses" element={<Licenses />} />
