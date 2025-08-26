@@ -146,6 +146,7 @@ const Quotes = () => {
         clearTimeout(timeout);
       }
     }
+
     const fetchedQuotes: QuoteItem[] = [];
     if (figoResult.success && figoResult.quotes) {
       // setInsurerOptionOnFetch("figo");
@@ -214,6 +215,12 @@ const Quotes = () => {
     // }
     setQuoteData(fetchedQuotes);
     setActiveQuoteData(fetchedQuotes);
+  };
+
+  const handleYoungerPetClicked = () => {
+    const answers = location.state as AnswersType;
+
+    fetchQuotes({ ...answers, age: { value: 18, label: "8 weeks" } });
   };
 
   useEffect(() => {
@@ -304,6 +311,7 @@ const Quotes = () => {
             <QuoteResults
               cards={activeQuoteData}
               showFullResults={showFullResults}
+              handleYoungerPetClicked={handleYoungerPetClicked}
             />
             <button
               className={cn(

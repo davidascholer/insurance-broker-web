@@ -6,7 +6,7 @@ import type {
   QuotesResultType,
 } from "../lib/types";
 import {
-  PIPA_ADMIN_URL,
+  PIPA_AUTH_URL,
   PIPA_ANALYTICS_URL,
   PIPA_BOT_URL,
   PIPA_EMAIL_URL,
@@ -25,6 +25,7 @@ export const getQuotes = async (
     },
     body: JSON.stringify(answers),
   });
+  console.log("getQuotes called with params:", answers, insurer);
   if (!response.ok) {
     return {
       success: false,
@@ -94,7 +95,7 @@ export const getHits = async (token: string) => {
 };
 
 export const adminEmailPassword = async (email: string) => {
-  const data = await fetch(PIPA_ADMIN_URL + "/auth/email-password", {
+  const data = await fetch(PIPA_AUTH_URL + "/send-token", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
