@@ -3,7 +3,7 @@ A running list of todos.
 
 UI
 - Put in estimated vs exact cost results (show more) option
-- Shrink together Loading screen and make sure to add margin to account for header
+DONE - Shrink together Loading screen and make sure to add margin to account for header
 - Take out pointer (hand) cursor on landscape
 - Save form object to JSON ls string
 - If they have an id AND saved object, load query string right away

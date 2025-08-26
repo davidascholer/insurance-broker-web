@@ -59,7 +59,7 @@ const LoadingQuotes = ({
   return (
     <div
       className={cn(
-        "w-full max-w-4xl pb-4 mx-auto flex flex-col gap-20  items-center justify-center h-full"
+        "w-full max-w-4xl pb-4 pt-24 mx-auto flex flex-col items-center justify-start h-full"
       )}
     >
       <Progress

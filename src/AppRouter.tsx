@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import InfoForm from "./pages/quotes/InfoForm";
+import InfoForm from "./components/quotes/InfoForm";
 import Loading from "./pages/Loading";
 import Results from "./pages/Results";
 import Home from "./pages/Home";
@@ -8,7 +8,7 @@ import PartnerContact from "./pages/contact/PartnerContact";
 import InvestorContact from "./pages/contact/InvestorContact";
 import About from "./pages/About";
 import FAQs from "./pages/FAQs";
-import Quotes from "./pages/quotes/Quotes";
+import Quotes from "./pages/Quotes";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Licenses from "./pages/Licenses";
