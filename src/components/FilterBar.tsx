@@ -1,7 +1,7 @@
 // Create a full width filter bar with a light pink background and rounded corners that contains dropdowns for filtering quotes
 import { cn } from "@/lib/utils";
 import ChatBot from "./ChatBot";
-import { ListFilter } from "lucide-react";
+import { ListCheck, ListFilter } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import {
   ANNUAL_LIMIT_OPTIONS,
@@ -43,6 +43,7 @@ const FilterOptions = ({
                 "flex-1 text-sm text-(--primary-teal-dark) text-center lowercase px-4 py-2 rounded-2xl shadow-md hover:shadow-lg transition-shadow cursor-pointer nunito-sans-medium bg-(--coral-light) hover:bg-(--primary-coral)"
               )}
             >
+              <ListCheck size={16} className="inline mb-1 mr-2" />
               {selectedOption.label}
             </div>
           </DropdownMenuTrigger>
