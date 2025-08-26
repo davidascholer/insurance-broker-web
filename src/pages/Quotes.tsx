@@ -126,30 +126,21 @@ const Quotes = () => {
     const figoResult: QuotesResultType = await getQuotes(answers, "figo");
     const fetchResult: QuotesResultType = await getQuotes(answers, "fetch");
     const embraceResult: QuotesResultType = await getQuotes(answers, "embrace");
-    // const pumpkinResult: QuotesResultType = await getQuotes(answers, "pumpkin");
-    // const petsBestResult: QuotesResultType = await getQuotes(
-    //   answers,
-    //   "petsbest"
-    // );
-    // const metlifeResult: QuotesResultType = await getQuotes(answers, "metlife");
+
     // If DEV, you can stop the loading early if the server has responded from all providers
-    if (DEV) {
-      if (
-        figoResult &&
-        fetchResult &&
-        embraceResult
-        // pumpkinResult &&
-        // petsBestResult &&
-        // metlifeResult
-      ) {
-        setIsLoading(false);
-        clearTimeout(timeout);
-      }
-    }
+    // if (DEV) {
+    //   if (
+    //     figoResult &&
+    //     fetchResult &&
+    //     embraceResult
+    //   ) {
+    //     setIsLoading(false);
+    //     clearTimeout(timeout);
+    //   }
+    // }
 
     const fetchedQuotes: QuoteItem[] = [];
     if (figoResult.success && figoResult.quotes) {
-      // setInsurerOptionOnFetch("figo");
       const figoQuotes = figoResult.quotes.coverageOptions.map((quote) => ({
         ...quote,
         providerId: "figo" as const,
@@ -161,7 +152,6 @@ const Quotes = () => {
       }
     }
     if (fetchResult.success && fetchResult.quotes) {
-      // setInsurerOptionOnFetch("fetch");
       const fetchQuotes = fetchResult.quotes.coverageOptions.map((quote) => ({
         ...quote,
         providerId: "fetch" as const,
@@ -172,7 +162,6 @@ const Quotes = () => {
       }
     }
     if (embraceResult.success && embraceResult.quotes) {
-      // setInsurerOptionOnFetch("embrace");
       const embraceQuotes = embraceResult.quotes.coverageOptions.map(
         (option) => ({
           ...option,
@@ -183,36 +172,6 @@ const Quotes = () => {
         fetchedQuotes.push(...embraceQuotes);
       }
     }
-    // if (pumpkinResult.success && pumpkinResult.quotes) {
-    //   // setInsurerOptionOnFetch("pumpkin");
-    //   const pumpkinQuotes = pumpkinResult.quotes.map((quote) => ({
-    //     ...quote,
-    //     providerId: "pumpkin" as const,
-    //   }));
-    //   if (pumpkinQuotes) {
-    //     fetchedQuotes.push(...pumpkinQuotes);
-    //   }
-    // }
-    // if (petsBestResult.success && petsBestResult.quotes) {
-    //   // setInsurerOptionOnFetch("petsbest");
-    //   const petsBestQuotes = petsBestResult.quotes.map((quote) => ({
-    //     ...quote,
-    //     providerId: "petsbest" as const,
-    //   }));
-    //   if (petsBestQuotes) {
-    //     fetchedQuotes.push(...petsBestQuotes);
-    //   }
-    // }
-    // if (metlifeResult.success && metlifeResult.quotes) {
-    //   // setInsurerOptionOnFetch("metlife");
-    //   const metlifeQuotes = metlifeResult.quotes.map((quote) => ({
-    //     ...quote,
-    //     providerId: "metlife" as const,
-    //   }));
-    //   if (metlifeQuotes) {
-    //     fetchedQuotes.push(...metlifeQuotes);
-    //   }
-    // }
     setQuoteData(fetchedQuotes);
     setActiveQuoteData(fetchedQuotes);
   };
@@ -274,7 +233,6 @@ const Quotes = () => {
 
     if (DEV) console.log("whiteList", selectedLimits);
     setActiveQuoteData(selectedLimits);
-    // handleSortItemClicked("price");
   }, [annualLimits, deductibles, quoteData, reimbursementRates]);
 
   return (
@@ -302,11 +260,9 @@ const Quotes = () => {
               handleDeductibleClicked={handleDeductibleClicked}
               handleReimbursementRateClicked={handleReimbursementRateClicked}
               handleAnnualLimitClicked={handleAnnualLimitClick}
-              // sortItems={handleSortItemClicked}
               selectedDeductible={selectedDeductible}
               selectedReimbursement={selectedReimbursement}
               selectedLimit={selectedLimit}
-              // sortItemSelected={sortItemSelected}
             />
             <QuoteResults
               cards={activeQuoteData}

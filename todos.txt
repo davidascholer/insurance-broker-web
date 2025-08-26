@@ -2,34 +2,33 @@ A running list of todos.
 
 
 UI
-- Put in estimated vs exact cost results (show more) option
-DONE - Shrink together Loading screen and make sure to add margin to account for header
-- Take out pointer (hand) cursor on landscape
 - Save form object to JSON ls string
 - If they have an id AND saved object, load query string right away
 - Enter in pet information on results page with option to go back to the form.
 - Default do not accept terms and conditions
-- Create UI for admin
+- Browser test for arrows on scrollbars (Windows Chrome)
+- Less padding on Home page <p> elements (mobile view)
 - Bot 
     - style paw icon and text on open loader
     - Allow the predetermined questions in chatbot to copy and paste into the form
 - Later...
-- Color theme
+    - Color theme
+DONE - Take out pointer (hand) cursor on landscape
+DONE - Create UI for admin
+DONE - Shrink together Loading screen and make sure to add margin to account for header
+DONE - Put in estimated vs exact cost results (show more) option
 
 API
 - Save id upon email form submission
 - Track id of item clicked along with vendor
-- Hook up db
-- Set up auth
 Later...
 - Email people 1 day after they check their quote (CRON)
+DONE - Set up auth
 
 OTHER
-- Create instructions on how to add a new page in the README.md
+DONE - Create instructions on how to add a new page in the README.md
 
 BACK END
 - Create anayltics feature
-- Set up POSTGRES database
-- Implement Prisma into back end
 - add server listeners on email form submitted, provider link clicked, ...
 

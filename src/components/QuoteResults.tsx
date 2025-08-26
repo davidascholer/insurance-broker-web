@@ -102,9 +102,12 @@ const BottomDrawer = ({
               )}
             /> */}
           </Button>
-          <AccordionContent className="flex flex-col gap-4 text-balance">
-            <p className="p-4 w-full font-medium text-neutral-800 dark:text-neutral-200 text-left sansita-bold">
+          <AccordionContent className="flex flex-col gap-4">
+            <p className="px-4 pt-4 w-full font-medium text-(--primary-teal-dark) dark:text-neutral-200 text-left sansita-bold">
               {providers.get(providerId).content}
+            </p>
+            <p className="px-4 w-full font-medium dark:text-neutral-200 text-xs sansita-regular-italic">
+              * This quote is an estimated cost. Actual coverage cost factors include your pet's breed, location, condition, and other details.
             </p>
           </AccordionContent>
         </AccordionItem>
@@ -116,8 +119,8 @@ const BottomDrawer = ({
 function QuoteResults({
   cards,
   showFullResults,
-  // handleYoungerPetClicked
-}: {
+}: // handleYoungerPetClicked
+{
   cards: QuoteItem[];
   showFullResults: boolean;
   handleYoungerPetClicked: () => void;
@@ -172,12 +175,13 @@ function QuoteResults({
   return (
     <>
       {cards.length === 0 ? (
-        <div className="text-lg sansita-regular p-4 w-full max-w-4xl mx-auto nunito-sans text-balance flex flex-col gap-4"> 
+        <div className="text-lg sansita-regular p-4 w-full max-w-4xl mx-auto nunito-sans text-balance flex flex-col gap-4">
           <p>
-            Unfortunately, we could not dig up any plans for your pet. This is commonly
-            due to little puppies and kittens being too young. A lot of plans
-            don't start until your pet is between 6-8 weeks old. The good news is most plans let
-            you start at a later date, so feel free to check the prices for when your pet is 8 weeks old!
+            Unfortunately, we could not dig up any plans for your pet. This is
+            commonly due to little puppies and kittens being too young. A lot of
+            plans don't start until your pet is between 6-8 weeks old. The good
+            news is most plans let you start at a later date, so feel free to
+            check the prices for when your pet is 8 weeks old!
           </p>
           {/* <Button variant="outline" className="cursor-pointer" onClick={handleYoungerPetClicked}>Click here to see quotes when your pet is 8 weeks old!</Button> */}
         </div>
@@ -342,11 +346,11 @@ function QuoteResults({
                   layoutId={`card-${card.providerId}-${id}-${key}`}
                   key={`card-${card.providerId}-${id}-${key}`}
                   onClick={() => isPortrait && setActive({ ...card, key })}
-                  className="mt-3 p-4 pb-1 bg-white hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer border-2 border-(--primary-coral) hover:shadow-lg transition-all duration-300 ease max-w-4xl mx-auto"
+                  className={cn(
+                    "mt-3 p-4 pb-1 bg-white hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl border-2 border-(--primary-coral) hover:shadow-lg transition-all duration-300 ease max-w-4xl mx-auto",
+                    isPortrait ? "cursor-pointer" : ""
+                  )}
                 >
-                  {/* <h1 className="w-full m-auto">
-              {providers.get(card.providerId)?.providerName}
-            </h1> */}
                   <div className="flex gap-1 flex-col md:flex-row items-center md:items-start justify-center w-full max-w-4xl">
                     <motion.div
                       layoutId={`image-${card.providerId}-${id}-${key}`}
