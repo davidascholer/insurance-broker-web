@@ -6,7 +6,7 @@ export const hitsTracker = async (reqBody: {
 }) => {
   // Validate params
   const { origin, referrer } = reqBody;
-  if (!origin && !referrer) {
+  if (typeof origin !== "string" || typeof referrer !== "string") {
     return;
   }
   fetch(PIPA_ANALYTICS_URL + "/hits", {
@@ -17,6 +17,7 @@ export const hitsTracker = async (reqBody: {
     },
     body: JSON.stringify(reqBody),
   });
+  console.log("Hits Tracker called with params:", origin, referrer);
 };
 
 export const providerClickedTracker = ({

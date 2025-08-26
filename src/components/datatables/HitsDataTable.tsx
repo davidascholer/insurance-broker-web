@@ -14,7 +14,7 @@ function HitsDataTable({ data }: { data: HitsDataType[] }) {
   return (
     <div className="w-full mt-4">
       <h1 className="text-2xl w-full text-center">Hits</h1>
-      <Table>
+      <Table className="overflow-scroll">
         <TableCaption className="w-full">
           All unique visits to the Pipa Home page
         </TableCaption>

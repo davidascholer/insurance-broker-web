@@ -22,6 +22,8 @@ const Home = () => {
     This will be replaced after we add user data to the terms and/or privacy policy pages.
     */
     if (!localStorage.getItem(PIPA_VISITED_KEY)) {
+      console.log("Tracking hit.");
+
       const queryParams = new URLSearchParams(location.search);
 
       const origin = queryParams.get("fbclid")
@@ -31,7 +33,11 @@ const Home = () => {
         : "";
       const referrer = document.referrer ? document.referrer : "";
       hitsTracker({ referrer: referrer || "", origin: origin || "" });
-      localStorage.setItem(PIPA_VISITED_KEY, "true");
+      setTimeout(() => {
+        localStorage.setItem(PIPA_VISITED_KEY, "true");
+      }, 2000); // Set visited after 2 seconds
+    } else {
+      console.log("User has visited before, not tracking hit.");
     }
   }, [location.search]);
 

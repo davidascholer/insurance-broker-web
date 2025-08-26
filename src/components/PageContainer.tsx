@@ -10,11 +10,11 @@ export default function PageContainer({
   className?: string;
 }) {
   return (
-    <div className={cn("flex flex-col min-h-screen bg-(--light-pink)",className)}>
+    <div className={cn("flex flex-col min-h-screen bg-(--light-pink) pt-24",className)}>
       <Header />
       <main
         id="these-styles-are-important"
-        className="flex-1 overflow-scroll pt-24 flex flex-col gap-12 p-4"
+        className="flex-1 flex flex-col gap-12 p-4"
       >
         {children}
       </main>

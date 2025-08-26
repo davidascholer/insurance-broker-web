@@ -1,5 +1,6 @@
-import { getHits } from "@/api/api";
-// import AdminLoginForm from "@/components/AdminLoginForm";
+import { adminEmailPassword, getHits } from "@/api/api";
+import AdminLoginForm from "@/components/admin/AdminLoginForm";
+import AdminTokenForm from "@/components/admin/AdminTokenForm";
 import HitsDataTable from "@/components/datatables/HitsDataTable";
 import Loader from "@/components/Loader";
 import PageContainer from "@/components/PageContainer";
@@ -9,16 +10,14 @@ import { useEffect, useState } from "react";
 const Admin = () => {
   const [hitsData, setHitsData] = useState<HitsDataType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [emailResponse, setEmailResponse] = useState<string>("");
 
   const fetchHitsData = async () => {
     try {
-      //   const token = localStorage.getItem("pipa-data-token");
-      //   if (!token) return;
-      const fetchedHits = await getHits(
-        "G3WFtOTY5Kt3kpEYOCiWZbbZVMKIibsXIc4jGjJsKKIzELfVOLmrG9HUl4qHwHdB"
-      );
-
-      console.log("Fetched hits data:", fetchedHits);
+      const token = localStorage.getItem("pipa-data-token");
+      if (!token) return;
+      const fetchedHits = await getHits(token);
+      console.log("Fetched hits:", fetchedHits);
       if (fetchedHits && Array.isArray(fetchedHits)) {
         setHitsData(fetchedHits);
       }
@@ -32,11 +31,18 @@ const Admin = () => {
     setTimeout(() => setLoading(false), 2000);
   }, []);
 
-//   const handleSubmit = async ({ email }: { email: string }) => {
-//     console.log(email);
-//     const response = await adminEmailPassword(email);
-//     console.log(response);
-//   };
+  const handleEmailSubmit = async ({ email }: { email: string }) => {
+    const response = await adminEmailPassword(email);
+    setEmailResponse(response);
+    setTimeout(() => {
+      setEmailResponse("");
+    }, 5000);
+  };
+
+  const handleTokenSubmit = ({ token }: { token: string }) => {
+    localStorage.setItem("pipa-data-token", token);
+    fetchHitsData();
+  };
 
   if (loading) {
     return (
@@ -48,13 +54,16 @@ const Admin = () => {
     );
   }
 
-//   if (hitsData.length === 0) {
-//     return (
-//       <PageContainer className="flex flex-col items-center justify-center">
-//         <AdminLoginForm onSubmit={handleSubmit} />
-//       </PageContainer>
-//     );
-//   }
+  if (hitsData.length === 0) {
+    return (
+      <PageContainer className="flex flex-col items-center justify-start gap-0">
+        <AdminTokenForm onSubmit={handleTokenSubmit} className="text-center" />
+        <span className="w-full text-center">Don't have a token?</span>
+        <AdminLoginForm onSubmit={handleEmailSubmit} className="text-center" />
+        <p className="w-full text-center">{emailResponse}</p>
+      </PageContainer>
+    );
+  }
 
   return (
     <PageContainer>

@@ -10,7 +10,8 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   email: z.email("Invalid email address"), // This validates the email format
@@ -18,8 +19,10 @@ const formSchema = z.object({
 
 const AdminLoginForm = ({
   onSubmit,
+  className,
 }: {
   onSubmit: SubmitHandler<{ email: string }>;
+  className?: string;
 }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -32,7 +35,7 @@ const AdminLoginForm = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 w-full my-4 p-2"
+        className={cn("space-y-6 w-full my-4 p-2",className)}
       >
         <FormField
           control={form.control}
@@ -51,7 +54,7 @@ const AdminLoginForm = ({
           className="cursor-pointer" 
           disabled={!form.formState.isValid}
         >
-          Send Password
+          Email Token
         </Button>
       </form>
     </Form>

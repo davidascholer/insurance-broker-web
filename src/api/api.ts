@@ -103,8 +103,7 @@ export const adminEmailPassword = async (email: string) => {
     body: JSON.stringify({ email: email }),
   });
   if (!data.ok) {
-    throw new Error(`Error: ${data.status} ${data.statusText}`);
+    return "Error: " + data.statusText;
   }
-  const parsedData = await data.json();
-  return parsedData.data;
+  return "Email sent successfully!";
 };
