@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import CoverageItem from "../components/CoverageItem";
 import FetchQuoteButton from "../components/FetchQuoteButton";
 import Footer from "../components/Footer";
@@ -6,15 +6,11 @@ import Header from "../components/header/Header";
 import InsurerItem from "../components/InsurerItem";
 import { hitsTracker } from "@/api/trackers";
 import { useLocation } from "react-router-dom";
-import AppThemeContext from "@/theme/AppThemeContext";
 import { PIPA_USER_ID_KEY } from "@/lib/constants";
 import { generateRandomAlphanumeric } from "@/lib/utils";
 
 const Home = () => {
   const location = useLocation();
-  const { theme } = useContext(AppThemeContext);
-
-  console.log("Current theme:", theme);
 
   useEffect(() => {
     /*

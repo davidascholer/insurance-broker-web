@@ -84,6 +84,13 @@ const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
             FAQs
           </button>
 
+          {/* <button
+            onClick={changeTheme}
+            className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center"
+          >
+            Theme
+          </button> */}
+
           {showFetchButton && (
             <div className="flex items-center justify-center">
               <FetchQuoteButton />

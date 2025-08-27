@@ -4,6 +4,11 @@ import type { dogBreeds } from "@/data/dogBreeds";
 export type NameType = { firstName: string; lastName: string };
 export type AgeType = { value: number; label: string };
 
+export type ThemeProviderStateType = {
+  theme: ColorThemeType;
+  changeTheme: () => void;
+};
+
 export type AnswersType = {
   name: NameType;
   email: string;
