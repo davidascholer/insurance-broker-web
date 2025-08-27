@@ -3,12 +3,11 @@ A running list of todos.
 
 UI
 - Browser test for arrows on scrollbars (Windows Chrome)
+- Color theme
 - Bot 
     - style paw icon and text on open loader
     - Allow the predetermined questions in chatbot to copy and paste into the form
-- Later...
-    - Color theme
-IN PROGRESS - Implement new analytics into admin
+DONE - Implement new analytics into admin
 DONE - Save form object to JSON string
 DONE - Enter in pet information on results page with option to go back to the form.
 DONE - If they have an id AND saved object, load query string right away
@@ -23,7 +22,6 @@ DONE - Phase out old CSS implementation
 DONE - Less padding on Home page <p> elements (mobile view)
 
 API
-Later...
 - CRON email jobs
 DONE - Save id upon email form submission
 DONE - Track id of item clicked along with vendor
@@ -35,4 +33,3 @@ DONE - Create instructions on how to add a new page in the README.md
 BACK END
 DONE - Create anayltics features
 DONE - add server listeners on email form submitted, provider link clicked, etc.
-

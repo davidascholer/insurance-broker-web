@@ -1,18 +1,28 @@
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { Send } from "lucide-react";
+import { useEffect } from "react";
+import { useFieldArray } from "react-hook-form";
 
 interface CommentBoxProps extends React.ComponentProps<"textarea"> {
   onSubmit: () => void;
   submitDisabled?: boolean;
+  populatedText?: string;
 }
 
 function CommentBox({
   className,
   submitDisabled,
   onSubmit,
+  populatedText = "",
   ...props
 }: CommentBoxProps) {
+  const { replace } = useFieldArray({ name: "botMessage" });
+
+  useEffect(() => {
+    replace(populatedText);
+  }, [populatedText, replace]);
+
   const handleEnterPress = (
     event: React.KeyboardEvent<HTMLTextAreaElement>
   ) => {
@@ -30,10 +40,9 @@ function CommentBox({
     >
       {/* <div style={{ position: "relative", width: "300px", height: "150px" }}> */}
       <textarea
-        id="bot-comment-box"
         data-slot="textarea"
         className={cn(
-          "p-xl h-full border-input placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 flex field-sizing-content w-full rounded-md border bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+          "p-xl h-full placeholder:text-muted-foreground flex field-sizing-content w-full rounded-md bg-transparent px-3 py-2 text-base transition-[color,box-shadow] outline-none disabled:opacity-50 md:text-sm"
         )}
         onKeyDown={handleEnterPress}
         {...props}
@@ -42,7 +51,7 @@ function CommentBox({
         type="submit"
         variant={"ghost"}
         disabled={submitDisabled}
-        className="absolute bottom-2 right-2 p-0 cursor-pointer"
+        className=" w-8 absolute bottom-2 right-2 p-0 cursor-pointer hover:bg-(--primary-teal) hover:text-(--light-pink) disabled:cursor-not-allowed disabled:opacity-50"
       >
         <Send className="size-7" />
       </Button>

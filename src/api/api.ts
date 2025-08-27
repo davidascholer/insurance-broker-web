@@ -25,7 +25,6 @@ export const getQuotes = async (
     },
     body: JSON.stringify(answers),
   });
-  console.log("getQuotes called with params:", answers, insurer);
   if (!response.ok) {
     return {
       success: false,
@@ -34,7 +33,6 @@ export const getQuotes = async (
   }
   const formattedResponse = await response.json();
   const options = formattedResponse.data;
-  console.log("RESPONSE FROM options", insurer, options);
   return { quotes: options, success: true };
 };
 

@@ -27,10 +27,12 @@ const BotMessageForm = ({
   onSubmit,
   submitDisabled = false,
   scrollRef,
+  populatedText,
 }: {
   onSubmit: SubmitHandler<{ botMessage: string }>;
   submitDisabled?: boolean;
   scrollRef?: React.RefObject<HTMLDivElement | null>;
+  populatedText?: string;
 }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -63,8 +65,9 @@ const BotMessageForm = ({
               <FormControl>
                 <CommentBox
                   onSubmit={form.handleSubmit(handleSubmit)}
-                  className="bg-(--light-pink) mt-auto nunito-sans"
+                  className="bg-(--light-pink) mt-auto nunito-sans pr-10 b-0 outline-color-green-200"
                   submitDisabled={submitDisabled}
+                  populatedText={populatedText}
                   {...field}
                 />
               </FormControl>

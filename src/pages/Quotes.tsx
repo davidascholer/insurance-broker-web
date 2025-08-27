@@ -151,7 +151,7 @@ const Quotes = () => {
         ...quote,
         providerId: "figo" as const,
       }));
-      if (DEV) console.log("figoQuotes", figoQuotes);
+      if (DEV) console.log("DEV LOG","figoQuotes", figoQuotes);
 
       if (figoQuotes) {
         fetchedQuotes.push(...figoQuotes);
@@ -162,7 +162,7 @@ const Quotes = () => {
         ...quote,
         providerId: "fetch" as const,
       }));
-      if (DEV) console.log("fetchQuotes", fetchQuotes);
+      if (DEV) console.log("DEV LOG","fetchQuotes", fetchQuotes);
       if (fetchQuotes) {
         fetchedQuotes.push(...fetchQuotes);
       }
@@ -228,21 +228,21 @@ const Quotes = () => {
         quote.deductibleOption <= nextDeductible.value
       );
     });
-    if (DEV) console.log("selectedDeductibles", selectedDeductibles);
+    if (DEV) console.log("DEV LOG","selectedDeductibles", selectedDeductibles);
 
     const selectedReimbursements = selectedDeductibles.filter((quote) => {
       return (
         quote.reimbursementPercentageOption === selectedReimbursement.value
       );
     });
-    if (DEV) console.log("selectedReimbursements", selectedReimbursements);
+    if (DEV) console.log("DEV LOG","selectedReimbursements", selectedReimbursements);
 
     const selectedLimits = selectedReimbursements.filter((quote) => {
       return quote.reimbursementLimitOption === selectedLimit.value;
     });
-    if (DEV) console.log("selectedLimits", selectedLimits);
+    if (DEV) console.log("DEV LOG","selectedLimits", selectedLimits);
 
-    if (DEV) console.log("whiteList", selectedLimits);
+    if (DEV) console.log("DEV LOG","whiteList", selectedLimits);
     setActiveQuoteData(selectedLimits);
   }, [annualLimits, deductibles, quoteData, reimbursementRates]);
 
@@ -274,6 +274,7 @@ const Quotes = () => {
               selectedDeductible={selectedDeductible}
               selectedReimbursement={selectedReimbursement}
               selectedLimit={selectedLimit}
+              selectedPetType={petObject?.animal || "dog"}
             />
             <div className="text-start w-full max-w-4xl sansita-regular px-2 mt-4 text-lg mx-auto">
               <Link to="/info/?edit=true" className="text-(--primary-teal-dark)">

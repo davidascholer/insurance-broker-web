@@ -6,12 +6,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const formatArray = (str: string) => {
+export const formatArray = (str: string, className?: string) => {
   const returnArray = [];
   for (const s of str.split(" ")) {
     returnArray.push({
       text: s,
-      className: "text-(--text-dark) text-md",
+      className: cn("text-(--text-dark) text-md", className),
     });
   }
   return returnArray;

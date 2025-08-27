@@ -60,31 +60,21 @@ const Message = ({
   );
 };
 
-const QuestionButton = ({ msg }: { msg: string }) => {
-  const handleClick = () => {
-    const formInput = document.getElementById(
-      "bot-comment-box"
-    ) as HTMLTextAreaElement;
-
-    if (formInput) {
-      console.log("Setting form input to:", msg);
-      console.log(formInput);
-      formInput.value = msg;
-      formInput.focus();
-    }
-  };
-
+const QuestionButton = ({
+  msg,
+  onClick,
+}: {
+  msg: string;
+  onClick: (msg: string) => void;
+}) => {
   return (
     <button
-      onClick={handleClick}
-      className="pointer-events-none"
-      // className="border-(--primary-teal-dark) border-2 hover:bg-(--primary-coral)  transition-colors duration-300 ease-in-out cursor-pointer px-4 pt-1 pb-2 rounded-full text-sm mt-2 nunito-sans-bold "
+      onClick={() => onClick(msg)}
+      className="cursor-pointer self-end bg-(--primary-teal-dark) rounded-full flex items-center justify-center px-3 pt-1 pb-2 mt-2"
     >
-      <TypewriterEffect
-        cursorClassName="hidden"
-        className="h-auto font-bold text-sm self-end mt-2 "
-        words={formatArray(msg)}
-      />
+      <p className="h-auto font-bold text-sm self-end mt-2 text-(--primary-coral)">
+        {msg}
+      </p>
     </button>
   );
 };
@@ -95,6 +85,7 @@ interface ChatBotProps {
   setOpen: (open: boolean) => void;
   firstClick: boolean;
   setFirstClick: (firstClick: boolean) => void;
+  selectedPetType: string;
 }
 
 const ChatBot = ({
@@ -103,8 +94,10 @@ const ChatBot = ({
   setOpen,
   firstClick,
   setFirstClick,
+  selectedPetType,
 }: ChatBotProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [chatInput, setChatInput] = useState<string>("");
   const [chatMessages, setChatMessages] = useState<ChatMessageType[]>(
     localStorage.getItem("pipaChat")
       ? JSON.parse(localStorage.getItem("pipaChat") as string)
@@ -179,6 +172,14 @@ const ChatBot = ({
     localStorage.setItem("pipaChatSessionId", generateRandomAlphanumeric(9));
   };
 
+  const handleQuestionClicked = (msg: string) => {
+    setChatInput(msg);
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: 'smooth'
+    })
+  };
+
   return (
     <div
       className={cn(
@@ -235,9 +236,18 @@ const ChatBot = ({
               className="h-auto font-bold text-(--light-pink) text-sm self-end mt-2"
               words={formatArray("Ask me questions such as:")}
             />
-            <QuestionButton msg="How much on average does it cost to insure a dog/cat?" />
-            <QuestionButton msg="What are the most expensive breeds for a dog/cat?" />
-            <QuestionButton msg="What is a reimbursement rate?" />
+            <QuestionButton
+              msg={`How much on average does it cost to insure a ${selectedPetType}?`}
+              onClick={handleQuestionClicked}
+            />
+            <QuestionButton
+              msg={`What are the most expensive breeds for a ${selectedPetType}?`}
+              onClick={handleQuestionClicked}
+            />
+            <QuestionButton
+              msg="What is a reimbursement rate?"
+              onClick={handleQuestionClicked}
+            />
           </div>
           {chatMessages.map((msg: ChatMessageType, index: number) => (
             <Message key={index} from={msg.from} message={msg.message} />
@@ -257,6 +267,7 @@ const ChatBot = ({
             onSubmit={handleMessageClicked}
             submitDisabled={botLoading}
             scrollRef={scrollRef}
+            populatedText={chatInput}
           />
           <Button
             className="nunito-sans-bold cursor-pointer mx-auto text-(--primary-teal-dark) hover:text-(--primary-teal)"

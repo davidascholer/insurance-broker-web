@@ -92,6 +92,7 @@ const FilterBar = ({
   selectedDeductible,
   selectedReimbursement,
   selectedLimit,
+  selectedPetType,
 }: // sortItems,
 // sortItemSelected,
 {
@@ -101,6 +102,7 @@ const FilterBar = ({
   selectedDeductible: FilterOptionType;
   selectedReimbursement: FilterOptionType;
   selectedLimit: FilterOptionType;
+  selectedPetType: string;
   // sortItems: (item: SortItemType) => void;
   // sortItemSelected?: SortItemType;
 }) => {
@@ -284,6 +286,7 @@ const FilterBar = ({
           setOpen={setChatbotOpen}
           firstClick={firstClick}
           setFirstClick={setFirstClick}
+          selectedPetType={selectedPetType}
         />
       </div>
     </>
