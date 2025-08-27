@@ -4,7 +4,7 @@ A running list of todos.
 UI
 - Browser test for arrows on scrollbars (Windows Chrome)
 IN PROCESS - Color theme
-done - Bot 
+DONE - Bot 
   DONE - style paw icon and text on open loader
     DONE - Allow the predetermined questions in chatbot to copy and paste into the form
 DONE - Implement new analytics into admin
