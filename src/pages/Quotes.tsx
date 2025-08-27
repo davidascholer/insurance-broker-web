@@ -275,7 +275,7 @@ const Quotes = () => {
               selectedReimbursement={selectedReimbursement}
               selectedLimit={selectedLimit}
             />
-            <div className="text-start w-full max-w-4xl sansita-regular px-2 mt-4 text-lg">
+            <div className="text-start w-full max-w-4xl sansita-regular px-2 mt-4 text-lg mx-auto">
               <Link to="/info/?edit=true" className="text-(--primary-teal-dark)">
                 Edit {petObject.petName}'s information
               </Link>

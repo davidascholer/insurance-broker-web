@@ -45,7 +45,7 @@ const Home = () => {
     <div>
       <section className="w-screen h-screen bg-[url('/header.jpg')] bg-no-repeat bg-cover bg-[70%_0%] relative">
         <Header />
-        <div className="top-0 left-0 right-0 bottom-0 bg-(--light-pink-transparent) absolute">
+        <div className="top-0 left-0 right-0 bottom-0 bg-(--light-pink-transparent) absolute pt-24">
           <div className="flex flex-col gap-12 justify-center ml-4 md:ml-20 max-w-[600px] text-(--text-dark) mt-12">
             <h1 className="sansita-bold text-5xl mt-36 sm:mt-20 md:mt-4 max-w-[300px] md:max-w-[1000px]">
               Get the insurance that works best for you and your fur baby today.

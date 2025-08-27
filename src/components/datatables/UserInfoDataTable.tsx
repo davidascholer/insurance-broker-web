@@ -7,52 +7,41 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { HitsDataType } from "@/lib/types";
-import { Link } from "react-router-dom";
+import type { UserPetInfoType } from "@/lib/types";
 
-function UserInfoDataTable({ data }: { data: HitsDataType[] }) {
+function UserInfoDataTable({ data }: { data: UserPetInfoType[] }) {
   return (
     <div className="w-full mt-4">
       <h1 className="text-2xl w-full text-center">User Quote Information</h1>
       <Table className="overflow-scroll">
-        <TableCaption className="w-full">
-          All User Objects Created
-        </TableCaption>
+        <TableCaption className="w-full">All User Objects Created</TableCaption>
 
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Referrer</TableHead>
-            <TableHead>Param Origin</TableHead>
-            <TableHead>Client IP</TableHead>
-            <TableHead className="text-right">Date</TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Zip</TableHead>
+            <TableHead>Reference</TableHead>
+            <TableHead>Pet Name</TableHead>
+            <TableHead>Type</TableHead>
+            <TableHead>Breed</TableHead>
+            <TableHead>Age</TableHead>
+            <TableHead>Gender</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((hit, key) => (
+          {data.map((item, key) => (
             <TableRow key={key}>
-              <TableCell className="font-medium">
-                {hit.referrer || "n/a"}
-              </TableCell>
-              <TableCell>{hit.origin || "n/a"}</TableCell>
               <TableCell>
-                {hit.ip ? (
-                  <Link
-                    to={"https://iplocation.io/ip/" + hit.ip}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="cursor-pointer text-(--primary-coral) font-semibold"
-                  >
-                    {hit.ip}
-                  </Link>
-                ) : (
-                  "n/a"
-                )}
+                {item.name.firstName + " " + item.name.lastName || "n/a"}
               </TableCell>
-              <TableCell className="text-right">
-                {hit.timestamp
-                  ? new Date(hit.timestamp).toLocaleString()
-                  : "n/a"}
-              </TableCell>
+              <TableCell>{item.email || "n/a"}</TableCell>
+              <TableCell>{item.zip || "n/a"}</TableCell>
+              <TableCell>{item.reference || "n/a"}</TableCell>
+              <TableCell>{item.petName || "n/a"}</TableCell>
+              <TableCell>{item.animal || "n/a"}</TableCell>
+              <TableCell>{item.breed || "n/a"}</TableCell>
+              <TableCell>{item.age.value || "n/a"}</TableCell>
+              <TableCell>{item.gender || "n/a"}</TableCell>
             </TableRow>
           ))}
         </TableBody>

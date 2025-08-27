@@ -1,4 +1,4 @@
-import { adminEmailPassword, getHits } from "@/api/api";
+import { adminEmailPassword, getHits, getLinksClicked, getUserObjects } from "@/api/api";
 import AdminLoginForm from "@/components/admin/AdminLoginForm";
 import AdminTokenForm from "@/components/admin/AdminTokenForm";
 import HitsDataTable from "@/components/datatables/HitsDataTable";
@@ -6,11 +6,13 @@ import LinksClickedDataTable from "@/components/datatables/LinksClickedDataTable
 import UserInfoDataTable from "@/components/datatables/UserInfoDataTable";
 import Loader from "@/components/Loader";
 import PageContainer from "@/components/PageContainer";
-import type { HitsDataType } from "@/lib/types";
+import type { HitsDataType, LinksClickedType, UserPetInfoType } from "@/lib/types";
 import { useEffect, useState } from "react";
 
 const Admin = () => {
   const [hitsData, setHitsData] = useState<HitsDataType[]>([]);
+  const [linksClickedData, setLinksClickedData] = useState<LinksClickedType[]>([]);
+  const [userPetInfoData, setUserPetInfoData] = useState<UserPetInfoType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [emailResponse, setEmailResponse] = useState<string>("");
 
@@ -27,8 +29,36 @@ const Admin = () => {
     }
   };
 
+  const fetchLinksClickedData = async () => {
+    try {
+      const token = localStorage.getItem("pipa-data-token");
+      if (!token) return;
+      const fetchedLinks = await getLinksClicked(token);
+      if (fetchedLinks && Array.isArray(fetchedLinks)) {
+        setLinksClickedData(fetchedLinks);
+      }
+    } catch (error) {
+      console.error("Failed to fetch links clicked data:", error);
+    }
+  };
+
+  const fetchUserPetInfoData = async () => {
+    try {
+      const token = localStorage.getItem("pipa-data-token");
+      if (!token) return;
+      const fetchedUsers = await getUserObjects(token);
+      if (fetchedUsers && Array.isArray(fetchedUsers)) {
+        setUserPetInfoData(fetchedUsers);
+      }
+    } catch (error) {
+      console.error("Failed to fetch user pet info data:", error);
+    }
+  };
+
   useEffect(() => {
     fetchHitsData();
+    fetchLinksClickedData();
+    fetchUserPetInfoData();
     setTimeout(() => setLoading(false), 2000);
   }, []);
 
@@ -69,8 +99,8 @@ const Admin = () => {
   return (
     <PageContainer>
       <HitsDataTable data={hitsData} />
-      <LinksClickedDataTable data={hitsData} />
-      <UserInfoDataTable data={hitsData} />
+      <LinksClickedDataTable data={linksClickedData} />
+      <UserInfoDataTable data={userPetInfoData} />
     </PageContainer>
   );
 };

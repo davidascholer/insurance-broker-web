@@ -84,3 +84,14 @@ export type HitsDataType = {
   ip: string;
   timestamp: string;
 };
+export type LinksClickedType = {
+  animal: string;
+  breed: string;
+  weight: string;
+  email: string;
+  insurer: string;
+  timestamp: string;
+};
+export type UserPetInfoType = AnswersType & {
+  id: string;
+};
