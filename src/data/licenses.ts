@@ -1,5 +1,5 @@
 export const licenses = [
-  { state: "Alabama", license: "TBD" },
+  { state: "Alabama", license: "3003816257" },
   { state: "Alaska", license: "3003769266" },
   { state: "Arizona", license: "3003765807" },
   { state: "Arkansas", license: "3003765673" },
@@ -44,7 +44,7 @@ export const licenses = [
   { state: "Tennessee", license: "3003765668" },
   { state: "Texas", license: "3368357" },
   { state: "Utah", license: "1082600" },
-  { state: "Vermont", license: "TBD" },
+  { state: "Vermont", license: "3003816417" },
   { state: "Virginia", license: "163959" },
   { state: "Washington", license: "1314769" },
   { state: "West Virginia", license: "TBD" },
