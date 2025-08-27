@@ -267,7 +267,7 @@ const FilterBar = ({
           <button
             ref={filterButtonRef}
             className={cn(
-              "flex flex-col select-none justify-center items-center min-[600px]:pr-[60px] cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5",
+              "flex flex-col select-none justify-center items-center min-[600px]:pr-[60px] max-[600px]:mb-6 cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5",
               backToTopHidden
                 ? "hidden"
                 : backToTopTransparent

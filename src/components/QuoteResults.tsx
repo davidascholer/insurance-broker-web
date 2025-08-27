@@ -97,7 +97,7 @@ const BottomDrawer = ({
             <p className="px-4 pt-4 w-full font-medium text-(--primary-teal-dark) dark:text-neutral-200 text-left sansita-bold">
               {providers.get(providerId).content}
             </p>
-            <p className="px-4 w-full font-medium dark:text-neutral-200 text-xs sansita-regular-italic">
+            <p className="px-4 w-full font-medium text-neutral-400 text-xs sansita-regular-italic">
               * This quote is an estimated cost. Actual coverage cost factors
               include your pet's breed, location, condition, and other details.
             </p>
@@ -328,6 +328,11 @@ function QuoteResults({
                         className="text-neutral-600 text-xs md:text-sm lg:text-base md:h-fit flex flex-col items-start gap-4 dark:text-neutral-400 overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
                       >
                         <span>{providers.get(active.providerId).content}</span>
+                        <p className="w-full font-medium text-neutral-400 text-xs sansita-regular-italic">
+                          * This quote is an estimated cost. Actual coverage
+                          cost factors include your pet's breed, location,
+                          condition, and other details.
+                        </p>
                       </motion.div>
                     </div>
                   </div>

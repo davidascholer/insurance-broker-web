@@ -4,9 +4,9 @@ A running list of todos.
 UI
 - Browser test for arrows on scrollbars (Windows Chrome)
 - Color theme
-- Bot 
-    - style paw icon and text on open loader
-    - Allow the predetermined questions in chatbot to copy and paste into the form
+done - Bot 
+  DONE - style paw icon and text on open loader
+    DONE - Allow the predetermined questions in chatbot to copy and paste into the form
 DONE - Implement new analytics into admin
 DONE - Save form object to JSON string
 DONE - Enter in pet information on results page with option to go back to the form.

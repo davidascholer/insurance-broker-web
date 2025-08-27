@@ -3,9 +3,11 @@ import { cn } from "@/lib/utils";
 const ChatBotIcon = ({
   handleClick,
   className,
+  innerImg,
 }: {
   handleClick: () => void;
   className?: string;
+  innerImg?: React.ReactNode;
 }) => {
   return (
     <div>
@@ -16,7 +18,7 @@ const ChatBotIcon = ({
         )}
         onClick={handleClick}
       >
-        {/* <span className="sansita-bold text-3xl flex justify-center items-center">Ai</span> */}
+        {innerImg ? innerImg : null}
       </div>
     </div>
   );

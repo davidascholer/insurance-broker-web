@@ -72,7 +72,7 @@ const QuestionButton = ({
       onClick={() => onClick(msg)}
       className="cursor-pointer self-end bg-(--primary-teal-dark) rounded-full flex items-center justify-center px-3 pt-1 pb-2 mt-2"
     >
-      <p className="h-auto font-bold text-sm self-end mt-2 text-(--primary-coral)">
+      <p className="h-auto font-bold text-sm self-end mt-2 text-(--coral-light)">
         {msg}
       </p>
     </button>
@@ -176,8 +176,8 @@ const ChatBot = ({
     setChatInput(msg);
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
-      behavior: 'smooth'
-    })
+      behavior: "smooth",
+    });
   };
 
   return (
@@ -189,6 +189,19 @@ const ChatBot = ({
       )}
       ref={ref}
     >
+      <span
+        className={cn(
+          "absolute text-(--coral-light) text-nowrap right-[50px] top-[10px] sansita-regular transition-opacity duration-500 ease-in-out",
+          open ? "min-[600px]:opacity-0" : "opacity-100",
+          "max-[600px]:top-[-30px] max-[600px]:left-[50%] max-[600px]:-translate-x-[50%] max-[600px]:whitespace-nowrap max-[600px]:w-max"
+        )}
+        // className={cn(
+        //   "absolute text-(--coral-light) text-nowrap right-[50px] top-[10px] sansita-regular transition-opacity duration-500 ease-in-out",
+        //   open ? "opacity-0" : "opacity-100"
+        // )}
+      >
+        Chat with the AI Pipa Broker!
+      </span>
       <ChatBotIcon
         handleClick={handleClick}
         className={cn(
@@ -205,6 +218,16 @@ const ChatBot = ({
           (open
             ? "rotate-200 max-[400px]:right-[30px] max-[468px]:-right-[15px] max-[600px]:-right-[50px]"
             : "rotate-0")
+        }
+        innerImg={
+          <img
+            src={"/paw_dark.svg"}
+            alt={"PIPA Broker Paw Icon"}
+            className={cn(
+              "p-1 transition-opacity duration-500 ease-in-out",
+              open ? "opacity-0" : "opacity-100"
+            )}
+          />
         }
       />
       <div
