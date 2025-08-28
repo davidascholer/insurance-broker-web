@@ -23,9 +23,8 @@ const About = () => {
             </p>
             <p className="whitespace-pre-wrap">
               Fast, friendly, & simple - we make purchasing pet insurance modern
-              and streamlined. Just answer a few questions with our PIPA brokers
-              and you’re only a few clicks away from financial protection for
-              the ones we love.
+              and streamlined. Just answer a few questions and you’re only a few
+              clicks away from financial protection for the ones we love.
             </p>
           </div>
           <div className="flex flex-col gap-6">
@@ -44,8 +43,8 @@ const About = () => {
                 className="text-(--primary-coral) font-semibold underline cursor-pointer"
               >
                 Here
-              </button>
-              {" "}is a summary of states in which we hold active licenses.
+              </button>{" "}
+              is a summary of states in which we hold active licenses.
             </p>
             <p className="whitespace-pre-wrap">
               All solicitations to apply for insurance and applications for

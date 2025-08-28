@@ -30,12 +30,17 @@ const Message = ({
     >
       {from === "bot" ? (
         <div className="flex flex-row gap-2 items-start justify-baseline w-full">
-          <ChatBotIcon
+          {/* <ChatBotIcon
             handleClick={() => {}}
             className={cn(
               "size-6 bg-(--primary-teal-dark) cursor-default",
               "-scale-x-100"
             )}
+          /> */}
+          <img
+            src="./paw_dark.svg"
+            alt="PIPA Broke Paw"
+            className="size-6 bg-(--primary-teal-dark) cursor-default"
           />
           <TypewriterEffect
             cursorClassName="hidden"
@@ -178,6 +183,7 @@ const ChatBot = ({
       top: scrollRef.current.scrollHeight,
       behavior: "smooth",
     });
+    handleMessageClicked({ botMessage: msg })
   };
 
   return (
@@ -189,19 +195,20 @@ const ChatBot = ({
       )}
       ref={ref}
     >
-      <span
+      <button
         className={cn(
-          "absolute text-(--coral-light) text-nowrap right-[50px] top-[10px] sansita-regular transition-opacity duration-500 ease-in-out",
+          "absolute text-(--coral-light) cursor-pointer text-nowrap right-[50px] top-[10px] sansita-regular transition-opacity duration-500 ease-in-out",
           open ? "min-[600px]:opacity-0" : "opacity-100",
           "max-[600px]:top-[-30px] max-[600px]:left-[50%] max-[600px]:-translate-x-[50%] max-[600px]:whitespace-nowrap max-[600px]:w-max"
         )}
+        onClick={() => setOpen(!open)}
         // className={cn(
         //   "absolute text-(--coral-light) text-nowrap right-[50px] top-[10px] sansita-regular transition-opacity duration-500 ease-in-out",
         //   open ? "opacity-0" : "opacity-100"
         // )}
       >
-        Chat with the AI Pipa Broker!
-      </span>
+        Chat with your AI PIPA Broker!
+      </button>
       <ChatBotIcon
         handleClick={handleClick}
         className={cn(
