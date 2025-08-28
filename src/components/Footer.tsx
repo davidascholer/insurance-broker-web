@@ -25,7 +25,7 @@ const Footer = ({ className }: { className?: string }) => {
             className="nav-link nunito-sans-medium cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5"
           >
             <img
-              src="./pipa_text_white.png"
+              src="/pipa_text_white.png"
               alt="PIPA Broker"
               className="w-32 mb-2"
             />

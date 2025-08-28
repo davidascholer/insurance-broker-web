@@ -16,7 +16,7 @@ const PipaIcon = React.forwardRef<
       style={style}
     >
       <img
-        src="./logo192.png" // assuming the PIPA logo is in the public folder
+        src="/logo192.png" // assuming the PIPA logo is in the public folder
         alt="PIPA Logo"
         className="w-[32px] object-contain mt-[4px]"
       />

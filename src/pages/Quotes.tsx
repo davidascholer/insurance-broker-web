@@ -1,8 +1,9 @@
 import type {
   AnswersType,
+  DataQuoteItem,
   FilterOptionType,
+  ProviderIdTypes,
   QuoteItem,
-  QuotesResultType,
   // SortItemType,
 } from "@/lib/types";
 import { useEffect, useMemo, useState } from "react";
@@ -10,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import QuoteResults from "@/components/QuoteResults";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import useIsOnline from "@/hooks/useIsOnline";
-import { getQuotes } from "@/api/api";
+import { gatherQuotesForInsurerRemote } from "@/api/api";
 import { cn, verifyAnswers } from "@/lib/utils";
 import Header from "@/components/header/Header";
 import FilterBar from "@/components/FilterBar";
@@ -19,11 +20,14 @@ import {
   DEDUCTIBLE_OPTIONS,
   DEV,
   PIPA_PET_KEY,
+  PIPA_STORAGE_PREFIX,
   REIMBURSEMENT_RATE_OPTIONS,
 } from "@/lib/constants";
 import { ChevronsDown } from "lucide-react";
 import LoadingQuotes from "@/components/LoadingQuotes";
 import { providerClickedTracker } from "@/api/trackers";
+import PageContainer from "@/components/PageContainer";
+import Loader from "@/components/Loader";
 
 const LOAD_TIMER = 20; // seconds
 
@@ -34,6 +38,7 @@ const Quotes = () => {
   //   useState<SortItemType>("price");
   const [activeQuoteData, setActiveQuoteData] = useState<QuoteItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [defaultLoading, setDefaultLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const isOnline = useIsOnline();
   const [showFullResults, setShowFullResults] = useState<boolean>(false);
@@ -126,60 +131,62 @@ const Quotes = () => {
   // };
 
   const fetchQuotes = async (answers: AnswersType) => {
-    setIsLoading(true);
     setError(null);
-    // Set a maximum time to load the data from the server
-    const timeout = setTimeout(() => {
-      setIsLoading(false);
-      return clearTimeout(timeout);
-    }, LOAD_TIMER * 1000); // e.g., 20 seconds
-    const figoResult: QuotesResultType = await getQuotes(answers, "figo");
-    const fetchResult: QuotesResultType = await getQuotes(answers, "fetch");
-    const embraceResult: QuotesResultType = await getQuotes(answers, "embrace");
 
-    // If DEV, you can stop the loading early if the server has responded from all providers
-    if (DEV) {
-      if (figoResult && fetchResult && embraceResult) {
+    const fetchInsurerQuotes = async (insurer: ProviderIdTypes) => {
+      const insurerFetchedQuotes: QuoteItem[] = [];
+      const storedQuotes = localStorage.getItem(
+        PIPA_STORAGE_PREFIX + insurer + "-quotes"
+      );
+      // Check the the quote exists and is less than 24 hours old
+      if (
+        storedQuotes &&
+        Date.now() - JSON.parse(storedQuotes).timestamp < 24 * 60 * 60 * 1000
+      ) {
         setIsLoading(false);
-        clearTimeout(timeout);
+        const parsedQuotes = JSON.parse(storedQuotes);
+        const insurerQuotes = parsedQuotes.coverageOptions.map(
+          (option: DataQuoteItem) => ({
+            ...option,
+            providerId: insurer,
+          })
+        );
+        if (insurerQuotes) {
+          fetchedQuotes.push(...insurerQuotes);
+        }
+      } else {
+        setIsLoading(true);
+        // Set a maximum time to load the data from the server
+        const timeout = setTimeout(() => {
+          setIsLoading(false);
+          return clearTimeout(timeout);
+        }, LOAD_TIMER * 1000); // e.g., 20 seconds
+        const insurerQuotes = await gatherQuotesForInsurerRemote(
+          insurer,
+          answers
+        );
+        if (insurerQuotes && insurerQuotes.length > 0) {
+          fetchedQuotes.push(...insurerQuotes);
+        }
       }
-    }
+      return insurerFetchedQuotes;
+    };
 
     const fetchedQuotes: QuoteItem[] = [];
-    if (figoResult.success && figoResult.quotes) {
-      const figoQuotes = figoResult.quotes.coverageOptions.map((quote) => ({
-        ...quote,
-        providerId: "figo" as const,
-      }));
-      if (DEV) console.log("DEV LOG","figoQuotes", figoQuotes);
+    const embraceQuotes = await fetchInsurerQuotes("embrace");
+    fetchedQuotes.push(...embraceQuotes);
+    const figoQuotes = await fetchInsurerQuotes("figo");
+    fetchedQuotes.push(...figoQuotes);
+    const fetchQuotes = await fetchInsurerQuotes("fetch");
+    fetchedQuotes.push(...fetchQuotes);
 
-      if (figoQuotes) {
-        fetchedQuotes.push(...figoQuotes);
-      }
-    }
-    if (fetchResult.success && fetchResult.quotes) {
-      const fetchQuotes = fetchResult.quotes.coverageOptions.map((quote) => ({
-        ...quote,
-        providerId: "fetch" as const,
-      }));
-      if (DEV) console.log("DEV LOG","fetchQuotes", fetchQuotes);
-      if (fetchQuotes) {
-        fetchedQuotes.push(...fetchQuotes);
-      }
-    }
-    if (embraceResult.success && embraceResult.quotes) {
-      const embraceQuotes = embraceResult.quotes.coverageOptions.map(
-        (option) => ({
-          ...option,
-          providerId: "embrace" as const,
-        })
-      );
-      if (embraceQuotes) {
-        fetchedQuotes.push(...embraceQuotes);
-      }
-    }
     setQuoteData(fetchedQuotes);
-    setActiveQuoteData(fetchedQuotes);
+  };
+
+  const handleClearCache = () => {
+    localStorage.removeItem(PIPA_STORAGE_PREFIX + "embrace-quotes");
+    localStorage.removeItem(PIPA_STORAGE_PREFIX + "fetch-quotes");
+    localStorage.removeItem(PIPA_STORAGE_PREFIX + "figo-quotes");
   };
 
   const handleInsurerClicked = (insurer: string) => {
@@ -191,6 +198,12 @@ const Quotes = () => {
 
     fetchQuotes({ ...petObject, age: { value: 18, label: "8 weeks" } });
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setDefaultLoading(false);
+    }, 500);
+  }, []);
 
   useEffect(() => {
     if (!petObject) {
@@ -228,21 +241,22 @@ const Quotes = () => {
         quote.deductibleOption <= nextDeductible.value
       );
     });
-    if (DEV) console.log("DEV LOG","selectedDeductibles", selectedDeductibles);
+    if (DEV) console.log("DEV LOG", "selectedDeductibles", selectedDeductibles);
 
     const selectedReimbursements = selectedDeductibles.filter((quote) => {
       return (
         quote.reimbursementPercentageOption === selectedReimbursement.value
       );
     });
-    if (DEV) console.log("DEV LOG","selectedReimbursements", selectedReimbursements);
+    if (DEV)
+      console.log("DEV LOG", "selectedReimbursements", selectedReimbursements);
 
     const selectedLimits = selectedReimbursements.filter((quote) => {
       return quote.reimbursementLimitOption === selectedLimit.value;
     });
-    if (DEV) console.log("DEV LOG","selectedLimits", selectedLimits);
+    if (DEV) console.log("DEV LOG", "selectedLimits", selectedLimits);
 
-    if (DEV) console.log("DEV LOG","whiteList", selectedLimits);
+    if (DEV) console.log("DEV LOG", "whiteList", selectedLimits);
     setActiveQuoteData(selectedLimits);
   }, [annualLimits, deductibles, quoteData, reimbursementRates]);
 
@@ -259,6 +273,11 @@ const Quotes = () => {
       )}
       {isLoading && isOnline && (
         <LoadingQuotes progressTimerSeconds={LOAD_TIMER} />
+      )}
+      {defaultLoading && (
+        <PageContainer containerClassName="w-full flex items-center">
+          <Loader />
+        </PageContainer>
       )}
       {error && <div className="text-red-600">{error}</div>}
       {!error && !isLoading && (
@@ -277,7 +296,11 @@ const Quotes = () => {
               selectedPetType={petObject?.animal || "dog"}
             />
             <div className="text-start w-full max-w-4xl sansita-regular px-2 mt-4 text-lg mx-auto">
-              <Link to="/info/?edit=true" className="text-(--primary-teal-dark)">
+              <Link
+                to="/info/?edit=true"
+                className="text-(--primary-teal-dark)"
+                onClick={handleClearCache}
+              >
                 Edit {petObject.petName}'s information
               </Link>
             </div>

@@ -83,7 +83,7 @@
       
 //       <div className="hero-section">
 //         <div className="hero-background">
-//           <img src="./header.jpg" alt="Cat and Dog" className="hero-image" />
+//           <img src="/header.jpg" alt="Cat and Dog" className="hero-image" />
 //           <div className="hero-overlay"></div>
 //         </div>
         

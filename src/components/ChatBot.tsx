@@ -38,9 +38,9 @@ const Message = ({
             )}
           /> */}
           <img
-            src="./paw_dark.svg"
+            src="/paw_dark.svg"
             alt="PIPA Broke Paw"
-            className="size-6 bg-(--primary-teal-dark) cursor-default"
+            className="size-6 cursor-default"
           />
           <TypewriterEffect
             cursorClassName="hidden"
@@ -102,7 +102,7 @@ const ChatBot = ({
   selectedPetType,
 }: ChatBotProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [chatInput, setChatInput] = useState<string>("");
+  // const [chatInput, setChatInput] = useState<string>("");
   const [chatMessages, setChatMessages] = useState<ChatMessageType[]>(
     localStorage.getItem("pipaChat")
       ? JSON.parse(localStorage.getItem("pipaChat") as string)
@@ -178,7 +178,8 @@ const ChatBot = ({
   };
 
   const handleQuestionClicked = (msg: string) => {
-    setChatInput(msg);
+    /* Optional to populate the input field instead of sending immediately */
+    // setChatInput(msg);
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
       behavior: "smooth",
@@ -297,7 +298,9 @@ const ChatBot = ({
             onSubmit={handleMessageClicked}
             submitDisabled={botLoading}
             scrollRef={scrollRef}
-            populatedText={chatInput}
+            populatedText={""}
+            // Change to {chatInput} if using input field population
+            // setPopulatedText={setChatInput} --- IGNORE ---
           />
           <Button
             className="nunito-sans-bold cursor-pointer mx-auto text-(--primary-teal-dark) hover:text-(--primary-teal)"

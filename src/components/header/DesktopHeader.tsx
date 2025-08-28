@@ -17,7 +17,7 @@ const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
     <header className="bg-(--light-pink) fixed top-0 left-0 right-0 z-100 h-24 shadow-md text-center flex items-center justify-center">
       <div className="flex max-w-[1200px] h-full px-4 items-center w-full justify-between">
         <Link to="/" className="sansita-regular cursor-pointer">
-          <img src="./logo.png" alt="PIPA Broker" className="max-h-20" />
+          <img src="/logo.png" alt="PIPA Broker" className="max-h-20" />
         </Link>
         <nav className="flex w-full gap-8 align-center justify-evenly max-w-[800px] ml-8">
           <div

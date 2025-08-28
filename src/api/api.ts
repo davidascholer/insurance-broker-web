@@ -1,8 +1,10 @@
+import { PIPA_STORAGE_PREFIX } from "@/lib/constants";
 import type {
   AnswersType,
   BotRequestType,
   ContactFormType,
   ProviderIdTypes,
+  QuoteItem,
   QuotesResultType,
 } from "../lib/types";
 import {
@@ -139,4 +141,33 @@ export const adminEmailPassword = async (email: string) => {
     return "Error: " + data.statusText;
   }
   return "Email sent successfully!";
+};
+
+export const gatherQuotesForInsurerRemote = async (
+  insurer: ProviderIdTypes,
+  answers: AnswersType
+) => {
+  const fetchedQuotes: QuoteItem[] = [];
+  const quoteResult: QuotesResultType = await getQuotes(answers, insurer);
+
+  if (quoteResult.success && quoteResult.quotes) {
+    localStorage.setItem(
+      PIPA_STORAGE_PREFIX + insurer + "-quotes",
+      JSON.stringify({
+        coverageOptions: quoteResult.quotes.coverageOptions,
+        timestamp: Date.now(),
+      })
+    );
+    const insurerQuotes: QuoteItem[] = quoteResult.quotes.coverageOptions.map(
+      (option) => ({
+        ...option,
+        providerId: insurer,
+      })
+    );
+    if (insurerQuotes) {
+      fetchedQuotes.push(...insurerQuotes);
+    }
+  }
+
+  return fetchedQuotes;
 };

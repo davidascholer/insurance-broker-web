@@ -20,7 +20,7 @@ const PartnerContact = () => {
           <ContactForm type={"partner"}  />
         </div>
         <img
-          src="./contact-partner.webp"
+          src="/contact-partner.webp"
           alt="PIPA Broker"
           className="w-96 self-center"
         />

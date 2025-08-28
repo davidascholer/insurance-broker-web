@@ -16,6 +16,8 @@ import AppDialog from "@/components/AppDialog";
 import ProgressGrid from "@/components/ProgressGrid";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PIPA_PET_KEY } from "@/lib/constants";
+import PageContainer from "@/components/PageContainer";
+import Loader from "@/components/Loader";
 
 const defaultAnswers: AnswersType = {
   name: { firstName: "", lastName: "" },
@@ -49,6 +51,7 @@ const editDialogConfig = {
 const InfoForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isLoading, setIsLoading] = useState(true);
 
   // const [answersVerified, setAnswersVerified] = useState(false);
   const [answers, setAnswers] = useState(() => {
@@ -72,6 +75,15 @@ const InfoForm = () => {
   }>(resetDialogConfig);
 
   useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+
+    // Check for ?edit=question in URL to edit a specific question
+    const queryParams = new URLSearchParams(location.search);
+    const edit = queryParams.get("edit");
+    if (!edit) navigate("/quotes");
+
     // Check if all answers are filled out
     const allAnswered = Object.values(answers).every((answer) => {
       if (typeof answer === "string") {
@@ -88,11 +100,6 @@ const InfoForm = () => {
     });
 
     if (!allAnswered) return;
-
-    // Check for ?edit=question in URL to edit a specific question
-    const queryParams = new URLSearchParams(location.search);
-    const edit = queryParams.get("edit");
-    if (!edit) navigate("/quotes");
   }, []);
 
   useEffect(() => {
@@ -232,6 +239,12 @@ const InfoForm = () => {
     navigate("/quotes");
   };
 
+  if (isLoading)
+    return (
+      <PageContainer containerClassName="w-full flex items-center">
+        <Loader />
+      </PageContainer>
+    );
   return (
     <>
       <AppDialog
@@ -247,7 +260,7 @@ const InfoForm = () => {
             className="nunito-sans-medium cursor-pointer"
           >
             <img
-              src="./logo_vert.webp"
+              src="/logo_vert.webp"
               alt="PIPA Broker"
               className="w-[50px] ml-4"
             />

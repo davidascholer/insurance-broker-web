@@ -2,7 +2,7 @@ A running list of todos.
 
 
 UI
-- Browser test for arrows on scrollbars (Windows Chrome)
+UNABLE TO REPLICATE - Browser test for arrows on scrollbars (Windows Chrome)
 IN PROCESS - Color theme
 DONE - Bot 
   DONE - style paw icon and text on open loader
@@ -20,6 +20,9 @@ DONE - Put in estimated vs exact cost results (show more) option
 DONE - Insta and FB icons in footer
 DONE - Phase out old CSS implementation
 DONE - Less padding on Home page <p> elements (mobile view)
+- PUT SCROLL BAR BACK IN ON QUOTES PAGE
+- FILTER BY PRICE, THEN BY DEDUCTIBLE
+- Put asterik next to price
 
 API
 - CRON email jobs

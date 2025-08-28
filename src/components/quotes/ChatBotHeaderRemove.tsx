@@ -113,7 +113,7 @@ const ChatbotHeader = () => {
         <div className="flex items-center justify-between max-w-4xl mx-auto h-12">
           <button onClick={() => navigate("/")} className="nunito-sans-medium cursor-pointer">
             <img
-              src="./logo.png"
+              src="/logo.png"
               alt="PIPA Broker"
               className="w-[120px] aspect-8/3"
             />

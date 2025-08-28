@@ -19,6 +19,7 @@ function UserInfoDataTable({ data }: { data: UserPetInfoType[] }) {
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
+            <TableHead>Email</TableHead>
             <TableHead>Zip</TableHead>
             <TableHead>Reference</TableHead>
             <TableHead>Pet Name</TableHead>
