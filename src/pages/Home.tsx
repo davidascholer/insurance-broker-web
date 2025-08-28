@@ -23,13 +23,13 @@ const Home = () => {
       const queryParams = new URLSearchParams(location.search);
 
       const origin = queryParams.get("fbclid")
-        ? "facebook/instagram"
-        : queryParams.get("origin")
-        ? queryParams.get("origin")
+        ? "fbclid"
+        : queryParams.get("utm_source")
+        ? queryParams.get("utm_source")
         : "";
       const referrer = document.referrer ? document.referrer : "";
       hitsTracker({ referrer: referrer || "", origin: origin || "" });
-      // Set the user to a random 16 char alphanumeric string used for tacking. 
+      // Set the user to a random 16 char alphanumeric string used for tracking. 
       // Duplicates are possible but unlikely and ok if so.
       localStorage.setItem(PIPA_USER_ID_KEY, generateRandomAlphanumeric(16));
     } else {
