@@ -275,7 +275,7 @@ const Quotes = () => {
         <LoadingQuotes progressTimerSeconds={LOAD_TIMER} />
       )}
       {defaultLoading && (
-        <PageContainer containerClassName="w-full flex items-center">
+        <PageContainer >
           <Loader />
         </PageContainer>
       )}

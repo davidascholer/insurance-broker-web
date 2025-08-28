@@ -241,7 +241,7 @@ const InfoForm = () => {
 
   if (isLoading)
     return (
-      <PageContainer containerClassName="w-full flex items-center">
+      <PageContainer>
         <Loader />
       </PageContainer>
     );
