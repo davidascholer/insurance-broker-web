@@ -79,11 +79,6 @@ const InfoForm = () => {
       setIsLoading(false);
     }, 1000);
 
-    // Check for ?edit=question in URL to edit a specific question
-    const queryParams = new URLSearchParams(location.search);
-    const edit = queryParams.get("edit");
-    if (!edit) navigate("/quotes");
-
     // Check if all answers are filled out
     const allAnswered = Object.values(answers).every((answer) => {
       if (typeof answer === "string") {
@@ -100,6 +95,11 @@ const InfoForm = () => {
     });
 
     if (!allAnswered) return;
+
+    // Check for ?edit=question in URL to edit a specific question
+    const queryParams = new URLSearchParams(location.search);
+    const edit = queryParams.get("edit");
+    if (!edit) navigate("/quotes");
   }, []);
 
   useEffect(() => {
