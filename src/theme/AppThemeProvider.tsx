@@ -7,16 +7,14 @@ interface ThemeProviderProps {
   children: React.ReactNode;
 }
 
-function AppThemeProvider({
-  children,
-}: ThemeProviderProps) {
-  const [currentTheme, setCurrentTheme] = useState<ColorThemeType>("system");
+function AppThemeProvider({ children }: ThemeProviderProps) {
+  const [currentTheme, setCurrentTheme] = useState<ColorThemeType>("dark");
 
-  const initialState: ThemeProviderStateType = {
+  const value: ThemeProviderStateType = {
     theme: currentTheme,
     changeTheme: () => {
       // Change the new theme to state
-      let newTheme: ColorThemeType = "system";
+      let newTheme: ColorThemeType = "light";
       if (currentTheme === "light") newTheme = "system";
       if (currentTheme === "system") newTheme = "dark";
       if (currentTheme === "dark") newTheme = "light";
@@ -38,12 +36,10 @@ function AppThemeProvider({
     },
   };
 
-  const ThemeContext = AppThemeContext(initialState);
-
   return (
-    <ThemeContext.Provider value={initialState}>
+    <AppThemeContext.Provider value={value}>
       {children}
-    </ThemeContext.Provider>
+    </AppThemeContext.Provider>
   );
 }
 

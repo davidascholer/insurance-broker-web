@@ -5,6 +5,8 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { useContext } from "react";
+import AppThemeContext from "@/theme/AppThemeContext";
 
 interface HeaderProps {
   showFetchButton?: boolean;
@@ -12,9 +14,10 @@ interface HeaderProps {
 
 const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
   const navigate = useNavigate();
+  const { changeTheme } = useContext(AppThemeContext);
 
   return (
-    <header className="bg-(--light-pink) fixed top-0 left-0 right-0 z-100 h-24 shadow-md text-center flex items-center justify-center">
+    <header className="bg-(--light-pink) dark:bg-(--primary-teal-dark) fixed top-0 left-0 right-0 z-100 h-24 shadow-md text-center flex items-center justify-center">
       <div className="flex max-w-[1200px] h-full px-4 items-center w-full justify-between">
         <Link to="/" className="sansita-regular cursor-pointer">
           <img src="/logo.png" alt="PIPA Broker" className="max-h-20" />
@@ -84,12 +87,12 @@ const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
             FAQs
           </button>
 
-          {/* <button
+          <button
             onClick={changeTheme}
-            className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center"
+            className="nansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center hidden"
           >
             Theme
-          </button> */}
+          </button>
 
           {showFetchButton && (
             <div className="flex items-center justify-center">
