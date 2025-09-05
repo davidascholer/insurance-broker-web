@@ -1,5 +1,7 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/header/Header";
+import { useEffect } from "react";
+import ReactGA from "react-ga4";
 
 const TerminologySection = ({
   imgSrc,
@@ -26,6 +28,14 @@ const TerminologySection = ({
 };
 
 const Terminology = () => {
+  useEffect(() => {
+    ReactGA.send({
+      hitType: "pageview",
+      page: "/terminology",
+      title: "Terminology",
+    });
+  }, []);
+
   return (
     <div className="bg-(--light-pink)">
       <Header />

@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import ReactGA from "react-ga4";
+
 import EditIcon from "@/components/icons/EditIcon";
 import {
   Popover,
@@ -100,6 +102,14 @@ const InfoForm = () => {
     const queryParams = new URLSearchParams(location.search);
     const edit = queryParams.get("edit");
     if (!edit) navigate("/quotes");
+  }, []);
+
+  useEffect(() => {
+    ReactGA.send({
+      hitType: "pageview",
+      page: "/pet-form",
+      title: "Pet Form",
+    });
   }, []);
 
   useEffect(() => {

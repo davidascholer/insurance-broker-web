@@ -1,8 +1,18 @@
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
 import Header from "@/components/header/Header";
+import { useEffect } from "react";
+import ReactGA from "react-ga4";
 
 const InvestorContact = () => {
+  useEffect(() => {
+    ReactGA.send({
+      hitType: "pageview",
+      page: "/investor-contact",
+      title: "Investor Contact",
+    });
+  }, []);
+
   return (
     <div className="bg-(--light-pink)">
       <Header />

@@ -1,9 +1,19 @@
 import Footer from "@/components/Footer";
 import Header from "../components/header/Header";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import ReactGA from "react-ga4";
 
 const About = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    ReactGA.send({
+      hitType: "pageview",
+      page: "/about",
+      title: "About",
+    });
+  }, []);
   return (
     <div className="bg-(--light-pink)">
       <Header />

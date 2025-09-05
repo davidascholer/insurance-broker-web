@@ -1,7 +1,17 @@
 import Footer from "@/components/Footer";
 import Header from "../components/header/Header";
+import { useEffect } from "react";
+import ReactGA from "react-ga4";
 
 const Privacy = () => {
+  useEffect(() => {
+    ReactGA.send({
+      hitType: "pageview",
+      page: "/privacy-policy",
+      title: "Privacy Policy",
+    });
+  }, []);
+
   return (
     <div className="bg-(--light-pink)">
       <Header />
@@ -175,7 +185,10 @@ const Privacy = () => {
           may use your information to analyze interactions with our Sites and
           Services, and to gain insights into their performance, including to:
         </p>
-        <ul data-rte-list="default" className="list-disc pl-12 flex flex-col gap-2">
+        <ul
+          data-rte-list="default"
+          className="list-disc pl-12 flex flex-col gap-2"
+        >
           <li>
             <p className="whitespace-pre-wrap">
               associate our users with the reports they provide about
@@ -280,7 +293,10 @@ const Privacy = () => {
           In addition to the specific uses of information described above, we
           may use your personal information for the following reasons:
         </p>
-        <ul data-rte-list="default"  className="list-disc pl-12 flex flex-col gap-2">
+        <ul
+          data-rte-list="default"
+          className="list-disc pl-12 flex flex-col gap-2"
+        >
           <li>
             <p className="whitespace-pre-wrap">
               Aggregate your personal information and use that for our business
@@ -543,7 +559,11 @@ const Privacy = () => {
           which the browser communicates. We do not currently have the ability
           to recognize Do Not Track signals. You can learn more about Do Not
           Track signals at&nbsp;
-          <a href="https://allaboutdnt.com/" target="_blank" className="text-(--primary-coral) underline">
+          <a
+            href="https://allaboutdnt.com/"
+            target="_blank"
+            className="text-(--primary-coral) underline"
+          >
             https://allaboutdnt.com/
           </a>
           &nbsp;
@@ -565,7 +585,10 @@ const Privacy = () => {
           a number of ways to opt-out of having your online activity and device
           data collected through these services, which we have summarized below:
         </p>
-        <ul data-rte-list="default"  className="list-disc pl-12 flex flex-col gap-2">
+        <ul
+          data-rte-list="default"
+          className="list-disc pl-12 flex flex-col gap-2"
+        >
           <li>
             <p className="whitespace-pre-wrap">
               <span className="underline">
@@ -578,7 +601,11 @@ const Privacy = () => {
               information about cookies, including how to see what cookies have
               been set on your device and how to manage and delete them,
               visit&nbsp;
-              <a href="http://www.allaboutcookies.org" target="_blank" className="text-(--primary-coral) underline">
+              <a
+                href="http://www.allaboutcookies.org"
+                target="_blank"
+                className="text-(--primary-coral) underline"
+              >
                 www.allaboutcookies.org
               </a>
               .
@@ -602,19 +629,35 @@ const Privacy = () => {
               . You can block our Sites from setting cookies used for
               interest-based ads by using a browser with privacy features,
               like&nbsp;
-              <a href="https://brave.com/" target="_blank" className="text-(--primary-coral) underline">
+              <a
+                href="https://brave.com/"
+                target="_blank"
+                className="text-(--primary-coral) underline"
+              >
                 Brave
               </a>
               , or installing browser plugins like&nbsp;
-              <a href="https://www.eff.org/privacybadger" target="_blank" className="text-(--primary-coral) underline">
+              <a
+                href="https://www.eff.org/privacybadger"
+                target="_blank"
+                className="text-(--primary-coral) underline"
+              >
                 Privacy Badger
               </a>
               ,&nbsp;
-              <a href="https://www.ghostery.com/" target="_blank" className="text-(--primary-coral) underline">
+              <a
+                href="https://www.ghostery.com/"
+                target="_blank"
+                className="text-(--primary-coral) underline"
+              >
                 Ghostery
               </a>
               &nbsp;or&nbsp;
-              <a href="https://ublock.org/" target="_blank" className="text-(--primary-coral) underline">
+              <a
+                href="https://ublock.org/"
+                target="_blank"
+                className="text-(--primary-coral) underline"
+              >
                 uBlock Origin
               </a>
               , and configuring them to block third party cookies/trackers.
@@ -628,11 +671,18 @@ const Privacy = () => {
               for interest-based advertising:
             </p>
           </li>
-          <ul data-rte-list="default"  className="list-disc pl-12 flex flex-col gap-2">
+          <ul
+            data-rte-list="default"
+            className="list-disc pl-12 flex flex-col gap-2"
+          >
             <li>
               <p className="whitespace-pre-wrap">
                 Google:&nbsp;
-                <a href="https://adssettings.google.com/" target="_blank" className="text-(--primary-coral) underline">
+                <a
+                  href="https://adssettings.google.com/"
+                  target="_blank"
+                  className="text-(--primary-coral) underline"
+                >
                   https://adssettings.google.com
                 </a>
               </p>
@@ -640,7 +690,11 @@ const Privacy = () => {
             <li>
               <p className="whitespace-pre-wrap">
                 Facebook:&nbsp;
-                <a href="https://www.facebook.com/about/ads" target="_blank" className="text-(--primary-coral) underline">
+                <a
+                  href="https://www.facebook.com/about/ads"
+                  target="_blank"
+                  className="text-(--primary-coral) underline"
+                >
                   https://www.facebook.com/about/ads
                 </a>
               </p>
@@ -650,7 +704,8 @@ const Privacy = () => {
                 X:&nbsp;
                 <a
                   href="https://help.x.com/en/safety-and-security/privacy-controls-for-tailored-ads"
-                  target="_blank" className="text-(--primary-coral) underline"
+                  target="_blank"
+                  className="text-(--primary-coral) underline"
                 >
                   https://help.x.com/en/safety-and-security/privacy-controls-for-tailored-ads
                 </a>
@@ -668,11 +723,18 @@ const Privacy = () => {
               companies:
             </p>
           </li>
-          <ul data-rte-list="default"  className="list-disc pl-12 flex flex-col gap-2">
+          <ul
+            data-rte-list="default"
+            className="list-disc pl-12 flex flex-col gap-2"
+          >
             <li>
               <p className="whitespace-pre-wrap">
                 Digital Advertising Alliance:&nbsp;
-                <a href="http://optout.aboutads.info/" target="_blank" className="text-(--primary-coral) underline">
+                <a
+                  href="http://optout.aboutads.info/"
+                  target="_blank"
+                  className="text-(--primary-coral) underline"
+                >
                   http://optout.aboutads.info
                 </a>
               </p>
@@ -682,7 +744,8 @@ const Privacy = () => {
                 Network Advertising Initiative:&nbsp;
                 <a
                   href="http://optout.networkadvertising.org/?c=1"
-                  target="_blank" className="text-(--primary-coral) underline"
+                  target="_blank"
+                  className="text-(--primary-coral) underline"
                 >
                   http://optout.networkadvertising.org/?c=1
                 </a>
@@ -692,7 +755,11 @@ const Privacy = () => {
         </ul>
         <p className="whitespace-pre-wrap">
           To opt out of tracking by Google Analytics, click&nbsp;
-          <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" className="text-(--primary-coral) underline">
+          <a
+            href="https://tools.google.com/dlpage/gaoptout"
+            target="_blank"
+            className="text-(--primary-coral) underline"
+          >
             here
           </a>
           .

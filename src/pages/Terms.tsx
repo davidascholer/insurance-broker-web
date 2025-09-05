@@ -1,9 +1,20 @@
 import Footer from "@/components/Footer";
 import Header from "../components/header/Header";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import ReactGA from "react-ga4";
 
 const Terms = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    ReactGA.send({
+      hitType: "pageview",
+      page: "/terms",
+      title: "Terms",
+    });
+  }, []);
+  
   return (
     <div>
       <Header />

@@ -28,6 +28,7 @@ import LoadingQuotes from "@/components/LoadingQuotes";
 import { providerClickedTracker } from "@/api/trackers";
 import PageContainer from "@/components/PageContainer";
 import Loader from "@/components/Loader";
+import ReactGA from "react-ga4";
 
 const LOAD_TIMER = 20; // seconds
 
@@ -191,6 +192,11 @@ const Quotes = () => {
 
   const handleInsurerClicked = (insurer: string) => {
     providerClickedTracker({ insurer, petObject });
+    ReactGA.event({
+      category: "external_link",
+      action: "link_clicked",
+      label: insurer,
+    });
   };
 
   const handleYoungerPetClicked = () => {
@@ -203,6 +209,14 @@ const Quotes = () => {
     setTimeout(() => {
       setDefaultLoading(false);
     }, 500);
+  }, []);
+
+  useEffect(() => {
+    ReactGA.send({
+      hitType: "pageview",
+      page: "/quotes",
+      title: "Quotes",
+    });
   }, []);
 
   useEffect(() => {
@@ -275,7 +289,7 @@ const Quotes = () => {
         <LoadingQuotes progressTimerSeconds={LOAD_TIMER} />
       )}
       {defaultLoading && (
-        <PageContainer >
+        <PageContainer>
           <Loader />
         </PageContainer>
       )}

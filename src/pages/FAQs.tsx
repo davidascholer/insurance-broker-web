@@ -1,9 +1,20 @@
 import Footer from "@/components/Footer";
 import Header from "../components/header/Header";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import ReactGA from "react-ga4";
 
 const FAQs = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    ReactGA.send({
+      hitType: "pageview",
+      page: "/faqs",
+      title: "FAQs",
+    });
+  }, []);
+
   return (
     <div className="bg-(--light-pink) ">
       <Header />
@@ -260,8 +271,8 @@ const FAQs = () => {
               className="text-(--primary-coral) font-semibold underline cursor-pointer"
             >
               compare quotes
-            </button>
-            {" "}between pet insurance carriers. That’s what PIPA does best.
+            </button>{" "}
+            between pet insurance carriers. That’s what PIPA does best.
           </p>
           <h4 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap">
             What pets are able to be insured?

@@ -1,9 +1,18 @@
 import Footer from "@/components/Footer";
 import Header from "../components/header/Header";
-import React from "react";
+import React, { useEffect } from "react";
 import { licenses } from "@/data/licenses";
+import ReactGA from "react-ga4";
 
 const Licenses = () => {
+  useEffect(() => {
+    ReactGA.send({
+      hitType: "pageview",
+      page: "/licenses",
+      title: "Licenses",
+    });
+  }, []);
+
   return (
     <div>
       <Header />

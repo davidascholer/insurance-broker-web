@@ -8,9 +8,18 @@ import { hitsTracker } from "@/api/trackers";
 import { useLocation } from "react-router-dom";
 import { PIPA_USER_ID_KEY } from "@/lib/constants";
 import { generateRandomAlphanumeric } from "@/lib/utils";
+import ReactGA from "react-ga4";
 
 const Home = () => {
   const location = useLocation();
+
+  useEffect(() => {
+    ReactGA.send({
+      hitType: "pageview",
+      page: "/",
+      title: "Home",
+    });
+  }, []);
 
   useEffect(() => {
     /*
@@ -19,7 +28,6 @@ const Home = () => {
     This will be replaced after we add user data to the terms and/or privacy policy pages.
     */
     if (!localStorage.getItem(PIPA_USER_ID_KEY)) {
-
       const queryParams = new URLSearchParams(location.search);
 
       const origin = queryParams.get("fbclid")
@@ -29,7 +37,7 @@ const Home = () => {
         : "";
       const referrer = document.referrer ? document.referrer : "";
       hitsTracker({ referrer: referrer || "", origin: origin || "" });
-      // Set the user to a random 16 char alphanumeric string used for tracking. 
+      // Set the user to a random 16 char alphanumeric string used for tracking.
       // Duplicates are possible but unlikely and ok if so.
       localStorage.setItem(PIPA_USER_ID_KEY, generateRandomAlphanumeric(16));
     } else {

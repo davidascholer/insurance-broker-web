@@ -1,8 +1,17 @@
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
 import Header from "@/components/header/Header";
+import { useEffect } from "react";
+import ReactGA from "react-ga4";
 
 const PartnerContact = () => {
+  useEffect(() => {
+    ReactGA.send({
+      hitType: "pageview",
+      page: "/partner-contact",
+      title: "Partner Contact",
+    });
+  }, []);
   return (
     <div className="bg-(--light-pink)">
       <Header />
@@ -12,12 +21,13 @@ const PartnerContact = () => {
             Contact Us
           </h1>
           <p>
-            Interested in partnering with PIPA Broker to have your quotes reach potential customers? Let’s connect!
+            Interested in partnering with PIPA Broker to have your quotes reach
+            potential customers? Let’s connect!
           </p>
           <p>
             admin@pipabroker.com<br></br>(747) 276-8262
           </p>
-          <ContactForm type={"partner"}  />
+          <ContactForm type={"partner"} />
         </div>
         <img
           src="/contact-partner.webp"
