@@ -4,10 +4,7 @@ import FetchQuoteButton from "../components/FetchQuoteButton";
 import Footer from "../components/Footer";
 import Header from "../components/header/Header";
 import InsurerItem from "../components/InsurerItem";
-import { hitsTracker } from "@/api/trackers";
 import { useLocation } from "react-router-dom";
-import { PIPA_USER_ID_KEY } from "@/lib/constants";
-import { generateRandomAlphanumeric } from "@/lib/utils";
 import { sendPageview } from "@/lib/analytics";
 
 const Home = () => {
@@ -16,30 +13,6 @@ const Home = () => {
   useEffect(() => {
     // Send pageview with UTM parameters to Google Analytics
     sendPageview("/", "Home");
-  }, [location.search]);
-
-  useEffect(() => {
-    /*
-    Note:
-    This is a temporary implementation to check that the user has been to the site before.
-    This will be replaced after we add user data to the terms and/or privacy policy pages.
-    */
-    if (!localStorage.getItem(PIPA_USER_ID_KEY)) {
-      const queryParams = new URLSearchParams(location.search);
-
-      const origin = queryParams.get("fbclid")
-        ? "fbclid"
-        : queryParams.get("utm_source")
-        ? queryParams.get("utm_source")
-        : "";
-      const referrer = document.referrer ? document.referrer : "";
-      hitsTracker({ referrer: referrer || "", origin: origin || "" });
-      // Set the user to a random 16 char alphanumeric string used for tracking.
-      // Duplicates are possible but unlikely and ok if so.
-      localStorage.setItem(PIPA_USER_ID_KEY, generateRandomAlphanumeric(16));
-    } else {
-      console.log("User has visited before, not tracking hit.");
-    }
   }, [location.search]);
 
   return (

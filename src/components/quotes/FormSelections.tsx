@@ -11,8 +11,6 @@ import NameForm from "@/components/form/NameForm";
 import EmailForm from "@/components/form/EmailForm";
 import ZipForm from "@/components/form/ZipForm";
 import WeightForm from "@/components/form/WeightForm";
-import { userPetTracker } from "@/api/trackers";
-import { PIPA_USER_ID_KEY } from "@/lib/constants";
 
 const FormSelections = ({
   currentQuestion,
@@ -46,9 +44,6 @@ const FormSelections = ({
   const handleEmailSubmit = (data: { email: string }) => {
     const updatedAnswers = { ...answers, email: data.email };
     setAnswers(updatedAnswers);
-    // Track the user pet object submission
-    const userId = localStorage.getItem(PIPA_USER_ID_KEY);
-    if (userId) userPetTracker({ id: userId, petObject: updatedAnswers });
   };
 
   const handleZipSubmit = (data: { zip: string }) => {
@@ -108,9 +103,6 @@ const FormSelections = ({
   };
 
   const handleFinishSubmit = () => {
-    // Track the user pet object submission
-    const userId = localStorage.getItem(PIPA_USER_ID_KEY);
-    if (userId) userPetTracker({ id: userId, petObject: answers });
     handleSubmit();
   };
 

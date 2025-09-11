@@ -9,6 +9,14 @@ ReactGA.initialize("G-QDQLNZ7VH8", {
   gtagOptions: {
     send_page_view: false, // We'll send pageviews manually with UTM data
     cookie_flags: 'SameSite=None;Secure',
+    // Allow enhanced ecommerce features
+    allow_enhanced_conversions: true,
+    // Configure campaign tracking
+    custom_map: {
+      custom_parameter_1: 'utm_source',
+      custom_parameter_2: 'utm_medium', 
+      custom_parameter_3: 'utm_campaign',
+    }
   }
 });
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import ReactGA from "react-ga4";
+import { sendPageview } from "@/lib/analytics";
 
 import EditIcon from "@/components/icons/EditIcon";
 import {
@@ -105,11 +105,7 @@ const InfoForm = () => {
   }, []);
 
   useEffect(() => {
-    ReactGA.send({
-      hitType: "pageview",
-      page: "/pet-form",
-      title: "Pet Form",
-    });
+    sendPageview("/pet-form", "Pet Form");
   }, []);
 
   useEffect(() => {
