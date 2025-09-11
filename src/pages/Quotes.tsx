@@ -28,7 +28,7 @@ import LoadingQuotes from "@/components/LoadingQuotes";
 import { providerClickedTracker } from "@/api/trackers";
 import PageContainer from "@/components/PageContainer";
 import Loader from "@/components/Loader";
-import ReactGA from "react-ga4";
+import { sendPageview, sendEvent } from "@/lib/analytics";
 
 const LOAD_TIMER = 20; // seconds
 
@@ -192,11 +192,7 @@ const Quotes = () => {
 
   const handleInsurerClicked = (insurer: string) => {
     providerClickedTracker({ insurer, petObject });
-    ReactGA.event({
-      category: "external_link",
-      action: "link_clicked",
-      label: insurer,
-    });
+    sendEvent("external_link", "link_clicked", insurer);
   };
 
   const handleYoungerPetClicked = () => {
@@ -212,11 +208,7 @@ const Quotes = () => {
   }, []);
 
   useEffect(() => {
-    ReactGA.send({
-      hitType: "pageview",
-      page: "/quotes",
-      title: "Quotes",
-    });
+    sendPageview("/quotes", "Quotes");
   }, []);
 
   useEffect(() => {

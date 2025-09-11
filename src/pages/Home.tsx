@@ -8,18 +8,15 @@ import { hitsTracker } from "@/api/trackers";
 import { useLocation } from "react-router-dom";
 import { PIPA_USER_ID_KEY } from "@/lib/constants";
 import { generateRandomAlphanumeric } from "@/lib/utils";
-import ReactGA from "react-ga4";
+import { sendPageview } from "@/lib/analytics";
 
 const Home = () => {
   const location = useLocation();
 
   useEffect(() => {
-    ReactGA.send({
-      hitType: "pageview",
-      page: "/",
-      title: "Home",
-    });
-  }, []);
+    // Send pageview with UTM parameters to Google Analytics
+    sendPageview("/", "Home");
+  }, [location.search]);
 
   useEffect(() => {
     /*
