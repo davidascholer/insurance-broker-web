@@ -1,66 +1,17 @@
-import { adminEmailPassword, getHits, getLinksClicked, getUserObjects } from "@/api/api";
-import AdminLoginForm from "@/components/admin/AdminLoginForm";
-import AdminTokenForm from "@/components/admin/AdminTokenForm";
-import HitsDataTable from "@/components/datatables/HitsDataTable";
-import LinksClickedDataTable from "@/components/datatables/LinksClickedDataTable";
-import UserInfoDataTable from "@/components/datatables/UserInfoDataTable";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { adminEmailPassword } from "@/api/api";
 import Loader from "@/components/Loader";
 import PageContainer from "@/components/PageContainer";
-import type { HitsDataType, LinksClickedType, UserPetInfoType } from "@/lib/types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import AdminTokenForm from "@/components/admin/AdminTokenForm";
+import AdminLoginForm from "@/components/admin/AdminLoginForm";
+import AdminBlogForm from "@/components/admin/AdminBlogForm";
 
+/* deprecated admin page - see Admin.tsx for new version */
 const Admin = () => {
-  const [hitsData, setHitsData] = useState<HitsDataType[]>([]);
-  const [linksClickedData, setLinksClickedData] = useState<LinksClickedType[]>([]);
-  const [userPetInfoData, setUserPetInfoData] = useState<UserPetInfoType[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading] = useState<boolean>(false);
+  const [authenticated] = useState<boolean>(true);
   const [emailResponse, setEmailResponse] = useState<string>("");
-
-  const fetchHitsData = async () => {
-    try {
-      const token = localStorage.getItem("pipa-data-token");
-      if (!token) return;
-      const fetchedHits = await getHits(token);
-      if (fetchedHits && Array.isArray(fetchedHits)) {
-        setHitsData(fetchedHits);
-      }
-    } catch (error) {
-      console.error("Failed to fetch hits data:", error);
-    }
-  };
-
-  const fetchLinksClickedData = async () => {
-    try {
-      const token = localStorage.getItem("pipa-data-token");
-      if (!token) return;
-      const fetchedLinks = await getLinksClicked(token);
-      if (fetchedLinks && Array.isArray(fetchedLinks)) {
-        setLinksClickedData(fetchedLinks);
-      }
-    } catch (error) {
-      console.error("Failed to fetch links clicked data:", error);
-    }
-  };
-
-  const fetchUserPetInfoData = async () => {
-    try {
-      const token = localStorage.getItem("pipa-data-token");
-      if (!token) return;
-      const fetchedUsers = await getUserObjects(token);
-      if (fetchedUsers && Array.isArray(fetchedUsers)) {
-        setUserPetInfoData(fetchedUsers);
-      }
-    } catch (error) {
-      console.error("Failed to fetch user pet info data:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchHitsData();
-    fetchLinksClickedData();
-    fetchUserPetInfoData();
-    setTimeout(() => setLoading(false), 2000);
-  }, []);
 
   const handleEmailSubmit = async ({ email }: { email: string }) => {
     const response = await adminEmailPassword(email);
@@ -72,7 +23,6 @@ const Admin = () => {
 
   const handleTokenSubmit = ({ token }: { token: string }) => {
     localStorage.setItem("pipa-data-token", token);
-    fetchHitsData();
   };
 
   if (loading) {
@@ -85,7 +35,7 @@ const Admin = () => {
     );
   }
 
-  if (hitsData.length === 0) {
+  if (authenticated === false) {
     return (
       <PageContainer className="flex flex-col items-center justify-start gap-0">
         <AdminTokenForm onSubmit={handleTokenSubmit} className="text-center" />
@@ -98,9 +48,22 @@ const Admin = () => {
 
   return (
     <PageContainer>
-      <HitsDataTable data={hitsData} />
-      <LinksClickedDataTable data={linksClickedData} />
-      <UserInfoDataTable data={userPetInfoData} />
+      <Tabs defaultValue="blog">
+        <TabsList className="w-full flex justify-center text-center  mb-8">
+          <TabsTrigger value="blog" className="cursor-pointer">
+            Blog
+          </TabsTrigger>
+          <TabsTrigger value="other" className="cursor-pointer">
+            Other
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="blog">
+          <AdminBlogForm onSubmit={(data) => console.log(data)} />
+        </TabsContent>
+        <TabsContent value="other">
+          <div>No content. Implemented for future use.</div>
+        </TabsContent>
+      </Tabs>
     </PageContainer>
   );
 };
