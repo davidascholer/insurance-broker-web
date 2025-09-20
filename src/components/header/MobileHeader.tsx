@@ -121,6 +121,46 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
           >
             Pet Insurance 101 - Terminology
           </button>
+          <button
+            className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
+            onClick={() => {
+              navigate("/blog/what-is-pet-insurance");
+            }}
+          >
+            What is Pet Insurance and How It Works
+          </button>
+          <button
+            className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
+            onClick={() => {
+              navigate("/blog/how-to-compare-pet-insurance-policies");
+            }}
+          >
+            How to Compare Pet Insurance Policies
+          </button>
+          <button
+            className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
+            onClick={() => {
+              navigate("/blog/understanding-pet-insurance-types");
+            }}
+          >
+            Understanding Pet Insurance Types
+          </button>
+          <button
+            className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
+            onClick={() => {
+              navigate("/blog/pet-insurance-exclusions");
+            }}
+          >
+            Pet Insurance Exclusions and Work Arounds
+          </button>
+          <button
+            className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
+            onClick={() => {
+              navigate("/blog/how-much-does-pet-insurance-cost");
+            }}
+          >
+            How Much Does Pet Insurance Cost?
+          </button>
 
           <button
             type="button"

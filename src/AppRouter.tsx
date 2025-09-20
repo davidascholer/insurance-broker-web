@@ -14,6 +14,12 @@ import Licenses from "./pages/Licenses";
 import React, { useLayoutEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Admin from "./pages/Admin";
+import WhatIsPetInsurance from "./pages/blog/WhatIsPetInsurance";
+import WhyConsiderPetInsurance from "./pages/blog/WhyConsiderPetInsurance";
+import HowToComparePetInsurancePolicies from "./pages/blog/HowToComparePetInsurancePolicies";
+import UnderstandPetInsuranceTypes from "./pages/blog/UnderstandingPetInsuranceTypes";
+import PetInsuranceExclusions from "./pages/blog/PetInsuranceExclusions";
+import HowMuchDoesPetInsuranceCost from "./pages/blog/HowMuchDoesPetInsuranceCost";
 
 const RouterWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -36,6 +42,12 @@ const AppRouter = () => {
         <Route path="/about" element={<About />} />
         <Route path="/faqs" element={<FAQs />} />
         <Route path="/terminology" element={<Terminology />} />
+        <Route path="/blog/what-is-pet-insurance" element={<WhatIsPetInsurance />} />
+        <Route path="/blog/why-consider-pet-insurance" element={<WhyConsiderPetInsurance />} />
+        <Route path="/blog/how-to-compare-pet-insurance-policies" element={<HowToComparePetInsurancePolicies />} />
+        <Route path="/blog/understanding-pet-insurance-types" element={<UnderstandPetInsuranceTypes />} />
+        <Route path="/blog/pet-insurance-exclusions" element={<PetInsuranceExclusions />} />
+        <Route path="/blog/how-much-does-pet-insurance-cost" element={<HowMuchDoesPetInsuranceCost />} />
         <Route path="/partners" element={<PartnerContact />} />
         <Route path="/investors" element={<InvestorContact />} />
         <Route path="/info" element={<InfoForm />} />
