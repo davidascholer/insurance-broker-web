@@ -1,133 +1,301 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/header/Header";
+import { Link } from "react-router-dom";
 
 const PetInsuranceExclusions = () => {
   return (
     <div className="bg-(--light-pink)">
       <Header />
       <div className="flex flex-col justify-start items-start gap-12 p-12 pt-36 max-w-6xl mx-auto min-h-screen">
-        {/* <h1 className="text-(--primary-coral) text-3xl sansita-bold whitespace-pre-wrap self-start">
-          Pet Insurance Terminology and Why These Terms Matter
+        <h1 className="text-(--primary-teal-dark) text-3xl sansita-bold whitespace-pre-wrap self-start">
+          What Pet Insurance Doesn't Cover and How to Protect Your Pet Anyway
         </h1>
-        <p className="text-(--primary-teal-dark) whitespace-pre-wrap font-bold">
-          Understanding these key terms can help you pick the best coverage for
-          your furry family member—and avoid surprises when vet visits happen.
-          Always review each policy’s limits, waiting periods, and deductible
-          setup so you’re prepared for whatever comes your pet’s way!
-        </p> */}
-        What Pet Insurance Doesn’t Cover and How to Protect Your Pet
-Anyway
-Understanding what isn’t covered by pet insurance is just as important as knowing what is. At PIPA
-Broker, we believe in transparency so you can choose coverage that suits your pet’s needs and your
-peace of mind.
+        <p>
+          Understanding what isn't covered by pet insurance is just as important
+          as knowing what is. At PIPA Broker, we believe in transparency so you
+          can choose coverage that suits your pet's needs and your peace of
+          mind.
+        </p>
 
-1. Pre-Existing Conditions
-What doesn’t get covered: Any illness or injury that appeared before your policy began (or during any
-waiting period) is typically excluded. This includes undiagnosed symptoms like limping or excessive
-licking, which insurers often classify as existing conditions. 1,2
-How to work around it:
- Enroll early, ideally when your pet is young and healthy, to minimize risk.
- Some policies allow coverage for curable pre-existing conditions after a symptom-free waiting
-period (e.g., 180 days), but will still exclude incurable or chronic issues like diabetes or allergies. 1
- AKC Pet Insurance is unique in that it offers coverage for both curable and incurable pre-existing
-conditions. But only after 365 days of uninterrupted coverage. 3
+        <ol className="list-decimal ml-5 space-y-6">
+          <li>
+            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+              Pre-Existing Conditions
+            </h2>
+            <p>
+              <strong>What doesn't get covered:</strong> Any illness or injury
+              that appeared before your policy began (or during any waiting
+              period) is typically excluded. This includes undiagnosed symptoms
+              like limping or excessive licking, which insurers often classify
+              as existing conditions.
+            </p>
+            <h3 className="text-(--primary-teal-dark) text-xl sansita-bold">
+              How to work around it:
+            </h3>
+            <ul className="list-disc ml-5 space-y-2">
+              <li>
+                Enroll early, ideally when your pet is young and healthy, to
+                minimize risk.
+              </li>
+              <li>
+                Some policies allow coverage for curable pre-existing conditions
+                after a symptom-free waiting period (e.g., 180 days), but will
+                still exclude incurable or chronic issues like diabetes or
+                allergies.
+              </li>
+              <li>
+                AKC Pet Insurance is unique in that it offers coverage for both
+                curable and incurable pre-existing conditions. But only after
+                365 days of uninterrupted coverage.
+              </li>
+            </ul>
+          </li>
 
-2. Waiting Periods
-What to expect: No coverage for conditions that arise within the policy’s early days or weeks, often 14
-to 30 days for illnesses, with shorter waiting periods for accidents. Some complex conditions, like hip
-dysplasia, may require up to 12-month waiting periods. 4
-Why it matters: A pet getting injured or sick immediately after enrollment could be denied coverage
-due to this built-in delay.
+          <li>
+            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+              Waiting Periods
+            </h2>
+            <p>
+              <strong>What to expect:</strong> No coverage for conditions that
+              arise within the policy's early days or weeks, often 14 to 30 days
+              for illnesses, with shorter waiting periods for accidents. Some
+              complex conditions, like hip dysplasia, may require up to 12-month
+              waiting periods.
+            </p>
+            <p>
+              <strong>Why it matters:</strong> A pet getting injured or sick
+              immediately after enrollment could be denied coverage due to this
+              built-in delay.
+            </p>
+          </li>
 
-3. Routine, Preventive, and Elective Care
-What’s excluded:
- Regular checkups, vaccinations, grooming, spaying/neutering, and flea or tick treatments are
-generally not included in basic accident or illness policies. 4
- Elective or cosmetic procedures (e.g., declawing, tail docking, or aesthetics) are also excluded.
-Workaround: Add a wellness or preventive care plan if available, especially if your pet receives
-frequent routine treatments.
+          <li>
+            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+              Routine, Preventive, and Elective Care
+            </h2>
+            <h3 className="text-(--primary-teal-dark) text-xl sansita-bold">
+              What's excluded:
+            </h3>
+            <ul className="list-disc ml-5 space-y-2">
+              <li>
+                Regular checkups, vaccinations, grooming, spaying/neutering, and
+                flea or tick treatments are generally not included in basic
+                accident or illness policies.
+              </li>
+              <li>
+                Elective or cosmetic procedures (e.g., declawing, tail docking,
+                or aesthetics) are also excluded.
+              </li>
+            </ul>
+            <p>
+              <strong>Workaround:</strong> Add a wellness or preventive care
+              plan if available, especially if your pet receives frequent
+              routine treatments.
+            </p>
+          </li>
 
-4. Hereditary, Congenital, and Bilateral Conditions
-Coverage varies:
- Many policies exclude hereditary or congenital conditions (like hip dysplasia or heart disease)
-unless they’re specifically included or added as riders. 2
- Bilateral conditions (e.g., hip dysplasia that first appears on one side and then the other) are
-typically excluded if one side was affected before coverage. 1
-PIPA Broker’s tip: Use free tools &amp; resources like PIPA Broker to find insurance that doesn’t exclude
-conditions your pet is genetically predisposed to.
+          <li>
+            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+              Hereditary, Congenital, and Bilateral Conditions
+            </h2>
+            <h3 className="text-(--primary-teal-dark) text-xl sansita-bold">
+              Coverage varies:
+            </h3>
+            <ul className="list-disc ml-5 space-y-2">
+              <li>
+                Many policies exclude hereditary or congenital conditions (like
+                hip dysplasia or heart disease) unless they're specifically
+                included or added as riders.
+              </li>
+              <li>
+                Bilateral conditions (e.g., hip dysplasia that first appears on
+                one side and then the other) are typically excluded if one side
+                was affected before coverage.
+              </li>
+            </ul>
+            <p>
+              <strong>PIPA Broker's tip:</strong> Use free tools & resources
+              like{" "}
+              <Link to="/info" className="underline font-bold">
+                PIPA Broker
+              </Link>{" "}
+              to find insurance that doesn't exclude conditions your pet is
+              genetically predisposed to.
+            </p>
+          </li>
 
-5. Other Common Exclusions
-Additional exclusions may include:
- Pregnancy and birthing-related expenses
- Claim administration fees, such as vet charges for completing forms or obtaining medical
-records
- Breed-specific or age-specific limitations, caps, or fees.
+          <li>
+            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+              Other Common Exclusions
+            </h2>
+            <p>Additional exclusions may include:</p>
+            <ul className="list-disc ml-5 space-y-2">
+              <li>Pregnancy and birthing-related expenses</li>
+              <li>
+                Claim administration fees, such as vet charges for completing
+                forms or obtaining medical records
+              </li>
+              <li>Breed-specific or age-specific limitations, caps, or fees</li>
+            </ul>
+          </li>
+        </ol>
 
-At-a-Glance: Exclusions &amp; Strategies Table
-Excluded Item When It Applies How to Navigate
+        <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+          At-a-Glance: Exclusions & Strategies Table
+        </h2>
+        <div className="w-full">
+          <table className="w-full border-collapse border border-gray-300">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border border-gray-300 px-4 py-2 text-left">
+                  Excluded Item
+                </th>
+                <th className="border border-gray-300 px-4 py-2 text-left">
+                  When It Applies
+                </th>
+                <th className="border border-gray-300 px-4 py-2 text-left">
+                  How to Navigate
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="border border-gray-300 px-4 py-2">
+                  Pre-existing Conditions
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  Conditions or symptoms before policy effective date or during
+                  waiting periods
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  Enroll early; choose plans that cover curable conditions after
+                  a waiting period; AKC covers all after 1 year
+                </td>
+              </tr>
+              <tr>
+                <td className="border border-gray-300 px-4 py-2">
+                  Waiting Periods
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  Immediately after enrollment: illness/weeks;
+                  accidents/shorter; complex conditions/longer
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  Enroll your pet before any health issues arise to avoid delays
+                </td>
+              </tr>
+              <tr>
+                <td className="border border-gray-300 px-4 py-2">
+                  Routine/Preventive & Elective Care
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  Vaccinations, checkups, grooming, elective surgeries
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  Add wellness or preventive care riders
+                </td>
+              </tr>
+              <tr>
+                <td className="border border-gray-300 px-4 py-2">
+                  Hereditary, Congenital, & Bilateral Conditions
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  Genetic or birth-related issues; second occurrence on opposite
+                  side
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  Look for policies that include genetic coverage or use
+                  guidance tools for breed risk
+                </td>
+              </tr>
+              <tr>
+                <td className="border border-gray-300 px-4 py-2">
+                  Pregnancy & Administrative Fees
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  During breeding, birthing, or for claims processing
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  Carefully examine policy documents
+                </td>
+              </tr>
+              <tr>
+                <td className="border border-gray-300 px-4 py-2">
+                  Breed/Age Restrictions or Caps
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  Specific to certain breeds or older pets
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  Shop multiple providers and check state-specific regulations
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-Pre-existing Conditions
+        <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+          Final Thoughts from PIPA Broker
+        </h2>
+        <p>
+          Every pet is unique. Understanding exclusions empowers you to choose a
+          plan that truly fits your pet's needs.
+        </p>
+        <p>At PIPA Broker, we help you:</p>
+        <ul className="list-disc ml-5 space-y-2">
+          <li>Compare plans clearly</li>
+          <li>Identify crucial coverage gaps</li>
+          <li>Select smart add-ons</li>
+        </ul>
+        <p>
+          Want help walking through a real policy's exclusions or customizing
+          coverage for your pup? Let's make it simple and secure.{" "}
+          <Link to="/info" className="underline font-bold">
+            Get your quotes now!
+          </Link>
+        </p>
 
-Conditions or symptoms before policy
-effective date or during waiting
-periods
-
-Enroll early; choose plans that cover
-curable conditions after a waiting
-period; AKC covers all after 1 year
-
-Waiting Periods
-
-Immediately after enrollment:
-illness/weeks; accidents/shorter;
-complex conditions/longer
-
-Enroll your pet before any health
-issues arise to avoid delays
-
-Routine/Preventive &amp;
-Elective Care
-
-Vaccinations, checkups, grooming,
-elective surgeries
-
-Add wellness or preventive care
-riders
-
-Hereditary, Congenital, &amp;
-Bilateral Conditions
-
-Genetic or birth-related issues;
-second occurrence on opposite side
-
-Look for policies that include genetic
-coverage or use guidance tools for
-breed risk
-
-Pregnancy &amp;
-Administrative Fees
-
-During breeding, birthing, or for
-claims processing Carefully examine policy documents
-Breed/Age Restrictions or Specific to certain breeds or older Shop multiple providers and check
-
-Caps pets state-specific regulations
-
-Final Thoughts from PIPA Broker
-Every pet is unique. Understanding exclusions empowers you to choose a plan that truly fits your pet’s
-needs.
-At PIPA Broker, we help you:
- Compare plans clearly
- Identify crucial coverage gaps
- Select smart add-ons
-Want help walking through a real policy’s exclusions or customizing coverage for your pup? Let’s make it
-simple and secure. Get your quotes now!
-
-References
-1. PetMD
-2. ASPCA Pet Insurance
-3. AKC Pet Insurance
-4. Pumpkin Pet Insurance
+        <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+          References
+        </h2>
+        <ol className="list-decimal ml-5 space-y-2">
+          <li>
+            <Link
+              target="_blank"
+              to="https://www.petmd.com/general-health/does-pet-insurance-cover-pre-existing-conditions"
+              className="underline font-bold"
+            >
+              PetMD
+            </Link>
+          </li>
+          <li>
+            <Link
+              target="_blank"
+              to="https://www.aspcapetinsurance.com/research-and-compare/pet-insurance-basics/pet-insurance-and-pre-existing-conditions/"
+              className="underline font-bold"
+            >
+              ASPCA Pet Insurance
+            </Link>
+          </li>
+          <li>
+            <Link
+              target="_blank"
+              to="https://www.akcpetinsurance.com/plans/pre-existing-conditions"
+              className="underline font-bold"
+            >
+              AKC Pet Insurance
+            </Link>
+          </li>
+          <li>
+            <Link
+              target="_blank"
+              to="https://www.pumpkin.care/post/exclusions-in-pet-insurance"
+              className="underline font-bold"
+            >
+              Pumpkin Pet Insurance
+            </Link>
+          </li>
+        </ol>
       </div>
       <Footer />
     </div>

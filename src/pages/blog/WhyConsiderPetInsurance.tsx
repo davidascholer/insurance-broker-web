@@ -71,7 +71,9 @@ const WhatIsPetInsurance = () => {
             </p>
           </li>
         </ol>
-        <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">The Simple Truth in a Nutshell</h2>
+        <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+          The Simple Truth in a Nutshell
+        </h2>
         <ul className="list-disc ml-5 space-y-2">
           <li>
             <strong>Accidents Happen.</strong> Pet insurance is there when they
@@ -97,10 +99,13 @@ const WhatIsPetInsurance = () => {
           It’s a confident, caring choice, driven by knowledge and data,
           executed with wisdom yielding benefits that go beyond dollars.
         </p>
-        <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">Reference</h2>
+        <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+          Reference
+        </h2>
         <ol className="list-decimal ml-5 space-y-2">
           <li>
             <Link
+              target="_blank"
               to="https://www.sfchronicle.com/personal-finance/article/pet-insurance-california-20180461.php"
               className="underline font-bold"
             >

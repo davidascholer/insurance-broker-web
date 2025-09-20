@@ -1,101 +1,320 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/header/Header";
+import { Link } from "react-router-dom";
 
 const HowMuchDoesPetInsuranceCost = () => {
   return (
     <div className="bg-(--light-pink)">
       <Header />
       <div className="flex flex-col justify-start items-start gap-12 p-12 pt-36 max-w-6xl mx-auto min-h-screen">
-        {/* <h1 className="text-(--primary-coral) text-3xl sansita-bold whitespace-pre-wrap self-start">
-          Pet Insurance Terminology and Why These Terms Matter
+        <h1 className="text-(--primary-teal-dark) text-3xl sansita-bold whitespace-pre-wrap self-start">
+          The Real Cost of Pet Insurance: What It Costs and What Drives It
         </h1>
-        <p className="text-(--primary-teal-dark) whitespace-pre-wrap font-bold">
-          Understanding these key terms can help you pick the best coverage for
-          your furry family member—and avoid surprises when vet visits happen.
-          Always review each policy’s limits, waiting periods, and deductible
-          setup so you’re prepared for whatever comes your pet’s way!
-        </p> */}
-        The Real Cost of Pet Insurance: What It Costs and What Drives It
-At PIPA Broker, we believe in transparency and data driven decision making. Let’s explore the average
-costs of pet insurance for dogs and cats in 2025, what influences those premiums, and how you can
-make cost-effective, tailored choices for your furry family members.
+        <p>
+          At PIPA Broker, we believe in transparency and data driven decision
+          making. Let's explore the average costs of pet insurance for dogs and
+          cats in 2025, what influences those premiums, and how you can make
+          cost-effective, tailored choices for your furry family members.
+        </p>
 
-1. Average Pet Insurance Costs (2025)
- The North American Pet Health Insurance Association (NAPHIA) reports a similar ballpark: dogs
-average $62.44/month ($749/year); cats average $32.21/month ($386/year). 1
- MetLife data aligns closely: $60/month for dogs and $32/month for cats, noting extremes by
-breed, such as French Bulldogs at $92/month and Labradors at $62/month. 2
- Bankrate, drawing from 2024 NAPHIA figures, puts average A&amp;I premiums at $56.30/month for
-dogs and $31.94/month for cats. 3
- NerdWallet confirms: dogs average $62/month, cats $32/month. Accident-only policies run
-lower at about $16/month for dogs, $9/month for cats. 4
+        <ol className="list-decimal ml-5 space-y-6">
+          <li>
+            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+              Average Pet Insurance Costs (2025)
+            </h2>
+            <ul className="list-disc ml-5 space-y-2">
+              <li>
+                The North American Pet Health Insurance Association (NAPHIA)
+                reports a similar ballpark: dogs average $62.44/month
+                ($749/year); cats average $32.21/month ($386/year).<sup>1</sup>
+              </li>
+              <li>
+                MetLife data aligns closely: $60/month for dogs and $32/month
+                for cats, noting extremes by breed, such as French Bulldogs at
+                $92/month and Labradors at $62/month.<sup>2</sup>
+              </li>
+              <li>
+                Bankrate, drawing from 2024 NAPHIA figures, puts average A&I
+                premiums at $56.30/month for dogs and $31.94/month for cats.
+                <sup>3</sup>
+              </li>
+              <li>
+                NerdWallet confirms: dogs average $62/month, cats $32/month.
+                Accident-only policies run lower at about $16/month for dogs,
+                $9/month for cats.<sup>4</sup>
+              </li>
+            </ul>
+          </li>
 
-2. What Drives Pet Insurance Premiums?
-Multiple factors shape those numbers. Here’s how each one plays into your monthly cost:
-- Species, Size &amp; Breed
- Dogs cost more to insure than cats: higher activity and injury risk. 5
- Breed matters: Health predispositions and physical size affect vet expenses. Larger breeds or
-those prone to genetic conditions, like hip dysplasia, carry higher premiums.
-- Age
- Younger pets cost less to insure. As pets age, claims likelihood rises—pushing premiums upward.
-- Location
- Higher regional veterinary costs = higher premiums. Urban areas or regions with cutting-edge
-care tend to be pricier. 5
-- Coverage Choice
- Accident-only plans are significantly cheaper (e.g., $16/month for dogs vs. $62/month for full
-A&amp;I).
- Accident &amp; Illness (A&amp;I) coverage is more robust and therefore more expensive.
-- Deductible, Reimbursement &amp; Limits
+          <li>
+            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+              What Drives Pet Insurance Premiums?
+            </h2>
+            <p>
+              Multiple factors shape those numbers. Here's how each one plays
+              into your monthly cost:
+            </p>
 
- Higher deductibles = lower premiums; higher reimbursement rates and limits = higher
-premiums. Customizing these can shift the cost significantly.
-- Health History &amp; Pre-existing Conditions
- Pre-existing or chronic conditions lead to exclusions or higher rates, even if they aren&#39;t covered,
-as the presence of these are highly correlated with required vet visits in the future.
-- Insurer &amp; Discounts
- Each company underwrites differently. Bundles, multi-pet discounts, employer programs can
-lower rates.
+            <h3 className="text-(--primary-teal-dark) text-xl sansita-bold">
+              Species, Size & Breed
+            </h3>
+            <ul className="list-disc ml-5 space-y-2">
+              <li>
+                Dogs cost more to insure than cats: higher activity and injury
+                risk.<sup>5</sup>
+              </li>
+              <li>
+                Breed matters: Health predispositions and physical size affect
+                vet expenses. Larger breeds or those prone to genetic
+                conditions, like hip dysplasia, carry higher premiums.
+              </li>
+            </ul>
 
-3. Summary Table
-Factor Effect on Premium
-Species &amp; Size Dogs cost more; larger breeds higher due to health
+            <h3 className="text-(--primary-teal-dark) text-xl sansita-bold">
+              Age
+            </h3>
+            <p>
+              Younger pets cost less to insure. As pets age, claims likelihood
+              rises—pushing premiums upward.
+            </p>
 
-risks
+            <h3 className="text-(--primary-teal-dark) text-xl sansita-bold">
+              Location
+            </h3>
+            <p>
+              Higher regional veterinary costs = higher premiums. Urban areas or
+              regions with cutting-edge care tend to be pricier.<sup>5</sup>
+            </p>
 
-Breed Predispositions increase cost (e.g., hip dysplasia)
-Age Older pets cost more; younger pets are cheaper
-Location Urban/high-cost areas = higher premiums
-Policy Type A&amp;I &gt; Accident-only
-Deductible &amp; Limits Lower deductible/high limit = higher premium
-Pre-existing
-Conditions Drives exclusions/higher cost
-Insurer &amp; Discounts Varied underwriting; discounts can reduce cost
+            <h3 className="text-(--primary-teal-dark) text-xl sansita-bold">
+              Coverage Choice
+            </h3>
+            <ul className="list-disc ml-5 space-y-2">
+              <li>
+                Accident-only plans are significantly cheaper (e.g., $16/month
+                for dogs vs. $62/month for full A&I).
+              </li>
+              <li>
+                Accident & Illness (A&I) coverage is more robust and therefore
+                more expensive.
+              </li>
+            </ul>
 
-4. PIPA Broker’s Smart Budgeting Tips
- Start young: Insuring puppies/kittens locks in lower premium rates.
- Compare apples to apples: Use tools like PIPA Broker to compare real-time quotes tailored by
-breed, age, and location.
- Trim by choice: Accident-only saves money, but consider A&amp;I for long-term health protection.
- Adjust thoughtfully: Tweak deductible, reimbursement, and annual limits to balance monthly
-outlay and risk.
- Bundling benefits: Check for employer or existing-insurance discounts.
+            <h3 className="text-(--primary-teal-dark) text-xl sansita-bold">
+              Deductible, Reimbursement & Limits
+            </h3>
+            <p>
+              Higher deductibles = lower premiums; higher reimbursement rates
+              and limits = higher premiums. Customizing these can shift the cost
+              significantly.
+            </p>
 
- Review annually: As your pet and their health evolve, reassess to keep coverage fair and
-affordable.
+            <h3 className="text-(--primary-teal-dark) text-xl sansita-bold">
+              Health History & Pre-existing Conditions
+            </h3>
+            <p>
+              Pre-existing or chronic conditions lead to exclusions or higher
+              rates, even if they aren't covered, as the presence of these are
+              highly correlated with required vet visits in the future.
+            </p>
 
-Final Word from PIPA Broker
-Pet insurance is more than a monthly payment. It is thoughtful preparation for your pet’s wellbeing and
-your peace of mind. While averages give you a baseline like $60 to $62/month for dogs, and $30 to $32
-for cats, the real cost depends on your pet, your policy, and your priorities.
-Want help selecting the ideal mix of coverage, limits, and savings? Let’s tailor a plan that works for your
-budget and heart.
+            <h3 className="text-(--primary-teal-dark) text-xl sansita-bold">
+              Insurer & Discounts
+            </h3>
+            <p>
+              Each company underwrites differently. Bundles, multi-pet
+              discounts, employer programs can lower rates.
+            </p>
+          </li>
 
-References
-1. NAPHIA
-2. MetLife Pet Insurance
-3. Bankrate
-4. NerdWallet
-5. AKC Pet Insurance
+          <li>
+            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+              Summary Table
+            </h2>
+            <div className="w-full">
+              <table className="w-full border-collapse border border-gray-300">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="border border-gray-300 px-4 py-2 text-left">
+                      Factor
+                    </th>
+                    <th className="border border-gray-300 px-4 py-2 text-left">
+                      Effect on Premium
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">
+                      Species & Size
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      Dogs cost more; larger breeds higher due to health risks
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">Breed</td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      Predispositions increase cost (e.g., hip dysplasia)
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">Age</td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      Older pets cost more; younger pets are cheaper
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">
+                      Location
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      Urban/high-cost areas = higher premiums
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">
+                      Policy Type
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      A&I &gt; Accident-only
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">
+                      Deductible & Limits
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      Lower deductible/high limit = higher premium
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">
+                      Pre-existing Conditions
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      Drives exclusions/higher cost
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">
+                      Insurer & Discounts
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      Varied underwriting; discounts can reduce cost
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </li>
+
+          <li>
+            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+              PIPA Broker's Smart Budgeting Tips
+            </h2>
+            <ul className="list-disc ml-5 space-y-2">
+              <li>
+                <strong>Start young:</strong> Insuring puppies/kittens locks in
+                lower premium rates.
+              </li>
+              <li>
+                <strong>Compare apples to apples:</strong> Use tools like{" "}
+                <Link to="/info" className="underline font-bold">
+                  PIPA Broker
+                </Link>{" "}
+                to compare real-time quotes tailored by breed, age, and
+                location.
+              </li>
+              <li>
+                <strong>Trim by choice:</strong> Accident-only saves money, but
+                consider A&I for long-term health protection.
+              </li>
+              <li>
+                <strong>Adjust thoughtfully:</strong> Tweak deductible,
+                reimbursement, and annual limits to balance monthly outlay and
+                risk.
+              </li>
+              <li>
+                <strong>Bundling benefits:</strong> Check for employer or
+                existing-insurance discounts.
+              </li>
+              <li>
+                <strong>Review annually:</strong> As your pet and their health
+                evolve, reassess to keep coverage fair and affordable.
+              </li>
+            </ul>
+          </li>
+        </ol>
+
+        <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+          Final Word from PIPA Broker
+        </h2>
+        <p>
+          Pet insurance is more than a monthly payment. It is thoughtful
+          preparation for your pet's wellbeing and your peace of mind. While
+          averages give you a baseline like $60 to $62/month for dogs, and $30
+          to $32 for cats, the real cost depends on your pet, your policy, and
+          your priorities.
+        </p>
+        <p>
+          Want help selecting the ideal mix of coverage, limits, and savings?
+          <Link to="/info" className="underline font-bold">{" "}
+            Let's tailor a plan that works for your budget and heart
+          </Link>{" "}
+          .
+        </p>
+
+        <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+          References
+        </h2>
+        <ol className="list-decimal ml-5 space-y-2">
+          <li>
+            <Link
+              target="_blank"
+              to="https://naphia.org/industry-data/section-3-average-premiums/"
+              className="underline font-bold"
+            >
+              NAPHIA
+            </Link>
+          </li>
+          <li>
+            <Link
+              target="_blank"
+              to="https://www.metlifepetinsurance.com/blog/pet-insurance/how-much-does-pet-insurance-cost/"
+              className="underline font-bold"
+            >
+              MetLife Pet Insurance
+            </Link>
+          </li>
+          <li>
+            <Link
+              target="_blank"
+              to="https://www.bankrate.com/insurance/pet-insurance/how-are-pet-insurance-premiums-determined/"
+              className="underline font-bold"
+            >
+              Bankrate
+            </Link>
+          </li>
+          <li>
+            <Link
+              target="_blank"
+              to="https://www.nerdwallet.com/article/insurance/cost-of-pet-insurance"
+              className="underline font-bold"
+            >
+              NerdWallet
+            </Link>
+          </li>
+          <li>
+            <Link
+              target="_blank"
+              to="https://www.akcpetinsurance.com/blog/why-does-my-location-affect-pet-insurance-costs"
+              className="underline font-bold"
+            >
+              AKC Pet Insurance
+            </Link>
+          </li>
+        </ol>
       </div>
       <Footer />
     </div>
