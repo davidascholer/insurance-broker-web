@@ -24,7 +24,7 @@ const WhatIsPetInsurance = () => {
         <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
           How Pet Insurance Works
         </h2>
-        <ul className="list-decimal ml-5 space-y-2">
+        <ol className="list-decimal ml-5 space-y-2">
           <li>
             <strong>Choose a Policy:</strong> Use{" "}
             <Link to="/info" className="underline font-bold">
@@ -58,11 +58,11 @@ const WhatIsPetInsurance = () => {
             </Link>
             .
           </li>
-        </ul>
+        </ol>
         <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
           Types of Coverage
         </h2>
-        <ol className="list-disc ml-5 space-y-2">
+        <ul className="list-disc ml-5 space-y-2">
           <li>
             <strong>Accident Coverage:</strong> Covers injuries like fractures
             or ingestion of foreign objects.
@@ -85,11 +85,11 @@ const WhatIsPetInsurance = () => {
             </Link>{" "}
             to find out which coverage type is best for your pet.
           </li>
-        </ol>
+        </ul>
         <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
           Key Considerations
         </h2>
-        <ol className="list-disc ml-5 space-y-2">
+        <ul className="list-disc ml-5 space-y-2">
           <li>
             <strong>Deductibles:</strong> The amount you pay out-of-pocket
             before insurance kicks in.
@@ -120,7 +120,7 @@ const WhatIsPetInsurance = () => {
             </Link>
             .
           </li>
-        </ol>
+        </ul>
         <p>
           Pet insurance can provide peace of mind, ensuring that you can afford
           necessary care for your pet without financial strain. It&#39;s
