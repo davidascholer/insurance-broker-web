@@ -911,7 +911,7 @@ const Terms = () => {
           that you previously entered into with PIPA.
         </p>
         <p className="whitespace-pre-wrap">
-          <strong>23. Other Provisions</strong>
+          <strong>16. Other Provisions</strong>
         </p>
         <p className="whitespace-pre-wrap">
           Under no circumstances will PIPA be held liable for any delay or

@@ -24,11 +24,9 @@ export type AnswersType = {
 
 export type ProviderIdTypes =
   | "figo"
-  | "pumpkin"
-  | "petsbest"
   | "embrace"
   | "fetch"
-  | "metlife";
+  | "prudent"
 
 // Type for individual quote data item on the server
 export type DataQuoteItem = {

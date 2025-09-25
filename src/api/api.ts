@@ -13,13 +13,16 @@ import {
   PIPA_BOT_URL,
   PIPA_EMAIL_URL,
   PIPA_FALLBACK_QUOTES_URL,
+  PIPA_QUOTES_URL,
 } from "./constants";
 
 export const getQuotes = async (
   answers: AnswersType,
-  insurer: ProviderIdTypes
+  insurer: ProviderIdTypes,
+  isFallback = false
 ): Promise<QuotesResultType> => {
-  const response = await fetch(PIPA_FALLBACK_QUOTES_URL + "/" + insurer, {
+  const quotesUrl = isFallback ? PIPA_FALLBACK_QUOTES_URL : PIPA_QUOTES_URL;
+  const response = await fetch(quotesUrl + "/" + insurer, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -27,6 +30,7 @@ export const getQuotes = async (
     },
     body: JSON.stringify(answers),
   });
+  // console.debug("getQuotes response:", response);
   if (!response.ok) {
     return {
       success: false,
@@ -143,12 +147,17 @@ export const adminEmailPassword = async (email: string) => {
   return "Email sent successfully!";
 };
 
-export const gatherQuotesForInsurerRemote = async (
+export const gatherQuotesFromInsurer = async (
   insurer: ProviderIdTypes,
-  answers: AnswersType
+  answers: AnswersType,
+  isFallback = false
 ) => {
   const fetchedQuotes: QuoteItem[] = [];
-  const quoteResult: QuotesResultType = await getQuotes(answers, insurer);
+  const quoteResult: QuotesResultType = await getQuotes(
+    answers,
+    insurer,
+    isFallback
+  );
 
   if (quoteResult.success && quoteResult.quotes) {
     localStorage.setItem(

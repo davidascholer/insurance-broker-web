@@ -11,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import QuoteResults from "@/components/QuoteResults";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import useIsOnline from "@/hooks/useIsOnline";
-import { gatherQuotesForInsurerRemote } from "@/api/api";
+import { gatherQuotesFromInsurer } from "@/api/api";
 import { cn, verifyAnswers } from "@/lib/utils";
 import Header from "@/components/header/Header";
 import FilterBar from "@/components/FilterBar";
@@ -93,6 +93,10 @@ const Quotes = () => {
     setAnnualLimits(filteredList);
   };
 
+  useEffect(() => {
+    console.log("quoteData", quoteData);
+  }, [quoteData]);
+
   /*
   KEEP THIS CODE IN HERE
   This is the future implementation for sorting the quotes once we have APIs
@@ -134,7 +138,10 @@ const Quotes = () => {
   const fetchQuotes = async (answers: AnswersType) => {
     setError(null);
 
-    const fetchInsurerQuotes = async (insurer: ProviderIdTypes) => {
+    const fetchInsurerQuotes = async (
+      insurer: ProviderIdTypes,
+      isFallback = false
+    ) => {
       const insurerFetchedQuotes: QuoteItem[] = [];
       const storedQuotes = localStorage.getItem(
         PIPA_STORAGE_PREFIX + insurer + "-quotes"
@@ -162,9 +169,10 @@ const Quotes = () => {
           setIsLoading(false);
           return clearTimeout(timeout);
         }, LOAD_TIMER * 1000); // e.g., 20 seconds
-        const insurerQuotes = await gatherQuotesForInsurerRemote(
+        const insurerQuotes = await gatherQuotesFromInsurer(
           insurer,
-          answers
+          answers,
+          isFallback
         );
         if (insurerQuotes && insurerQuotes.length > 0) {
           fetchedQuotes.push(...insurerQuotes);
@@ -174,12 +182,14 @@ const Quotes = () => {
     };
 
     const fetchedQuotes: QuoteItem[] = [];
-    const embraceQuotes = await fetchInsurerQuotes("embrace");
+    const embraceQuotes = await fetchInsurerQuotes("embrace", true);
     fetchedQuotes.push(...embraceQuotes);
-    const figoQuotes = await fetchInsurerQuotes("figo");
+    const figoQuotes = await fetchInsurerQuotes("figo", true);
     fetchedQuotes.push(...figoQuotes);
-    const fetchQuotes = await fetchInsurerQuotes("fetch");
+    const fetchQuotes = await fetchInsurerQuotes("fetch", true);
     fetchedQuotes.push(...fetchQuotes);
+    const prudentQuotes = await fetchInsurerQuotes("prudent");
+    fetchedQuotes.push(...prudentQuotes);
 
     setQuoteData(fetchedQuotes);
   };
