@@ -63,11 +63,11 @@ const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
               Pet Insurance Resources
             </HoverCardTrigger>
             <HoverCardContent
-              className="z-100 bg-(--light-pink) w-[300px]"
+              className="z-100 bg-(--light-pink) w-[320px]"
               role="menu"
               aria-label="Pet Insurance Resources submenu"
             >
-              <div className="flex flex-col gap-4 p-1">
+              <div className="flex flex-col gap-4 p-1 justify-start items-start">
                 <button
                   onClick={() => {
                     navigate("/terminology");
@@ -151,11 +151,11 @@ const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
               Contact
             </HoverCardTrigger>
             <HoverCardContent
-              className="z-100 bg-(--light-pink)"
+              className="z-100 bg-(--light-pink) w-[160px]"
               role="menu"
               aria-label="Contact submenu"
             >
-              <div className="flex flex-col gap-4 p-1">
+              <div className="flex flex-col gap-4 p-1 items-start">
                 <button
                   onClick={() => {
                     navigate("/partners");
