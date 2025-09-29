@@ -26,8 +26,6 @@ import {
 import { ChevronsDown } from "lucide-react";
 import LoadingQuotes from "@/components/LoadingQuotes";
 import { providerClickedTracker } from "@/api/trackers";
-import PageContainer from "@/components/PageContainer";
-import Loader from "@/components/Loader";
 import { sendPageview, sendEvent } from "@/lib/analytics";
 
 const LOAD_TIMER = 20; // seconds
@@ -39,7 +37,6 @@ const Quotes = () => {
   //   useState<SortItemType>("price");
   const [activeQuoteData, setActiveQuoteData] = useState<QuoteItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [defaultLoading, setDefaultLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const isOnline = useIsOnline();
   const [showFullResults, setShowFullResults] = useState<boolean>(false);
@@ -92,10 +89,6 @@ const Quotes = () => {
     );
     setAnnualLimits(filteredList);
   };
-
-  useEffect(() => {
-    console.log("quoteData", quoteData);
-  }, [quoteData]);
 
   /*
   KEEP THIS CODE IN HERE
@@ -212,12 +205,6 @@ const Quotes = () => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      setDefaultLoading(false);
-    }, 500);
-  }, []);
-
-  useEffect(() => {
     sendPageview("/quotes", "Quotes");
   }, []);
 
@@ -289,11 +276,6 @@ const Quotes = () => {
       )}
       {isLoading && isOnline && (
         <LoadingQuotes progressTimerSeconds={LOAD_TIMER} />
-      )}
-      {defaultLoading && (
-        <PageContainer>
-          <Loader />
-        </PageContainer>
       )}
       {error && <div className="text-red-600">{error}</div>}
       {!error && !isLoading && (

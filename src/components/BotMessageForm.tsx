@@ -13,11 +13,7 @@ import CommentBox from "./CommentBox";
 
 const formSchema = z.object({
   botMessage: z
-    .string().trim()
-    .min(1, {
-      message: "Message must be at least 1 character.",
-    })
-
+    .string()
     .max(1000, {
       message: "Message must be at most 1000 characters.",
     }),

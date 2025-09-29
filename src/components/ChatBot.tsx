@@ -140,7 +140,7 @@ const ChatBot = ({
     if (!newBotMessage.success) {
       const errorMessage: ChatMessageType = {
         from: "bot",
-        message: `Sorry, I am having trouble responding right now. (${newBotMessage.msg})`,
+        message: newBotMessage.msg,
       };
       setChatMessages((prev) => [...prev, errorMessage]);
       setBotLoading(false);
@@ -184,7 +184,7 @@ const ChatBot = ({
       top: scrollRef.current.scrollHeight,
       behavior: "smooth",
     });
-    handleMessageClicked({ botMessage: msg })
+    handleMessageClicked({ botMessage: msg });
   };
 
   return (

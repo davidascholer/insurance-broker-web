@@ -15,45 +15,56 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 const providers = new Map();
 providers.set("fetch", {
   providerName: "Fetch",
-  imgUrl: "/carrier_logo_fetch.svg",
+  isFallback: true,
+  imgUrl: "insurers//carrier_logo_fetch.svg",
   src: "https://www.fetchpet.com/",
   content:
     "At Fetch, we understand how special your pet is to you (and vice-versa). That’s why we built a plan that covers more of the care your pet needs. Having more coverage means you’ll never have to choose between a vet bill and your pet’s health — so they can have a longer, happier life, and you can both have more good days together.",
 });
-providers.set("petsbest", {
-  providerName: "PetsBest",
-  imgUrl: "/carrier_logo_petsbest.svg",
-  src: "https://www.petsbest.com/",
-  content:
-    "Pets Best Insurance was founded in 2005 by Dr. Jack Stephens. Their mission is to end economic euthanasia by helping to ensure pet parents are financially prepared when their pets need unexpected veterinary care.",
-});
+// providers.set("petsbest", {
+//   providerName: "PetsBest",
+//   imgUrl: "/carrier_logo_petsbest.svg",
+//   src: "https://www.petsbest.com/",
+//   content:
+//     "Pets Best Insurance was founded in 2005 by Dr. Jack Stephens. Their mission is to end economic euthanasia by helping to ensure pet parents are financially prepared when their pets need unexpected veterinary care.",
+// });
 providers.set("figo", {
   providerName: "Figo",
-  imgUrl: "/carrier_logo_figo.svg",
+  isFallback: true,
+  imgUrl: "insurers//carrier_logo_figo.svg",
   src: "https://figopetinsurance.com/get-started?PetName={petName}",
   content:
     "Figo: Pet Insurance with Soul. Let's face it— being a pet parent is awesome, but it has its share of surprises. Your pet insurance plan shouldn't be one of them. Born out of frustration with one-size-fits-all policies, Figo was founded by pet moms and dads who wanted better. We've ditched the jargon and stuffy approach, creating a refreshingly simple experience that fits your lifestyle—not the other way around. We're here to help enhance your pet's wellness, your peace of mind, and your finances. With fewer barriers, and perks (like an all-in-one pet parent app) that go beyond just helping cover vet bills, we're bringing pet insurance into the 21st century. Welcome to insurance that just gets it. Welcome to Figo.",
 });
-providers.set("metlife", {
-  providerName: "MetLife",
-  imgUrl: "/carrier_logo_metlife.svg",
-  src: "https://www.metlifepetinsurance.com/",
-  content:
-    "At MetLife Pet Insurance, we understand that pets are like family. With customizable coverage, a 24/7 vet chat, and quick claims processing, your dog or cat can be covered by one of our award-winning pet insurance policies. MetLife Pet Insurance’s comprehensive policies ensure that your pet — no matter their breed or age — can be covered, with no initial exams or vet records required to enroll. MetLife Pet offers some of the shortest waiting periods for accident and illness coverage, and allows you to use any licensed vet in America. Call or visit us today to get started with a free quote or learn more.",
-});
+// providers.set("metlife", {
+//   providerName: "MetLife",
+//   imgUrl: "/carrier_logo_metlife.svg",
+//   src: "https://www.metlifepetinsurance.com/",
+//   content:
+//     "At MetLife Pet Insurance, we understand that pets are like family. With customizable coverage, a 24/7 vet chat, and quick claims processing, your dog or cat can be covered by one of our award-winning pet insurance policies. MetLife Pet Insurance’s comprehensive policies ensure that your pet — no matter their breed or age — can be covered, with no initial exams or vet records required to enroll. MetLife Pet offers some of the shortest waiting periods for accident and illness coverage, and allows you to use any licensed vet in America. Call or visit us today to get started with a free quote or learn more.",
+// });
 providers.set("embrace", {
   providerName: "Embrace",
-  imgUrl: "/carrier_logo_embrace.svg",
+  isFallback: true,
+  imgUrl: "insurers//carrier_logo_embrace.svg",
   src: "https://www.embracepetinsurance.com/",
   content:
     "Pet insurance from Embrace saves you up to 90% back on vet bills from unexpected illness and medical expenses. Get a tailored cat or dog insurance quote in seconds.",
 });
-providers.set("pumpkin", {
-  providerName: "Pumpkin",
-  imgUrl: "/carrier_logo_pumpkin.svg",
-  src: "https://www.pumpkin.care/",
+// providers.set("pumpkin", {
+//   providerName: "Pumpkin",
+//   imgUrl: "/carrier_logo_pumpkin.svg",
+//   src: "https://www.pumpkin.care/",
+//   content:
+//     "At Pumpkin, we believe it's just as important to keep healthy pets healthy as it is to help hurt or sick pets get better! That's why we provide families with the extensive pet health insurance and essential preventive care their pets need to live a healthy life, now and fur-ever.",
+// });
+providers.set("prudent", {
+  providerName: "Prudent",
+  isFallback: false,
+  imgUrl: "/insurers/prudent_pet.svg",
+  src: "https://www.prudentpet.com/",
   content:
-    "At Pumpkin, we believe it's just as important to keep healthy pets healthy as it is to help hurt or sick pets get better! That's why we provide families with the extensive pet health insurance and essential preventive care their pets need to live a healthy life, now and fur-ever.",
+    "At Prudent Pet Insurance Agency, we want pets to enjoy good health and receive the best medical care possible throughout their lives. Like so many people today, we consider our pets to be members of the family and want to do whatever it takes to keep them safe.\n\nKnowing your options when it comes to pet insurance policies means you can protect your pet and your finances. That’s why we offer policies that are easy to understand, easy to buy and easy to use. Take the first step and get your pet’s free quote today.",
 });
 
 const BottomDrawer = ({
@@ -97,10 +108,13 @@ const BottomDrawer = ({
             <p className="px-4 pt-4 w-full font-medium text-(--primary-teal-dark) dark:text-neutral-200 text-left sansita-bold">
               {providers.get(providerId).content}
             </p>
-            <p className="px-4 w-full font-medium text-neutral-400 text-xs sansita-regular-italic">
-              * This quote is an estimated cost. Actual coverage cost factors
-              include your pet's breed, location, condition, and other details.
-            </p>
+            {providers.get(providerId).isFallback && (
+              <p className="px-4 w-full font-medium text-neutral-400 text-xs sansita-regular-italic">
+                * This quote is an estimated cost. Actual coverage cost factors
+                include your pet's breed, location, condition, and other
+                details.
+              </p>
+            )}
           </AccordionContent>
         </AccordionItem>
       </Accordion>

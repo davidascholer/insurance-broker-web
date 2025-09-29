@@ -30,7 +30,6 @@ export const getQuotes = async (
     },
     body: JSON.stringify(answers),
   });
-  // console.debug("getQuotes response:", response);
   if (!response.ok) {
     return {
       success: false,
@@ -64,6 +63,8 @@ export const sendEmail = async (
 export const chatWithBot = async (
   botInfo: BotRequestType
 ): Promise<{ success: boolean; msg: string }> => {
+  console.log("chatWithBot botInfo:", botInfo);
+  console.log("PIPA_BOT_URL:", PIPA_BOT_URL);
   const response = await fetch(PIPA_BOT_URL, {
     method: "POST",
     headers: {
@@ -71,14 +72,22 @@ export const chatWithBot = async (
     },
     body: JSON.stringify(botInfo),
   });
+  console.log("chatWithBot response:", response);
   if (!response.ok) {
     return {
       success: false,
-      msg: `Error: ${response.statusText}`,
+      msg: "I'm having trouble connecting to the server. Please try again.",
     };
   }
   const data = await response.json();
-  return { success: true, msg: data.message };
+  console.log("chatWithBot response data:", data);
+  if (!data.response.messages) {
+    return {
+      success: false,
+      msg: "I'm having trouble understanding the question. Please try again.",
+    };
+  }
+  return { success: true, msg: String(data.response.messages.replace("msg 0: ", "")) };
 };
 
 export const getHits = async (token: string) => {
@@ -158,6 +167,8 @@ export const gatherQuotesFromInsurer = async (
     insurer,
     isFallback
   );
+
+  console.debug("quoteResult for", insurer, quoteResult);
 
   if (quoteResult.success && quoteResult.quotes) {
     localStorage.setItem(

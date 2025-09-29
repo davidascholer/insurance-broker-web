@@ -31,9 +31,10 @@ export const ANNUAL_LIMIT_OPTIONS = [
 export const INSURER_OPTIONS: { label: string; providerId: ProviderIdTypes }[] =
   [
     { label: "figo", providerId: "figo" },
-    { label: "pets best", providerId: "petsbest" },
+    // { label: "pets best", providerId: "petsbest" },
     { label: "fetch", providerId: "fetch" },
-    { label: "pumpkin", providerId: "pumpkin" },
-    { label: "metlife", providerId: "metlife" },
+    // { label: "pumpkin", providerId: "pumpkin" },
+    // { label: "metlife", providerId: "metlife" },
     { label: "embrace", providerId: "embrace" },
+    { label: "prudent", providerId: "prudent" },
   ];
