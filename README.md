@@ -73,3 +73,11 @@ Runs ESLint to analyze code for potential errors and code style issues.
   - add `<Route path="/your-route-page" element={<YourPageName />} />` inside of the `<Routes>`
 - Your new page will now be accessible at `/your-new-page` e.g. `http://localhost:5173/sample-page` or `https://pipabroker.com/sample-page` when live on dev/production
 - For a complete list of tailwind class selectors, see the tailwind docs: e.g. *https://tailwindcss.com/docs/font-size*
+
+# Pipa Dev
+- Specifically for the dev branch
+# # About 
+- The dev repo automatically deploys and can be accessed at dev.pipabroker.com
+- It is necessary to have it's own repo so the marketing team can deploy code
+- Merge pipa-dev/main into pipa-web/dev then merge pipa-web/dev to main and deploy for production
+- From the pipa-dev repo to the dev branch of the pipa-web repo with: `git push pipa-web main:dev`
