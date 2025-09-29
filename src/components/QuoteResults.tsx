@@ -16,7 +16,7 @@ const providers = new Map();
 providers.set("fetch", {
   providerName: "Fetch",
   isFallback: true,
-  imgUrl: "insurers//carrier_logo_fetch.svg",
+  imgUrl: "insurers/carrier_logo_fetch.svg",
   src: "https://www.fetchpet.com/",
   content:
     "At Fetch, we understand how special your pet is to you (and vice-versa). That’s why we built a plan that covers more of the care your pet needs. Having more coverage means you’ll never have to choose between a vet bill and your pet’s health — so they can have a longer, happier life, and you can both have more good days together.",
@@ -31,7 +31,7 @@ providers.set("fetch", {
 providers.set("figo", {
   providerName: "Figo",
   isFallback: true,
-  imgUrl: "insurers//carrier_logo_figo.svg",
+  imgUrl: "insurers/carrier_logo_figo.svg",
   src: "https://figopetinsurance.com/get-started?PetName={petName}",
   content:
     "Figo: Pet Insurance with Soul. Let's face it— being a pet parent is awesome, but it has its share of surprises. Your pet insurance plan shouldn't be one of them. Born out of frustration with one-size-fits-all policies, Figo was founded by pet moms and dads who wanted better. We've ditched the jargon and stuffy approach, creating a refreshingly simple experience that fits your lifestyle—not the other way around. We're here to help enhance your pet's wellness, your peace of mind, and your finances. With fewer barriers, and perks (like an all-in-one pet parent app) that go beyond just helping cover vet bills, we're bringing pet insurance into the 21st century. Welcome to insurance that just gets it. Welcome to Figo.",
@@ -46,7 +46,7 @@ providers.set("figo", {
 providers.set("embrace", {
   providerName: "Embrace",
   isFallback: true,
-  imgUrl: "insurers//carrier_logo_embrace.svg",
+  imgUrl: "insurers/carrier_logo_embrace.svg",
   src: "https://www.embracepetinsurance.com/",
   content:
     "Pet insurance from Embrace saves you up to 90% back on vet bills from unexpected illness and medical expenses. Get a tailored cat or dog insurance quote in seconds.",
