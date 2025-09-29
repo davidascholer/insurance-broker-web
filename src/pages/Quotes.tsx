@@ -181,8 +181,8 @@ const Quotes = () => {
     fetchedQuotes.push(...figoQuotes);
     const fetchQuotes = await fetchInsurerQuotes("fetch", true);
     fetchedQuotes.push(...fetchQuotes);
-    const prudentQuotes = await fetchInsurerQuotes("prudent");
-    fetchedQuotes.push(...prudentQuotes);
+    // const prudentQuotes = await fetchInsurerQuotes("prudent");
+    // fetchedQuotes.push(...prudentQuotes);
 
     setQuoteData(fetchedQuotes);
   };
