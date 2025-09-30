@@ -65,6 +65,7 @@ const Quotes = () => {
     return pet ? JSON.parse(pet) : null;
   }, []);
 
+  /* Start of filter handlers */
   // Set a list of all deductible options that match the selected deductible
   const handleDeductibleClicked = (deductible: FilterOptionType) => {
     setSelectedDeductible(deductible);
@@ -128,6 +129,9 @@ const Quotes = () => {
   //   }
   // };
 
+  /* End of filter handlers */
+
+  // Fetch quotes from all insurers
   const fetchQuotes = async (answers: AnswersType) => {
     setError(null);
 
@@ -176,13 +180,25 @@ const Quotes = () => {
 
     const fetchedQuotes: QuoteItem[] = [];
     const embraceQuotes = await fetchInsurerQuotes("embrace", true);
-    fetchedQuotes.push(...embraceQuotes);
+    if (embraceQuotes.length > 0) {
+      fetchedQuotes.push(...embraceQuotes);
+    } else {
+      console.error("No embrace quotes found");
+    }
     const figoQuotes = await fetchInsurerQuotes("figo", true);
-    fetchedQuotes.push(...figoQuotes);
+    if (figoQuotes.length > 0) {
+      fetchedQuotes.push(...figoQuotes);
+    } else {
+      console.error("No figo quotes found");
+    }
     const fetchQuotes = await fetchInsurerQuotes("fetch", true);
-    fetchedQuotes.push(...fetchQuotes);
-    const prudentQuotes = await fetchInsurerQuotes("prudent");
-    fetchedQuotes.push(...prudentQuotes);
+    if (fetchQuotes.length > 0) {
+      fetchedQuotes.push(...fetchQuotes);
+    } else {
+      console.error("No fetch quotes found");
+    }
+    // const prudentQuotes = await fetchInsurerQuotes("prudent");
+    // fetchedQuotes.push(...prudentQuotes);
 
     setQuoteData(fetchedQuotes);
   };
@@ -191,6 +207,7 @@ const Quotes = () => {
     localStorage.removeItem(PIPA_STORAGE_PREFIX + "embrace-quotes");
     localStorage.removeItem(PIPA_STORAGE_PREFIX + "fetch-quotes");
     localStorage.removeItem(PIPA_STORAGE_PREFIX + "figo-quotes");
+    localStorage.removeItem(PIPA_STORAGE_PREFIX + "prudent-quotes");
   };
 
   const handleInsurerClicked = (insurer: string) => {

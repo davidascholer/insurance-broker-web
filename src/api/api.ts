@@ -184,6 +184,7 @@ export const gatherQuotesFromInsurer = async (
         providerId: insurer,
       })
     );
+    console.debug("insurerQuotes for", insurer, insurerQuotes);
     if (insurerQuotes) {
       fetchedQuotes.push(...insurerQuotes);
     }

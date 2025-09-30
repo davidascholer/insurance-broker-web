@@ -243,6 +243,7 @@ const InfoForm = () => {
 
   const onSubmit = () => {
     navigate("/quotes");
+    
   };
 
   if (isLoading)
