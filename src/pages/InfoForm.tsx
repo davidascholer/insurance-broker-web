@@ -20,6 +20,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { PIPA_PET_KEY } from "@/lib/constants";
 import PageContainer from "@/components/PageContainer";
 import Loader from "@/components/Loader";
+import { formSubmitted } from "@/api/api";
 
 const defaultAnswers: AnswersType = {
   name: { firstName: "", lastName: "" },
@@ -55,7 +56,6 @@ const InfoForm = () => {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
 
-  // const [answersVerified, setAnswersVerified] = useState(false);
   const [answers, setAnswers] = useState(() => {
     const savedAnswers = localStorage.getItem(PIPA_PET_KEY);
     if (savedAnswers) {
@@ -109,22 +109,6 @@ const InfoForm = () => {
   }, []);
 
   useEffect(() => {
-    // // Determine if all of the answers are filled out
-    // const allAnswered = Object.values(answers).every((answer) => {
-    //   if (typeof answer === "string") {
-    //     return answer.trim() !== "";
-    //   } else if (typeof answer === "object" && answer !== null) {
-    //     // For object types (like name and age), check if all properties are filled
-    //     return Object.values(answer).every(
-    //       (prop) =>
-    //         (typeof prop === "string" && prop.trim() !== "") ||
-    //         (typeof prop === "number" && prop > 0)
-    //     );
-    //   }
-    //   return false;
-    // });
-    // setAnswersVerified(allAnswered);
-
     // Find the current question based on answers
     const currentQ = findCurrentQuestionProperty(answers);
     setCurrentQuestion(currentQ);
@@ -242,8 +226,8 @@ const InfoForm = () => {
   };
 
   const onSubmit = () => {
+    formSubmitted(answers)
     navigate("/quotes");
-    
   };
 
   if (isLoading)

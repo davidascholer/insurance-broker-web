@@ -1,6 +1,5 @@
 import type {
   AnswersType,
-  DataQuoteItem,
   FilterOptionType,
   ProviderIdTypes,
   QuoteItem,
@@ -12,7 +11,7 @@ import QuoteResults from "@/components/QuoteResults";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import useIsOnline from "@/hooks/useIsOnline";
 import { gatherQuotesFromInsurer } from "@/api/api";
-import { cn, verifyAnswers } from "@/lib/utils";
+import { cn, getQuoteFromCache, verifyAnswers } from "@/lib/utils";
 import Header from "@/components/header/Header";
 import FilterBar from "@/components/FilterBar";
 import {
@@ -135,71 +134,112 @@ const Quotes = () => {
   const fetchQuotes = async (answers: AnswersType) => {
     setError(null);
 
-    const fetchInsurerQuotes = async (
+    const fetchQuotesFromAPI = async (
       insurer: ProviderIdTypes,
       isFallback = false
-    ) => {
-      const insurerFetchedQuotes: QuoteItem[] = [];
-      const storedQuotes = localStorage.getItem(
-        PIPA_STORAGE_PREFIX + insurer + "-quotes"
-      );
-      // Check the the quote exists and is less than 24 hours old
-      if (
-        storedQuotes &&
-        Date.now() - JSON.parse(storedQuotes).timestamp < 24 * 60 * 60 * 1000
-      ) {
+    ): Promise<QuoteItem[]> => {
+      setIsLoading(true);
+      console.log("Fetching quotes from", insurer);
+      // Set a maximum time to load the data from the server
+      const timeout = setTimeout(() => {
         setIsLoading(false);
-        const parsedQuotes = JSON.parse(storedQuotes);
-        const insurerQuotes = parsedQuotes.coverageOptions.map(
-          (option: DataQuoteItem) => ({
-            ...option,
-            providerId: insurer,
+        return clearTimeout(timeout);
+      }, LOAD_TIMER * 1000); // e.g., 20 seconds
+      const insurerQuotes = await gatherQuotesFromInsurer(
+        insurer,
+        answers,
+        isFallback
+      );
+      if (insurerQuotes) {
+        // Append the provider Id (ProviderIdTypes) to the quote data
+        insurerQuotes.forEach((quote) => {
+          quote.providerId = insurer;
+        });
+        // Cache the quotes in localStorage with a timestamp
+        localStorage.setItem(
+          PIPA_STORAGE_PREFIX + insurer + "-quotes",
+          JSON.stringify({
+            coverageOptions: insurerQuotes,
+            timestamp: Date.now(),
           })
         );
-        if (insurerQuotes) {
-          fetchedQuotes.push(...insurerQuotes);
-        }
-      } else {
-        setIsLoading(true);
-        // Set a maximum time to load the data from the server
-        const timeout = setTimeout(() => {
-          setIsLoading(false);
-          return clearTimeout(timeout);
-        }, LOAD_TIMER * 1000); // e.g., 20 seconds
-        const insurerQuotes = await gatherQuotesFromInsurer(
-          insurer,
-          answers,
-          isFallback
-        );
-        if (insurerQuotes && insurerQuotes.length > 0) {
-          fetchedQuotes.push(...insurerQuotes);
-        }
+
+        return insurerQuotes;
       }
-      return insurerFetchedQuotes;
+      console.error(
+        `Incorrect or incomplete data returned from ${insurer} API`
+      );
+      return [];
     };
 
     const fetchedQuotes: QuoteItem[] = [];
-    const embraceQuotes = await fetchInsurerQuotes("embrace", true);
-    if (embraceQuotes.length > 0) {
-      fetchedQuotes.push(...embraceQuotes);
-    } else {
-      console.error("No embrace quotes found");
-    }
-    const figoQuotes = await fetchInsurerQuotes("figo", true);
-    if (figoQuotes.length > 0) {
-      fetchedQuotes.push(...figoQuotes);
-    } else {
-      console.error("No figo quotes found");
-    }
-    const fetchQuotes = await fetchInsurerQuotes("fetch", true);
-    if (fetchQuotes.length > 0) {
-      fetchedQuotes.push(...fetchQuotes);
-    } else {
-      console.error("No fetch quotes found");
-    }
-    // const prudentQuotes = await fetchInsurerQuotes("prudent");
-    // fetchedQuotes.push(...prudentQuotes);
+    let allCached = true;
 
+    /* PRUDENT */
+    // Check if quotes are cached before fetching from API
+    const cachedPrudentQuotes = getQuoteFromCache("prudent");
+    if (cachedPrudentQuotes) {
+      if (DEV) console.log("DEV LOG", "Using cached prudent quotes");
+      fetchedQuotes.push(...cachedPrudentQuotes);
+    } else {
+      // If no cached quotes, fetch from API
+      if (DEV) console.log("DEV LOG", "Fetching new prudent quotes");
+      allCached = false;
+      const prudentQuotes = await fetchQuotesFromAPI("prudent");
+      if (prudentQuotes.length > 0) {
+        fetchedQuotes.push(...prudentQuotes);
+      }
+    }
+
+    /* EMBRACE */
+    // Check if quotes are cached before fetching from API
+    const cachedEmbraceQuotes = getQuoteFromCache("embrace");
+    if (cachedEmbraceQuotes) {
+      if (DEV) console.log("DEV LOG", "Using cached embrace quotes");
+      fetchedQuotes.push(...cachedEmbraceQuotes);
+    } else {
+      // If no cached quotes, fetch from API
+      if (DEV) console.log("DEV LOG", "Fetching new embrace quotes");
+      allCached = false;
+      const embraceQuotes = await fetchQuotesFromAPI("embrace", true);
+      if (embraceQuotes.length > 0) {
+        fetchedQuotes.push(...embraceQuotes);
+      }
+    }
+
+    /* FETCH */
+    // Check if quotes are cached before fetching from API
+    const cachedFetchQuotes = getQuoteFromCache("fetch");
+    if (cachedFetchQuotes) {
+      if (DEV) console.log("DEV LOG", "Using cached fetch quotes");
+      fetchedQuotes.push(...cachedFetchQuotes);
+    } else {
+      // If no cached quotes, fetch from API
+      if (DEV) console.log("DEV LOG", "Fetching new fetch quotes");
+      allCached = false;
+      const fetchQuotes = await fetchQuotesFromAPI("fetch", true);
+      if (fetchQuotes.length > 0) {
+        fetchedQuotes.push(...fetchQuotes);
+      }
+    }
+
+    /* FIGO */
+    // Check if quotes are cached before fetching from API
+    const cachedFigoQuotes = getQuoteFromCache("figo");
+    if (cachedFigoQuotes) {
+      if (DEV) console.log("DEV LOG", "Using cached figo quotes");
+      fetchedQuotes.push(...cachedFigoQuotes);
+    } else {
+      // If no cached quotes, fetch from API
+      if (DEV) console.log("DEV LOG", "Fetching new figo quotes");
+      allCached = false;
+      const figoQuotes = await fetchQuotesFromAPI("figo", true);
+      if (figoQuotes.length > 0) {
+        fetchedQuotes.push(...figoQuotes);
+      }
+    }
+
+    if (allCached) setIsLoading(false);
     setQuoteData(fetchedQuotes);
   };
 

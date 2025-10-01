@@ -369,6 +369,12 @@ function QuoteResults({
                     isPortrait ? "cursor-pointer" : ""
                   )}
                 >
+                  {card.extras?.planDesc && (
+                    <p>
+                      Temp implementation:{" "}
+                      {JSON.stringify(card.extras.planDesc)}
+                    </p>
+                  )}
                   <div className="flex gap-1 flex-col md:flex-row items-center md:items-start justify-center w-full max-w-4xl">
                     <motion.div
                       layoutId={`image-${card.providerId}-${id}-${key}`}

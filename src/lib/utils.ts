@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import type { AnswersType } from "./types";
+import type { AnswersType, ProviderIdTypes, QuoteItem } from "./types";
+import { PIPA_STORAGE_PREFIX } from "./constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -106,4 +107,25 @@ export const generateRandomAlphanumeric = (length: number) => {
   }
 
   return result;
+};
+
+export const getQuoteFromCache = (insurer: ProviderIdTypes): QuoteItem[] | null => {
+  const storedQuotes = localStorage.getItem(
+    PIPA_STORAGE_PREFIX + insurer + "-quotes"
+  );
+  if (storedQuotes) {
+    const parsedQuotes = JSON.parse(storedQuotes);
+    let isValid = true;
+    // Check to make sure the parsed quotes has coverageOptions
+    if (parsedQuotes.coverageOptions === undefined) {
+      console.error("Parsed quotes missing coverageOptions:", parsedQuotes);
+      isValid = false;
+    }
+    // Check to make sure the cached quotes aren't greater than 24 hours old
+    if (Date.now() - parsedQuotes.timestamp > 24 * 60 * 60 * 1000)
+      isValid = false;
+
+    return isValid ? parsedQuotes.coverageOptions : null;
+  }
+  return null;
 };

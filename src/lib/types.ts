@@ -22,11 +22,12 @@ export type AnswersType = {
   reference: string;
 };
 
-export type ProviderIdTypes =
-  | "figo"
-  | "embrace"
-  | "fetch"
-  | "prudent"
+export type ProviderIdTypes = "figo" | "embrace" | "fetch" | "prudent";
+
+export type PrudentExtrasType = {
+  planDesc?: string;
+  planCode?: string;
+};
 
 // Type for individual quote data item on the server
 export type DataQuoteItem = {
@@ -34,6 +35,7 @@ export type DataQuoteItem = {
   reimbursementPercentageOption: number;
   reimbursementLimitOption: number;
   monthlyPrice: number;
+  extras?: PrudentExtrasType;
 };
 
 // Full object type on the server
