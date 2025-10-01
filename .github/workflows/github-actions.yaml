@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "npm" # Optional: Caches node_modules for faster subsequent runs
+          cache: 'npm' # Optional: Caches node_modules for faster subsequent runs
 
       - name: Install dependencies
         run: npm ci # Use npm ci for clean installs in CI environments
@@ -35,9 +35,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-2
 
+      - name: Verify AWS Credentials
+        run: aws sts get-caller-identity
+
       - name: Push S3 bucket
         run: |
           aws s3 sync ./dist s3://pipa-web-dev --delete
           aws cloudfront create-invalidation \
-          --distribution-id E37CWSMXISOVCA \
-          --paths "/*"
+            --distribution-id E37CWSMXISOVCA \
+            --paths "/*"
