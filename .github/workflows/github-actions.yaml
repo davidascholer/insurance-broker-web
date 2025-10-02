@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'pipa-dev/**' # Trigger only if changes are in the 'pipa-dev' directory or its subdirectories
+
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
