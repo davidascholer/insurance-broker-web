@@ -109,7 +109,9 @@ export const generateRandomAlphanumeric = (length: number) => {
   return result;
 };
 
-export const getQuoteFromCache = (insurer: ProviderIdTypes): QuoteItem[] | null => {
+export const getQuoteFromCache = (
+  insurer: ProviderIdTypes
+): QuoteItem[] | null => {
   const storedQuotes = localStorage.getItem(
     PIPA_STORAGE_PREFIX + insurer + "-quotes"
   );
@@ -128,4 +130,11 @@ export const getQuoteFromCache = (insurer: ProviderIdTypes): QuoteItem[] | null 
     return isValid ? parsedQuotes.coverageOptions : null;
   }
   return null;
+};
+
+export const clearCache = () => {
+  localStorage.removeItem(PIPA_STORAGE_PREFIX + "embrace-quotes");
+  localStorage.removeItem(PIPA_STORAGE_PREFIX + "fetch-quotes");
+  localStorage.removeItem(PIPA_STORAGE_PREFIX + "figo-quotes");
+  localStorage.removeItem(PIPA_STORAGE_PREFIX + "prudent-quotes");
 };

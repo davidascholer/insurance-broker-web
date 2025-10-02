@@ -3,6 +3,7 @@ import type {
   FilterOptionType,
   ProviderIdTypes,
   QuoteItem,
+  SortItemType,
   // SortItemType,
 } from "@/lib/types";
 import { useEffect, useMemo, useState } from "react";
@@ -11,7 +12,7 @@ import QuoteResults from "@/components/QuoteResults";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import useIsOnline from "@/hooks/useIsOnline";
 import { gatherQuotesFromInsurer } from "@/api/api";
-import { cn, getQuoteFromCache, verifyAnswers } from "@/lib/utils";
+import { clearCache, cn, getQuoteFromCache, verifyAnswers } from "@/lib/utils";
 import Header from "@/components/header/Header";
 import FilterBar from "@/components/FilterBar";
 import {
@@ -91,43 +92,36 @@ const Quotes = () => {
     setAnnualLimits(filteredList);
   };
 
-  /*
-  KEEP THIS CODE IN HERE
-  This is the future implementation for sorting the quotes once we have APIs
-  */
-  // const handleSortItemClicked = (item: SortItemType) => {
-  //   setSortItemSelected(item);
+  const handleSortQuoteData = (
+    sortItem: SortItemType,
+    quoteData: QuoteItem[]
+  ): QuoteItem[] => {
+    // setSortItemSelected(item);
 
-  //   switch (item) {
-  //     case "deductible":
-  //       setActiveQuoteData((prev) =>
-  //         [...prev].sort((a, b) => a.deductible - b.deductible)
-  //       );
-  //       break;
-  //     case "reimbursement":
-  //       setActiveQuoteData((prev) =>
-  //         [...prev].sort(
-  //           (a, b) => b.reimbursementPercentage - a.reimbursementPercentage
-  //         )
-  //       );
-  //       break;
-  //     case "limit":
-  //       setActiveQuoteData((prev) =>
-  //         [...prev].sort((a, b) => b.coverageLimit - a.coverageLimit)
-  //       );
-  //       break;
-  //     case "price":
-  //       setActiveQuoteData((prev) =>
-  //         [...prev].sort((a, b) => a.monthlyPrice - b.monthlyPrice)
-  //       );
-  //       break;
-  //     default:
-  //       setActiveQuoteData((prev) =>
-  //         [...prev].sort((a, b) => a.monthlyPrice - b.monthlyPrice)
-  //       );
-  //       break;
-  //   }
-  // };
+    switch (sortItem) {
+      // case "deductible":
+      //   setActiveQuoteData((prev) =>
+      //     [...prev].sort((a, b) => a.deductible - b.deductible)
+      //   );
+      //   break;
+      // case "reimbursement":
+      //   setActiveQuoteData((prev) =>
+      //     [...prev].sort(
+      //       (a, b) => b.reimbursementPercentage - a.reimbursementPercentage
+      //     )
+      //   );
+      //   break;
+      // case "limit":
+      //   setActiveQuoteData((prev) =>
+      //     [...prev].sort((a, b) => b.coverageLimit - a.coverageLimit)
+      //   );
+      //   break;
+      case "price":
+        return quoteData.sort((a, b) => a.monthlyPrice - b.monthlyPrice);
+      default:
+        return quoteData.sort((a, b) => a.monthlyPrice - b.monthlyPrice);
+    }
+  };
 
   /* End of filter handlers */
 
@@ -174,6 +168,7 @@ const Quotes = () => {
     };
 
     const fetchedQuotes: QuoteItem[] = [];
+    const suggestedQuoteData: QuoteItem[] = [];
     let allCached = true;
 
     /* PRUDENT */
@@ -182,6 +177,7 @@ const Quotes = () => {
     if (cachedPrudentQuotes) {
       if (DEV) console.log("DEV LOG", "Using cached prudent quotes");
       fetchedQuotes.push(...cachedPrudentQuotes);
+      suggestedQuoteData.push(...cachedPrudentQuotes);
     } else {
       // If no cached quotes, fetch from API
       if (DEV) console.log("DEV LOG", "Fetching new prudent quotes");
@@ -189,7 +185,7 @@ const Quotes = () => {
       const prudentQuotes = await fetchQuotesFromAPI("prudent");
       if (prudentQuotes.length > 0) {
         fetchedQuotes.push(...prudentQuotes);
-        setSuggestedQuoteData(prudentQuotes);
+        suggestedQuoteData.push(...prudentQuotes);
       }
     }
 
@@ -242,14 +238,13 @@ const Quotes = () => {
     }
 
     if (allCached) setIsLoading(false);
-    setQuoteData(fetchedQuotes);
-  };
-
-  const handleClearCache = () => {
-    localStorage.removeItem(PIPA_STORAGE_PREFIX + "embrace-quotes");
-    localStorage.removeItem(PIPA_STORAGE_PREFIX + "fetch-quotes");
-    localStorage.removeItem(PIPA_STORAGE_PREFIX + "figo-quotes");
-    localStorage.removeItem(PIPA_STORAGE_PREFIX + "prudent-quotes");
+    const sortedFetchedData = handleSortQuoteData("price", fetchedQuotes);
+    const sortedSuggestedQuoteData = handleSortQuoteData(
+      "price",
+      suggestedQuoteData
+    );
+    setQuoteData(sortedFetchedData);
+    setSuggestedQuoteData(sortedSuggestedQuoteData);
   };
 
   const handleInsurerClicked = (insurer: string) => {
@@ -285,7 +280,7 @@ const Quotes = () => {
 
   useEffect(() => {
     // under 100, 100-250, 250-500, 500-1000, 1000+
-    const selectedDeductibles = quoteData.filter((quote) => {
+    const selectedDeductiblesQuoteData = quoteData.filter((quote) => {
       const isLastDeductible =
         selectedDeductible.value ===
         DEDUCTIBLE_OPTIONS[DEDUCTIBLE_OPTIONS.length - 1].value;
@@ -303,23 +298,40 @@ const Quotes = () => {
         quote.deductibleOption <= nextDeductible.value
       );
     });
-    if (DEV) console.log("DEV LOG", "selectedDeductibles", selectedDeductibles);
 
-    const selectedReimbursements = selectedDeductibles.filter((quote) => {
-      return (
-        quote.reimbursementPercentageOption === selectedReimbursement.value
+    const selectedReimbursementsQuoteData = selectedDeductiblesQuoteData.filter(
+      (quote) => {
+        return (
+          quote.reimbursementPercentageOption === selectedReimbursement.value
+        );
+      }
+    );
+
+    const selectedLimitsQuoteData = selectedReimbursementsQuoteData.filter(
+      (quote) => {
+        return quote.reimbursementLimitOption === selectedLimit.value;
+      }
+    );
+
+    if (DEV) {
+      console.log("DEV LOG", "selectedLimits", selectedLimitsQuoteData);
+      console.log(
+        "DEV LOG",
+        "selectedReimbursements",
+        selectedReimbursementsQuoteData
       );
-    });
-    if (DEV)
-      console.log("DEV LOG", "selectedReimbursements", selectedReimbursements);
+      console.log(
+        "DEV LOG",
+        "selectedDeductibles",
+        selectedDeductiblesQuoteData
+      );
+    }
 
-    const selectedLimits = selectedReimbursements.filter((quote) => {
-      return quote.reimbursementLimitOption === selectedLimit.value;
-    });
-    if (DEV) console.log("DEV LOG", "selectedLimits", selectedLimits);
-
-    if (DEV) console.log("DEV LOG", "whiteList", selectedLimits);
-    setActiveQuoteData(selectedLimits);
+    const sortedQuoteData = handleSortQuoteData(
+      "price",
+      selectedLimitsQuoteData
+    );
+    setActiveQuoteData(sortedQuoteData);
   }, [annualLimits, deductibles, quoteData, reimbursementRates]);
 
   return (
@@ -356,14 +368,14 @@ const Quotes = () => {
               <Link
                 to="/info/?edit=true"
                 className="text-(--primary-teal-dark)"
-                onClick={handleClearCache}
+                onClick={() => clearCache()}
               >
                 Edit {petObject.petName}'s information
               </Link>
             </div>
             <QuoteResults
               cards={activeQuoteData}
-              showFullResults={showFullResults}
+              showFullResults={true}
               handleYoungerPetClicked={handleYoungerPetClicked}
               handleInsurerClicked={handleInsurerClicked}
             />
@@ -377,7 +389,7 @@ const Quotes = () => {
                 </div>
                 <QuoteResults
                   cards={suggestedQuoteData}
-                  showFullResults={true}
+                  showFullResults={showFullResults}
                   handleYoungerPetClicked={handleYoungerPetClicked}
                   handleInsurerClicked={handleInsurerClicked}
                 />
@@ -387,11 +399,11 @@ const Quotes = () => {
               className={cn(
                 "flex-1 flex flex-col justify-center items-center sansita-bold cursor-pointer mx-auto mt-6 animate-pulse transition-transform duration-200 ease hover:-translate-y-0.5 z-1",
                 showFullResults && "hidden",
-                activeQuoteData.length < 10 && "hidden"
+                suggestedQuoteData.length >= 10 ? "visible" : "hidden"
               )}
               onClick={() => setShowFullResults(true)}
             >
-              <span>view all results</span>
+              <span>view all suggested options</span>
               <ChevronsDown size={30} className="" />
             </button>
           </ScrollArea>

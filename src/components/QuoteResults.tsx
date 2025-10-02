@@ -70,11 +70,21 @@ providers.set("prudent", {
 const BottomDrawer = ({
   providerId,
   keyId,
+  isPortrait,
 }: {
   providerId: ProviderIdTypes;
   keyId: number;
+  isPortrait: boolean;
 }) => {
   const [value, setValue] = useState<string | undefined>();
+
+  // Close the drawer if switching to portrait mode
+  useEffect(() => {
+    if (isPortrait) {
+      setValue(undefined);
+    }
+  }, [isPortrait]);
+
   return (
     <div key={`bottom-drawer-${keyId}`}>
       <Accordion
@@ -90,7 +100,10 @@ const BottomDrawer = ({
               "justify-center items-center flex cursor-pointer z-0 w-full hover:bg-none h-14"
             )}
             variant={"ghost"}
-            onClick={() => setValue((prev) => (prev ? undefined : keyId + ""))}
+            onClick={() => {
+              if (!isPortrait)
+                setValue((prev) => (prev ? undefined : keyId + ""));
+            }}
           >
             {value ? (
               <div className="flex flex-col items-center justify-center">
@@ -99,7 +112,11 @@ const BottomDrawer = ({
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center">
-                <span>More Info</span>
+                {providerId.toLowerCase() === "prudent" ? (
+                  <span>Coverage Options & Info</span>
+                ) : (
+                  <span>More Info</span>
+                )}
                 <ChevronDown className={cn("size-6")} />
               </div>
             )}
@@ -342,11 +359,13 @@ function QuoteResults({
                         className="text-neutral-600 text-xs md:text-sm lg:text-base md:h-fit flex flex-col items-start gap-4 dark:text-neutral-400 overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
                       >
                         <span>{providers.get(active.providerId).content}</span>
-                        <p className="w-full font-medium text-neutral-400 text-xs sansita-regular-italic">
-                          * This quote is an estimated cost. Actual coverage
-                          cost factors include your pet's breed, location,
-                          condition, and other details.
-                        </p>
+                        {providers.get(active.providerId).isFallback && (
+                          <p className="w-full font-medium text-neutral-400 text-xs sansita-regular-italic">
+                            * This quote is an estimated cost. Actual coverage
+                            cost factors include your pet's breed, location,
+                            condition, and other details.
+                          </p>
+                        )}
                       </motion.div>
                     </div>
                   </div>
@@ -369,10 +388,6 @@ function QuoteResults({
                     isPortrait ? "cursor-pointer" : ""
                   )}
                 >
-                  {card.extras?.planDesc &&
-                    card.extras.planDesc.includes("Accident Only") && (
-                      <p>Accident Only Plan</p>
-                    )}
                   <div className="flex gap-1 flex-col md:flex-row items-center md:items-start justify-center w-full max-w-4xl">
                     <motion.div
                       layoutId={`image-${card.providerId}-${id}-${key}`}
@@ -445,6 +460,10 @@ function QuoteResults({
                         >
                           {formatNumberToPrice(card.monthlyPrice, true)}
                         </motion.p>
+                        {card.extras?.planDesc &&
+                          card.extras.planDesc.includes("Accident Only") && (
+                            <p className="text-center">Accident Only Plan</p>
+                          )}
                       </div>
                     </div>
                   </div>
@@ -463,9 +482,11 @@ function QuoteResults({
                       Go to {providers.get(card.providerId).providerName}
                     </motion.a>
                   </div>
-                  {!isPortrait ? (
-                    <BottomDrawer keyId={key} providerId={card.providerId} />
-                  ) : null}
+                  <BottomDrawer
+                    keyId={key}
+                    providerId={card.providerId}
+                    isPortrait={isPortrait}
+                  />
                 </motion.div>
               );
             })}

@@ -79,7 +79,7 @@ export type FilterOptionType = {
   label: string;
 };
 
-export type SortItemType = "deductible" | "reimbursement" | "limit" | "price";
+export type SortItemType =  "price";
 
 export type ColorThemeType = "light" | "dark" | "system";
 
