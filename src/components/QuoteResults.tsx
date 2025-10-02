@@ -295,7 +295,7 @@ function QuoteResults({
                           className="nunito-sans-bold px-4 py-3 text-lg rounded-3xl font-bold text-center w-full"
                         >
                           {active.reimbursementLimitOption === 999999
-                            ? "unlimited"
+                            ? "UNLIMITED"
                             : formatNumberToPrice(
                                 active.reimbursementLimitOption
                               )}
@@ -369,12 +369,10 @@ function QuoteResults({
                     isPortrait ? "cursor-pointer" : ""
                   )}
                 >
-                  {card.extras?.planDesc && (
-                    <p>
-                      Temp implementation:{" "}
-                      {JSON.stringify(card.extras.planDesc)}
-                    </p>
-                  )}
+                  {card.extras?.planDesc &&
+                    card.extras.planDesc.includes("Accident Only") && (
+                      <p>Accident Only Plan</p>
+                    )}
                   <div className="flex gap-1 flex-col md:flex-row items-center md:items-start justify-center w-full max-w-4xl">
                     <motion.div
                       layoutId={`image-${card.providerId}-${id}-${key}`}
@@ -428,7 +426,7 @@ function QuoteResults({
                           className="nunito-sans-bold text-neutral-600 dark:text-neutral-400 text-center"
                         >
                           {card.reimbursementLimitOption === 999999
-                            ? "unlimited"
+                            ? "UNLIMITED"
                             : formatNumberToPrice(
                                 card.reimbursementLimitOption
                               )}

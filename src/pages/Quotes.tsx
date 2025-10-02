@@ -32,6 +32,7 @@ const LOAD_TIMER = 20; // seconds
 const Quotes = () => {
   const navigate = useNavigate();
   const [quoteData, setQuoteData] = useState<QuoteItem[]>([]);
+  const [suggestedQuoteData, setSuggestedQuoteData] = useState<QuoteItem[]>([]);
   // const [sortItemSelected, setSortItemSelected] =
   //   useState<SortItemType>("price");
   const [activeQuoteData, setActiveQuoteData] = useState<QuoteItem[]>([]);
@@ -188,6 +189,7 @@ const Quotes = () => {
       const prudentQuotes = await fetchQuotesFromAPI("prudent");
       if (prudentQuotes.length > 0) {
         fetchedQuotes.push(...prudentQuotes);
+        setSuggestedQuoteData(prudentQuotes);
       }
     }
 
@@ -365,6 +367,22 @@ const Quotes = () => {
               handleYoungerPetClicked={handleYoungerPetClicked}
               handleInsurerClicked={handleInsurerClicked}
             />
+
+            {suggestedQuoteData.length > 0 && (
+              <>
+                <div className="text-center w-full max-w-4xl sansita-regular px-2 mt-4 text-lg mx-auto">
+                  <h2 className="text-(--primary-teal-dark)">
+                    Suggested Options
+                  </h2>
+                </div>
+                <QuoteResults
+                  cards={suggestedQuoteData}
+                  showFullResults={true}
+                  handleYoungerPetClicked={handleYoungerPetClicked}
+                  handleInsurerClicked={handleInsurerClicked}
+                />
+              </>
+            )}
             <button
               className={cn(
                 "flex-1 flex flex-col justify-center items-center sansita-bold cursor-pointer mx-auto mt-6 animate-pulse transition-transform duration-200 ease hover:-translate-y-0.5 z-1",
