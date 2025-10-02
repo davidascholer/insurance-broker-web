@@ -263,12 +263,16 @@ function QuoteResults({
                   </motion.div>
 
                   <div className="p-4">
-                    <div className="flex flex-col min-[500px]:flex-row justify-between items-center">
+                    {active.extras?.planDesc &&
+                      active.extras.planDesc.includes("Accident Only") && (
+                        <p className="text-center w-full">Accident Only Plan</p>
+                      )}
+                    <div className="flex flex-col min-[500px]:flex-row justify-between items-start">
                       <div className="">
                         <div className="flex flex-col gap-1 justify-center items-center">
                           <motion.h3
                             layoutId={`title-${active.providerId}-deductible-${id}-${active.key}`}
-                            className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left sansita-bold"
+                            className="font-medium text-neutral-800 dark:text-neutral-200 text-center sansita-bold"
                           >
                             {"Annual Deductible"}
                           </motion.h3>
@@ -284,9 +288,9 @@ function QuoteResults({
                         <div className="flex flex-col gap-1 justify-center items-center">
                           <motion.h3
                             layoutId={`title-${active.providerId}-reimbursement-${id}-${active.key}`}
-                            className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left sansita-bold"
+                            className="font-medium text-neutral-800 dark:text-neutral-200 text-center sansita-bold"
                           >
-                            {"Reimbursement Ratge"}
+                            {"Reimbursement Rate"}
                           </motion.h3>
                         </div>
                         <motion.p
@@ -302,7 +306,7 @@ function QuoteResults({
                         <div className="flex flex-col gap-1 justify-center items-center">
                           <motion.h3
                             layoutId={`title-${active.providerId}-coverage-${id}-${active.key}`}
-                            className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left sansita-bold"
+                            className="font-medium text-neutral-800 dark:text-neutral-200 text-center sansita-bold"
                           >
                             Annual Limit
                           </motion.h3>
@@ -321,7 +325,7 @@ function QuoteResults({
                       <div className="">
                         <motion.h3
                           layoutId={`title-${active.providerId}-monthly-${id}-${active.key}`}
-                          className="font-medium text-2xl text-(--primary-coral) dark:text-neutral-200 text-center md:text-left sansita-bold"
+                          className="font-medium text-2xl text-(--primary-coral) dark:text-neutral-200 text-center sansita-bold"
                         >
                           {"Monthly Price"}
                         </motion.h3>
@@ -402,7 +406,7 @@ function QuoteResults({
                       <div className="">
                         <motion.h3
                           layoutId={`title-${card.providerId}-deductible-${id}-${key}`}
-                          className="sansita-bold font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left"
+                          className="sansita-bold font-medium text-neutral-800 dark:text-neutral-200 text-center"
                         >
                           {"Annual Deductible"}
                         </motion.h3>
@@ -416,7 +420,7 @@ function QuoteResults({
                       <div className="">
                         <motion.h3
                           layoutId={`title-${card.providerId}-reimbursement-${id}-${key}`}
-                          className="sansita-bold font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left"
+                          className="sansita-bold font-medium text-neutral-800 dark:text-neutral-200 text-center"
                         >
                           {"Reimbursement Rate"}
                         </motion.h3>
