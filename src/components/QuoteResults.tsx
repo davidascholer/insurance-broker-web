@@ -143,12 +143,12 @@ function QuoteResults({
   cards,
   showFullResults,
   handleInsurerClicked,
-}: // handleYoungerPetClicked
-{
+  petName,
+}: {
   cards: QuoteItem[];
   showFullResults: boolean;
   handleInsurerClicked: (insurer: string) => void;
-  handleYoungerPetClicked: () => void;
+  petName: string;
 }) {
   const [active, setActive] = useState<
     (QuoteItem & { key: number }) | boolean | null
@@ -267,7 +267,7 @@ function QuoteResults({
                       active.extras.planDesc.includes("Accident Only") && (
                         <p className="text-center w-full">Accident Only Plan</p>
                       )}
-                    <div className="flex flex-col min-[500px]:flex-row justify-between items-start">
+                    <div className="flex flex-col min-[500px]:flex-row justify-between items-center min-[500px]:items-end gap-4 mt-4">
                       <div className="">
                         <div className="flex flex-col gap-1 justify-center items-center">
                           <motion.h3
@@ -341,7 +341,11 @@ function QuoteResults({
                     <div className="flex-1 flex items-center justify-center mt-4 w-full">
                       <motion.a
                         layoutId={`button-${active.providerId}-${id}-${active.key}`}
-                        href={providers.get(active.providerId).src}
+                        href={
+                          active.extras?.precheckoutUrl
+                            ? active.extras.precheckoutUrl
+                            : providers.get(active.providerId).src
+                        }
                         onClick={() =>
                           handleInsurerClicked(
                             providers.get(active.providerId).providerName
@@ -350,7 +354,7 @@ function QuoteResults({
                         target="_blank"
                         className="px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
                       >
-                        Go to {providers.get(active.providerId).providerName}
+                        Select this coverage for {petName}
                       </motion.a>
                     </div>
 
@@ -474,7 +478,11 @@ function QuoteResults({
                   <div className="flex-1 flex items-center justify-center m-4 px-8 w-full">
                     <motion.a
                       layoutId={`button-link-${card.providerId}-${id}-${key}`}
-                      href={providers.get(card.providerId).src}
+                      href={
+                        card.extras?.precheckoutUrl
+                          ? card.extras.precheckoutUrl
+                          : providers.get(card.providerId).src
+                      }
                       target="_blank"
                       onClick={() =>
                         handleInsurerClicked(
@@ -483,7 +491,7 @@ function QuoteResults({
                       }
                       className="px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
                     >
-                      Go to {providers.get(card.providerId).providerName}
+                      Select this coverage for {petName}
                     </motion.a>
                   </div>
                   <BottomDrawer

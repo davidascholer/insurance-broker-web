@@ -252,11 +252,11 @@ const Quotes = () => {
     sendEvent("external_link", "link_clicked", insurer);
   };
 
-  const handleYoungerPetClicked = () => {
-    if (!petObject) return;
+  // const handleYoungerPetClicked = () => {
+  //   if (!petObject) return;
 
-    fetchQuotes({ ...petObject, age: { value: 18, label: "8 weeks" } });
-  };
+  //   fetchQuotes({ ...petObject, age: { value: 18, label: "8 weeks" } });
+  // };
 
   useEffect(() => {
     sendPageview("/quotes", "Quotes");
@@ -309,6 +309,10 @@ const Quotes = () => {
 
     const selectedLimitsQuoteData = selectedReimbursementsQuoteData.filter(
       (quote) => {
+        if (selectedLimit.value <= 5000) {
+          return quote.reimbursementLimitOption <= selectedLimit.value;
+        }
+        // Match exact value for all other options
         return quote.reimbursementLimitOption === selectedLimit.value;
       }
     );
@@ -376,7 +380,7 @@ const Quotes = () => {
             <QuoteResults
               cards={activeQuoteData}
               showFullResults={true}
-              handleYoungerPetClicked={handleYoungerPetClicked}
+              petName={petObject.petName}
               handleInsurerClicked={handleInsurerClicked}
             />
 
@@ -390,7 +394,7 @@ const Quotes = () => {
                 <QuoteResults
                   cards={suggestedQuoteData}
                   showFullResults={showFullResults}
-                  handleYoungerPetClicked={handleYoungerPetClicked}
+                  petName={petObject.petName}
                   handleInsurerClicked={handleInsurerClicked}
                 />
               </>

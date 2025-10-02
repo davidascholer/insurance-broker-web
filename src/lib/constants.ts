@@ -25,7 +25,7 @@ export const ANNUAL_LIMIT_OPTIONS = [
   { value: 999999, label: "UNLIMITED" },
   { value: 15000, label: "$15,000" },
   { value: 10000, label: "$10,000" },
-  { value: 5000, label: "$5,000" },
+  { value: 5000, label: "up to $5,000" },
 ];
 
 export const INSURER_OPTIONS: { label: string; providerId: ProviderIdTypes }[] =

@@ -25,8 +25,10 @@ export type AnswersType = {
 export type ProviderIdTypes = "figo" | "embrace" | "fetch" | "prudent";
 
 export type PrudentExtrasType = {
-  planDesc?: string;
-  planCode?: string;
+  planDesc: string;
+  planCode: string;
+  precheckoutUrl: string;
+  checkoutUrl: string;
 };
 
 // Type for individual quote data item on the server
@@ -79,7 +81,7 @@ export type FilterOptionType = {
   label: string;
 };
 
-export type SortItemType =  "price";
+export type SortItemType = "price";
 
 export type ColorThemeType = "light" | "dark" | "system";
 

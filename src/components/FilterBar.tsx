@@ -1,7 +1,7 @@
 // Create a full width filter bar with a light pink background and rounded corners that contains dropdowns for filtering quotes
 import { cn } from "@/lib/utils";
 import ChatBot from "./ChatBot";
-import { ListCheck, ListFilter } from "lucide-react";
+import {  ListCheck, ListFilter } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import {
   ANNUAL_LIMIT_OPTIONS,
@@ -29,11 +29,7 @@ const FilterOptions = ({
   tooltip?: React.ReactNode;
 }) => {
   return (
-    <div
-      className={
-        "flex flex-row gap-2 justify-center items-center"
-      }
-    >
+    <div className={"flex flex-row gap-2 justify-center items-center"}>
       {tooltip}
       <div className="flex-1">
         <DropdownMenu>
@@ -93,9 +89,9 @@ const FilterBar = ({
   selectedReimbursement,
   selectedLimit,
   selectedPetType,
-}: // sortItems,
-// sortItemSelected,
-{
+  // sortItem,
+  // sortItemSelected,
+}: {
   handleDeductibleClicked: (deductible: FilterOptionType) => void;
   handleReimbursementRateClicked: (rate: FilterOptionType) => void;
   handleAnnualLimitClicked: (limit: FilterOptionType) => void;
@@ -103,8 +99,8 @@ const FilterBar = ({
   selectedReimbursement: FilterOptionType;
   selectedLimit: FilterOptionType;
   selectedPetType: string;
-  // sortItems: (item: SortItemType) => void;
-  // sortItemSelected?: SortItemType;
+  // sortItem: SortItemType;
+  // sortItemSelected: (item: SortItemType) => void;
 }) => {
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);

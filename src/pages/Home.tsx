@@ -85,7 +85,7 @@ const Home = () => {
           >
             <div role="listitem">
               <InsurerItem
-                imagePath="./aspca_title.jpg"
+                imagePath="./text_logos/aspca_title.jpg"
                 altImageText="ASPCA Pet Insurance logo - Trusted pet insurance provider"
                 priceText="$45/month or $486/12 months*"
                 details="Get quotes from America's top pet insurance carriers right on your phone or desktop."
@@ -93,7 +93,7 @@ const Home = () => {
             </div>
             <div role="listitem">
               <InsurerItem
-                imagePath="./fetch_title.jpg"
+                imagePath="./text_logos/fetch_title.jpg"
                 altImageText="Fetch Pet Insurance logo - Comprehensive pet coverage provider"
                 priceText="$40/month or $432/12 months*"
                 details="Compare pet insurance quotes without the hassle of visiting several different sites."
@@ -101,7 +101,15 @@ const Home = () => {
             </div>
             <div role="listitem">
               <InsurerItem
-                imagePath="./embrace_title.png"
+                imagePath="./text_logos/prudent_title.svg"
+                altImageText="Prudent Pet Insurance logo - Top pet insurance provider"
+                priceText="$8/month or $96/12 months*"
+                details="Get affordable, customized quotes based on your pet's unique needs."
+              />
+            </div>
+            <div role="listitem">
+              <InsurerItem
+                imagePath="./text_logos/embrace_title.png"
                 altImageText="Embrace Pet Insurance logo - Personalized pet insurance solutions"
                 priceText="$48/month or $510/12 months*"
                 details="Not sure which coverage is best?  Don't worry - as your pet insurance broker we'll lay out the coverage in simple terms so you know what you're buying."
