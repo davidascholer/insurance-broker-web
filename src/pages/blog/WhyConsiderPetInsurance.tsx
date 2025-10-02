@@ -63,7 +63,7 @@ const WhatIsPetInsurance = () => {
               for non- pet related costs takes years, and a serious veterinary
               bill can derail that progress. Many financial analysts suggest
               that self-insuring may work for routine needs, but not for large,
-              urgent medical expenses. 1 Pet insurance lets you budget through
+              urgent medical expenses.<sup>1</sup> Pet insurance lets you budget through
               manageable monthly premiums, allowing you to deploy your capital
               for other things like vacations, home projects, and your own
               health emergencies. In short, it helps you hedge against the
