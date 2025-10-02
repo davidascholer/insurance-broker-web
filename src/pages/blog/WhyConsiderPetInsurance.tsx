@@ -7,7 +7,7 @@ const WhatIsPetInsurance = () => {
   return (
     <div className="bg-(--light-pink)">
       <Header />
-      <div className="flex flex-col justify-start items-start gap-12 p-12 pt-36 max-w-6xl mx-auto min-h-screen">
+      <div className="flex flex-col justify-start items-start gap-6 p-12 pt-36 max-w-6xl mx-auto min-h-screen">
         <h1 className="text-(--primary-teal-dark) text-3xl sansita-bold whitespace-pre-wrap self-start">
           Why Pet Insurance Deserves a Spot in Your Wallet and Your Heart
         </h1>
@@ -48,7 +48,7 @@ const WhatIsPetInsurance = () => {
               diagnostics, state-of-the-art treatments, and rising business
               costs, pet care has surged: Urban veterinary services jumped
               nearly 8% in one year, and overall vet costs rose over 60% from
-              2014 to 2024. 1 Without insurance, these bills can hit you hard,
+              2014 to 2024<sup>1</sup>. Without insurance, these bills can hit you hard,
               especially when they come on unexpectedly.
             </p>
           </li>
@@ -102,7 +102,7 @@ const WhatIsPetInsurance = () => {
         <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
           Reference
         </h2>
-        <ol className="list-decimal ml-5 space-y-2">
+        <ol className="list-decimal ml-5 space-y-2 text-sm">
           <li>
             <Link
               target="_blank"

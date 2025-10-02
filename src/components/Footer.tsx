@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Facebook, Instagram } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
 
 // interface FooterProps {
 //   showFetchButton?: boolean;
@@ -41,14 +42,54 @@ const Footer = ({ className }: { className?: string }) => {
           >
             FAQs
           </button>
-          <button
-            onClick={() => {
-              navigate("/partners");
-            }}
-            className="nunito-sans-medium cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5"
-          >
-            Partners
-          </button>
+
+          <HoverCard>
+            <HoverCardTrigger
+              className="nunito-sans-medium cursor-default transition-transform duration-200 ease hover:-translate-y-0.5"
+              aria-label="Contact menu"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Partners
+            </HoverCardTrigger>
+            <HoverCardContent
+              className="z-100 bg-(--light-pink) w-[160px]"
+              role="menu"
+              aria-label="Contact submenu"
+            >
+              <div className="flex flex-col gap-4 p-1 items-start">
+                <Link
+                  to="https://www.prudentpet.com/"
+                  target="_blank"
+                  className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 text-(--text-dark)"
+                  role="menuitem"
+                  aria-label="Navigate to PrudentPet.com"
+                >
+                  Prudent Pet
+                </Link>
+                <Link
+                  to="https://www.kanguroseguro.com/"
+                  target="_blank"
+                  className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 text-(--text-dark)"
+                  role="menuitem"
+                  aria-label="Navigate to KanguroSeguro.com"
+                >
+                  Kanguro
+                </Link>
+                <button
+                  onClick={() => {
+                    navigate("/partners");
+                  }}
+                  className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 text-(--text-dark)"
+                  role="menuitem"
+                  aria-label="Navigate to Partners contact page"
+                >
+                  Contact
+                </button>
+              </div>
+            </HoverCardContent>
+          </HoverCard>
+
           <button
             onClick={() => {
               navigate("/investors");

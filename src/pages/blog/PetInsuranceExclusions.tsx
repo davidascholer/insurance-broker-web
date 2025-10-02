@@ -6,7 +6,7 @@ const PetInsuranceExclusions = () => {
   return (
     <div className="bg-(--light-pink)">
       <Header />
-      <div className="flex flex-col justify-start items-start gap-12 p-12 pt-36 max-w-6xl mx-auto min-h-screen">
+      <div className="flex flex-col justify-start items-start gap-6 p-12 pt-36 max-w-6xl mx-auto min-h-screen">
         <h1 className="text-(--primary-teal-dark) text-3xl sansita-bold whitespace-pre-wrap self-start">
           What Pet Insurance Doesn't Cover and How to Protect Your Pet Anyway
         </h1>
@@ -27,7 +27,7 @@ const PetInsuranceExclusions = () => {
               that appeared before your policy began (or during any waiting
               period) is typically excluded. This includes undiagnosed symptoms
               like limping or excessive licking, which insurers often classify
-              as existing conditions.
+              as existing conditions.<sup>1,2</sup>
             </p>
             <h3 className="text-(--primary-teal-dark) text-xl sansita-bold">
               How to work around it:
@@ -46,7 +46,7 @@ const PetInsuranceExclusions = () => {
               <li>
                 AKC Pet Insurance is unique in that it offers coverage for both
                 curable and incurable pre-existing conditions. But only after
-                365 days of uninterrupted coverage.
+                365 days of uninterrupted coverage.<sup>3</sup>
               </li>
             </ul>
           </li>
@@ -60,7 +60,7 @@ const PetInsuranceExclusions = () => {
               arise within the policy's early days or weeks, often 14 to 30 days
               for illnesses, with shorter waiting periods for accidents. Some
               complex conditions, like hip dysplasia, may require up to 12-month
-              waiting periods.
+              waiting periods.<sup>4</sup>
             </p>
             <p>
               <strong>Why it matters:</strong> A pet getting injured or sick
@@ -105,12 +105,12 @@ const PetInsuranceExclusions = () => {
               <li>
                 Many policies exclude hereditary or congenital conditions (like
                 hip dysplasia or heart disease) unless they're specifically
-                included or added as riders.
+                included or added as riders.<sup>2</sup>
               </li>
               <li>
                 Bilateral conditions (e.g., hip dysplasia that first appears on
                 one side and then the other) are typically excluded if one side
-                was affected before coverage.
+                was affected before coverage.<sup>1</sup>
               </li>
             </ul>
             <p>
@@ -258,7 +258,7 @@ const PetInsuranceExclusions = () => {
         <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
           References
         </h2>
-        <ol className="list-decimal ml-5 space-y-2">
+        <ol className="list-decimal ml-5 space-y-2 text-sm">
           <li>
             <Link
               target="_blank"

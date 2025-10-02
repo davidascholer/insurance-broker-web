@@ -15,7 +15,7 @@ const FAQs = () => {
     <div className="bg-(--light-pink) ">
       <Header />
       <div
-        className="flex flex-col sm:flex-row justify-center items-center sm:items-start gap-12 p-6 pt-36 max-w-4xl mx-auto"
+        className="flex flex-col sm:flex-row justify-center items-center sm:items-start gap-6 p-6 pt-36 max-w-4xl mx-auto"
         data-sqsp-text-block-content=""
       >
         <h4 className="text-(--primary-teal-dark) text-4xl sansita-bold whitespace-pre-wrap">

@@ -6,7 +6,7 @@ const WhatIsPetInsurance = () => {
   return (
     <div className="bg-(--light-pink)">
       <Header />
-      <div className="flex flex-col justify-start items-start gap-12 p-12 pt-36 max-w-6xl mx-auto min-h-screen">
+      <div className="flex flex-col justify-start items-start gap-6 p-12 pt-36 max-w-6xl mx-auto min-h-screen">
         <h1 className="text-(--primary-teal-dark) text-3xl sansita-bold whitespace-pre-wrap self-start">
           Understanding Pet Insurance &amp; How It Works with PIPA Broker
         </h1>
@@ -21,7 +21,7 @@ const WhatIsPetInsurance = () => {
           accidents, illnesses, and sometimes preventive care, depending on the
           policy.
         </p>
-        <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+        <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1 mb-0">
           How Pet Insurance Works
         </h2>
         <ol className="list-decimal ml-5 space-y-2">

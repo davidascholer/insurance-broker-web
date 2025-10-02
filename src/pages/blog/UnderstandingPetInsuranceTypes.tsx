@@ -6,7 +6,7 @@ const UnderstandPetInsuranceTypes = () => {
   return (
     <div className="bg-(--light-pink)">
       <Header />
-      <div className="flex flex-col justify-start items-start gap-12 p-12 pt-36 max-w-6xl mx-auto min-h-screen">
+      <div className="flex flex-col justify-start items-start gap-6 p-12 pt-36 max-w-6xl mx-auto min-h-screen">
         <h1 className="text-(--primary-teal-dark) text-3xl sansita-bold whitespace-pre-wrap self-start">
           Understanding Pet Insurance Types with PIPA Broker
         </h1>
@@ -23,7 +23,7 @@ const UnderstandPetInsuranceTypes = () => {
           These plans are your budget-friendly safety net for unexpected
           injuries. Think broken bones, lacerations, poisonings, or
           foreign-object ingestion. Some policies may cover diagnostics,
-          hospitalization, medications, or surgery related to these accidents.
+          hospitalization, medications, or surgery related to these accidents.<sup>1,2</sup>
         </p>
 
         <h3 className="text-(--primary-teal-dark) text-xl sansita-bold">
@@ -34,7 +34,7 @@ const UnderstandPetInsuranceTypes = () => {
             Lower premiums make it a popular choice for younger, healthy pets or
             older pets limited to this coverage.
           </li>
-          <li>Straightforward and simple coverage for emergencies.</li>
+          <li>Straightforward and simple coverage for emergencies.<sup>1</sup></li>
         </ul>
 
         <h3 className="text-(--primary-teal-dark) text-xl sansita-bold">
@@ -52,7 +52,7 @@ const UnderstandPetInsuranceTypes = () => {
         <p>
           The most comprehensive option, this plan covers a wide range,
           including infections, chronic or hereditary conditions, diagnostic
-          testing, emergency care, and hospitalization.
+          testing, emergency care, and hospitalization.<sup>3,4</sup>
         </p>
 
         <h3 className="text-(--primary-teal-dark) text-xl sansita-bold">
@@ -63,7 +63,7 @@ const UnderstandPetInsuranceTypes = () => {
             Peace of mind with robust coverage that grows with your pet's needs.
           </li>
           <li>
-            Helpful for pets susceptible to chronic or breed-specific ailments.
+            Helpful for pets susceptible to chronic or breed-specific ailments.<sup>1</sup>
           </li>
         </ul>
 
@@ -76,7 +76,7 @@ const UnderstandPetInsuranceTypes = () => {
             elective procedures or specific limits.
           </li>
           <li>
-            Preventive care and pre-existing conditions are usually excluded.
+            Preventive care and pre-existing conditions are usually excluded.<sup>5</sup>
           </li>
         </ul>
 
@@ -87,7 +87,7 @@ const UnderstandPetInsuranceTypes = () => {
           Wellness or preventive care coverage is not a standalone policy but an
           optional add-on to cover routine, predictable costs, like
           vaccinations, annual exams, dental cleanings, microchipping, or
-          heartworm prevention.
+          heartworm prevention.<sup>2,4</sup>
         </p>
 
         <h3 className="text-(--primary-teal-dark) text-xl sansita-bold">
@@ -206,7 +206,7 @@ const UnderstandPetInsuranceTypes = () => {
         <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
           References
         </h2>
-        <ol className="list-decimal ml-5 space-y-2">
+        <ol className="list-decimal ml-5 space-y-2 text-sm">
           <li>
             <Link
               target="_blank"

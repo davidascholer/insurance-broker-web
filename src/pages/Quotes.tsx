@@ -339,7 +339,7 @@ const Quotes = () => {
   }, [annualLimits, deductibles, quoteData, reimbursementRates]);
 
   return (
-    <div className="flex flex-col items-center justify-start w-full min-h-screen p-4 pt-24 space-y-4 bg-(--light-pink) h-screen">
+    <div className="flex flex-col items-center justify-start w-full min-h-screen px-4 pt-24 space-y-4 bg-(--light-pink) h-screen">
       <Header showFetchButton={false} />
       {!isOnline && (
         <div>

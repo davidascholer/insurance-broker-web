@@ -15,10 +15,10 @@ const TerminologySection = ({
   children: React.ReactNode;
 }) => {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-2 mb-6">
       <div className="flex flex-row gap-4 items-center justify-around w-full">
         <img src={imgSrc} alt={imgAlt} className="w-[40px]" />
-        <h2 className="text-(--primary-teal-dark) text-4xl sansita-bold whitespace-pre-wrap flex-1">
+        <h2 className="text-(--primary-coral) text-2xl sansita-bold sansita-bold whitespace-pre-wrap flex-1">
           {headerText}
         </h2>
       </div>
@@ -39,8 +39,8 @@ const Terminology = () => {
   return (
     <div className="bg-(--light-pink)">
       <Header />
-      <div className="flex flex-col justify-start items-start gap-12 p-12 pt-36 max-w-6xl mx-auto min-h-screen">
-        <h1 className="text-(--primary-coral) text-3xl sansita-bold whitespace-pre-wrap self-start">
+      <div className="flex flex-col justify-start items-start gap-4 p-12 pt-36 max-w-6xl mx-auto min-h-screen">
+        <h1 className="text-(--primary-teal-dark) text-3xl sansita-bold whitespace-pre-wrap self-start">
           Pet Insurance Terminology and Why These Terms Matter
         </h1>
         <p className="text-(--primary-teal-dark) whitespace-pre-wrap font-bold">

@@ -198,7 +198,7 @@ function QuoteResults({
   useOutsideClick(ref, () => setActive(null));
 
   return (
-    <>
+    <div className="w-full mb-40">
       {cards.length === 0 ? (
         <div className="text-lg sansita-regular p-4 w-full max-w-4xl mx-auto nunito-sans text-balance flex flex-col gap-4">
           <p>
@@ -505,7 +505,7 @@ function QuoteResults({
           </ul>
         </>
       )}
-    </>
+    </div>
   );
 }
 

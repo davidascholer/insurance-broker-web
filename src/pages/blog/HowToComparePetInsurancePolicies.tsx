@@ -6,7 +6,7 @@ const HowToComparePetInsurancePolicies = () => {
   return (
     <div className="bg-(--light-pink)">
       <Header />
-      <div className="flex flex-col justify-start items-start gap-12 p-12 pt-36 max-w-6xl mx-auto min-h-screen">
+      <div className="flex flex-col justify-start items-start gap-6 p-12 pt-36 max-w-6xl mx-auto min-h-screen">
         <h1 className="text-(--primary-teal-dark) text-3xl sansita-bold whitespace-pre-wrap self-start">
           Choosing Pet Insurance with PIPA Broker: Smart, Clear, Free
         </h1>
@@ -33,7 +33,7 @@ const HowToComparePetInsurancePolicies = () => {
             <strong>Coverage Types:</strong> Make sure you're looking at
             accidents, illnesses, hereditary or congenital conditions, chronic
             issues, diagnostics, surgeries, medications, and behavioral
-            treatments. Some plans even offer routine or wellness add-ons. For
+            treatments. Some plans even offer routine or wellness add-ons.<sup>1</sup> For
             more on coverage types, visit our blog post that explains all about
             their differences.
           </li>
@@ -46,7 +46,7 @@ const HowToComparePetInsurancePolicies = () => {
           <li>
             <strong>Costs & Caps:</strong> Compare premiums, deductibles (annual
             vs. per-incident), reimbursement levels, and annual or lifetime
-            benefit limits.
+            benefit limits.<sup>1</sup>
           </li>
           <li>
             <strong>Service Quality:</strong> Choose providers known for smooth,
@@ -123,16 +123,16 @@ const HowToComparePetInsurancePolicies = () => {
           <li>
             <strong>Avoid Pre-existing Conditions:</strong> Vet visits can
             uncover issues that might not be covered later. Starting before your
-            pet's first checkup keeps their slate clean.
+            pet's first checkup keeps their slate clean.<sup>2</sup>
           </li>
           <li>
             <strong>Lower Premiums:</strong> Young, healthy pets cost less to
-            insure and policies may stay more affordable.
+            insure and policies may stay more affordable.<sup>3</sup>
           </li>
           <li>
             <strong>Shorter Waiting Periods:</strong> Many providers offer just
             a few days (for accidents) and a few weeks (for illnesses). The
-            earlier you enroll, the quicker your coverage begins.
+            earlier you enroll, the quicker your coverage begins.<sup>3,4,5</sup>
           </li>
           <li>
             <strong>Seasonal Hazards? Stay Covered:</strong> If weather-related
@@ -211,7 +211,7 @@ const HowToComparePetInsurancePolicies = () => {
         <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
           References
         </h2>
-        <ol className="list-decimal ml-5 space-y-2">
+        <ol className="list-decimal ml-5 space-y-2 text-sm">
           <li>
             <Link
               target="_blank"

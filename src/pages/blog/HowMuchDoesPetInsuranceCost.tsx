@@ -6,7 +6,7 @@ const HowMuchDoesPetInsuranceCost = () => {
   return (
     <div className="bg-(--light-pink)">
       <Header />
-      <div className="flex flex-col justify-start items-start gap-12 p-12 pt-36 max-w-6xl mx-auto min-h-screen">
+      <div className="flex flex-col justify-start items-start gap-6 p-12 pt-36 max-w-6xl mx-auto min-h-screen">
         <h1 className="text-(--primary-teal-dark) text-3xl sansita-bold whitespace-pre-wrap self-start">
           The Real Cost of Pet Insurance: What It Costs and What Drives It
         </h1>
@@ -268,7 +268,7 @@ const HowMuchDoesPetInsuranceCost = () => {
         <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
           References
         </h2>
-        <ol className="list-decimal ml-5 space-y-2">
+        <ol className="list-decimal ml-5 space-y-2 text-sm">
           <li>
             <Link
               target="_blank"
