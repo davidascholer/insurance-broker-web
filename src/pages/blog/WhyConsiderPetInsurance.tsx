@@ -11,25 +11,30 @@ const WhatIsPetInsurance = () => {
         <h1 className="text-(--primary-teal-dark) text-3xl sansita-bold whitespace-pre-wrap self-start">
           Why Pet Insurance Deserves a Spot in Your Wallet and Your Heart
         </h1>
-        <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
-          What is Pet Insurance
-        </h2>
+
         <ol className="list-decimal ml-5 space-y-2">
           <li>
-            <strong>Pets Have Accidents—It&#39;s a Truth of Life</strong>
+            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+              Pets Have Accidents—It&#39;s a Truth of Life
+            </h2>
             <p>
               Even the most careful pets can find themselves in unexpected
               trouble. Some common examples are ingesting foreign objects,
               tumbling off furniture, or suffering sudden injuries. These
-              moments happen more than you would think. Pet insurance is your
-              safety net, designed to help you say “yes” to immediate treatment,
-              not “maybe later” and hoping for the best. Most policies commonly
+              moments happen more than you would think.{" "}
+              <Link to="/info" className="underline font-bold">
+                Pet insurance is your safety net
+              </Link>{" "}
+              , designed to help you say “yes” to immediate treatment, not
+              “maybe later” and hoping for the best. Most policies commonly
               cover accidents along with related diagnostics, surgeries, and
               medications.
             </p>
           </li>
           <li>
-            <strong>Pets Get Sick—And Often When You Least Expect It</strong>
+            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+              Pets Get Sick—And Often When You Least Expect It
+            </h2>
             <p>
               Illnesses don’t wait for the perfect moment. From infections and
               allergies to chronic conditions like diabetes or cancer, medical
@@ -42,20 +47,22 @@ const WhatIsPetInsurance = () => {
             </p>
           </li>
           <li>
-            <strong>Vet Bills Are Skyrocketing—and Climbing</strong>
+            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+              Vet Bills Are Skyrocketing—and Climbing\
+            </h2>
             <p>
               Veterinary care isn’t immune from inflation. Between advanced
               diagnostics, state-of-the-art treatments, and rising business
               costs, pet care has surged: Urban veterinary services jumped
               nearly 8% in one year, and overall vet costs rose over 60% from
-              2014 to 2024<sup>1</sup>. Without insurance, these bills can hit you hard,
-              especially when they come on unexpectedly.
+              2014 to 2024<sup>1</sup>. Without insurance, these bills can hit
+              you hard, especially when they come on unexpectedly.
             </p>
           </li>
           <li>
-            <strong>
+            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
               Relying on Savings Alone Isn&#39;t Always the Smartest Move
-            </strong>
+            </h2>
             <p>
               Banking on your savings to cover emergencies is one alternative to
               pet insurance, but at best it takes time to build up your fund and
@@ -63,10 +70,10 @@ const WhatIsPetInsurance = () => {
               for non- pet related costs takes years, and a serious veterinary
               bill can derail that progress. Many financial analysts suggest
               that self-insuring may work for routine needs, but not for large,
-              urgent medical expenses.<sup>1</sup> Pet insurance lets you budget through
-              manageable monthly premiums, allowing you to deploy your capital
-              for other things like vacations, home projects, and your own
-              health emergencies. In short, it helps you hedge against the
+              urgent medical expenses.<sup>1</sup> Pet insurance lets you budget
+              through manageable monthly premiums, allowing you to deploy your
+              capital for other things like vacations, home projects, and your
+              own health emergencies. In short, it helps you hedge against the
               volatility of draining your capital in a single, stressful event.
             </p>
           </li>

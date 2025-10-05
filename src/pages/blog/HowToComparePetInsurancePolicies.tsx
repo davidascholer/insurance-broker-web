@@ -33,15 +33,27 @@ const HowToComparePetInsurancePolicies = () => {
             <strong>Coverage Types:</strong> Make sure you're looking at
             accidents, illnesses, hereditary or congenital conditions, chronic
             issues, diagnostics, surgeries, medications, and behavioral
-            treatments. Some plans even offer routine or wellness add-ons.<sup>1</sup> For
-            more on coverage types, visit our blog post that explains all about
-            their differences.
+            treatments. Some plans even offer routine or wellness add-ons.
+            <sup>1</sup> For more on coverage types, visit our{" "}
+            <Link
+              to="/blog/understanding-pet-insurance-types"
+              className="underline font-bold"
+            >
+              blog post
+            </Link>{" "}
+            that explains all about their differences.
           </li>
           <li>
-            <strong>Exclusions & Waiting Periods:</strong> Understand what's not
-            covered. Pre-existing conditions, breed-specific exclusions, age
-            limits, or waiting periods (which can stretch from days to months)
-            can significantly affect what your pet can claim.
+            <strong>Exclusions & Waiting Periods:</strong> Understand{" "}
+            <Link
+              to="/blog/pet-insurance-exclusions"
+              className="underline font-bold"
+            >
+              what's not covered
+            </Link>
+            . Pre-existing conditions, breed-specific exclusions, age limits, or
+            waiting periods (which can stretch from days to months) can
+            significantly affect what your pet can claim.
           </li>
           <li>
             <strong>Costs & Caps:</strong> Compare premiums, deductibles (annual
@@ -62,7 +74,7 @@ const HowToComparePetInsurancePolicies = () => {
             Use free pet insurance comparison tools and services like{" "}
             <Link to="/info" className="underline font-bold">
               PIPA Broker
-            </Link>
+            </Link>{" "}
             to compare multiple plans side-by-side, tailored to breed, age, and
             location.
           </li>
@@ -132,7 +144,8 @@ const HowToComparePetInsurancePolicies = () => {
           <li>
             <strong>Shorter Waiting Periods:</strong> Many providers offer just
             a few days (for accidents) and a few weeks (for illnesses). The
-            earlier you enroll, the quicker your coverage begins.<sup>3,4,5</sup>
+            earlier you enroll, the quicker your coverage begins.
+            <sup>3,4,5</sup>
           </li>
           <li>
             <strong>Seasonal Hazards? Stay Covered:</strong> If weather-related
@@ -194,7 +207,7 @@ const HowToComparePetInsurancePolicies = () => {
                 </td>
               </tr>
             </tbody>
-          </table> 
+          </table>
         </div>
 
         <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">

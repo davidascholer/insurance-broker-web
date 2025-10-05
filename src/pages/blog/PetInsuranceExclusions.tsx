@@ -17,21 +17,23 @@ const PetInsuranceExclusions = () => {
           mind.
         </p>
 
-        <ol className="list-decimal ml-5 space-y-6">
+        <ul className="list-none ml-5 space-y-6">
           <li>
-            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+            <h2 className="text-(--primary-coral) mb-4 text-2xl sansita-bold whitespace-pre-wrap flex-1">
               Pre-Existing Conditions
             </h2>
             <p>
               <strong>What doesn't get covered:</strong> Any illness or injury
-              that appeared before your policy began (or during any waiting
-              period) is typically excluded. This includes undiagnosed symptoms
-              like limping or excessive licking, which insurers often classify
-              as existing conditions.<sup>1,2</sup>
+              that appeared <strong>before</strong> your policy began (or{" "}
+              <strong>during any waiting period</strong>) is typically excluded.
+              This includes undiagnosed symptoms like limping or excessive
+              licking, which insurers often classify as existing conditions.
+              <sup>1,2</sup>
             </p>
-            <h3 className="text-(--primary-teal-dark) text-xl sansita-bold">
-              How to work around it:
-            </h3>
+            <br />
+            <span>
+              <strong>Work around:</strong>
+            </span>
             <ul className="list-disc ml-5 space-y-2">
               <li>
                 Enroll early, ideally when your pet is young and healthy, to
@@ -52,7 +54,7 @@ const PetInsuranceExclusions = () => {
           </li>
 
           <li>
-            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+            <h2 className="text-(--primary-coral) mb-4 text-2xl sansita-bold whitespace-pre-wrap flex-1">
               Waiting Periods
             </h2>
             <p>
@@ -62,6 +64,7 @@ const PetInsuranceExclusions = () => {
               complex conditions, like hip dysplasia, may require up to 12-month
               waiting periods.<sup>4</sup>
             </p>
+            <br />
             <p>
               <strong>Why it matters:</strong> A pet getting injured or sick
               immediately after enrollment could be denied coverage due to this
@@ -70,23 +73,25 @@ const PetInsuranceExclusions = () => {
           </li>
 
           <li>
-            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+            <h2 className="text-(--primary-coral) mb-4 text-2xl sansita-bold whitespace-pre-wrap flex-1">
               Routine, Preventive, and Elective Care
             </h2>
-            <h3 className="text-(--primary-teal-dark) text-xl sansita-bold">
-              What's excluded:
-            </h3>
+            <span>
+              <strong>What's excluded:</strong>
+            </span>
             <ul className="list-disc ml-5 space-y-2">
               <li>
                 Regular checkups, vaccinations, grooming, spaying/neutering, and
-                flea or tick treatments are generally not included in basic
-                accident or illness policies.
+                flea or tick treatments are generally{" "}
+                <strong>not included</strong> in basic accident or illness
+                policies.<sup>4</sup>
               </li>
               <li>
                 Elective or cosmetic procedures (e.g., declawing, tail docking,
                 or aesthetics) are also excluded.
               </li>
             </ul>
+            <br />
             <p>
               <strong>Workaround:</strong> Add a wellness or preventive care
               plan if available, especially if your pet receives frequent
@@ -95,12 +100,12 @@ const PetInsuranceExclusions = () => {
           </li>
 
           <li>
-            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+            <h2 className="text-(--primary-coral) mb-4 text-2xl sansita-bold whitespace-pre-wrap flex-1">
               Hereditary, Congenital, and Bilateral Conditions
             </h2>
-            <h3 className="text-(--primary-teal-dark) text-xl sansita-bold">
-              Coverage varies:
-            </h3>
+            <span>
+              <strong>Coverage varies:</strong>
+            </span>
             <ul className="list-disc ml-5 space-y-2">
               <li>
                 Many policies exclude hereditary or congenital conditions (like
@@ -113,6 +118,7 @@ const PetInsuranceExclusions = () => {
                 was affected before coverage.<sup>1</sup>
               </li>
             </ul>
+            <br />
             <p>
               <strong>PIPA Broker's tip:</strong> Use free tools & resources
               like{" "}
@@ -125,7 +131,7 @@ const PetInsuranceExclusions = () => {
           </li>
 
           <li>
-            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+            <h2 className="text-(--primary-coral) mb-4 text-2xl sansita-bold whitespace-pre-wrap flex-1">
               Other Common Exclusions
             </h2>
             <p>Additional exclusions may include:</p>
@@ -138,7 +144,7 @@ const PetInsuranceExclusions = () => {
               <li>Breed-specific or age-specific limitations, caps, or fees</li>
             </ul>
           </li>
-        </ol>
+        </ul>
 
         <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
           At-a-Glance: Exclusions & Strategies Table
@@ -241,12 +247,14 @@ const PetInsuranceExclusions = () => {
           Every pet is unique. Understanding exclusions empowers you to choose a
           plan that truly fits your pet's needs.
         </p>
-        <p>At PIPA Broker, we help you:</p>
-        <ul className="list-disc ml-5 space-y-2">
-          <li>Compare plans clearly</li>
-          <li>Identify crucial coverage gaps</li>
-          <li>Select smart add-ons</li>
-        </ul>
+        <div>
+          <span>At PIPA Broker, we help you:</span>
+          <ul className="list-disc ml-5 space-y-2 mt-2">
+            <li>Compare plans clearly</li>
+            <li>Identify crucial coverage gaps</li>
+            <li>Select smart add-ons</li>
+          </ul>
+        </div>
         <p>
           Want help walking through a real policy's exclusions or customizing
           coverage for your pup? Let's make it simple and secure.{" "}

@@ -243,8 +243,8 @@ const Quotes = () => {
       "price",
       suggestedQuoteData
     );
-    setQuoteData(sortedFetchedData);
-    setSuggestedQuoteData(sortedSuggestedQuoteData);
+    setQuoteData(sortedFetchedData?.length > 0 ? sortedFetchedData : []);
+    setSuggestedQuoteData(sortedSuggestedQuoteData?.length > 0 ? sortedSuggestedQuoteData : []);
   };
 
   const handleInsurerClicked = (insurer: string) => {
@@ -339,7 +339,7 @@ const Quotes = () => {
   }, [annualLimits, deductibles, quoteData, reimbursementRates]);
 
   return (
-    <div className="flex flex-col items-center justify-start w-full min-h-screen px-4 pt-24 space-y-4 bg-(--light-pink) h-screen">
+    <div className="flex flex-col items-center justify-start w-full min-h-screen px-4 pt-24 pb-8 space-y-4 bg-(--light-pink) h-screen">
       <Header showFetchButton={false} />
       {!isOnline && (
         <div>
@@ -388,7 +388,7 @@ const Quotes = () => {
               <>
                 <div className="text-center w-full max-w-4xl sansita-regular px-2 mt-4 text-lg mx-auto">
                   <h2 className="text-(--primary-teal-dark)">
-                    Suggested Options
+                    Other great options for {petObject.petName}
                   </h2>
                 </div>
                 <QuoteResults
@@ -407,7 +407,7 @@ const Quotes = () => {
               )}
               onClick={() => setShowFullResults(true)}
             >
-              <span>view all suggested options</span>
+              <span>View More Options</span>
               <ChevronsDown size={30} className="" />
             </button>
           </ScrollArea>

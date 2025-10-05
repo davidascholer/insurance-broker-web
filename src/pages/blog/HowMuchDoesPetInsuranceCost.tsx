@@ -17,9 +17,9 @@ const HowMuchDoesPetInsuranceCost = () => {
           cost-effective, tailored choices for your furry family members.
         </p>
 
-        <ol className="list-decimal ml-5 space-y-6">
+        <ul className="list-none ml-5 space-y-6">
           <li>
-            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1 mb-4">
               Average Pet Insurance Costs (2025)
             </h2>
             <ul className="list-disc ml-5 space-y-2">
@@ -46,8 +46,8 @@ const HowMuchDoesPetInsuranceCost = () => {
             </ul>
           </li>
 
-          <li>
-            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+          <li className="flex flex-col gap-3">
+            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1 mb-4">
               What Drives Pet Insurance Premiums?
             </h2>
             <p>
@@ -128,7 +128,7 @@ const HowMuchDoesPetInsuranceCost = () => {
           </li>
 
           <li>
-            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1 mb-4">
               Summary Table
             </h2>
             <div className="w-full">
@@ -210,7 +210,7 @@ const HowMuchDoesPetInsuranceCost = () => {
           </li>
 
           <li>
-            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
+            <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1 mb-4">
               PIPA Broker's Smart Budgeting Tips
             </h2>
             <ul className="list-disc ml-5 space-y-2">
@@ -245,76 +245,79 @@ const HowMuchDoesPetInsuranceCost = () => {
               </li>
             </ul>
           </li>
-        </ol>
+        </ul>
 
-        <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
-          Final Word from PIPA Broker
-        </h2>
-        <p>
-          Pet insurance is more than a monthly payment. It is thoughtful
-          preparation for your pet's wellbeing and your peace of mind. While
-          averages give you a baseline like $60 to $62/month for dogs, and $30
-          to $32 for cats, the real cost depends on your pet, your policy, and
-          your priorities.
-        </p>
-        <p>
-          Want help selecting the ideal mix of coverage, limits, and savings?
-          <Link to="/info" className="underline font-bold">{" "}
-            Let's tailor a plan that works for your budget and heart
-          </Link>{" "}
-          .
-        </p>
+        <div className=" ml-4">
+          <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1 mb-4">
+            Final Word from PIPA Broker
+          </h2>
+          <p>
+            Pet insurance is more than a monthly payment. It is thoughtful
+            preparation for your pet's wellbeing and your peace of mind. While
+            averages give you a baseline like $60 to $62/month for dogs, and $30
+            to $32 for cats, the real cost depends on your pet, your policy, and
+            your priorities.
+          </p>
+          <p>
+            Want help selecting the ideal mix of coverage, limits, and savings?
+            <Link to="/info" className="underline font-bold">
+              {" "}
+              Let's tailor a plan that works for your budget and heart
+            </Link>{" "}
+            .
+          </p>
 
-        <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
-          References
-        </h2>
-        <ol className="list-decimal ml-5 space-y-2 text-sm">
-          <li>
-            <Link
-              target="_blank"
-              to="https://naphia.org/industry-data/section-3-average-premiums/"
-              className="underline font-bold"
-            >
-              NAPHIA
-            </Link>
-          </li>
-          <li>
-            <Link
-              target="_blank"
-              to="https://www.metlifepetinsurance.com/blog/pet-insurance/how-much-does-pet-insurance-cost/"
-              className="underline font-bold"
-            >
-              MetLife Pet Insurance
-            </Link>
-          </li>
-          <li>
-            <Link
-              target="_blank"
-              to="https://www.bankrate.com/insurance/pet-insurance/how-are-pet-insurance-premiums-determined/"
-              className="underline font-bold"
-            >
-              Bankrate
-            </Link>
-          </li>
-          <li>
-            <Link
-              target="_blank"
-              to="https://www.nerdwallet.com/article/insurance/cost-of-pet-insurance"
-              className="underline font-bold"
-            >
-              NerdWallet
-            </Link>
-          </li>
-          <li>
-            <Link
-              target="_blank"
-              to="https://www.akcpetinsurance.com/blog/why-does-my-location-affect-pet-insurance-costs"
-              className="underline font-bold"
-            >
-              AKC Pet Insurance
-            </Link>
-          </li>
-        </ol>
+          <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1 my-4">
+            References
+          </h2>
+          <ol className="list-decimal ml-5 space-y-2 text-xs">
+            <li>
+              <Link
+                target="_blank"
+                to="https://naphia.org/industry-data/section-3-average-premiums/"
+                className="underline font-bold"
+              >
+                NAPHIA
+              </Link>
+            </li>
+            <li>
+              <Link
+                target="_blank"
+                to="https://www.metlifepetinsurance.com/blog/pet-insurance/how-much-does-pet-insurance-cost/"
+                className="underline font-bold"
+              >
+                MetLife Pet Insurance
+              </Link>
+            </li>
+            <li>
+              <Link
+                target="_blank"
+                to="https://www.bankrate.com/insurance/pet-insurance/how-are-pet-insurance-premiums-determined/"
+                className="underline font-bold"
+              >
+                Bankrate
+              </Link>
+            </li>
+            <li>
+              <Link
+                target="_blank"
+                to="https://www.nerdwallet.com/article/insurance/cost-of-pet-insurance"
+                className="underline font-bold"
+              >
+                NerdWallet
+              </Link>
+            </li>
+            <li>
+              <Link
+                target="_blank"
+                to="https://www.akcpetinsurance.com/blog/why-does-my-location-affect-pet-insurance-costs"
+                className="underline font-bold"
+              >
+                AKC Pet Insurance
+              </Link>
+            </li>
+          </ol>
+        </div>
       </div>
       <Footer />
     </div>

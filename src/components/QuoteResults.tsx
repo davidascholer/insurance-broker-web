@@ -34,7 +34,7 @@ providers.set("figo", {
   imgUrl: "insurers/carrier_logo_figo.svg",
   src: "https://figopetinsurance.com/get-started?PetName={petName}",
   content:
-    "Figo: Pet Insurance with Soul. Let's face it— being a pet parent is awesome, but it has its share of surprises. Your pet insurance plan shouldn't be one of them. Born out of frustration with one-size-fits-all policies, Figo was founded by pet moms and dads who wanted better. We've ditched the jargon and stuffy approach, creating a refreshingly simple experience that fits your lifestyle—not the other way around. We're here to help enhance your pet's wellness, your peace of mind, and your finances. With fewer barriers, and perks (like an all-in-one pet parent app) that go beyond just helping cover vet bills, we're bringing pet insurance into the 21st century. Welcome to insurance that just gets it. Welcome to Figo.",
+    "Figo: Pet Insurance with Soul. Let's face it— being a pet parent is awesome, but it has its share of surprises. Your pet insurance plan shouldn't be one of them. Born out of frustration with one-size-fits-all policies, Figo was founded by pet moms and dads who wanted better. We've ditched the jargon and stuffy approach, creating a refreshingly simple experience that fits your lifestyle—not the other way around. We're here to help enhance your pet's wellness, your peace of mind, and your finances. With fewer barriers, and perks (like an all-in-one pet parent app) that go beyond just helping cover vet bills, we're bringing pet insurance into the 21st century.",
 });
 // providers.set("metlife", {
 //   providerName: "MetLife",
@@ -49,7 +49,7 @@ providers.set("embrace", {
   imgUrl: "insurers/carrier_logo_embrace.svg",
   src: "https://www.embracepetinsurance.com/",
   content:
-    "Pet insurance from Embrace saves you up to 90% back on vet bills from unexpected illness and medical expenses. Get a tailored cat or dog insurance quote in seconds.",
+    "Pet insurance from Embrace saves you up to 90% back on vet bills from unexpected illness and medical expenses.",
 });
 // providers.set("pumpkin", {
 //   providerName: "Pumpkin",
@@ -484,11 +484,12 @@ function QuoteResults({
                           : providers.get(card.providerId).src
                       }
                       target="_blank"
-                      onClick={() =>
+                      onClick={() => {
+                        console.log("card", card);
                         handleInsurerClicked(
                           providers.get(card.providerId).providerName
-                        )
-                      }
+                        );
+                      }}
                       className="px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
                     >
                       Select this coverage for {petName}

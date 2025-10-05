@@ -18,8 +18,14 @@ const WhatIsPetInsurance = () => {
           manage the costs of veterinary care. It operates on a reimbursement
           model, where you pay the vet upfront and then submit a claim to your
           insurance provider for eligible expenses. Coverage typically includes
-          accidents, illnesses, and sometimes preventive care, depending on the
-          policy.
+          accidents, illnesses, and sometimes preventive care,
+          <Link
+            to="/blog/understanding-pet-insurance-types"
+            className="underline font-bold"
+          >
+            depending on the policy
+          </Link>
+          .
         </p>
         <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1 mb-0">
           How Pet Insurance Works
@@ -109,10 +115,17 @@ const WhatIsPetInsurance = () => {
           <li>
             <strong>Understand Exclusions:</strong> It’s extremely important to
             understand what is excluded in the policy before you purchase one
-            for your furry pal.
-            {/* For a comprehensive understanding of common pet
-            insurance exclusions, click here. */}
+            for your furry pal. For a comprehensive understanding of common pet
+            insurance exclusions,{" "}
+            <Link
+              to="/blog/pet-insurance-exclusions"
+              className="underline font-bold"
+            >
+              click here
+            </Link>
+            .
           </li>
+
           <li>
             <strong>For more on these:</strong> Visit our blog on{" "}
             <Link to="/terminology" className="underline font-bold">
