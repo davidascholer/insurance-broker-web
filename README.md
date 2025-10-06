@@ -80,4 +80,4 @@ Runs ESLint to analyze code for potential errors and code style issues.
 - The dev repo automatically deploys and can be accessed at dev.pipabroker.com
 - It is necessary to have it's own repo so the marketing team can deploy code
 - Merge pipa-dev/main into pipa-web/dev then merge pipa-web/dev to main and deploy for production
-- From the pipa-dev repo to the dev branch of the pipa-web repo with: `git push pipa-web main:dev`
+- Push the pipa-dev repo to the dev branch of the pipa-web repo with: `git push pipa-web main:dev`

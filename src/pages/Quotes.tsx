@@ -171,23 +171,23 @@ const Quotes = () => {
     const suggestedQuoteData: QuoteItem[] = [];
     let allCached = true;
 
-    // /* PRUDENT */
-    // // Check if quotes are cached before fetching from API
-    // const cachedPrudentQuotes = getQuoteFromCache("prudent");
-    // if (cachedPrudentQuotes) {
-    //   if (DEV) console.log("DEV LOG", "Using cached prudent quotes");
-    //   fetchedQuotes.push(...cachedPrudentQuotes);
-    //   suggestedQuoteData.push(...cachedPrudentQuotes);
-    // } else {
-    //   // If no cached quotes, fetch from API
-    //   if (DEV) console.log("DEV LOG", "Fetching new prudent quotes");
-    //   allCached = false;
-    //   const prudentQuotes = await fetchQuotesFromAPI("prudent");
-    //   if (prudentQuotes.length > 0) {
-    //     fetchedQuotes.push(...prudentQuotes);
-    //     suggestedQuoteData.push(...prudentQuotes);
-    //   }
-    // }
+    /* PRUDENT */
+    // Check if quotes are cached before fetching from API
+    const cachedPrudentQuotes = getQuoteFromCache("prudent");
+    if (cachedPrudentQuotes) {
+      if (DEV) console.log("DEV LOG", "Using cached prudent quotes");
+      fetchedQuotes.push(...cachedPrudentQuotes);
+      suggestedQuoteData.push(...cachedPrudentQuotes);
+    } else {
+      // If no cached quotes, fetch from API
+      if (DEV) console.log("DEV LOG", "Fetching new prudent quotes");
+      allCached = false;
+      const prudentQuotes = await fetchQuotesFromAPI("prudent");
+      if (prudentQuotes.length > 0) {
+        fetchedQuotes.push(...prudentQuotes);
+        suggestedQuoteData.push(...prudentQuotes);
+      }
+    }
 
     /* EMBRACE */
     // Check if quotes are cached before fetching from API
@@ -357,7 +357,7 @@ const Quotes = () => {
         <>
           <ScrollArea
             id="quotes-scroll-container"
-            className="flex-1 w-full overflow-scroll no-scrollbar"
+            className="flex-1 w-full overflow-scroll scrollbar-theme-color"
           >
             <FilterBar
               handleDeductibleClicked={handleDeductibleClicked}

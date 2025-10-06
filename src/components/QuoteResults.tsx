@@ -316,7 +316,7 @@ function QuoteResults({
                           className="nunito-sans-bold px-4 py-3 text-lg rounded-3xl font-bold text-center w-full"
                         >
                           {active.reimbursementLimitOption === 999999
-                            ? "UNLIMITED"
+                            ? "Unlimited"
                             : formatNumberToPrice(
                                 active.reimbursementLimitOption
                               )}
@@ -449,7 +449,7 @@ function QuoteResults({
                           className="nunito-sans-bold text-neutral-600 dark:text-neutral-400 text-center"
                         >
                           {card.reimbursementLimitOption === 999999
-                            ? "UNLIMITED"
+                            ? "Unlimited"
                             : formatNumberToPrice(
                                 card.reimbursementLimitOption
                               )}

@@ -22,7 +22,7 @@ export const REIMBURSEMENT_RATE_OPTIONS = [
   { value: 70, label: "70%" },
 ];
 export const ANNUAL_LIMIT_OPTIONS = [
-  { value: 999999, label: "UNLIMITED" },
+  { value: 999999, label: "Unlimited" },
   { value: 15000, label: "$15,000" },
   { value: 10000, label: "$10,000" },
   { value: 5000, label: "up to $5,000" },
