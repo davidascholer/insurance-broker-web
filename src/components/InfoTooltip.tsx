@@ -4,15 +4,23 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useState } from "react";
 
 export function InfoTooltip({ msg }: { msg?: string }) {
+  const [open, setOpen] = useState(false); // State to control popover visibility
+
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
         asChild
         className="bg-(--coral-light) text-(--primary-teal-dark) hover:bg-(--primary-coral) size-6 text-sm rounded-full "
       >
-        <Button variant="ghost" className="sansita-regular cursor-pointer p-0">
+        <Button
+          variant="ghost"
+          onMouseEnter={() => setOpen(true)}
+          onMouseLeave={() => setOpen(false)}
+          className="sansita-regular cursor-pointer p-0"
+        >
           i
         </Button>
       </PopoverTrigger>
