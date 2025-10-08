@@ -29,6 +29,7 @@ export type PrudentExtrasType = {
   planCode: string;
   precheckoutUrl: string;
   checkoutUrl: string;
+  relatedPlans?: DataQuoteItem[];
 };
 
 // Type for individual quote data item on the server

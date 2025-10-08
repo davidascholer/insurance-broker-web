@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "./ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import PrudentContent from "./features/PrudentContent";
 
 // Keys must match the providerId in the QuoteItem type
 const providers = new Map();
@@ -21,13 +22,6 @@ providers.set("fetch", {
   content:
     "At Fetch, we understand how special your pet is to you (and vice-versa). That’s why we built a plan that covers more of the care your pet needs. Having more coverage means you’ll never have to choose between a vet bill and your pet’s health — so they can have a longer, happier life, and you can both have more good days together.",
 });
-// providers.set("petsbest", {
-//   providerName: "PetsBest",
-//   imgUrl: "/carrier_logo_petsbest.svg",
-//   src: "https://www.petsbest.com/",
-//   content:
-//     "Pets Best Insurance was founded in 2005 by Dr. Jack Stephens. Their mission is to end economic euthanasia by helping to ensure pet parents are financially prepared when their pets need unexpected veterinary care.",
-// });
 providers.set("figo", {
   providerName: "Figo",
   isFallback: true,
@@ -36,13 +30,6 @@ providers.set("figo", {
   content:
     "Figo: Pet Insurance with Soul. Let's face it— being a pet parent is awesome, but it has its share of surprises. Your pet insurance plan shouldn't be one of them. Born out of frustration with one-size-fits-all policies, Figo was founded by pet moms and dads who wanted better. We've ditched the jargon and stuffy approach, creating a refreshingly simple experience that fits your lifestyle—not the other way around. We're here to help enhance your pet's wellness, your peace of mind, and your finances. With fewer barriers, and perks (like an all-in-one pet parent app) that go beyond just helping cover vet bills, we're bringing pet insurance into the 21st century.",
 });
-// providers.set("metlife", {
-//   providerName: "MetLife",
-//   imgUrl: "/carrier_logo_metlife.svg",
-//   src: "https://www.metlifepetinsurance.com/",
-//   content:
-//     "At MetLife Pet Insurance, we understand that pets are like family. With customizable coverage, a 24/7 vet chat, and quick claims processing, your dog or cat can be covered by one of our award-winning pet insurance policies. MetLife Pet Insurance’s comprehensive policies ensure that your pet — no matter their breed or age — can be covered, with no initial exams or vet records required to enroll. MetLife Pet offers some of the shortest waiting periods for accident and illness coverage, and allows you to use any licensed vet in America. Call or visit us today to get started with a free quote or learn more.",
-// });
 providers.set("embrace", {
   providerName: "Embrace",
   isFallback: true,
@@ -51,13 +38,6 @@ providers.set("embrace", {
   content:
     "Pet insurance from Embrace saves you up to 90% back on vet bills from unexpected illness and medical expenses.",
 });
-// providers.set("pumpkin", {
-//   providerName: "Pumpkin",
-//   imgUrl: "/carrier_logo_pumpkin.svg",
-//   src: "https://www.pumpkin.care/",
-//   content:
-//     "At Pumpkin, we believe it's just as important to keep healthy pets healthy as it is to help hurt or sick pets get better! That's why we provide families with the extensive pet health insurance and essential preventive care their pets need to live a healthy life, now and fur-ever.",
-// });
 providers.set("prudent", {
   providerName: "Prudent",
   isFallback: false,
@@ -71,10 +51,14 @@ const BottomDrawer = ({
   providerId,
   keyId,
   isPortrait,
+  card,
+  handleInsurerClicked,
 }: {
   providerId: ProviderIdTypes;
   keyId: number;
   isPortrait: boolean;
+  card: QuoteItem;
+  handleInsurerClicked: (insurer: string) => void;
 }) => {
   const [value, setValue] = useState<string | undefined>();
 
@@ -122,9 +106,19 @@ const BottomDrawer = ({
             )}
           </Button>
           <AccordionContent className="flex flex-col gap-4">
-            <p className="px-4 pt-4 w-full font-medium text-(--primary-teal-dark) dark:text-neutral-200 text-left sansita-bold">
-              {providers.get(providerId).content}
-            </p>
+            {providers.get(providerId).isFallback && (
+              <p className="px-4 pt-4 w-full font-medium text-(--primary-teal-dark) dark:text-neutral-200 text-left sansita-bold">
+                {providers.get(providerId).content}
+              </p>
+            )}
+            {providers.get(providerId).providerName === "Prudent" && (
+              <PrudentContent
+                providerId={providerId}
+                relatedPlans={card.extras?.relatedPlans || []}
+                isPortrait={isPortrait}
+                handleInsurerClicked={handleInsurerClicked}
+              />
+            )}
             {providers.get(providerId).isFallback && (
               <p className="px-4 w-full font-medium text-neutral-400 text-xs sansita-regular-italic">
                 * This quote is an estimated cost. Actual coverage cost factors
@@ -157,24 +151,18 @@ function QuoteResults({
   const id = useId();
 
   const [isPortrait, setIsPortrait] = useState(
-    window.matchMedia("(orientation: portrait)").matches
+    window.innerWidth < window.innerHeight
   );
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(orientation: portrait)");
-
-    interface OrientationChangeEvent extends Event {
-      matches: boolean;
-    }
-
-    const handleOrientationChange = (e: OrientationChangeEvent) => {
-      setIsPortrait(e.matches);
+    const handleResize = () => {
+      setIsPortrait(window.innerWidth < window.innerHeight);
     };
-
-    mediaQuery.addEventListener("change", handleOrientationChange);
+    handleResize(); // Set initial dimensions
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      mediaQuery.removeEventListener("change", handleOrientationChange);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -212,6 +200,7 @@ function QuoteResults({
         </div>
       ) : (
         <>
+          {/* Mobile View */}
           <AnimatePresence>
             {active && typeof active === "object" && (
               <motion.div
@@ -264,9 +253,11 @@ function QuoteResults({
 
                   <div className="p-4">
                     {active.extras?.planDesc &&
-                      active.extras.planDesc.includes("Accident Only") && (
-                        <p className="text-center w-full">Accident Only Plan</p>
-                      )}
+                    active.extras.planDesc.includes("Accident Only") ? (
+                      <p className="text-center w-full">Accident Only Plan</p>
+                    ) : (
+                      <p className="text-center w-full">Accident & Illness</p>
+                    )}
                     <div className="flex flex-col min-[500px]:flex-row justify-between items-center min-[500px]:items-end gap-4 mt-4">
                       <div className="">
                         <div className="flex flex-col gap-1 justify-center items-center">
@@ -366,7 +357,20 @@ function QuoteResults({
                         exit={{ opacity: 0 }}
                         className="text-neutral-600 text-xs md:text-sm lg:text-base md:h-fit flex flex-col items-start gap-4 dark:text-neutral-400 overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
                       >
-                        <span>{providers.get(active.providerId).content}</span>
+                        {providers.get(active.providerId).isFallback && (
+                          <p className="px-4 pt-4 w-full font-medium text-(--primary-teal-dark) dark:text-neutral-200 text-left sansita-bold">
+                            {providers.get(active.providerId).content}
+                          </p>
+                        )}
+                        {providers.get(active.providerId).providerName ===
+                          "Prudent" && (
+                          <PrudentContent
+                            relatedPlans={active.extras?.relatedPlans || []}
+                            providerId={active.providerId}
+                            isPortrait={isPortrait}
+                            handleInsurerClicked={handleInsurerClicked}
+                          />
+                        )}
                         {providers.get(active.providerId).isFallback && (
                           <p className="w-full font-medium text-neutral-400 text-xs sansita-regular-italic">
                             * This quote is an estimated cost. Actual coverage
@@ -381,6 +385,7 @@ function QuoteResults({
               </div>
             ) : null}
           </AnimatePresence>
+          {/* Mobile View */}
           <ul id="quotes-list" className="mx-auto w-full gap-4">
             {cards.map((card: QuoteItem, key: number) => {
               if (!showFullResults && key >= 10) {
@@ -469,9 +474,11 @@ function QuoteResults({
                           {formatNumberToPrice(card.monthlyPrice, true)}
                         </motion.p>
                         {card.extras?.planDesc &&
-                          card.extras.planDesc.includes("Accident Only") && (
-                            <p className="text-center">Accident Only Plan</p>
-                          )}
+                        card.extras.planDesc.includes("Accident Only") ? (
+                          <p className="text-center">Accident Only Plan</p>
+                        ) : (
+                          <p className="text-center">Accident & Illness</p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -499,6 +506,8 @@ function QuoteResults({
                     keyId={key}
                     providerId={card.providerId}
                     isPortrait={isPortrait}
+                    card={card}
+                    handleInsurerClicked={handleInsurerClicked}
                   />
                 </motion.div>
               );
