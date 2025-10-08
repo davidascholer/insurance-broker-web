@@ -4,12 +4,11 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'pipa-dev/**' # Trigger only if changes are in the 'pipa-dev' directory or its subdirectories
 
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
+    if: github.repository == 'PIPA-Broker-LLC/pipa-dev'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -18,7 +17,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm' # Optional: Caches node_modules for faster subsequent runs
+          cache: "npm" # Optional: Caches node_modules for faster subsequent runs
 
       - name: Install dependencies
         run: npm ci # Use npm ci for clean installs in CI environments
