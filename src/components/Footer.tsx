@@ -152,11 +152,11 @@ const Footer = ({ className }: { className?: string }) => {
           The final insurance policy premium for any policy is determined by the
           underwriting insurance company following application.
         </p>
-        <div className="text-center">
-          <span className="text-sm text-white text-center w-full">
+        <div className="flex flex-col gap-0 justify-center items-center">
+          <span className="text-sm text-white">
             © Copyright 2025 PIPA Broker, LLC. All rights reserved.
           </span>
-          <span className="text-sm text-white text-center w-full">
+          <span className="text-sm text-white">
             PIPA Broker conducts business as Insurance Services by PIPA in the
             following states: California; West Virginia.
           </span>
