@@ -27,6 +27,11 @@ import { ChevronsDown } from "lucide-react";
 import LoadingQuotes from "@/components/LoadingQuotes";
 import { providerClickedTracker } from "@/api/trackers";
 import { sendPageview, sendEvent } from "@/lib/analytics";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 const LOAD_TIMER = 20; // seconds
 
@@ -244,7 +249,9 @@ const Quotes = () => {
       suggestedQuoteData
     );
     setQuoteData(sortedFetchedData?.length > 0 ? sortedFetchedData : []);
-    setSuggestedQuoteData(sortedSuggestedQuoteData?.length > 0 ? sortedSuggestedQuoteData : []);
+    setSuggestedQuoteData(
+      sortedSuggestedQuoteData?.length > 0 ? sortedSuggestedQuoteData : []
+    );
   };
 
   const handleInsurerClicked = (insurer: string) => {
@@ -368,14 +375,35 @@ const Quotes = () => {
               selectedLimit={selectedLimit}
               selectedPetType={petObject?.animal || "dog"}
             />
-            <div className="text-start w-full max-w-4xl sansita-regular px-2 mt-4 text-lg mx-auto">
-              <Link
-                to="/info/?edit=true"
-                className="text-(--primary-teal-dark)"
-                onClick={() => clearCache()}
-              >
-                Edit {petObject.petName}'s information
-              </Link>
+            <div className="text-start w-full max-w-4xl sansita-regular my-4 text-lg mx-auto">
+              <HoverCard>
+                <HoverCardTrigger className="text-white sansita-regular cursor-default bg-(--primary-teal-dark) px-4 py-3 rounded-full hover:bg-(--primary-teal) hover:shadow-md transition-all duration-300 ease-in-out">
+                  <Link to="/info/?edit=true" onClick={() => clearCache()}>
+                    Edit information
+                  </Link>
+                </HoverCardTrigger>
+                <HoverCardContent className="flex flex-col gap-4 ml-4">
+                  <Link
+                    to="/info/?edit=true"
+                    className="text-(--primary-teal-dark) sansita-regular hover:bg-(--primary-teal-dark) hover:text-white px-4 py-3 rounded-full transition-all duration-200 ease hover:shadow-sm"
+                    onClick={() => {
+                      clearCache();
+                    }}
+                  >
+                    Edit {petObject.petName}'s information
+                  </Link>
+                  <Link
+                    to="/info/?edit=true"
+                    className="text-(--primary-teal-dark) sansita-regular hover:bg-(--primary-teal-dark) hover:text-white px-4 py-3 rounded-full transition-all duration-200 ease hover:shadow-sm"
+                    onClick={() => {
+                      clearCache();
+                      localStorage.removeItem(PIPA_PET_KEY);
+                    }}
+                  >
+                    Start a new quote
+                  </Link>
+                </HoverCardContent>
+              </HoverCard>
             </div>
             <QuoteResults
               cards={activeQuoteData}
