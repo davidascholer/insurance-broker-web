@@ -145,18 +145,22 @@ const Footer = ({ className }: { className?: string }) => {
         <p className="text-white text-sm text-center mt-2 mb-4">
           PIPA Broker, LLC (“PIPA Broker”), with its principal place of business
           in Seattle, Washington, is a licensed independent insurance broker.
-          PIPA Broker conducts business as Insurance Services by PIPA in the
-          following states: California; West Virginia. The information provided
-          on this site has been developed by PIPA Broker for general
-          informational and educational purposes. We do our best to ensure that
-          this information is up-to-date and accurate. Any insurance policy
-          premium quotes or ranges displayed are non-binding. The final
-          insurance policy premium for any policy is determined by the
+          The information provided on this site has been developed by PIPA
+          Broker for general informational and educational purposes. We do our
+          best to ensure that this information is up-to-date and accurate. Any
+          insurance policy premium quotes or ranges displayed are non-binding.
+          The final insurance policy premium for any policy is determined by the
           underwriting insurance company following application.
         </p>
-        <span className="text-sm text-white text-center">
-          © Copyright 2025 PIPA Broker, LLC. All rights reserved.
-        </span>
+        <div className="text-center">
+          <span className="text-sm text-white text-center w-full">
+            © Copyright 2025 PIPA Broker, LLC. All rights reserved.
+          </span>
+          <span className="text-sm text-white text-center w-full">
+            PIPA Broker conducts business as Insurance Services by PIPA in the
+            following states: California; West Virginia.
+          </span>
+        </div>
       </div>
     </footer>
   );
