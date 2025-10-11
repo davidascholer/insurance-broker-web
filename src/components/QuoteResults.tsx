@@ -18,7 +18,7 @@ providers.set("fetch", {
   providerName: "Fetch",
   isFallback: true,
   imgUrl: "insurers/carrier_logo_fetch.svg",
-  src: "https://www.fetchpet.com/",
+  src: "https://www.fetchpet.com/mypet?utm_source=pipabroker&utm_medium=affiliate&utm_campaign=pipabrokertest",
   content:
     "At Fetch, we understand how special your pet is to you (and vice-versa). That’s why we built a plan that covers more of the care your pet needs. Having more coverage means you’ll never have to choose between a vet bill and your pet’s health — so they can have a longer, happier life, and you can both have more good days together.",
 });
