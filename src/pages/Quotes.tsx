@@ -7,7 +7,7 @@ import type {
   // SortItemType,
 } from "@/lib/types";
 import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import QuoteResults from "@/components/QuoteResults";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import useIsOnline from "@/hooks/useIsOnline";
@@ -378,30 +378,35 @@ const Quotes = () => {
             <div className="text-start w-full max-w-4xl sansita-regular my-4 text-lg mx-auto">
               <HoverCard>
                 <HoverCardTrigger className="text-white sansita-regular cursor-default bg-(--primary-teal-dark) px-4 py-3 rounded-full hover:bg-(--primary-teal) hover:shadow-md transition-all duration-300 ease-in-out">
-                  <Link to="/info/?edit=true" onClick={() => clearCache()}>
-                    Edit information
-                  </Link>
-                </HoverCardTrigger>
-                <HoverCardContent className="flex flex-col gap-4 ml-4">
-                  <Link
-                    to="/info/?edit=true"
-                    className="text-(--primary-teal-dark) sansita-regular hover:bg-(--primary-teal-dark) hover:text-white px-4 py-3 rounded-full transition-all duration-200 ease hover:shadow-sm"
+                  <span
                     onClick={() => {
                       clearCache();
+                      window.open("/info/?edit=true", "_blank", "noreferrer");
+                    }}
+                  >
+                    Edit information
+                  </span>
+                </HoverCardTrigger>
+                <HoverCardContent className="flex flex-col gap-4 ml-4">
+                  <span
+                    className="text-(--primary-teal-dark) cursor-pointer sansita-regular hover:bg-(--primary-teal-dark) hover:text-white px-4 py-3 rounded-full transition-all duration-200 ease hover:shadow-sm"
+                    onClick={() => {
+                      clearCache();
+                      window.open("/info/?edit=true", "_blank", "noreferrer");
                     }}
                   >
                     Edit {petObject.petName}'s information
-                  </Link>
-                  <Link
-                    to="/info/?edit=true"
-                    className="text-(--primary-teal-dark) sansita-regular hover:bg-(--primary-teal-dark) hover:text-white px-4 py-3 rounded-full transition-all duration-200 ease hover:shadow-sm"
+                  </span>
+                  <span
+                    className="text-(--primary-teal-dark) cursor-pointer sansita-regular hover:bg-(--primary-teal-dark) hover:text-white px-4 py-3 rounded-full transition-all duration-200 ease hover:shadow-sm"
                     onClick={() => {
                       clearCache();
                       localStorage.removeItem(PIPA_PET_KEY);
+                      window.open("/info/?edit=true", "_blank", "noreferrer");
                     }}
                   >
                     Start a new quote
-                  </Link>
+                  </span>
                 </HoverCardContent>
               </HoverCard>
             </div>
