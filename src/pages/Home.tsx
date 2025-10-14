@@ -1,19 +1,10 @@
-import { useEffect } from "react";
 import CoverageItem from "../components/CoverageItem";
 import FetchQuoteButton from "../components/FetchQuoteButton";
 import Footer from "../components/Footer";
 import Header from "../components/header/Header";
 import InsurerItem from "../components/InsurerItem";
-import { useLocation } from "react-router-dom";
-import { sendPageview } from "@/lib/analytics";
 
 const Home = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    // Send pageview with UTM parameters to Google Analytics
-    sendPageview("/", "Home");
-  }, [location.search]);
 
   return (
     <main role="main" aria-label="Pipa Broker Homepage">

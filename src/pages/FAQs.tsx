@@ -1,15 +1,9 @@
 import Footer from "@/components/Footer";
 import Header from "../components/header/Header";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { sendPageview } from "@/lib/analytics";
 
 const FAQs = () => {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    sendPageview("/faqs", "FAQs");
-  }, []);
 
   return (
     <div className="bg-(--light-pink) ">

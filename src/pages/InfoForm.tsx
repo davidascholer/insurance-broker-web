@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { sendPageview } from "@/lib/analytics";
 
 import EditIcon from "@/components/icons/EditIcon";
 import {
@@ -104,9 +103,6 @@ const InfoForm = () => {
     if (!edit) navigate("/quotes");
   }, []);
 
-  useEffect(() => {
-    sendPageview("/pet-form", "Pet Form");
-  }, []);
 
   useEffect(() => {
     // Find the current question based on answers

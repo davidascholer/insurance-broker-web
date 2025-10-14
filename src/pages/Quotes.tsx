@@ -24,7 +24,6 @@ import {
 } from "@/lib/constants";
 import { ChevronsDown } from "lucide-react";
 import LoadingQuotes from "@/components/LoadingQuotes";
-import { sendPageview, sendEvent } from "@/lib/analytics";
 import {
   HoverCard,
   HoverCardContent,
@@ -32,6 +31,7 @@ import {
 } from "@/components/ui/hover-card";
 import { gatherQuotesFromInsurer } from "@/api/util";
 import LoadingOverlay from "@/components/LoadingOverlay";
+// import { registerQuoteLinkClick } from "@/features/analytics/emitters";
 
 const LOAD_TIMER = 20; // seconds
 
@@ -254,10 +254,25 @@ const Quotes = () => {
     );
   };
 
-  const handleInsurerClicked = async (insurer: string) => {
-    // providerClickedTracker({ insurer, petObject });
-    sendEvent("external_link", "link_clicked", insurer);
+  // const handleInsurerClicked = async (insurerData: {
+  //   name: string;
+  //   deductible: number;
+  //   reimbursement: number;
+  //   coverageLimit: number;
+  //   monthlyPrice: number;
+  // }) => {
+  //   const petObjectString = localStorage.getItem(PIPA_PET_KEY);
+  //   const petObject = petObjectString ? JSON.parse(petObjectString) : null;
+  //   // registerQuoteLinkClick({ insurerData, petObject });
 
+  //   setOverlayVisible(true);
+  //   setTimeout(() => {
+  //     setOverlayVisible(false);
+  //   }, 3000);
+  // };
+
+  const handleInsurerClicked = async (insurer: string) => {
+    if (DEV) console.log("insurer clicked", insurer);
     setOverlayVisible(true);
     setTimeout(() => {
       setOverlayVisible(false);
@@ -269,10 +284,6 @@ const Quotes = () => {
 
   //   fetchQuotes({ ...petObject, age: { value: 18, label: "8 weeks" } });
   // };
-
-  useEffect(() => {
-    sendPageview("/quotes", "Quotes");
-  }, []);
 
   useEffect(() => {
     if (!petObject) {

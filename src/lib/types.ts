@@ -22,6 +22,14 @@ export type AnswersType = {
   reference: string;
 };
 
+export type InsurerLinkTrackingInfo = {
+  name: string;
+  deductible: number;
+  reimbursement: number;
+  coverageLimit: number;
+  monthlyPrice: number;
+};
+
 export type ProviderIdTypes =
   | "figo"
   | "embrace"

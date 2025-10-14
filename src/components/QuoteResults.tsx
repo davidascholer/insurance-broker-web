@@ -489,7 +489,6 @@ function QuoteResults({
                     <motion.span
                       layoutId={`button-link-${card.providerId}-${id}-${key}`}
                       onClick={() => {
-                        console.log("card", card);
                         handleInsurerClicked(
                           providers.get(card.providerId).providerName
                         );
