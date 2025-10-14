@@ -11,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 import QuoteResults from "@/components/QuoteResults";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import useIsOnline from "@/hooks/useIsOnline";
-import { gatherQuotesFromInsurer } from "@/api/api";
 import { clearCache, cn, getQuoteFromCache, verifyAnswers } from "@/lib/utils";
 import Header from "@/components/header/Header";
 import FilterBar from "@/components/FilterBar";
@@ -25,13 +24,14 @@ import {
 } from "@/lib/constants";
 import { ChevronsDown } from "lucide-react";
 import LoadingQuotes from "@/components/LoadingQuotes";
-import { providerClickedTracker } from "@/api/trackers";
 import { sendPageview, sendEvent } from "@/lib/analytics";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { gatherQuotesFromInsurer } from "@/api/util";
+import LoadingOverlay from "@/components/LoadingOverlay";
 
 const LOAD_TIMER = 20; // seconds
 
@@ -43,6 +43,7 @@ const Quotes = () => {
   //   useState<SortItemType>("price");
   const [activeQuoteData, setActiveQuoteData] = useState<QuoteItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [overlayVisible, setOverlayVisible] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const isOnline = useIsOnline();
   const [showFullResults, setShowFullResults] = useState<boolean>(false);
@@ -139,7 +140,6 @@ const Quotes = () => {
       isFallback = false
     ): Promise<QuoteItem[]> => {
       setIsLoading(true);
-      console.log("Fetching quotes from", insurer);
       // Set a maximum time to load the data from the server
       const timeout = setTimeout(() => {
         setIsLoading(false);
@@ -254,9 +254,14 @@ const Quotes = () => {
     );
   };
 
-  const handleInsurerClicked = (insurer: string) => {
-    providerClickedTracker({ insurer, petObject });
+  const handleInsurerClicked = async (insurer: string) => {
+    // providerClickedTracker({ insurer, petObject });
     sendEvent("external_link", "link_clicked", insurer);
+
+    setOverlayVisible(true);
+    setTimeout(() => {
+      setOverlayVisible(false);
+    }, 3000);
   };
 
   // const handleYoungerPetClicked = () => {
@@ -346,107 +351,110 @@ const Quotes = () => {
   }, [annualLimits, deductibles, quoteData, reimbursementRates]);
 
   return (
-    <div className="flex flex-col items-center justify-start w-full min-h-screen px-4 pt-24 pb-8 space-y-4 bg-(--light-pink) h-screen">
-      <Header showFetchButton={false} />
-      {!isOnline && (
-        <div>
-          <p>
-            You do not appear to be online. Please check your connection and
-            refresh the page.
-          </p>
-        </div>
-      )}
-      {isLoading && isOnline && (
-        <LoadingQuotes progressTimerSeconds={LOAD_TIMER} />
-      )}
-      {error && <div className="text-red-600">{error}</div>}
-      {!error && !isLoading && (
-        <>
-          <ScrollArea
-            id="quotes-scroll-container"
-            className="flex-1 w-full overflow-scroll scrollbar-theme-color"
-          >
-            <FilterBar
-              handleDeductibleClicked={handleDeductibleClicked}
-              handleReimbursementRateClicked={handleReimbursementRateClicked}
-              handleAnnualLimitClicked={handleAnnualLimitClick}
-              selectedDeductible={selectedDeductible}
-              selectedReimbursement={selectedReimbursement}
-              selectedLimit={selectedLimit}
-              selectedPetType={petObject?.animal || "dog"}
-            />
-            <div className="text-start w-full max-w-4xl sansita-regular my-4 text-lg mx-auto">
-              <HoverCard>
-                <HoverCardTrigger className="text-white sansita-regular cursor-default bg-(--primary-teal-dark) px-4 py-3 rounded-full hover:bg-(--primary-teal) hover:shadow-md transition-all duration-300 ease-in-out">
-                  <span
-                    onClick={() => {
-                      clearCache();
-                      window.open("/info/?edit=true", "_blank", "noreferrer");
-                    }}
-                  >
-                    Edit information
-                  </span>
-                </HoverCardTrigger>
-                <HoverCardContent className="flex flex-col gap-4 ml-4">
-                  <span
-                    className="text-(--primary-teal-dark) cursor-pointer sansita-regular hover:bg-(--primary-teal-dark) hover:text-white px-4 py-3 rounded-full transition-all duration-200 ease hover:shadow-sm"
-                    onClick={() => {
-                      clearCache();
-                      window.open("/info/?edit=true", "_blank", "noreferrer");
-                    }}
-                  >
-                    Edit {petObject.petName}'s information
-                  </span>
-                  <span
-                    className="text-(--primary-teal-dark) cursor-pointer sansita-regular hover:bg-(--primary-teal-dark) hover:text-white px-4 py-3 rounded-full transition-all duration-200 ease hover:shadow-sm"
-                    onClick={() => {
-                      clearCache();
-                      localStorage.removeItem(PIPA_PET_KEY);
-                      window.open("/info/?edit=true", "_blank", "noreferrer");
-                    }}
-                  >
-                    Start a new quote
-                  </span>
-                </HoverCardContent>
-              </HoverCard>
-            </div>
-            <QuoteResults
-              cards={activeQuoteData}
-              showFullResults={true}
-              petName={petObject.petName}
-              handleInsurerClicked={handleInsurerClicked}
-            />
-
-            {suggestedQuoteData.length > 0 && (
-              <>
-                <div className="text-center w-full max-w-4xl sansita-regular px-2 mt-4 text-lg mx-auto">
-                  <h2 className="text-(--primary-teal-dark)">
-                    Other great options for {petObject.petName}
-                  </h2>
-                </div>
-                <QuoteResults
-                  cards={suggestedQuoteData}
-                  showFullResults={showFullResults}
-                  petName={petObject.petName}
-                  handleInsurerClicked={handleInsurerClicked}
-                />
-              </>
-            )}
-            <button
-              className={cn(
-                "flex-1 flex flex-col justify-center items-center sansita-bold cursor-pointer mx-auto mt-6 animate-pulse transition-transform duration-200 ease hover:-translate-y-0.5 z-1",
-                showFullResults && "hidden",
-                suggestedQuoteData.length >= 10 ? "visible" : "hidden"
-              )}
-              onClick={() => setShowFullResults(true)}
+    <>
+      <LoadingOverlay isVisible={overlayVisible} zIndex={101} />
+      <div className="flex flex-col items-center justify-start w-full min-h-screen px-4 pt-24 pb-8 space-y-4 bg-(--light-pink) h-screen">
+        <Header showFetchButton={false} />
+        {!isOnline && (
+          <div>
+            <p>
+              You do not appear to be online. Please check your connection and
+              refresh the page.
+            </p>
+          </div>
+        )}
+        {isLoading && isOnline && (
+          <LoadingQuotes progressTimerSeconds={LOAD_TIMER} />
+        )}
+        {error && <div className="text-red-600">{error}</div>}
+        {!error && !isLoading && (
+          <>
+            <ScrollArea
+              id="quotes-scroll-container"
+              className="flex-1 w-full overflow-scroll scrollbar-theme-color"
             >
-              <span>View More Options</span>
-              <ChevronsDown size={30} className="" />
-            </button>
-          </ScrollArea>
-        </>
-      )}
-    </div>
+              <FilterBar
+                handleDeductibleClicked={handleDeductibleClicked}
+                handleReimbursementRateClicked={handleReimbursementRateClicked}
+                handleAnnualLimitClicked={handleAnnualLimitClick}
+                selectedDeductible={selectedDeductible}
+                selectedReimbursement={selectedReimbursement}
+                selectedLimit={selectedLimit}
+                selectedPetType={petObject?.animal || "dog"}
+              />
+              <div className="text-start w-full max-w-4xl sansita-regular my-4 text-lg mx-auto">
+                <HoverCard>
+                  <HoverCardTrigger className="text-white sansita-regular cursor-default bg-(--primary-teal-dark) px-4 py-3 rounded-full hover:bg-(--primary-teal) hover:shadow-md transition-all duration-300 ease-in-out">
+                    <span
+                      onClick={() => {
+                        clearCache();
+                        window.open("/info/?edit=true", "_blank", "noreferrer");
+                      }}
+                    >
+                      Edit information
+                    </span>
+                  </HoverCardTrigger>
+                  <HoverCardContent className="flex flex-col gap-4 ml-4">
+                    <span
+                      className="text-(--primary-teal-dark) cursor-pointer sansita-regular hover:bg-(--primary-teal-dark) hover:text-white px-4 py-3 rounded-full transition-all duration-200 ease hover:shadow-sm"
+                      onClick={() => {
+                        clearCache();
+                        window.open("/info/?edit=true", "_blank", "noreferrer");
+                      }}
+                    >
+                      Edit {petObject.petName}'s information
+                    </span>
+                    <span
+                      className="text-(--primary-teal-dark) cursor-pointer sansita-regular hover:bg-(--primary-teal-dark) hover:text-white px-4 py-3 rounded-full transition-all duration-200 ease hover:shadow-sm"
+                      onClick={() => {
+                        clearCache();
+                        localStorage.removeItem(PIPA_PET_KEY);
+                        window.open("/info/?edit=true", "_blank", "noreferrer");
+                      }}
+                    >
+                      Start a new quote
+                    </span>
+                  </HoverCardContent>
+                </HoverCard>
+              </div>
+              <QuoteResults
+                cards={activeQuoteData}
+                showFullResults={true}
+                petName={petObject.petName}
+                handleInsurerClicked={handleInsurerClicked}
+              />
+
+              {suggestedQuoteData.length > 0 && (
+                <>
+                  <div className="text-center w-full max-w-4xl sansita-regular px-2 mt-4 text-lg mx-auto">
+                    <h2 className="text-(--primary-teal-dark)">
+                      Other great options for {petObject.petName}
+                    </h2>
+                  </div>
+                  <QuoteResults
+                    cards={suggestedQuoteData}
+                    showFullResults={showFullResults}
+                    petName={petObject.petName}
+                    handleInsurerClicked={handleInsurerClicked}
+                  />
+                </>
+              )}
+              <button
+                className={cn(
+                  "flex-1 flex flex-col justify-center items-center sansita-bold cursor-pointer mx-auto mt-6 animate-pulse transition-transform duration-200 ease hover:-translate-y-0.5 z-1",
+                  showFullResults && "hidden",
+                  suggestedQuoteData.length >= 10 ? "visible" : "hidden"
+                )}
+                onClick={() => setShowFullResults(true)}
+              >
+                <span>View More Options</span>
+                <ChevronsDown size={30} className="" />
+              </button>
+            </ScrollArea>
+          </>
+        )}
+      </div>
+    </>
   );
 };
 export default Quotes;

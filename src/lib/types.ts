@@ -22,9 +22,15 @@ export type AnswersType = {
   reference: string;
 };
 
-export type ProviderIdTypes = "figo" | "embrace" | "fetch" | "prudent";
+export type ProviderIdTypes =
+  | "figo"
+  | "embrace"
+  | "fetch"
+  | "prudent"
+  | "kanguro";
 
 export type PrudentExtrasType = {
+  planObj: unknown; // Type handled by server
   planDesc: string;
   planCode: string;
   precheckoutUrl: string;
@@ -50,6 +56,14 @@ export type QuotesResultType = {
   success: boolean;
   quotes?: {
     coverageOptions: DataQuoteItem[];
+  };
+  error?: string;
+};
+
+export type QuoteResultType = {
+  success: boolean;
+  quote?: {
+    coverageOptions: DataQuoteItem;
   };
   error?: string;
 };

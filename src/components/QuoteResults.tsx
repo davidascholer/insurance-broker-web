@@ -11,6 +11,7 @@ import {
 import { Button } from "./ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import PrudentContent from "./features/PrudentContent";
+import { getAndDirectToPrudentLink } from "@/api/util";
 
 // Keys must match the providerId in the QuoteItem type
 const providers = new Map();
@@ -329,24 +330,26 @@ function QuoteResults({
                       </div>
                     </div>
 
-                    <div className="flex-1 flex items-center justify-center mt-4 w-full">
-                      <motion.a
+                    <div className="flex-1 flex items-center justify-center mt-4 w-full cursor-pointer">
+                      <motion.span
                         layoutId={`button-${active.providerId}-${id}-${active.key}`}
-                        href={
-                          active.extras?.precheckoutUrl
-                            ? active.extras.precheckoutUrl
-                            : providers.get(active.providerId).src
-                        }
-                        onClick={() =>
+                        onClick={() => {
                           handleInsurerClicked(
                             providers.get(active.providerId).providerName
-                          )
-                        }
-                        target="_blank"
+                          );
+                          if (active.extras?.planObj) {
+                            getAndDirectToPrudentLink(active.extras.planObj);
+                          } else {
+                            const link = active.extras?.precheckoutUrl
+                              ? active.extras.precheckoutUrl
+                              : providers.get(active.providerId).src;
+                            window.open(link, "_blank");
+                          }
+                        }}
                         className="px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
                       >
                         Select this coverage for {petName}
-                      </motion.a>
+                      </motion.span>
                     </div>
 
                     <div className="relative p-4 overflow-scroll">
@@ -482,25 +485,27 @@ function QuoteResults({
                       </div>
                     </div>
                   </div>
-                  <div className="flex-1 flex items-center justify-center m-4 px-8 w-full">
-                    <motion.a
+                  <div className="flex-1 flex items-center justify-center m-4 px-8 w-full cursor-pointer">
+                    <motion.span
                       layoutId={`button-link-${card.providerId}-${id}-${key}`}
-                      href={
-                        card.extras?.precheckoutUrl
-                          ? card.extras.precheckoutUrl
-                          : providers.get(card.providerId).src
-                      }
-                      target="_blank"
                       onClick={() => {
                         console.log("card", card);
                         handleInsurerClicked(
                           providers.get(card.providerId).providerName
                         );
+                        if (card.extras?.planObj) {
+                          getAndDirectToPrudentLink(card.extras.planObj);
+                        } else {
+                          const link = card.extras?.precheckoutUrl
+                            ? card.extras.precheckoutUrl
+                            : providers.get(card.providerId).src;
+                          window.open(link, "_blank");
+                        }
                       }}
                       className="px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
                     >
                       Select this coverage for {petName}
-                    </motion.a>
+                    </motion.span>
                   </div>
                   <BottomDrawer
                     keyId={key}

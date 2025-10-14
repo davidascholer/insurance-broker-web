@@ -3,7 +3,6 @@ import type {
   BotRequestType,
   ContactFormType,
   ProviderIdTypes,
-  QuoteItem,
   QuotesResultType,
 } from "../lib/types";
 import {
@@ -20,7 +19,6 @@ export const getQuotes = async (
   insurer: ProviderIdTypes,
   isFallback = false
 ): Promise<QuotesResultType> => {
-  console.log("getQuotes called with insurer:", insurer);
   const quotesUrl = isFallback ? PIPA_FALLBACK_QUOTES_URL : PIPA_QUOTES_URL;
   const response = await fetch(quotesUrl + "/" + insurer, {
     method: "POST",
@@ -39,6 +37,24 @@ export const getQuotes = async (
   const formattedResponse = await response.json();
   const options = formattedResponse.data;
   return { quotes: options, success: true };
+};
+
+export const getPrudentQuote = async (data?: unknown): Promise<unknown> => {
+  const response = await fetch(PIPA_QUOTES_URL + "/prudent/quote", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ quoteData: data }),
+  });
+  if (!response.ok) {
+    return {
+      success: false,
+      error: `Error: ${response.status} ${response.statusText}`,
+    };
+  }
+  const formattedResponse = await response.json();
+  return { success: true, ...formattedResponse };
 };
 
 export const sendEmail = async (
@@ -93,23 +109,6 @@ export const chatWithBot = async (
   };
 };
 
-export const getHits = async (token: string) => {
-  const data = await fetch(PIPA_ANALYTICS_URL + "/get-hits", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      // "Access-Control-Allow-Origin": "*", // Not needed for POST requests
-    },
-    body: JSON.stringify({ token }),
-  });
-  console.log("getHits token:", token);
-  if (!data.ok) {
-    throw new Error(`Error: ${data.status} ${data.statusText}`);
-  }
-  const parsedData = await data.json();
-  return parsedData.data;
-};
-
 export const formSubmitted = async (petObject: AnswersType) => {
   const data = await fetch(PIPA_ANALYTICS_URL + "/form-submitted", {
     method: "POST",
@@ -119,24 +118,6 @@ export const formSubmitted = async (petObject: AnswersType) => {
     },
     body: JSON.stringify({ petObject }),
   });
-  console.log("form submitted");
-  if (!data.ok) {
-    throw new Error(`Error: ${data.status} ${data.statusText}`);
-  }
-  const parsedData = await data.json();
-  return parsedData.data;
-};
-
-export const getLinksClicked = async (token: string) => {
-  const data = await fetch(PIPA_ANALYTICS_URL + "/get-links-clicked", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      // "Access-Control-Allow-Origin": "*", // Not needed for POST requests
-    },
-    body: JSON.stringify({ token }),
-  });
-  console.log("getHits token:", token);
   if (!data.ok) {
     throw new Error(`Error: ${data.status} ${data.statusText}`);
   }
@@ -174,36 +155,4 @@ export const adminEmailPassword = async (email: string) => {
     return "Error: " + data.statusText;
   }
   return "Email sent successfully!";
-};
-
-export const gatherQuotesFromInsurer = async (
-  insurer: ProviderIdTypes,
-  answers: AnswersType,
-  isFallback = false
-) => {
-  const fetchedQuotes: QuoteItem[] = [];
-  const quoteResult: QuotesResultType = await getQuotes(
-    answers,
-    insurer,
-    isFallback
-  );
-
-  if (quoteResult.success && quoteResult.quotes && quoteResult.quotes.coverageOptions) {
-    if(!quoteResult.quotes.coverageOptions || quoteResult.quotes.coverageOptions.length === 0) {
-      console.warn("No coverage options found for insurer:", insurer);
-      return fetchedQuotes;
-    }
-    const insurerQuotes: QuoteItem[] = quoteResult.quotes.coverageOptions.map(
-      (option) => ({
-        ...option,
-        providerId: insurer,
-      })
-    );
-    console.debug("insurerQuotes for", insurer, insurerQuotes);
-    if (insurerQuotes) {
-      fetchedQuotes.push(...insurerQuotes);
-    }
-  }
-
-  return fetchedQuotes;
 };

@@ -1,6 +1,7 @@
 import React from "react";
 import { cn, formatNumberToPercent, formatNumberToPrice } from "@/lib/utils";
 import type { DataQuoteItem } from "@/lib/types";
+import { getAndDirectToPrudentLink } from "@/api/util";
 
 const PrudentContentDetail = ({
   title,
@@ -185,15 +186,20 @@ const PrudentQuoteDetail = ({
           </p>
         </div>
       </div>
-      <div className="flex-1 flex items-center justify-center mt-4 w-full">
-        <a
-          href={relatedPlan.extras?.precheckoutUrl}
-          onClick={() => handleInsurerClicked(providerId)}
-          target="_blank"
+      <div className="flex-1 flex items-center justify-center mt-4 w-full cursor-pointer">
+        <span
+          onClick={() => {
+            handleInsurerClicked(providerId);
+            if (relatedPlan.extras?.planObj) {
+              getAndDirectToPrudentLink(relatedPlan.extras?.planObj);
+            } else {
+              window.open(relatedPlan.extras?.precheckoutUrl, "_blank");
+            }
+          }}
           className="px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
         >
           Select this coverage
-        </a>
+        </span>
       </div>
     </div>
   );
