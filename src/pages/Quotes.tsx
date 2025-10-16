@@ -176,74 +176,92 @@ const Quotes = () => {
     const suggestedQuoteData: QuoteItem[] = [];
     let allCached = true;
 
-    /* PRUDENT */
-    // Check if quotes are cached before fetching from API
-    const cachedPrudentQuotes = getQuoteFromCache("prudent");
-    if (cachedPrudentQuotes) {
-      if (DEV) console.log("DEV LOG", "Using cached prudent quotes");
-      fetchedQuotes.push(...cachedPrudentQuotes);
-      suggestedQuoteData.push(...cachedPrudentQuotes);
-    } else {
-      // If no cached quotes, fetch from API
-      if (DEV) console.log("DEV LOG", "Fetching new prudent quotes");
-      allCached = false;
-      const prudentQuotes = await fetchQuotesFromAPI("prudent");
-      if (prudentQuotes.length > 0) {
-        fetchedQuotes.push(...prudentQuotes);
-        suggestedQuoteData.push(...prudentQuotes);
-      }
-    }
-
     /* EMBRACE */
-    // Check if quotes are cached before fetching from API
-    const cachedEmbraceQuotes = getQuoteFromCache("embrace");
-    if (cachedEmbraceQuotes) {
-      if (DEV) console.log("DEV LOG", "Using cached embrace quotes");
-      fetchedQuotes.push(...cachedEmbraceQuotes);
-    } else {
-      // If no cached quotes, fetch from API
-      if (DEV) console.log("DEV LOG", "Fetching new embrace quotes");
-      allCached = false;
-      const embraceQuotes = await fetchQuotesFromAPI("embrace", true);
-      if (embraceQuotes.length > 0) {
-        fetchedQuotes.push(...embraceQuotes);
+    try {
+      // Check if quotes are cached before fetching from API
+      const cachedEmbraceQuotes = getQuoteFromCache("embrace");
+      if (cachedEmbraceQuotes) {
+        if (DEV) console.log("DEV LOG", "Using cached embrace quotes");
+        fetchedQuotes.push(...cachedEmbraceQuotes);
+      } else {
+        // If no cached quotes, fetch from API
+        if (DEV) console.log("DEV LOG", "Fetching new embrace quotes");
+        allCached = false;
+        const embraceQuotes = await fetchQuotesFromAPI("embrace", true);
+        if (embraceQuotes.length > 0) {
+          fetchedQuotes.push(...embraceQuotes);
+        }
       }
+    } catch (e) {
+      console.error("Error fetching embrace quotes:", e);
     }
 
     /* FETCH */
-    // Check if quotes are cached before fetching from API
-    const cachedFetchQuotes = getQuoteFromCache("fetch");
-    if (cachedFetchQuotes) {
-      if (DEV) console.log("DEV LOG", "Using cached fetch quotes");
-      fetchedQuotes.push(...cachedFetchQuotes);
-    } else {
-      // If no cached quotes, fetch from API
-      if (DEV) console.log("DEV LOG", "Fetching new fetch quotes");
-      allCached = false;
-      const fetchQuotes = await fetchQuotesFromAPI("fetch", true);
-      if (fetchQuotes.length > 0) {
-        fetchedQuotes.push(...fetchQuotes);
+    try {
+      // Check if quotes are cached before fetching from API
+      const cachedFetchQuotes = getQuoteFromCache("fetch");
+      if (cachedFetchQuotes) {
+        if (DEV) console.log("DEV LOG", "Using cached fetch quotes");
+        fetchedQuotes.push(...cachedFetchQuotes);
+      } else {
+        // If no cached quotes, fetch from API
+        if (DEV) console.log("DEV LOG", "Fetching new fetch quotes");
+        allCached = false;
+        const fetchQuotes = await fetchQuotesFromAPI("fetch", true);
+        if (fetchQuotes.length > 0) {
+          fetchedQuotes.push(...fetchQuotes);
+        }
       }
+    } catch (e) {
+      console.error("Error fetching fetch quotes:", e);
     }
 
     /* FIGO */
-    // Check if quotes are cached before fetching from API
-    const cachedFigoQuotes = getQuoteFromCache("figo");
-    if (cachedFigoQuotes) {
-      if (DEV) console.log("DEV LOG", "Using cached figo quotes");
-      fetchedQuotes.push(...cachedFigoQuotes);
-    } else {
-      // If no cached quotes, fetch from API
-      if (DEV) console.log("DEV LOG", "Fetching new figo quotes");
-      allCached = false;
-      const figoQuotes = await fetchQuotesFromAPI("figo", true);
-      if (figoQuotes.length > 0) {
-        fetchedQuotes.push(...figoQuotes);
+    try {
+      // Check if quotes are cached before fetching from API
+      const cachedFigoQuotes = getQuoteFromCache("figo");
+      if (cachedFigoQuotes) {
+        if (DEV) console.log("DEV LOG", "Using cached figo quotes");
+        fetchedQuotes.push(...cachedFigoQuotes);
+      } else {
+        // If no cached quotes, fetch from API
+        if (DEV) console.log("DEV LOG", "Fetching new figo quotes");
+        allCached = false;
+        const figoQuotes = await fetchQuotesFromAPI("figo", true);
+        if (figoQuotes.length > 0) {
+          fetchedQuotes.push(...figoQuotes);
+        }
       }
+    } catch (e) {
+      console.error("Error fetching figo quotes:", e);
+    }
+    
+    /* PRUDENT */
+    try {
+      // Check if quotes are cached before fetching from API
+      const cachedPrudentQuotes = getQuoteFromCache("prudent");
+      if (cachedPrudentQuotes) {
+        if (DEV) console.log("DEV LOG", "Using cached prudent quotes");
+        fetchedQuotes.push(...cachedPrudentQuotes);
+        suggestedQuoteData.push(...cachedPrudentQuotes);
+      } else {
+        // If no cached quotes, fetch from API
+        if (DEV) console.log("DEV LOG", "Fetching new prudent quotes");
+        allCached = false;
+        const prudentQuotes = await fetchQuotesFromAPI("prudent");
+        if (prudentQuotes.length > 0) {
+          fetchedQuotes.push(...prudentQuotes);
+          suggestedQuoteData.push(...prudentQuotes);
+        }
+      }
+    } catch (e) {
+      console.error("Error fetching prudent quotes:", e);
     }
 
     if (allCached) setIsLoading(false);
+    console.log("fetchedQuotes", fetchedQuotes);
     const sortedFetchedData = handleSortQuoteData("price", fetchedQuotes);
+    console.log("sortedFetchedData", sortedFetchedData);
     const sortedSuggestedQuoteData = handleSortQuoteData(
       "price",
       suggestedQuoteData
