@@ -8,6 +8,8 @@ import BotMessageForm from "./BotMessageForm";
 import Loader from "./Loader";
 import { chatWithBot } from "@/api/api";
 import { Button } from "./ui/button";
+import { registerBotMessage } from "@/features/analytics/emitters";
+import { PIPA_PET_KEY } from "@/lib/constants";
 
 const Message = ({
   from,
@@ -136,6 +138,18 @@ const ChatBot = ({
       message: botMessage,
       sessionId: sessionId,
     });
+
+    // Register the message even if there's an error
+    const userPetObject = localStorage.getItem(PIPA_PET_KEY);
+    const userPetObjectParsed = userPetObject
+      ? JSON.parse(userPetObject)
+      : null;
+    if (userPetObjectParsed.email)
+      registerBotMessage({
+        email: userPetObjectParsed.email,
+        message: botMessage,
+        botResponseSuccess: newBotMessage.success,
+      });
 
     if (!newBotMessage.success) {
       const errorMessage: ChatMessageType = {

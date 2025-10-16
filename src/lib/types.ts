@@ -22,14 +22,6 @@ export type AnswersType = {
   reference: string;
 };
 
-export type InsurerLinkTrackingInfo = {
-  name: string;
-  deductible: number;
-  reimbursement: number;
-  coverageLimit: number;
-  monthlyPrice: number;
-};
-
 export type ProviderIdTypes =
   | "figo"
   | "embrace"
@@ -54,6 +46,10 @@ export type DataQuoteItem = {
   monthlyPrice: number;
   extras?: PrudentExtrasType;
 };
+
+export type InsurerLinkTrackingInfo = {
+  name: string;
+} & DataQuoteItem;
 
 // Full object type on the server
 export type DataResponse = {

@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
-import type { ProviderIdTypes, QuoteItem } from "@/lib/types";
+import type { AnswersType, ProviderIdTypes, QuoteItem } from "@/lib/types";
 import { cn, formatNumberToPercent, formatNumberToPrice } from "@/lib/utils";
 import {
   Accordion,
@@ -10,8 +10,9 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "./ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import PrudentContent from "./features/PrudentContent";
+import PrudentContent from "../features/prudent/PrudentContent";
 import { getAndDirectToPrudentLink } from "@/api/util";
+import { registerQuoteLinkClick } from "@/features/analytics/emitters";
 
 // Keys must match the providerId in the QuoteItem type
 const providers = new Map();
@@ -138,12 +139,12 @@ function QuoteResults({
   cards,
   showFullResults,
   handleInsurerClicked,
-  petName,
+  petObject,
 }: {
   cards: QuoteItem[];
   showFullResults: boolean;
   handleInsurerClicked: (insurer: string) => void;
-  petName: string;
+  petObject: AnswersType;
 }) {
   const [active, setActive] = useState<
     (QuoteItem & { key: number }) | boolean | null
@@ -185,6 +186,20 @@ function QuoteResults({
   }, [active]);
 
   useOutsideClick(ref, () => setActive(null));
+
+  const handleInsurerClick = (insurer: string, card: QuoteItem) => {
+    registerQuoteLinkClick({
+      insurer: {
+        name: insurer,
+        deductibleOption: card.deductibleOption,
+        reimbursementPercentageOption: card.reimbursementPercentageOption,
+        reimbursementLimitOption: card.reimbursementLimitOption,
+        monthlyPrice: card.monthlyPrice,
+      },
+      petObject: petObject,
+    });
+    handleInsurerClicked(insurer);
+  };
 
   return (
     <div className="w-full mb-4">
@@ -348,7 +363,7 @@ function QuoteResults({
                         }}
                         className="px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
                       >
-                        Select this coverage for {petName}
+                        Select this coverage for {petObject.petName}
                       </motion.span>
                     </div>
 
@@ -371,7 +386,9 @@ function QuoteResults({
                             relatedPlans={active.extras?.relatedPlans || []}
                             providerId={active.providerId}
                             isPortrait={isPortrait}
-                            handleInsurerClicked={handleInsurerClicked}
+                            handleInsurerClicked={(insurer) => {
+                              handleInsurerClick(insurer, active);
+                            }}
                           />
                         )}
                         {providers.get(active.providerId).isFallback && (
@@ -476,12 +493,13 @@ function QuoteResults({
                         >
                           {formatNumberToPrice(card.monthlyPrice, true)}
                         </motion.p>
-                        {card.extras?.planDesc &&
-                        card.extras.planDesc.includes("Accident Only") ? (
-                          <p className="text-center">Accident Only Plan</p>
-                        ) : (
-                          <p className="text-center">Accident & Illness</p>
-                        )}
+                        {card.providerId === "prudent" &&
+                          (card.extras?.planDesc &&
+                          card.extras.planDesc.includes("Accident Only") ? (
+                            <p className="text-center">Accident Only Plan</p>
+                          ) : (
+                            <p className="text-center">Accident & Illness</p>
+                          ))}
                       </div>
                     </div>
                   </div>
@@ -489,8 +507,9 @@ function QuoteResults({
                     <motion.span
                       layoutId={`button-link-${card.providerId}-${id}-${key}`}
                       onClick={() => {
-                        handleInsurerClicked(
-                          providers.get(card.providerId).providerName
+                        handleInsurerClick(
+                          providers.get(card.providerId).providerName,
+                          card
                         );
                         if (card.extras?.planObj) {
                           getAndDirectToPrudentLink(card.extras.planObj);
@@ -503,7 +522,7 @@ function QuoteResults({
                       }}
                       className="px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
                     >
-                      Select this coverage for {petName}
+                      Select this coverage for {petObject.petName}
                     </motion.span>
                   </div>
                   <BottomDrawer
@@ -511,7 +530,9 @@ function QuoteResults({
                     providerId={card.providerId}
                     isPortrait={isPortrait}
                     card={card}
-                    handleInsurerClicked={handleInsurerClicked}
+                    handleInsurerClicked={() =>
+                      handleInsurerClick(card.providerId, card)
+                    }
                   />
                 </motion.div>
               );

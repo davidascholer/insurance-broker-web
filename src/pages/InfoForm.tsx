@@ -20,6 +20,7 @@ import { PIPA_PET_KEY } from "@/lib/constants";
 import PageContainer from "@/components/PageContainer";
 import Loader from "@/components/Loader";
 import { formSubmitted } from "@/api/api";
+import { registerPetFormCompleted } from "@/features/analytics/emitters";
 
 const defaultAnswers: AnswersType = {
   name: { firstName: "", lastName: "" },
@@ -223,6 +224,7 @@ const InfoForm = () => {
 
   const onSubmit = () => {
     formSubmitted(answers)
+    registerPetFormCompleted({ petObject: answers });
     navigate("/quotes");
   };
 

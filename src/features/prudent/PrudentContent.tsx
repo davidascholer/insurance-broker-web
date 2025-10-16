@@ -1,4 +1,3 @@
-import React from "react";
 import { cn, formatNumberToPercent, formatNumberToPrice } from "@/lib/utils";
 import type { DataQuoteItem } from "@/lib/types";
 import { getAndDirectToPrudentLink } from "@/api/util";

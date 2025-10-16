@@ -235,7 +235,7 @@ const Quotes = () => {
     } catch (e) {
       console.error("Error fetching figo quotes:", e);
     }
-    
+
     /* PRUDENT */
     try {
       // Check if quotes are cached before fetching from API
@@ -271,23 +271,6 @@ const Quotes = () => {
       sortedSuggestedQuoteData?.length > 0 ? sortedSuggestedQuoteData : []
     );
   };
-
-  // const handleInsurerClicked = async (insurerData: {
-  //   name: string;
-  //   deductible: number;
-  //   reimbursement: number;
-  //   coverageLimit: number;
-  //   monthlyPrice: number;
-  // }) => {
-  //   const petObjectString = localStorage.getItem(PIPA_PET_KEY);
-  //   const petObject = petObjectString ? JSON.parse(petObjectString) : null;
-  //   // registerQuoteLinkClick({ insurerData, petObject });
-
-  //   setOverlayVisible(true);
-  //   setTimeout(() => {
-  //     setOverlayVisible(false);
-  //   }, 3000);
-  // };
 
   const handleInsurerClicked = async (insurer: string) => {
     if (DEV) console.log("insurer clicked", insurer);
@@ -417,7 +400,7 @@ const Quotes = () => {
                     <span
                       onClick={() => {
                         clearCache();
-                        window.open("/info/?edit=true", "_blank", "noreferrer");
+                        window.open("/info/?edit=true");
                       }}
                     >
                       Edit information
@@ -428,7 +411,7 @@ const Quotes = () => {
                       className="text-(--primary-teal-dark) cursor-pointer sansita-regular hover:bg-(--primary-teal-dark) hover:text-white px-4 py-3 rounded-full transition-all duration-200 ease hover:shadow-sm"
                       onClick={() => {
                         clearCache();
-                        window.open("/info/?edit=true", "_blank", "noreferrer");
+                        window.open("/info/?edit=true");
                       }}
                     >
                       Edit {petObject.petName}'s information
@@ -438,7 +421,7 @@ const Quotes = () => {
                       onClick={() => {
                         clearCache();
                         localStorage.removeItem(PIPA_PET_KEY);
-                        window.open("/info/?edit=true", "_blank", "noreferrer");
+                        window.open("/info/?edit=true");
                       }}
                     >
                       Start a new quote
@@ -449,7 +432,7 @@ const Quotes = () => {
               <QuoteResults
                 cards={activeQuoteData}
                 showFullResults={true}
-                petName={petObject.petName}
+                petObject={petObject}
                 handleInsurerClicked={handleInsurerClicked}
               />
 
@@ -463,7 +446,7 @@ const Quotes = () => {
                   <QuoteResults
                     cards={suggestedQuoteData}
                     showFullResults={showFullResults}
-                    petName={petObject.petName}
+                    petObject={petObject}
                     handleInsurerClicked={handleInsurerClicked}
                   />
                 </>
