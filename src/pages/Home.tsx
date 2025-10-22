@@ -37,6 +37,7 @@ const Home = () => {
   <meta name="robots" content="index, follow" />
   <meta name="language" content="English" />
   <meta name="revisit-after" content="7 days" />
+  <link rel="canonical" href="https://pipabroker.com/" />
   <title>Pipa Broker - Pet Insurance Made Simple</title>
         
         <Header />
