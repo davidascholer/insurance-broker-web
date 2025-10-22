@@ -12,6 +12,33 @@ const Home = () => {
         className="w-screen h-screen bg-[url('/header.jpg')] bg-no-repeat bg-cover bg-[70%_0%] relative"
         aria-label="Hero section with main call to action"
       >
+
+  <meta name="title" content="Pipa Broker - Pet Insurance Made Simple" />
+  <meta name="description"
+    content="Find the perfect pet insurance for your furry family members. Compare quotes from top providers and protect your pets with comprehensive coverage." />
+  <meta name="keywords"
+    content="pet insurance, dog insurance, cat insurance, pet health, veterinary care, pet coverage" />
+  <meta name="author" content="Pipa Broker" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://pipabroker.com/" />
+  <meta property="og:title" content="Pipa Broker - Pet Insurance Made Simple" />
+  <meta property="og:description"
+    content="Find the perfect pet insurance for your furry family members. Compare quotes from top providers and protect your pets with comprehensive coverage." />
+  <meta property="og:image" content="https://pipabroker.com/og-image.png" />
+  <meta property="og:site_name" content="Pipa Broker" />
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://pipabroker.com/" />
+  <meta property="twitter:title" content="Pipa Broker - Pet Insurance Made Simple" />
+  <meta property="twitter:description"
+    content="Find the perfect pet insurance for your furry family members. Compare quotes from top providers and protect your pets with comprehensive coverage." />
+  <meta property="twitter:image" content="https://pipabroker.com/twitter-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="robots" content="index, follow" />
+  <meta name="language" content="English" />
+  <meta name="revisit-after" content="7 days" />
+  <title>Pipa Broker - Pet Insurance Made Simple</title>
+        
         <Header />
         <div className="top-0 left-0 right-0 bottom-0 bg-(--light-pink-transparent) absolute pt-24">
           <div className="flex flex-col gap-12 justify-center ml-4 md:ml-20 max-w-[600px] text-(--text-dark) mt-12">
