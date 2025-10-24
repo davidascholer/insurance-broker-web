@@ -191,9 +191,7 @@ const PrudentQuoteDetail = ({
             handleInsurerClicked(providerId);
             if (relatedPlan.extras?.planObj) {
               const windowReference = window.open();
-              const url = await getPrudentLink(
-                relatedPlan.extras?.planObj
-              );
+              const url = await getPrudentLink(relatedPlan.extras?.planObj);
               if (windowReference) {
                 windowReference.location = url;
               }
@@ -201,7 +199,10 @@ const PrudentQuoteDetail = ({
               window.open(relatedPlan.extras?.precheckoutUrl, "_blank");
             }
           }}
-          className="px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
+          className={cn(
+            "prudent-select-coverage-button",
+            "px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
+          )}
         >
           Select this coverage
         </span>

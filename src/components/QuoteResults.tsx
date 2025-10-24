@@ -367,7 +367,10 @@ function QuoteResults({
                             window.open(link, "_blank");
                           }
                         }}
-                        className="px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
+                        className={cn(
+                          active.providerId + "-select-coverage-button",
+                          "px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
+                        )}
                       >
                         Select this coverage for {petObject.petName}
                       </motion.span>
@@ -532,7 +535,10 @@ function QuoteResults({
                           window.open(link, "_blank");
                         }
                       }}
-                      className="px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
+                      className={cn(
+                        card.providerId + "-select-coverage-button",
+                        "px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
+                      )}
                     >
                       Select this coverage for {petObject.petName}
                     </motion.span>
