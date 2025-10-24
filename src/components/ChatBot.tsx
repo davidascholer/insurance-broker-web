@@ -212,7 +212,7 @@ const ChatBot = ({
     >
       <button
         className={cn(
-          "absolute text-(--coral-light) cursor-pointer text-nowrap right-[50px] top-[10px] sansita-regular transition-opacity duration-500 ease-in-out",
+          "absolute text-(--coral-light) cursor-pointer min-w-[200px] text-nowrap right-[50px] top-[10px] sansita-regular transition-opacity duration-500 ease-in-out",
           open ? "min-[600px]:opacity-0" : "opacity-100",
           "max-[600px]:top-[-30px] max-[600px]:left-[50%] max-[600px]:-translate-x-[50%] max-[600px]:whitespace-nowrap max-[600px]:w-max"
         )}

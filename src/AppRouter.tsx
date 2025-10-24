@@ -20,6 +20,7 @@ import HowToComparePetInsurancePolicies from "./pages/blog/HowToComparePetInsura
 import UnderstandPetInsuranceTypes from "./pages/blog/UnderstandingPetInsuranceTypes";
 import PetInsuranceExclusions from "./pages/blog/PetInsuranceExclusions";
 import HowMuchDoesPetInsuranceCost from "./pages/blog/HowMuchDoesPetInsuranceCost";
+import KanguroEmbed from "./features/kanguro/pages/KanguroEmbed";
 
 const RouterWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -41,6 +42,7 @@ const AppRouter = () => {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/faqs" element={<FAQs />} />
+        <Route path="/kanguro" element={<KanguroEmbed />} />
         <Route path="/terminology" element={<Terminology />} />
         <Route path="/blog/what-is-pet-insurance" element={<WhatIsPetInsurance />} />
         <Route path="/blog/why-consider-pet-insurance" element={<WhyConsiderPetInsurance />} />

@@ -1,6 +1,6 @@
 import { cn, formatNumberToPercent, formatNumberToPrice } from "@/lib/utils";
 import type { DataQuoteItem } from "@/lib/types";
-import { getAndDirectToPrudentLink } from "@/api/util";
+import { getPrudentLink } from "../lib/util";
 
 const PrudentContentDetail = ({
   title,
@@ -22,35 +22,35 @@ const PrudentContentDetail = ({
       <ul className="list-none list-inside text-(--primary-teal-dark) text-sm flex flex-col gap-2 w-full">
         <li className="flex justify-between flex-row no-wrap">
           <span>Alternative Therapies* (if prescribed by a vet)</span>
-          <img src="/check.svg" className="size-6" />
+          <img src="/check.svg" className="size-6 ml-2" />
         </li>
         <li className="flex justify-between flex-row no-wrap">
           <span>Bite Wounds</span>
-          <img src="/check.svg" className="size-6" />
+          <img src="/check.svg" className="size-6 ml-2" />
         </li>
         <li className="flex justify-between flex-row no-wrap">
           <span>Broken Bones</span>
-          <img src="/check.svg" className="size-6" />
+          <img src="/check.svg" className="size-6 ml-2" />
         </li>
         <li className="flex justify-between flex-row no-wrap">
           <span>Prescription Meds</span>
-          <img src="/check.svg" className="size-6" />
+          <img src="/check.svg" className="size-6 ml-2" />
         </li>
         <li className="flex justify-between flex-row no-wrap">
           <span>Radiology & Diagnostic Tests</span>
-          <img src="/check.svg" className="size-6" />
+          <img src="/check.svg" className="size-6 ml-2" />
         </li>
         <li className="flex justify-between flex-row no-wrap">
           <span>Surgery & Specialized Care</span>
-          <img src="/check.svg" className="size-6" />
+          <img src="/check.svg" className="size-6 ml-2" />
         </li>
         <li className="flex justify-between flex-row no-wrap">
           <span>Swallowed Objects</span>
-          <img src="/check.svg" className="size-6" />
+          <img src="/check.svg" className="size-6 ml-2" />
         </li>
         <li className="flex justify-between flex-row no-wrap">
           <span>Urinary Infections</span>
-          <img src="/check.svg" className="size-6" />
+          <img src="/check.svg" className="size-6 ml-2" />
         </li>
 
         <li className="flex justify-between flex-row no-wrap">
@@ -187,10 +187,16 @@ const PrudentQuoteDetail = ({
       </div>
       <div className="flex-1 flex items-center justify-center mt-4 w-full cursor-pointer">
         <span
-          onClick={() => {
+          onClick={async () => {
             handleInsurerClicked(providerId);
             if (relatedPlan.extras?.planObj) {
-              getAndDirectToPrudentLink(relatedPlan.extras?.planObj);
+              const windowReference = window.open();
+              const url = await getPrudentLink(
+                relatedPlan.extras?.planObj
+              );
+              if (windowReference) {
+                windowReference.location = url;
+              }
             } else {
               window.open(relatedPlan.extras?.precheckoutUrl, "_blank");
             }
@@ -215,7 +221,7 @@ const PrudentContent = ({
   isPortrait: boolean;
   handleInsurerClicked: (insurer: string) => void;
 }) => (
-  <div className="flex flex-col gap-8">
+  <div className="flex flex-col gap-8 m-auto">
     {relatedPlans.length > 0 && (
       <h1 className="text-xl text-center text-(--primary-teal-dark) sansita-bold">
         Similar Options

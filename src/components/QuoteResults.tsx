@@ -10,9 +10,9 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "./ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import PrudentContent from "../features/prudent/PrudentContent";
-import { getAndDirectToPrudentLink } from "@/api/util";
+import PrudentContent from "../features/prudent/components/PrudentContent";
 import { registerQuoteLinkClick } from "@/features/analytics/emitters";
+import { getPrudentLink } from "@/features/prudent/lib/util";
 
 // Keys must match the providerId in the QuoteItem type
 const providers = new Map();
@@ -28,7 +28,7 @@ providers.set("figo", {
   providerName: "Figo",
   isFallback: true,
   imgUrl: "insurers/carrier_logo_figo.svg",
-  src: "https://figopetinsurance.com/get-started?PetName={petName}",
+  src: "https://figopetinsurance.com/get-started",
   content:
     "Figo: Pet Insurance with Soul. Let's face it— being a pet parent is awesome, but it has its share of surprises. Your pet insurance plan shouldn't be one of them. Born out of frustration with one-size-fits-all policies, Figo was founded by pet moms and dads who wanted better. We've ditched the jargon and stuffy approach, creating a refreshingly simple experience that fits your lifestyle—not the other way around. We're here to help enhance your pet's wellness, your peace of mind, and your finances. With fewer barriers, and perks (like an all-in-one pet parent app) that go beyond just helping cover vet bills, we're bringing pet insurance into the 21st century.",
 });
@@ -348,12 +348,18 @@ function QuoteResults({
                     <div className="flex-1 flex items-center justify-center mt-4 w-full cursor-pointer">
                       <motion.span
                         layoutId={`button-${active.providerId}-${id}-${active.key}`}
-                        onClick={() => {
+                        onClick={async () => {
                           handleInsurerClicked(
                             providers.get(active.providerId).providerName
                           );
                           if (active.extras?.planObj) {
-                            getAndDirectToPrudentLink(active.extras.planObj);
+                            const windowReference = window.open();
+                            const url = await getPrudentLink(
+                              active.extras?.planObj
+                            );
+                            if (windowReference) {
+                              windowReference.location = url;
+                            }
                           } else {
                             const link = active.extras?.precheckoutUrl
                               ? active.extras.precheckoutUrl
@@ -506,13 +512,19 @@ function QuoteResults({
                   <div className="flex-1 flex items-center justify-center m-4 px-8 w-full cursor-pointer">
                     <motion.span
                       layoutId={`button-link-${card.providerId}-${id}-${key}`}
-                      onClick={() => {
+                      onClick={async () => {
                         handleInsurerClick(
                           providers.get(card.providerId).providerName,
                           card
                         );
                         if (card.extras?.planObj) {
-                          getAndDirectToPrudentLink(card.extras.planObj);
+                          const windowReference = window.open();
+                          const url = await getPrudentLink(
+                            card.extras?.planObj
+                          );
+                          if (windowReference) {
+                            windowReference.location = url;
+                          }
                         } else {
                           const link = card.extras?.precheckoutUrl
                             ? card.extras.precheckoutUrl

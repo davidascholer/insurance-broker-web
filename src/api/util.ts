@@ -4,7 +4,7 @@ import type {
   QuoteItem,
   QuotesResultType,
 } from "@/lib/types";
-import { getPrudentQuote, getQuotes } from "./api";
+import { getQuotes } from "./api";
 // import { getQuote, getQuotes } from "./api";
 
 export const gatherQuotesFromInsurer = async (
@@ -44,19 +44,4 @@ export const gatherQuotesFromInsurer = async (
   }
 
   return fetchedQuotes;
-};
-
-export const getAndDirectToPrudentLink = async (quoteReq: unknown) => {
-  const quoteResult = (await getPrudentQuote(quoteReq)) as {
-    success: boolean;
-    quote?: { url: string };
-    error?: string;
-  };
-
-  if (!quoteResult.success || !quoteResult.quote || !quoteResult.quote?.url) {
-    throw new Error(
-      `Failed to fetch prudent quote: ${quoteResult.error || "Unknown error"}`
-    );
-  }
-  window.open(quoteResult.quote.url, "_blank");
 };

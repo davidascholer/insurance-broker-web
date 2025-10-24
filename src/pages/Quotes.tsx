@@ -129,6 +129,21 @@ const Quotes = () => {
     }
   };
 
+  const pushBackupsToEnd = (quoteData: QuoteItem[]): QuoteItem[] => {
+    const scrapedData: QuoteItem[] = [];
+    const liveData: QuoteItem[] = [];
+
+    quoteData.forEach((quote) => {
+      if (quote.providerId === "prudent" || quote.providerId === "kanguro") {
+        liveData.push(quote);
+      } else {
+        scrapedData.push(quote);
+      }
+    });
+
+    return [...liveData, ...scrapedData];
+  };
+
   /* End of filter handlers */
 
   // Fetch quotes from all insurers
@@ -266,7 +281,10 @@ const Quotes = () => {
       "price",
       suggestedQuoteData
     );
-    setQuoteData(sortedFetchedData?.length > 0 ? sortedFetchedData : []);
+    const quoteDataWithBackupsAtEnd = pushBackupsToEnd(sortedFetchedData);
+    setQuoteData(
+      quoteDataWithBackupsAtEnd?.length > 0 ? quoteDataWithBackupsAtEnd : []
+    );
     setSuggestedQuoteData(
       sortedSuggestedQuoteData?.length > 0 ? sortedSuggestedQuoteData : []
     );
@@ -359,7 +377,8 @@ const Quotes = () => {
       "price",
       selectedLimitsQuoteData
     );
-    setActiveQuoteData(sortedQuoteData);
+    const quoteDataWithBackupsAtEnd = pushBackupsToEnd(sortedQuoteData);
+    setActiveQuoteData(quoteDataWithBackupsAtEnd);
   }, [annualLimits, deductibles, quoteData, reimbursementRates]);
 
   return (
@@ -465,6 +484,9 @@ const Quotes = () => {
             </ScrollArea>
           </>
         )}
+        <p>
+          {activeQuoteData[0] && JSON.stringify(activeQuoteData[0].providerId)}
+        </p>
       </div>
     </>
   );
