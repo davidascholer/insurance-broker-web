@@ -484,9 +484,6 @@ const Quotes = () => {
             </ScrollArea>
           </>
         )}
-        <p>
-          {activeQuoteData[0] && JSON.stringify(activeQuoteData[0].providerId)}
-        </p>
       </div>
     </>
   );
