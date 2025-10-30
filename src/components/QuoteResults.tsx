@@ -13,12 +13,12 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import PrudentContent from "../features/prudent/components/PrudentContent";
 import { registerQuoteLinkClick } from "@/features/analytics/emitters";
 import { getPrudentLink } from "@/features/prudent/lib/util";
+import KanguroContent from "@/features/kanguro/pages/KanguroContent";
 
 // Keys must match the providerId in the QuoteItem type
 const providers = new Map();
 providers.set("fetch", {
   providerName: "Fetch",
-  isFallback: true,
   imgUrl: "insurers/carrier_logo_fetch.svg",
   src: "https://www.fetchpet.com/mypet?utm_source=pipabroker&utm_medium=affiliate&utm_campaign=pipabrokertest",
   content:
@@ -26,7 +26,6 @@ providers.set("fetch", {
 });
 providers.set("figo", {
   providerName: "Figo",
-  isFallback: true,
   imgUrl: "insurers/carrier_logo_figo.svg",
   src: "https://figopetinsurance.com/get-started",
   content:
@@ -34,7 +33,6 @@ providers.set("figo", {
 });
 providers.set("embrace", {
   providerName: "Embrace",
-  isFallback: true,
   imgUrl: "insurers/carrier_logo_embrace.svg",
   src: "https://www.embracepetinsurance.com/",
   content:
@@ -42,7 +40,6 @@ providers.set("embrace", {
 });
 providers.set("prudent", {
   providerName: "Prudent",
-  isFallback: false,
   imgUrl: "/insurers/prudent_pet.svg",
   src: "https://www.prudentpet.com/",
   content:
@@ -50,7 +47,6 @@ providers.set("prudent", {
 });
 providers.set("kanguro", {
   providerName: "Kanguro",
-  isFallback: false,
   imgUrl: "/insurers/kanguro.svg",
   src: "https://www.kanguroseguro.com/",
   content:
@@ -116,10 +112,17 @@ const BottomDrawer = ({
             )}
           </Button>
           <AccordionContent className="flex flex-col gap-4">
-            {providers.get(providerId).isFallback && (
-              <p className="px-4 pt-4 w-full font-medium text-(--primary-teal-dark) dark:text-neutral-200 text-left sansita-bold">
-                {providers.get(providerId).content}
-              </p>
+            {(providers.get(providerId).providerName === "Fetch" ||
+              providers.get(providerId).providerName === "Figo" ||
+              providers.get(providerId).providerName === "Embrace") && (
+              <>
+                <p className="px-4 pt-4 w-full font-medium text-(--primary-teal-dark) dark:text-neutral-200 text-left sansita-bold">
+                  {providers.get(providerId).content}
+                </p>
+                <p className="px-4 pt-4 w-full font-medium text-(--primary-teal-dark) dark:text-neutral-200 text-left sansita-bold">
+                  {providers.get(providerId).content}
+                </p>
+              </>
             )}
             {providers.get(providerId).providerName === "Prudent" && (
               <PrudentContent
@@ -129,12 +132,15 @@ const BottomDrawer = ({
                 handleInsurerClicked={handleInsurerClicked}
               />
             )}
-            {providers.get(providerId).isFallback && (
-              <p className="px-4 w-full font-medium text-neutral-400 text-xs sansita-regular-italic">
-                * This quote is an estimated cost. Actual coverage cost factors
-                include your pet's breed, location, condition, and other
-                details.
-              </p>
+            {providers.get(providerId).providerName === "Kanguro" && (
+              <KanguroContent
+                relatedPlans={card.extras?.relatedPlans || []}
+                providerId={card.providerId}
+                isPortrait={isPortrait}
+                handleInsurerClicked={(insurer) => {
+                  handleInsurerClicked(insurer);
+                }}
+              />
             )}
           </AccordionContent>
         </AccordionItem>
@@ -276,12 +282,20 @@ function QuoteResults({
                   </motion.div>
 
                   <div className="p-4">
-                    {active.extras?.planDesc &&
-                    active.extras.planDesc.includes("Accident Only") ? (
-                      <p className="text-center w-full">Accident Only Plan</p>
-                    ) : (
-                      <p className="text-center w-full">Accident & Illness</p>
-                    )}
+                    {active.providerId === "prudent" &&
+                      (active.extras?.planDesc &&
+                      active.extras.planDesc.includes("Accident Only") ? (
+                        <p className="text-center">Accident Only Plan</p>
+                      ) : (
+                        <p className="text-center">Accident & Illness</p>
+                      ))}
+                    {active.providerId === "kanguro" &&
+                      (active.extras?.planId &&
+                      active.extras.planId.includes("EssentialPlus") ? (
+                        <p className="text-center">Essential Plus</p>
+                      ) : (
+                        <p className="text-center">Essential</p>
+                      ))}
                     <div className="flex flex-col min-[500px]:flex-row justify-between items-center min-[500px]:items-end gap-4 mt-4">
                       <div className="">
                         <div className="flex flex-col gap-1 justify-center items-center">
@@ -392,10 +406,22 @@ function QuoteResults({
                         exit={{ opacity: 0 }}
                         className="text-neutral-600 text-xs md:text-sm lg:text-base md:h-fit flex flex-col items-start gap-4 dark:text-neutral-400 overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
                       >
-                        {providers.get(active.providerId).isFallback && (
-                          <p className="px-4 pt-4 w-full font-medium text-(--primary-teal-dark) dark:text-neutral-200 text-left sansita-bold">
-                            {providers.get(active.providerId).content}
-                          </p>
+                        {(providers.get(active.providerId).providerName ===
+                          "Fetch" ||
+                          providers.get(active.providerId).providerName ===
+                            "Figo" ||
+                          providers.get(active.providerId).providerName ===
+                            "Embrace") && (
+                          <>
+                            <p className="px-4 pt-4 w-full font-medium text-(--primary-teal-dark) dark:text-neutral-200 text-left sansita-bold">
+                              {providers.get(active.providerId).content}
+                            </p>
+                            <p className="w-full font-medium text-neutral-400 text-xs sansita-regular-italic">
+                              * This quote is an estimated cost. Actual coverage
+                              cost factors include your pet's breed, location,
+                              condition, and other details.
+                            </p>
+                          </>
                         )}
                         {providers.get(active.providerId).providerName ===
                           "Prudent" && (
@@ -408,12 +434,16 @@ function QuoteResults({
                             }}
                           />
                         )}
-                        {providers.get(active.providerId).isFallback && (
-                          <p className="w-full font-medium text-neutral-400 text-xs sansita-regular-italic">
-                            * This quote is an estimated cost. Actual coverage
-                            cost factors include your pet's breed, location,
-                            condition, and other details.
-                          </p>
+                        {providers.get(active.providerId).providerName ===
+                          "Kanguro" && (
+                          <KanguroContent
+                            relatedPlans={active.extras?.relatedPlans || []}
+                            providerId={active.providerId}
+                            isPortrait={isPortrait}
+                            handleInsurerClicked={(insurer) => {
+                              handleInsurerClick(insurer, active);
+                            }}
+                          />
                         )}
                       </motion.div>
                     </div>
@@ -516,6 +546,13 @@ function QuoteResults({
                             <p className="text-center">Accident Only Plan</p>
                           ) : (
                             <p className="text-center">Accident & Illness</p>
+                          ))}
+                        {card.providerId === "kanguro" &&
+                          (card.extras?.planId &&
+                          card.extras.planId.includes("EssentialPlus") ? (
+                            <p className="text-center">Essential Plus</p>
+                          ) : (
+                            <p className="text-center">Essential</p>
                           ))}
                       </div>
                     </div>

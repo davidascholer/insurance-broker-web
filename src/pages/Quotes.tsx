@@ -439,7 +439,7 @@ const Quotes = () => {
                   <HoverCardTrigger className="text-white sansita-regular cursor-default bg-(--primary-teal-dark) px-4 py-3 rounded-full hover:bg-(--primary-teal) hover:shadow-md transition-all duration-300 ease-in-out">
                     <Link
                       to="/info/?edit=true"
-                      aria-label="Navigate to PrudentPet.com"
+                      aria-label="edit information"
                       onClick={() => {
                         clearCache();
                       }}
@@ -450,7 +450,7 @@ const Quotes = () => {
                   <HoverCardContent className="flex flex-col gap-4 ml-4">
                     <Link
                       to="/info/?edit=true"
-                      aria-label="Navigate to PrudentPet.com"
+                      aria-label="edit information"
                       className="text-(--primary-teal-dark) cursor-pointer sansita-regular hover:bg-(--primary-teal-dark) hover:text-white px-4 py-3 rounded-full transition-all duration-200 ease hover:shadow-sm"
                       onClick={() => {
                         clearCache();
@@ -461,7 +461,7 @@ const Quotes = () => {
                     <Link
                       to="/info/?edit=true"
                       className="text-(--primary-teal-dark) cursor-pointer sansita-regular hover:bg-(--primary-teal-dark) hover:text-white px-4 py-3 rounded-full transition-all duration-200 ease hover:shadow-sm"
-                      aria-label="Navigate to PrudentPet.com"
+                      aria-label="edit information"
                       onClick={() => {
                         clearCache();
                         localStorage.removeItem(PIPA_PET_KEY);

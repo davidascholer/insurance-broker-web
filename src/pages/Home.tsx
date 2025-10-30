@@ -1,3 +1,4 @@
+import { useState } from "react";
 import CoverageItem from "../components/CoverageItem";
 import FetchQuoteButton from "../components/FetchQuoteButton";
 import Footer from "../components/Footer";
@@ -5,6 +6,13 @@ import Header from "../components/header/Header";
 import InsurerItem from "../components/InsurerItem";
 
 const Home = () => {
+  const [prudentImage, setPrudentImage] = useState<string>(
+    "/insurers/prudent-pet_black.svg"
+  );
+  const [kanguroImage, setKanguroImage] = useState<string>(
+    "/insurers/kanguro.svg"
+  );
+
   return (
     <main role="main" aria-label="Pipa Broker Homepage">
       <section
@@ -72,25 +80,39 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="absolute bottom-[50px] right-[50px] w-full flex flex-col justify-end items-end pointer-events-none text-center opacity-30">
+      </section>
+
+      <section>
+        <div className="text-center flex flex-col w-full justify-center items-center bg-(--light-pink) p-4">
           <p className="float-right mr-1 text-4xl font-extrabold w-[200px] min-[600px]:w-[400px] sansita-bold text-black mb-8">
             Our Partners
           </p>
-          <div className="flex flex-col min-[600px]:flex-row">
+          <div className="flex flex-col min-[600px]:flex-row gap-4">
             <img
-              className="w-[250px] float-right mr-1"
-              src="/insurers/prudent-pet_black.svg"
+              className="w-[250px]"
+              src={prudentImage}
               alt="Prudent Pet Logo"
+              onMouseEnter={() =>
+                setPrudentImage("/insurers/prudent-pet_color.svg")
+              }
+              onMouseLeave={() =>
+                setPrudentImage("/insurers/prudent-pet_black.svg")
+              }
             />
             <img
-              className="w-[250px] float-right mr-1"
-              src="/insurers/kanguro_black.svg"
+              className="w-[250px]"
+              src={kanguroImage}
               alt="Kanguro Logo"
+              onMouseEnter={() =>
+                setKanguroImage("/insurers/kanguro_color.svg")
+              }
+              onMouseLeave={() =>
+                setKanguroImage("/insurers/kanguro_black.svg")
+              }
             />
           </div>
         </div>
       </section>
-
       <section
         className="bg-(--light-pink)"
         aria-label="Introduction to Pipa Broker services"

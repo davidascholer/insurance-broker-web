@@ -29,12 +29,13 @@ export type ProviderIdTypes =
   | "prudent"
   | "kanguro";
 
-export type PrudentExtrasType = {
-  planObj: unknown; // Type handled by server
+export type InsurerExtrasType = {
+  planObj?: unknown; // Type handled by server
   planDesc: string;
-  planCode: string;
+  planId?: string;
+  planCode?: string;
   precheckoutUrl: string;
-  checkoutUrl: string;
+  checkoutUrl?: string;
   relatedPlans?: DataQuoteItem[];
 };
 
@@ -44,7 +45,7 @@ export type DataQuoteItem = {
   reimbursementPercentageOption: number;
   reimbursementLimitOption: number;
   monthlyPrice: number;
-  extras?: PrudentExtrasType;
+  extras?: InsurerExtrasType;
 };
 
 export type InsurerLinkTrackingInfo = {
