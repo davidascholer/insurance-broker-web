@@ -48,6 +48,14 @@ providers.set("prudent", {
   content:
     "At Prudent Pet Insurance Agency, we want pets to enjoy good health and receive the best medical care possible throughout their lives. Like so many people today, we consider our pets to be members of the family and want to do whatever it takes to keep them safe.\n\nKnowing your options when it comes to pet insurance policies means you can protect your pet and your finances. That’s why we offer policies that are easy to understand, easy to buy and easy to use. Take the first step and get your pet’s free quote today.",
 });
+providers.set("kanguro", {
+  providerName: "Kanguro",
+  isFallback: false,
+  imgUrl: "/insurers/kanguro.svg",
+  src: "https://www.kanguroseguro.com/",
+  content:
+    "Whether you need insurance for your pet or for your apartment (or both!), you can customize your Kanguro policy to fit your needs. ",
+});
 
 const BottomDrawer = ({
   providerId,

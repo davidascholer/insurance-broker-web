@@ -5,45 +5,63 @@ import Header from "../components/header/Header";
 import InsurerItem from "../components/InsurerItem";
 
 const Home = () => {
-
   return (
     <main role="main" aria-label="Pipa Broker Homepage">
-      <section 
+      <section
         className="w-screen h-screen bg-[url('/header.jpg')] bg-no-repeat bg-cover bg-[70%_0%] relative"
         aria-label="Hero section with main call to action"
       >
+        <meta name="title" content="Pipa Broker - Pet Insurance Made Simple" />
+        <meta
+          name="description"
+          content="Find the perfect pet insurance for your furry family members. Compare quotes from top providers and protect your pets with comprehensive coverage."
+        />
+        <meta
+          name="keywords"
+          content="pet insurance, dog insurance, cat insurance, pet health, veterinary care, pet coverage"
+        />
+        <meta name="author" content="Pipa Broker" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://pipabroker.com/" />
+        <meta
+          property="og:title"
+          content="Pipa Broker - Pet Insurance Made Simple"
+        />
+        <meta
+          property="og:description"
+          content="Find the perfect pet insurance for your furry family members. Compare quotes from top providers and protect your pets with comprehensive coverage."
+        />
+        <meta
+          property="og:image"
+          content="https://pipabroker.com/og-image.png"
+        />
+        <meta property="og:site_name" content="Pipa Broker" />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://pipabroker.com/" />
+        <meta
+          property="twitter:title"
+          content="Pipa Broker - Pet Insurance Made Simple"
+        />
+        <meta
+          property="twitter:description"
+          content="Find the perfect pet insurance for your furry family members. Compare quotes from top providers and protect your pets with comprehensive coverage."
+        />
+        <meta
+          property="twitter:image"
+          content="https://pipabroker.com/twitter-image.png"
+        />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta name="robots" content="index, follow" />
+        <meta name="language" content="English" />
+        <meta name="revisit-after" content="7 days" />
+        <link rel="canonical" href="https://pipabroker.com/" />
+        <title>Pipa Broker - Pet Insurance Made Simple</title>
 
-  <meta name="title" content="Pipa Broker - Pet Insurance Made Simple" />
-  <meta name="description"
-    content="Find the perfect pet insurance for your furry family members. Compare quotes from top providers and protect your pets with comprehensive coverage." />
-  <meta name="keywords"
-    content="pet insurance, dog insurance, cat insurance, pet health, veterinary care, pet coverage" />
-  <meta name="author" content="Pipa Broker" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://pipabroker.com/" />
-  <meta property="og:title" content="Pipa Broker - Pet Insurance Made Simple" />
-  <meta property="og:description"
-    content="Find the perfect pet insurance for your furry family members. Compare quotes from top providers and protect your pets with comprehensive coverage." />
-  <meta property="og:image" content="https://pipabroker.com/og-image.png" />
-  <meta property="og:site_name" content="Pipa Broker" />
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://pipabroker.com/" />
-  <meta property="twitter:title" content="Pipa Broker - Pet Insurance Made Simple" />
-  <meta property="twitter:description"
-    content="Find the perfect pet insurance for your furry family members. Compare quotes from top providers and protect your pets with comprehensive coverage." />
-  <meta property="twitter:image" content="https://pipabroker.com/twitter-image.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta name="robots" content="index, follow" />
-  <meta name="language" content="English" />
-  <meta name="revisit-after" content="7 days" />
-  <link rel="canonical" href="https://pipabroker.com/" />
-  <title>Pipa Broker - Pet Insurance Made Simple</title>
-        
         <Header />
         <div className="top-0 left-0 right-0 bottom-0 bg-(--light-pink-transparent) absolute pt-24">
           <div className="flex flex-col gap-12 justify-center ml-4 md:ml-20 max-w-[600px] text-(--text-dark) mt-12">
-            <h1 
+            <h1
               className="sansita-bold text-5xl mt-36 sm:mt-20 md:mt-4 max-w-[300px] md:max-w-[1000px]"
               aria-label="Main headline for pet insurance services"
             >
@@ -54,14 +72,31 @@ const Home = () => {
             </div>
           </div>
         </div>
+        <div className="absolute bottom-[50px] right-[50px] w-full flex flex-col justify-end items-end pointer-events-none text-center opacity-30">
+          <p className="float-right mr-1 text-4xl font-extrabold w-[200px] min-[600px]:w-[400px] sansita-bold text-black mb-8">
+            Our Partners
+          </p>
+          <div className="flex flex-col min-[600px]:flex-row">
+            <img
+              className="w-[250px] float-right mr-1"
+              src="/insurers/prudent-pet_black.svg"
+              alt="Prudent Pet Logo"
+            />
+            <img
+              className="w-[250px] float-right mr-1"
+              src="/insurers/kanguro_black.svg"
+              alt="Kanguro Logo"
+            />
+          </div>
+        </div>
       </section>
 
-      <section 
+      <section
         className="bg-(--light-pink)"
         aria-label="Introduction to Pipa Broker services"
       >
         <div className="p-8 flex flex-col items-center text-center gap-12">
-          <h2 
+          <h2
             className="sansita-bold text-5xl text-(--primary-teal-dark-transparent) mt-4"
             aria-label="Company introduction heading"
           >
@@ -78,7 +113,7 @@ const Home = () => {
         </div>
       </section>
 
-      <div 
+      <div
         className="bg-white w-full h-[90px]"
         role="presentation"
         aria-hidden="true"
@@ -86,18 +121,18 @@ const Home = () => {
         <div className="w-full bg-(--light-pink) h-full background-clip"></div>
       </div>
 
-      <section 
+      <section
         className="bg-white"
         aria-label="Trusted insurance carriers showcase"
       >
         <div className="flex flex-col items-center text-center gap-12 p-4 text-(--text-dark)">
-          <h2 
+          <h2
             className="sansita-bold text-5xl text-(--primary-coral) pink m-2 p-4"
             aria-label="Insurance carriers section heading"
           >
             Get quotes from trusted carriers.
           </h2>
-          <div 
+          <div
             className="flex flex-row justify-evenly items-start gap-5 flex-wrap mt-5"
             role="list"
             aria-label="List of insurance carrier options"
@@ -135,7 +170,7 @@ const Home = () => {
               />
             </div>
           </div>
-          <span 
+          <span
             className="text-sm text-(--primary-coral) italic"
             role="note"
             aria-label="Pricing disclaimer"
@@ -146,18 +181,18 @@ const Home = () => {
         </div>
       </section>
 
-      <section 
+      <section
         className="bg-(--primary-coral) w-full"
         aria-label="Pet insurance coverage information"
       >
         <div className="px-2 py-24 flex flex-col gap-5 text-white">
-          <h2 
+          <h2
             className="sansita-bold large-heading text-white text-3xl mx-16 flex flex-row justify-center items-center gap-4 flex-wrap"
             aria-label="What pet insurance covers section heading"
           >
             What does pet insurance cover?
           </h2>
-          <div 
+          <div
             className="flex flex-row justify-evenly items-start gap-5 flex-wrap mt-5"
             role="list"
             aria-label="List of pet insurance coverage types"

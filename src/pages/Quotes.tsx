@@ -7,7 +7,7 @@ import type {
   // SortItemType,
 } from "@/lib/types";
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import QuoteResults from "@/components/QuoteResults";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import useIsOnline from "@/hooks/useIsOnline";
@@ -273,10 +273,31 @@ const Quotes = () => {
       console.error("Error fetching prudent quotes:", e);
     }
 
+    /* KANGURO */
+    try {
+      // Check if quotes are cached before fetching from API
+      const cachedKanguroQuotes = getQuoteFromCache("kanguro");
+      if (cachedKanguroQuotes) {
+        if (DEV) console.log("DEV LOG", "Using cached kanguro quotes");
+        fetchedQuotes.push(...cachedKanguroQuotes);
+        suggestedQuoteData.push(...cachedKanguroQuotes);
+      } else {
+        // If no cached quotes, fetch from API
+        if (DEV) console.log("DEV LOG", "Fetching new kanguro quotes");
+        allCached = false;
+        const kanguroQuotes = await fetchQuotesFromAPI("kanguro");
+        if (DEV) console.log("DEV LOG", "Kanguro Quotes:", kanguroQuotes);
+        if (kanguroQuotes.length > 0) {
+          fetchedQuotes.push(...kanguroQuotes);
+          suggestedQuoteData.push(...kanguroQuotes);
+        }
+      }
+    } catch (e) {
+      console.error("Error fetching kanguro quotes:", e);
+    }
+
     if (allCached) setIsLoading(false);
-    console.log("fetchedQuotes", fetchedQuotes);
     const sortedFetchedData = handleSortQuoteData("price", fetchedQuotes);
-    console.log("sortedFetchedData", sortedFetchedData);
     const sortedSuggestedQuoteData = handleSortQuoteData(
       "price",
       suggestedQuoteData
@@ -416,35 +437,38 @@ const Quotes = () => {
               <div className="text-start w-full max-w-4xl sansita-regular my-4 text-lg mx-auto">
                 <HoverCard>
                   <HoverCardTrigger className="text-white sansita-regular cursor-default bg-(--primary-teal-dark) px-4 py-3 rounded-full hover:bg-(--primary-teal) hover:shadow-md transition-all duration-300 ease-in-out">
-                    <span
+                    <Link
+                      to="/info/?edit=true"
+                      aria-label="Navigate to PrudentPet.com"
                       onClick={() => {
                         clearCache();
-                        window.open("/info/?edit=true");
                       }}
                     >
-                      Edit information
-                    </span>
+                      Edit Information
+                    </Link>
                   </HoverCardTrigger>
                   <HoverCardContent className="flex flex-col gap-4 ml-4">
-                    <span
+                    <Link
+                      to="/info/?edit=true"
+                      aria-label="Navigate to PrudentPet.com"
                       className="text-(--primary-teal-dark) cursor-pointer sansita-regular hover:bg-(--primary-teal-dark) hover:text-white px-4 py-3 rounded-full transition-all duration-200 ease hover:shadow-sm"
                       onClick={() => {
                         clearCache();
-                        window.open("/info/?edit=true");
                       }}
                     >
                       Edit {petObject.petName}'s information
-                    </span>
-                    <span
+                    </Link>
+                    <Link
+                      to="/info/?edit=true"
                       className="text-(--primary-teal-dark) cursor-pointer sansita-regular hover:bg-(--primary-teal-dark) hover:text-white px-4 py-3 rounded-full transition-all duration-200 ease hover:shadow-sm"
+                      aria-label="Navigate to PrudentPet.com"
                       onClick={() => {
                         clearCache();
                         localStorage.removeItem(PIPA_PET_KEY);
-                        window.open("/info/?edit=true");
                       }}
                     >
                       Start a new quote
-                    </span>
+                    </Link>
                   </HoverCardContent>
                 </HoverCard>
               </div>
