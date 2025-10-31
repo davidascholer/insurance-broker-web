@@ -80,36 +80,35 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </section>
-
-      <section>
-        <div className="text-center flex flex-col w-full justify-center items-center bg-(--light-pink) p-4">
-          <p className="float-right mr-1 text-4xl font-extrabold w-[200px] min-[600px]:w-[400px] sansita-bold text-black mb-8">
-            Our Partners
-          </p>
-          <div className="flex flex-col min-[600px]:flex-row gap-4">
-            <img
-              className="w-[250px]"
-              src={prudentImage}
-              alt="Prudent Pet Logo"
-              onMouseEnter={() =>
-                setPrudentImage("/insurers/prudent-pet_color.svg")
-              }
-              onMouseLeave={() =>
-                setPrudentImage("/insurers/prudent-pet_black.svg")
-              }
-            />
-            <img
-              className="w-[250px]"
-              src={kanguroImage}
-              alt="Kanguro Logo"
-              onMouseEnter={() =>
-                setKanguroImage("/insurers/kanguro_color.svg")
-              }
-              onMouseLeave={() =>
-                setKanguroImage("/insurers/kanguro_black.svg")
-              }
-            />
+        <div className="absolute bottom-0 min-w-[200px] min-[600px]:min-w-[400px] h-[400px] min-[600px]:h-[300px] w-full">
+          <div className="text-center flex flex-col h-[300px] justify-center items-center p-4">
+            <p className="float-right mr-1 text-lg font-extrabold w-full sansita-bold text-black mb-8">
+              COMPARE PLANS AND PRICES FROM THE TOP COMPANIES
+            </p>
+            <div className="flex flex-col min-[600px]:flex-row gap-4">
+              <img
+                className="w-[250px]"
+                src={prudentImage}
+                alt="Prudent Pet Logo"
+                onMouseEnter={() =>
+                  setPrudentImage("/insurers/prudent-pet_color.svg")
+                }
+                onMouseLeave={() =>
+                  setPrudentImage("/insurers/prudent-pet_black.svg")
+                }
+              />
+              <img
+                className="w-[250px]"
+                src={kanguroImage}
+                alt="Kanguro Logo"
+                onMouseEnter={() =>
+                  setKanguroImage("/insurers/kanguro_color.svg")
+                }
+                onMouseLeave={() =>
+                  setKanguroImage("/insurers/kanguro_black.svg")
+                }
+              />
+            </div>
           </div>
         </div>
       </section>
