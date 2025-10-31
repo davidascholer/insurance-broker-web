@@ -138,3 +138,41 @@ export const clearCache = () => {
   localStorage.removeItem(PIPA_STORAGE_PREFIX + "figo-quotes");
   localStorage.removeItem(PIPA_STORAGE_PREFIX + "prudent-quotes");
 };
+
+export const matchDeductibleValue = (
+  deductibleValue: number,
+  selectedDeductibleValue: number
+) => {
+  if (
+    selectedDeductibleValue === 0 &&
+    deductibleValue >= 0 &&
+    deductibleValue <= 100
+  )
+    return true;
+  if (
+    selectedDeductibleValue === 100 &&
+    deductibleValue >= 100 &&
+    deductibleValue <= 250
+  )
+    return true;
+  if (
+    selectedDeductibleValue === 250 &&
+    deductibleValue >= 250 &&
+    deductibleValue <= 500
+  )
+    return true;
+  if (
+    selectedDeductibleValue === 500 &&
+    deductibleValue >= 500 &&
+    deductibleValue <= 750
+  )
+    return true;
+  if (
+    selectedDeductibleValue === 750 &&
+    deductibleValue >= 750 &&
+    deductibleValue <= 1000
+  )
+    return true;
+  if (selectedDeductibleValue === 1000 && deductibleValue >= 1000) return true;
+  return false;
+};

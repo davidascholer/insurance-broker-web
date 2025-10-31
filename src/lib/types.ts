@@ -1,5 +1,6 @@
 import type clientCatBreeds from "@/data/catBreeds";
 import type { dogBreeds } from "@/data/dogBreeds";
+import type { KanguroCoverageType } from "@/features/kanguro/lib/types";
 
 export type NameType = { firstName: string; lastName: string };
 export type AgeType = { value: number; label: string };
@@ -20,6 +21,7 @@ export type AnswersType = {
   weight: string;
   breed: (typeof clientCatBreeds)[number] | (typeof dogBreeds)[number] | "";
   reference: string;
+  coverage?: KanguroCoverageType;
 };
 
 export type ProviderIdTypes =

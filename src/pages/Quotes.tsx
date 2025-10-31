@@ -11,7 +11,13 @@ import { Link, useNavigate } from "react-router-dom";
 import QuoteResults from "@/components/QuoteResults";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import useIsOnline from "@/hooks/useIsOnline";
-import { clearCache, cn, getQuoteFromCache, verifyAnswers } from "@/lib/utils";
+import {
+  clearCache,
+  cn,
+  getQuoteFromCache,
+  matchDeductibleValue,
+  verifyAnswers,
+} from "@/lib/utils";
 import Header from "@/components/header/Header";
 import FilterBar from "@/components/FilterBar";
 import {
@@ -31,6 +37,8 @@ import {
 } from "@/components/ui/hover-card";
 import { gatherQuotesFromInsurer } from "@/api/util";
 import LoadingOverlay from "@/components/LoadingOverlay";
+import { mapFilterOptionToKanguroDeductible } from "@/features/kanguro/lib/util";
+import type { KanguroCoverageType } from "@/features/kanguro/lib/types";
 // import { registerQuoteLinkClick } from "@/features/analytics/emitters";
 
 const LOAD_TIMER = 20; // seconds
@@ -146,46 +154,57 @@ const Quotes = () => {
 
   /* End of filter handlers */
 
-  // Fetch quotes from all insurers
-  const fetchQuotes = async (answers: AnswersType) => {
-    setError(null);
-
-    const fetchQuotesFromAPI = async (
-      insurer: ProviderIdTypes,
-      isFallback = false
-    ): Promise<QuoteItem[]> => {
+  const setLoader = (full = false) => {
+    if (full) {
       setIsLoading(true);
-      // Set a maximum time to load the data from the server
       const timeout = setTimeout(() => {
         setIsLoading(false);
         return clearTimeout(timeout);
       }, LOAD_TIMER * 1000); // e.g., 20 seconds
-      const insurerQuotes = await gatherQuotesFromInsurer(
-        insurer,
-        answers,
-        isFallback
-      );
-      if (insurerQuotes) {
-        // Append the provider Id (ProviderIdTypes) to the quote data
-        insurerQuotes.forEach((quote) => {
-          quote.providerId = insurer;
-        });
-        // Cache the quotes in localStorage with a timestamp
-        localStorage.setItem(
-          PIPA_STORAGE_PREFIX + insurer + "-quotes",
-          JSON.stringify({
-            coverageOptions: insurerQuotes,
-            timestamp: Date.now(),
-          })
-        );
+    } else {
+      setOverlayVisible(true);
+      const timeout = setTimeout(() => {
+        setOverlayVisible(false);
+        return clearTimeout(timeout);
+      }, 1.5 * 1000); // 1.5 seconds
+    }
+  };
 
-        return insurerQuotes;
-      }
-      console.error(
-        `Incorrect or incomplete data returned from ${insurer} API`
+  const fetchQuotesFromAPI = async (
+    insurer: ProviderIdTypes,
+    answers: AnswersType,
+    isFallback = false
+  ): Promise<QuoteItem[]> => {
+    const insurerQuotes = await gatherQuotesFromInsurer(
+      insurer,
+      answers,
+      isFallback
+    );
+    if (insurerQuotes) {
+      // Append the provider Id (ProviderIdTypes) to the quote data
+      insurerQuotes.forEach((quote) => {
+        quote.providerId = insurer;
+      });
+      // Cache the quotes in localStorage with a timestamp
+      localStorage.setItem(
+        PIPA_STORAGE_PREFIX + insurer + "-quotes",
+        JSON.stringify({
+          coverageOptions: insurerQuotes,
+          timestamp: Date.now(),
+        })
       );
-      return [];
-    };
+
+      return insurerQuotes;
+    }
+    console.error(`Incorrect or incomplete data returned from ${insurer} API`);
+    return [];
+  };
+
+  // Fetch quotes from all insurers
+  const fetchInitialQuotes = async (answers: AnswersType) => {
+    setError(null);
+
+    setLoader(true);
 
     const fetchedQuotes: QuoteItem[] = [];
     const suggestedQuoteData: QuoteItem[] = [];
@@ -202,7 +221,11 @@ const Quotes = () => {
         // If no cached quotes, fetch from API
         if (DEV) console.log("DEV LOG", "Fetching new embrace quotes");
         allCached = false;
-        const embraceQuotes = await fetchQuotesFromAPI("embrace", true);
+        const embraceQuotes = await fetchQuotesFromAPI(
+          "embrace",
+          answers,
+          true
+        );
         if (embraceQuotes.length > 0) {
           fetchedQuotes.push(...embraceQuotes);
         }
@@ -222,7 +245,7 @@ const Quotes = () => {
         // If no cached quotes, fetch from API
         if (DEV) console.log("DEV LOG", "Fetching new fetch quotes");
         allCached = false;
-        const fetchQuotes = await fetchQuotesFromAPI("fetch", true);
+        const fetchQuotes = await fetchQuotesFromAPI("fetch", answers, true);
         if (fetchQuotes.length > 0) {
           fetchedQuotes.push(...fetchQuotes);
         }
@@ -242,7 +265,7 @@ const Quotes = () => {
         // If no cached quotes, fetch from API
         if (DEV) console.log("DEV LOG", "Fetching new figo quotes");
         allCached = false;
-        const figoQuotes = await fetchQuotesFromAPI("figo", true);
+        const figoQuotes = await fetchQuotesFromAPI("figo", answers, true);
         if (figoQuotes.length > 0) {
           fetchedQuotes.push(...figoQuotes);
         }
@@ -263,7 +286,7 @@ const Quotes = () => {
         // If no cached quotes, fetch from API
         if (DEV) console.log("DEV LOG", "Fetching new prudent quotes");
         allCached = false;
-        const prudentQuotes = await fetchQuotesFromAPI("prudent");
+        const prudentQuotes = await fetchQuotesFromAPI("prudent", answers);
         if (prudentQuotes.length > 0) {
           fetchedQuotes.push(...prudentQuotes);
           suggestedQuoteData.push(...prudentQuotes);
@@ -285,7 +308,7 @@ const Quotes = () => {
         // If no cached quotes, fetch from API
         if (DEV) console.log("DEV LOG", "Fetching new kanguro quotes");
         allCached = false;
-        const kanguroQuotes = await fetchQuotesFromAPI("kanguro");
+        const kanguroQuotes = await fetchQuotesFromAPI("kanguro", answers);
         if (DEV) console.log("DEV LOG", "Kanguro Quotes:", kanguroQuotes);
         if (kanguroQuotes.length > 0) {
           fetchedQuotes.push(...kanguroQuotes);
@@ -337,7 +360,7 @@ const Quotes = () => {
       navigate("/info");
     } else {
       // Fetch quotes based on the answers
-      fetchQuotes(petObject);
+      fetchInitialQuotes(petObject);
     }
   }, [petObject, navigate]);
 
@@ -401,6 +424,92 @@ const Quotes = () => {
     const quoteDataWithBackupsAtEnd = pushBackupsToEnd(sortedQuoteData);
     setActiveQuoteData(quoteDataWithBackupsAtEnd);
   }, [annualLimits, deductibles, quoteData, reimbursementRates]);
+
+  useEffect(() => {
+    /* KANGURO */
+    /* on options changed */
+    try {
+      // Check if quotes are cached before fetching from API
+      const cachedKanguroQuotes = getQuoteFromCache("kanguro");
+
+      if (!cachedKanguroQuotes) return;
+
+      // Iterate through the cached quotes to see if any match the current filter values
+      const isValidCache =
+        cachedKanguroQuotes?.filter((quote) => {
+          const deductibleMatch = matchDeductibleValue(
+            quote.deductibleOption,
+            selectedDeductible.value
+          );
+          return (
+            deductibleMatch &&
+            quote.reimbursementPercentageOption ===
+              selectedReimbursement.value &&
+            quote.reimbursementLimitOption === selectedLimit.value
+          );
+        }).length > 0;
+
+      if (isValidCache) return;
+
+      // If no cached quotes, fetch from API
+      const fetchFromApi = async () => {
+        if (DEV) console.log("DEV LOG", "Fetching new kanguro quotes");
+        const kanguroDeductible = mapFilterOptionToKanguroDeductible(
+          selectedDeductible.value
+        );
+        const kanguroAnnualLimit: string =
+          selectedLimit.value === 999999
+            ? "Unlimited"
+            : selectedLimit.value.toString();
+
+        const kanguroCoverage = {
+          deductible: kanguroDeductible,
+          reimbursementRate: selectedReimbursement.value,
+          annualLimit: kanguroAnnualLimit,
+        } as KanguroCoverageType;
+
+        const kanguroPetObject = {
+          ...petObject,
+          coverage: kanguroCoverage,
+        };
+        setOverlayVisible(true);
+
+        const kanguroQuotes = await fetchQuotesFromAPI(
+          "kanguro",
+          kanguroPetObject
+        );
+        setOverlayVisible(false);
+        if (DEV) console.log("DEV LOG", "Kanguro Quotes:", kanguroQuotes);
+        if (kanguroQuotes.length > 0) {
+          // Replace the old kanguro quotes with the new ones
+          const updatedQuoteData = quoteData.filter(
+            (quote) => quote.providerId !== "kanguro"
+          );
+          const newQuoteData = [...updatedQuoteData, ...kanguroQuotes];
+          setQuoteData(newQuoteData);
+          /*
+    const sortedFetchedData = handleSortQuoteData("price", fetchedQuotes);
+    const sortedSuggestedQuoteData = handleSortQuoteData(
+      "price",
+      suggestedQuoteData
+    );
+    const quoteDataWithBackupsAtEnd = pushBackupsToEnd(sortedFetchedData);
+    setQuoteData(
+      quoteDataWithBackupsAtEnd?.length > 0 ? quoteDataWithBackupsAtEnd : []
+    );
+    setSuggestedQuoteData(
+      sortedSuggestedQuoteData?.length > 0 ? sortedSuggestedQuoteData : []
+    );
+
+*/
+        }
+      };
+      fetchFromApi();
+    } catch (e) {
+      console.error("Error fetching kanguro quotes:", e);
+    }
+    /* END KANGURO */
+  }, [selectedDeductible, selectedLimit, selectedReimbursement]);
 
   return (
     <>
