@@ -1,7 +1,6 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/header/Header";
 import { Link } from "react-router-dom";
-// import { Link } from "react-router-dom";
 
 const WhatIsPetInsurance = () => {
   return (

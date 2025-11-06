@@ -1,17 +1,20 @@
-// import { useState } from "react";
+import { useState } from "react";
 import CoverageItem from "../components/CoverageItem";
 import FetchQuoteButton from "../components/FetchQuoteButton";
 import Footer from "../components/Footer";
 import Header from "../components/header/Header";
 import InsurerItem from "../components/InsurerItem";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  // const [prudentImage, setPrudentImage] = useState<string>(
-  //   "/insurers/prudent-pet_black.svg"
-  // );
-  // const [kanguroImage, setKanguroImage] = useState<string>(
-  //   "/insurers/kanguro.svg"
-  // );
+  const navigate = useNavigate();
+
+  const [prudentImage, setPrudentImage] = useState<string>(
+    "/insurers/prudent-pet_black.svg"
+  );
+  const [kanguroImage, setKanguroImage] = useState<string>(
+    "/insurers/kanguro_black.svg"
+  );
 
   return (
     <main role="main" aria-label="Pipa Broker Homepage">
@@ -67,27 +70,39 @@ const Home = () => {
         <title>Pipa Broker - Pet Insurance Made Simple</title>
 
         <Header />
-        <div className="top-0 left-0 right-0 bottom-0 bg-(--light-pink-transparent) absolute pt-24">
-          <div className="flex flex-col gap-12 justify-center ml-4 md:ml-20 max-w-[600px] text-(--text-dark) mt-12">
+        <div className="top-0 left-0 right-0 bottom-0 bg-(--light-pink-transparent) absolute pt-12 overflow-scroll no-scrollbar">
+          <div className="flex flex-col gap-12 justify-center ml-4 md:ml-20 max-w-[600px] text-(--text-dark) mt-12 min-h-auto min-[600px]:mt-36">
             <h1
-              className="sansita-bold text-5xl mt-36 sm:mt-20 md:mt-4 max-w-[300px] md:max-w-[1000px]"
+              className="sansita-bold text-5xl mt-4 max-w-[300px] md:max-w-[1000px]"
               aria-label="Main headline for pet insurance services"
             >
               Compare pet insurance quotes for dogs & cats.
             </h1>
-            <div aria-label="Primary call to action">
+            <div className="bg-white p-4 flex flex-row flex-wrap text-lg sansita-bold gap-6 justify-center items-center max-w-[280px] min-[500px]:max-w-[450px] rounded-sm">
+              <ul className="flex flex-col list-disc gap-6 ml-4">
+                <li>Customized coverage</li>
+                <li>100% free service</li>
+              </ul>
+              <ul className="flex flex-col list-disc gap-6 ml-4">
+                <li>No credit check</li>
+                <li>Risk-free cancellation</li>
+              </ul>
+            </div>
+            <div aria-label="Primary call to action" className="mb-4">
               <FetchQuoteButton />
             </div>
           </div>
         </div>
-        {/* <div className="absolute bottom-0 min-w-[200px] min-[600px]:min-w-[400px] h-[400px] min-[600px]:h-[300px] w-full">
-          <div className="text-center flex flex-col h-[300px] justify-center items-center p-4">
-            <p className="float-right mr-1 text-lg font-extrabold w-full sansita-bold text-black mb-8">
-              COMPARE PLANS AND PRICES FROM THE TOP COMPANIES
-            </p>
-            <div className="flex flex-col min-[600px]:flex-row gap-4">
+      </section>
+      <section className="bg-(--light-pink)" aria-label="Top insurance carriers">
+        <div className="text-center flex flex-col justify-center items-center p-4">
+          <p className="float-right mr-1 text-lg font-extrabold w-full sansita-bold text-black mb-8">
+            Compare Plans and Prices from the Top Companies
+          </p>
+          <div className="flex flex-row flex-wrap gap-4">
+            <div className="flex flex-row justify-center items-center w-[250px]">
               <img
-                className="w-[250px]"
+                className="cursor-pointer"
                 src={prudentImage}
                 alt="Prudent Pet Logo"
                 onMouseEnter={() =>
@@ -96,9 +111,14 @@ const Home = () => {
                 onMouseLeave={() =>
                   setPrudentImage("/insurers/prudent-pet_black.svg")
                 }
+                onClick={() => {
+                  navigate("/info");
+                }}
               />
+            </div>
+            <div className="flex flex-row justify-center items-center w-[250px]">
               <img
-                className="w-[250px]"
+                className="cursor-pointer"
                 src={kanguroImage}
                 alt="Kanguro Logo"
                 onMouseEnter={() =>
@@ -107,10 +127,13 @@ const Home = () => {
                 onMouseLeave={() =>
                   setKanguroImage("/insurers/kanguro_black.svg")
                 }
+                onClick={() => {
+                  navigate("/info");
+                }}
               />
             </div>
           </div>
-        </div> */}
+        </div>
       </section>
       <section
         className="bg-(--light-pink)"
@@ -118,7 +141,7 @@ const Home = () => {
       >
         <div className="p-8 flex flex-col items-center text-center gap-12">
           <h2
-            className="sansita-bold text-5xl text-(--primary-teal-dark-transparent) mt-4"
+            className="sansita-bold text-3xl text-(--primary-teal-dark-transparent) mt-4"
             aria-label="Company introduction heading"
           >
             Hi, we're your modern day pet insurance broker.
@@ -196,8 +219,8 @@ const Home = () => {
             role="note"
             aria-label="Pricing disclaimer"
           >
-            *Illustrative purposes only; click "fetch a free quote" for live policy
-            quotes.
+            *Illustrative purposes only; click "fetch a free quote" for live
+            policy quotes.
           </span>
         </div>
       </section>

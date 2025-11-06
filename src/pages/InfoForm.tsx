@@ -21,6 +21,7 @@ import PageContainer from "@/components/PageContainer";
 import Loader from "@/components/Loader";
 import { formSubmitted } from "@/api/api";
 import { registerPetFormCompleted } from "@/features/analytics/emitters";
+import FetchQuoteButton from "@/components/FetchQuoteButton";
 
 const defaultAnswers: AnswersType = {
   name: { firstName: "", lastName: "" },
@@ -103,7 +104,6 @@ const InfoForm = () => {
     const edit = queryParams.get("edit");
     if (!edit) navigate("/quotes");
   }, []);
-
 
   useEffect(() => {
     // Find the current question based on answers
@@ -223,7 +223,7 @@ const InfoForm = () => {
   };
 
   const onSubmit = () => {
-    formSubmitted(answers)
+    formSubmitted(answers);
     registerPetFormCompleted({ petObject: answers });
     navigate("/quotes");
   };
@@ -286,6 +286,24 @@ const InfoForm = () => {
           </div>
         </header>
         <main className="flex-1 w-full p-8 min-h-[400px] ">
+            <div className="bg-white p-4 flex flex-col text-lg sansita-bold gap-6 justify-center items-center w-full rounded-sm text-(--text-dark) mt-36 min-[610px]:mt-30 mb-8">
+              <h1
+                className="sansita-bold text-5xl mt-4 max-w-[300px] md:max-w-[1000px]"
+                aria-label="Main headline for pet insurance services"
+              >
+                Compare pet insurance plans for dogs & cats.
+              </h1>
+              <ul className="flex flex-row flex-wrap w-full list-disc gap-8 justify-evenly px-4 mb-4">
+                <li>Customized coverage</li>
+                <li>100% free service</li>
+                <li>No credit check</li>
+                <li>Risk-free cancellation</li>
+              </ul>
+            </div>
+            <div aria-label="Primary call to action" className="mb-4">
+              <FetchQuoteButton />
+            </div>
+
           <Questions
             answers={answers}
             currentQuestion={currentQuestion}
