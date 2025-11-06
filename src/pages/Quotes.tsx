@@ -308,7 +308,31 @@ const Quotes = () => {
         // If no cached quotes, fetch from API
         if (DEV) console.log("DEV LOG", "Fetching new kanguro quotes");
         allCached = false;
-        const kanguroQuotes = await fetchQuotesFromAPI("kanguro", answers);
+
+        // Todo: put this into a function fro here...
+        const kanguroDeductible = mapFilterOptionToKanguroDeductible(
+          selectedDeductible.value
+        );
+        const kanguroAnnualLimit: string =
+          selectedLimit.value === 999999
+            ? "Unlimited"
+            : selectedLimit.value.toString();
+
+        const kanguroCoverage = {
+          deductible: kanguroDeductible,
+          reimbursementRate: selectedReimbursement.value,
+          annualLimit: kanguroAnnualLimit,
+        } as KanguroCoverageType;
+
+        const kanguroPetObject = {
+          ...answers,
+          coverage: kanguroCoverage,
+        };
+        // To here.
+        const kanguroQuotes = await fetchQuotesFromAPI(
+          "kanguro",
+          kanguroPetObject
+        );
         if (DEV) console.log("DEV LOG", "Kanguro Quotes:", kanguroQuotes);
         if (kanguroQuotes.length > 0) {
           fetchedQuotes.push(...kanguroQuotes);
@@ -454,6 +478,8 @@ const Quotes = () => {
       // If no cached quotes, fetch from API
       const fetchFromApi = async () => {
         if (DEV) console.log("DEV LOG", "Fetching new kanguro quotes");
+
+        // Todo: put this into a function fro here...
         const kanguroDeductible = mapFilterOptionToKanguroDeductible(
           selectedDeductible.value
         );
@@ -472,13 +498,17 @@ const Quotes = () => {
           ...petObject,
           coverage: kanguroCoverage,
         };
-        setOverlayVisible(true);
+        // To here.
 
+        // Show the loading screen
+        if (!isLoading) setOverlayVisible(true);
         const kanguroQuotes = await fetchQuotesFromAPI(
           "kanguro",
           kanguroPetObject
         );
+        // Hide the loading screen
         setOverlayVisible(false);
+
         if (DEV) console.log("DEV LOG", "Kanguro Quotes:", kanguroQuotes);
         if (kanguroQuotes.length > 0) {
           // Replace the old kanguro quotes with the new ones
