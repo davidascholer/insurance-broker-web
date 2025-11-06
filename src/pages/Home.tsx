@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import CoverageItem from "../components/CoverageItem";
 import FetchQuoteButton from "../components/FetchQuoteButton";
 import Footer from "../components/Footer";
@@ -6,12 +6,12 @@ import Header from "../components/header/Header";
 import InsurerItem from "../components/InsurerItem";
 
 const Home = () => {
-  const [prudentImage, setPrudentImage] = useState<string>(
-    "/insurers/prudent-pet_black.svg"
-  );
-  const [kanguroImage, setKanguroImage] = useState<string>(
-    "/insurers/kanguro.svg"
-  );
+  // const [prudentImage, setPrudentImage] = useState<string>(
+  //   "/insurers/prudent-pet_black.svg"
+  // );
+  // const [kanguroImage, setKanguroImage] = useState<string>(
+  //   "/insurers/kanguro.svg"
+  // );
 
   return (
     <main role="main" aria-label="Pipa Broker Homepage">
@@ -73,14 +73,14 @@ const Home = () => {
               className="sansita-bold text-5xl mt-36 sm:mt-20 md:mt-4 max-w-[300px] md:max-w-[1000px]"
               aria-label="Main headline for pet insurance services"
             >
-              Get the insurance that works best for you and your fur baby today.
+              Compare pet insurance quotes for dogs & cats.
             </h1>
             <div aria-label="Primary call to action">
               <FetchQuoteButton />
             </div>
           </div>
         </div>
-        <div className="absolute bottom-0 min-w-[200px] min-[600px]:min-w-[400px] h-[400px] min-[600px]:h-[300px] w-full">
+        {/* <div className="absolute bottom-0 min-w-[200px] min-[600px]:min-w-[400px] h-[400px] min-[600px]:h-[300px] w-full">
           <div className="text-center flex flex-col h-[300px] justify-center items-center p-4">
             <p className="float-right mr-1 text-lg font-extrabold w-full sansita-bold text-black mb-8">
               COMPARE PLANS AND PRICES FROM THE TOP COMPANIES
@@ -110,7 +110,7 @@ const Home = () => {
               />
             </div>
           </div>
-        </div>
+        </div> */}
       </section>
       <section
         className="bg-(--light-pink)"
@@ -184,7 +184,7 @@ const Home = () => {
             </div>
             <div role="listitem">
               <InsurerItem
-                imagePath="./text_logos/embrace_title.png"
+                imagePath="./insurers/kanguro_black.svg"
                 altImageText="Embrace Pet Insurance logo - Personalized pet insurance solutions"
                 priceText="$48/month or $510/12 months*"
                 details="Not sure which coverage is best?  Don't worry - as your pet insurance broker we'll lay out the coverage in simple terms so you know what you're buying."
@@ -196,7 +196,7 @@ const Home = () => {
             role="note"
             aria-label="Pricing disclaimer"
           >
-            *Illustrative purposes only; click "fetch a quote" for live policy
+            *Illustrative purposes only; click "fetch a free quote" for live policy
             quotes.
           </span>
         </div>
