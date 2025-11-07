@@ -71,21 +71,24 @@ const Home = () => {
 
         <Header />
         <div className="top-0 left-0 right-0 bottom-0 bg-(--light-pink-transparent) absolute pt-12 overflow-scroll no-scrollbar">
-          <div className="flex flex-col gap-12 justify-center ml-4 md:ml-20 max-w-[600px] text-(--text-dark) mt-12 min-h-auto min-[600px]:mt-36">
+          <div className="flex flex-col gap-12 justify-center ml-4 md:ml-20 max-w-[600px] text-(--text-dark) mt-16 min-h-auto">
             <h1
-              className="sansita-bold text-5xl mt-4 max-w-[300px] md:max-w-[1000px]"
+              className="sansita-bold text-5xl max-w-[300px] md:max-w-[1000px]"
               aria-label="Main headline for pet insurance services"
             >
-              Compare pet insurance quotes for dogs & cats.
+              Compare Pet Insurance Quotes For Dogs & Cats.
             </h1>
-            <div className="bg-white p-4 flex flex-row flex-wrap text-lg sansita-bold gap-6 justify-center items-center max-w-[280px] min-[500px]:max-w-[450px] rounded-sm">
-              <ul className="flex flex-col list-disc gap-6 ml-4">
+            <div
+              className="bg-white p-4 flex flex-row flex-wrap text-lg sansita-bold gap-6 justify-center items-center max-w-[250px] rounded-sm  cursor-pointer"
+              onClick={() => {
+                navigate("/info");
+              }}
+            >
+              <ul className="flex flex-col list-disc gap-6">
                 <li>Customized coverage</li>
                 <li>100% free service</li>
-              </ul>
-              <ul className="flex flex-col list-disc gap-6 ml-4">
                 <li>No credit check</li>
-                <li>Risk-free cancellation</li>
+                {/* <li>Risk-free cancellation</li> */}
               </ul>
             </div>
             <div aria-label="Primary call to action" className="mb-4">
@@ -94,10 +97,13 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="bg-(--light-pink)" aria-label="Top insurance carriers">
+      <section
+        className="bg-(--light-pink)"
+        aria-label="Top insurance carriers"
+      >
         <div className="text-center flex flex-col justify-center items-center p-4">
           <p className="float-right mr-1 text-lg font-extrabold w-full sansita-bold text-black mb-8">
-            Compare Plans and Prices from the Top Companies
+            We proudly partner with...
           </p>
           <div className="flex flex-row flex-wrap gap-4 justify-center items-center">
             <div className="flex flex-row justify-center items-center w-[250px]">
