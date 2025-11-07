@@ -99,7 +99,7 @@ const Home = () => {
           <p className="float-right mr-1 text-lg font-extrabold w-full sansita-bold text-black mb-8">
             Compare Plans and Prices from the Top Companies
           </p>
-          <div className="flex flex-row flex-wrap gap-4">
+          <div className="flex flex-row flex-wrap gap-4 justify-center items-center">
             <div className="flex flex-row justify-center items-center w-[250px]">
               <img
                 className="cursor-pointer"
