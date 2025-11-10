@@ -5,6 +5,36 @@ import { Link } from "react-router-dom";
 const WhatIsPetInsurance = () => {
   return (
     <div className="bg-(--light-pink)">
+
+<meta name="title" content="What Is Pet Insurance? How It Works & Coverage Types" />
+<meta name="description"
+  content="Learn what pet insurance is, how it works, and the main coverage types. Understand key considerations before choosing a plan to protect your pet and your wallet." />
+<meta name="keywords"
+  content="what is pet insurance, pet insurance coverage, how pet insurance works, pet insurance guide, dog insurance, cat insurance, vet bills coverage" />
+<meta name="author" content="PIPA Broker" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://pipabroker.com/blog/what-is-pet-insurance" />
+<meta property="og:title" content="What Is Pet Insurance? How It Works & Coverage Types" />
+<meta property="og:description"
+  content="Learn what pet insurance is, how it works, and the main coverage types. Understand key considerations before choosing a plan to protect your pet and your wallet." />
+<meta property="og:image" content="https://pipabroker.com/og-image.png" />
+<meta property="og:site_name" content="PIPA Broker" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="https://pipabroker.com/blog/what-is-pet-insurance" />
+<meta property="twitter:title" content="What Is Pet Insurance? How It Works & Coverage Types" />
+<meta property="twitter:description"
+  content="Learn what pet insurance is, how it works, and the main coverage types. Understand key considerations before choosing a plan to protect your pet and your wallet." />
+<meta property="twitter:image" content="https://pipabroker.com/twitter-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="robots" content="index, follow" />
+<meta name="language" content="English" />
+<meta name="revisit-after" content="7 days" />
+<link rel="canonical" href="https://pipabroker.com/blog/what-is-pet-insurance" />
+
+<title>What Is Pet Insurance? How It Works & Coverage Types</title>
+
+      
       <Header />
       <div className="flex flex-col justify-start items-start gap-6 p-12 pt-36 max-w-6xl mx-auto min-h-screen">
         <h1 className="text-(--primary-teal-dark) text-3xl sansita-bold whitespace-pre-wrap self-start">
