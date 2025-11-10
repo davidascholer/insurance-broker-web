@@ -7,6 +7,36 @@ const FAQs = () => {
 
   return (
     <div className="bg-(--light-pink) ">
+
+<meta name="title" content="FAQs of PIPA Broker - Pet Insurance Simplified" />
+<meta name="description"
+  content="Dive into PIPA Broker's FAQs for expert answers on pet insurance quotes, AI tools, coverage options, claims, and how to protect your furry family members." />
+<meta name="keywords"
+  content="pet insurance FAQs, pet insurance questions, how pet insurance works, pet insurance claims, pet coverage, PIPA Broker support" />
+<meta name="author" content="PIPA Broker" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://pipabroker.com/faqs" />
+<meta property="og:title" content="FAQs of PIPA Broker - Pet Insurance Simplified" />
+<meta property="og:description"
+  content="Dive into PIPA Broker's FAQs for expert answers on pet insurance quotes, AI tools, coverage options, claims, and how to protect your furry family members." />
+<meta property="og:image" content="https://pipabroker.com/og-image.png" />
+<meta property="og:site_name" content="PIPA Broker" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="https://pipabroker.com/faqs" />
+<meta property="twitter:title" content="FAQs of PIPA Broker - Pet Insurance Simplified" />
+<meta property="twitter:description"
+  content="Dive into PIPA Broker's FAQs for expert answers on pet insurance quotes, AI tools, coverage options, claims, and how to protect your furry family members." />
+<meta property="twitter:image" content="https://pipabroker.com/twitter-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="robots" content="index, follow" />
+<meta name="language" content="English" />
+<meta name="revisit-after" content="7 days" />
+<link rel="canonical" href="https://pipabroker.com/faqs" />
+
+<title>FAQs of PIPA Broker - Pet Insurance Simplified</title>
+
+      
       <Header />
       <div
         className="flex flex-col sm:flex-row justify-center items-center sm:items-start gap-6 p-6 pt-36 max-w-4xl mx-auto"
