@@ -15,17 +15,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useState } from "react";
-import { petAges } from "@/data/petAges";
 
-type AgeItem = { value: number; label: string };
-
-const AgeForm = ({ onSubmit }: { onSubmit: (item: AgeItem) => void }) => {
+const PetWeightFormItem = () => {
   const [open, setOpen] = useState(false);
-  const [item, setItem] = useState({ value: 0, label: "" });
-
-  const handleSubmit = () => {
-    onSubmit(item);
-  };
+  const [weight, setWeight] = useState(0);
 
   return (
     <div className="flex flex-col py-4 gap-4">
@@ -37,37 +30,34 @@ const AgeForm = ({ onSubmit }: { onSubmit: (item: AgeItem) => void }) => {
             aria-expanded={open}
             className="max-w-[200px] justify-between"
           >
-            {item.label
-              ? petAges.find((age) => age.label === item.label)?.label
-              : "Select age..."}
+            Select weight...
             <ChevronsUpDown className="opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="max-w-[200px] p-0">
           <Command>
-            <CommandInput placeholder="Search ages..." className="h-9" />
+            <CommandInput placeholder="Search weight..." className="h-9" />
             <CommandList>
-              <CommandEmpty>No matching age found.</CommandEmpty>
+              <CommandEmpty>No matching weight found.</CommandEmpty>
               <CommandGroup>
-                {petAges.map((age) => (
+                {Array.from({ length: 120 }).map((_, index) => (
                   <CommandItem
-                    key={age.label}
-                    value={age.label}
+                    key={index + 1}
+                    value={(index + 1).toString()}
                     onSelect={(currentLabel) => {
-                      if (currentLabel === item.label) {
-                        setItem({ value: 0, label: "" });
+                      if (currentLabel === weight.toString()) {
+                        setWeight(0);
                       } else {
-                        const selectedAge = petAges.find((a) => a.label === currentLabel);
-                        if (selectedAge) setItem(selectedAge);
+                        setWeight(parseInt(currentLabel, 10));
                       }
                       setOpen(false);
                     }}
                   >
-                    {age.label}
+                    {index + 1} lbs
                     <Check
                       className={cn(
                         "ml-auto",
-                        item.label === age.label ? "opacity-100" : "opacity-0"
+                        weight === index + 1 ? "opacity-100" : "opacity-0"
                       )}
                     />
                   </CommandItem>
@@ -77,15 +67,8 @@ const AgeForm = ({ onSubmit }: { onSubmit: (item: AgeItem) => void }) => {
           </Command>
         </PopoverContent>
       </Popover>
-      <Button
-        className="cursor-pointer w-[200px]"
-        onClick={handleSubmit}
-        disabled={!item.label}
-      >
-        Set Age
-      </Button>
     </div>
   );
 };
 
-export default AgeForm;
+export default PetWeightFormItem;

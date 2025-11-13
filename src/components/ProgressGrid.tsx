@@ -23,7 +23,7 @@ const ProgressGrid = ({ answers }: ProgressGridType) => {
   const currentIndex = findCurrentQuestionIndex(answers);
   return (
     <div className="flex flex-row flex-1 gap-4 items-center justify-between">
-      {[...Array(answersLength)].map((_, idx) => (
+      {Array.from({ length: 3 }).map((_, idx) => (
         <ProgressCircle key={idx} filled={idx < currentIndex} />
       ))}
     </div>

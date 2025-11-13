@@ -1,16 +1,16 @@
 import { useRef, useEffect } from "react";
-import PetNameForm from "@/components/form/PetNameForm";
-import AnimalForm from "@/components/form/AnimalForm";
-import GenderForm from "@/components/form/GenderForm";
+import PetNameForm from "@/components/form/PetNameFormItem";
+import AnimalForm from "@/components/form/PetAnimalFormItem";
+import GenderForm from "@/components/form/PetGenderFormItem";
 import type { AnswersType, NameType } from "@/lib/types";
-import AgeForm from "@/components/form/AgeForm";
-import BreedForm from "@/components/form/BreedForm";
+import AgeForm from "@/components/form/PetAgeFormItem";
+import BreedForm from "@/components/form/PetBreedFormItem";
 import ReferenceForm from "@/components/form/ReferenceForm";
 import FinishForm from "@/components/form/FinishForm";
 import NameForm from "@/components/form/NameForm";
 import EmailForm from "@/components/form/EmailForm";
 import ZipForm from "@/components/form/ZipForm";
-import WeightForm from "@/components/form/WeightForm";
+import PetWeightFormItem from "../form/PetWeightFormItem";
 
 const FormSelections = ({
   currentQuestion,
@@ -124,7 +124,7 @@ const FormSelections = ({
       )}
       {currentQuestion === "age" && <AgeForm onSubmit={handleAgeSubmit} />}
       {currentQuestion === "weight" && (
-        <WeightForm onSubmit={handleWeightSubmit} petName={answers.petName} />
+        <PetWeightFormItem onSubmit={handleWeightSubmit} petName={answers.petName} />
       )}
       {currentQuestion === "breed" && (
         <BreedForm onSubmit={handleBreedSubmit} animal={answers.animal} />

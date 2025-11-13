@@ -10,19 +10,27 @@ export type ThemeProviderStateType = {
   changeTheme: () => void;
 };
 
-export type AnswersType = {
-  name: NameType;
-  email: string;
-  zip: string;
+export type AnswersPetType = {
   petName: string;
   animal: "cat" | "dog" | "";
   gender: "male" | "female" | "";
   age: AgeType;
   weight: string;
   breed: (typeof clientCatBreeds)[number] | (typeof dogBreeds)[number] | "";
+};
+
+export type AnswersUserType = {
+  name: NameType;
+  email: string;
+  zip: string;
+};
+
+export type AnswersOtherType = {
   reference: string;
   coverage?: KanguroCoverageType;
 };
+
+export type AnswersType = AnswersPetType & AnswersUserType & AnswersOtherType;
 
 export type ProviderIdTypes =
   | "figo"

@@ -18,22 +18,12 @@ import { useState } from "react";
 import { dogBreeds } from "@/data/dogBreeds";
 import clientCatBreeds from "@/data/catBreeds";
 
-const BreedForm = ({
-  onSubmit,
-  animal,
-}: {
-  onSubmit: (breed: string) => void;
-  animal: string;
-}) => {
+const PetBreedFormItem = ({ animal }: { animal: "cat" | "dog" | null }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [breed, setBreed] = useState<string>("");
 
   const breedList =
     animal === "cat" ? clientCatBreeds : animal === "dog" ? dogBreeds : [];
-
-  const handleSubmit = () => {
-    onSubmit(breed);
-  };
 
   return (
     <div className="flex flex-col py-4 gap-4">
@@ -85,15 +75,8 @@ const BreedForm = ({
           </Command>
         </PopoverContent>
       </Popover>
-      <Button
-        className="cursor-pointer max-w-[200px]"
-        onClick={handleSubmit}
-        disabled={!breed}
-      >
-        Set Breed
-      </Button>
     </div>
   );
 };
 
-export default BreedForm;
+export default PetBreedFormItem;

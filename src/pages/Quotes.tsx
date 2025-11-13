@@ -374,6 +374,7 @@ const Quotes = () => {
 
   useEffect(() => {
     if (!petObject) {
+      console.log("No pet object found, redirecting to /info");
       navigate("/info");
       return;
     }
