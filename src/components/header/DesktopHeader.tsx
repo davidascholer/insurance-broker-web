@@ -5,8 +5,8 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { useContext } from "react";
-import AppThemeContext from "@/theme/AppThemeContext";
+// import { useContext } from "react";
+// import AppThemeContext from "@/theme/AppThemeContext";
 
 interface HeaderProps {
   showFetchButton?: boolean;
@@ -14,7 +14,7 @@ interface HeaderProps {
 
 const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
   const navigate = useNavigate();
-  const { changeTheme } = useContext(AppThemeContext);
+  // const { changeTheme } = useContext(AppThemeContext);
 
   return (
     <header
@@ -22,10 +22,10 @@ const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
       role="banner"
       aria-label="Main navigation header"
     >
-      <div className="flex max-w-[1200px] h-full px-4 items-center w-full justify-between">
+      <div className="flex max-w-5xl h-full px-4 items-center w-full justify-start gap-8 xl:text-lg">
         <Link
           to="/"
-          className="sansita-regular cursor-pointer"
+          className="sansita-regular cursor-pointer w-32"
           aria-label="Go to Pipa Broker homepage"
         >
           <img
@@ -35,27 +35,13 @@ const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
           />
         </Link>
         <nav
-          className="flex w-full gap-8 align-center justify-evenly max-w-[800px] ml-8"
+          className="flex gap-8 w-full flex-1"
           role="navigation"
           aria-label="Main navigation menu"
         >
-          <button
-            className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center"
-            onClick={() => navigate("/")}
-            aria-label="Navigate to home page"
-          >
-            Home
-          </button>
-          <button
-            className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center"
-            onClick={() => navigate("/about")}
-            aria-label="Navigate to about page"
-          >
-            About
-          </button>
           <HoverCard>
             <HoverCardTrigger
-              className="sansita-regular flex items-center cursor-default text-center"
+              className="sansita-regular flex items-center cursor-default text-center font-bold"
               aria-label="Pet Insurance Resources menu"
               aria-haspopup="true"
               aria-expanded="false"
@@ -141,14 +127,62 @@ const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
               </div>
             </HoverCardContent>
           </HoverCard>
-          <HoverCard>
+
+          <button
+            onClick={() => {
+              navigate("/faqs");
+            }}
+            className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center font-bold"
+            aria-label="Navigate to Frequently Asked Questions page"
+          >
+            FAQs
+          </button>
+          <button
+            className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center font-bold text-nowrap"
+            onClick={() => navigate("/about")}
+            aria-label="Navigate to about page"
+          >
+            About Us
+          </button>
+          {/* <button
+            onClick={changeTheme}
+            className="nansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center hidden"
+            aria-label="Toggle between light and dark theme"
+          >
+            Theme
+          </button> */}
+
+          <a
+            href="mailto:EMAILADDRESS"
+            className="flex flex-row flex-nowrap items-center gap-2 pointer-cursor ml-auto"
+            aria-label="Contact menu"
+          >
+            <span className="sansita-regular flex items-center ml-auto font-bold">
+              Contact
+            </span>
+            <img
+              src="/icons/email_icon.svg"
+              alt="Contact Icon"
+              className="w-10"
+            />
+          </a>
+
+          {/* <HoverCard>
             <HoverCardTrigger
-              className="sansita-regular flex items-center cursor-default"
+              className="sansita-regular flex items-center cursor-default ml-auto"
               aria-label="Contact menu"
               aria-haspopup="true"
               aria-expanded="false"
+              asChild
             >
-              Contact
+              <div className="flex flex-row flex-nowrap items-center gap-2">
+                <span className="font-bold">Contact</span>
+                <img
+                  src="/icons/email_icon.svg"
+                  alt="Contact Icon"
+                  className="w-10"
+                />
+              </div>
             </HoverCardTrigger>
             <HoverCardContent
               className="z-100 bg-(--light-pink) w-[160px]"
@@ -178,25 +212,7 @@ const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
                 </button>
               </div>
             </HoverCardContent>
-          </HoverCard>
-
-          <button
-            onClick={() => {
-              navigate("/faqs");
-            }}
-            className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center"
-            aria-label="Navigate to Frequently Asked Questions page"
-          >
-            FAQs
-          </button>
-
-          <button
-            onClick={changeTheme}
-            className="nansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center hidden"
-            aria-label="Toggle between light and dark theme"
-          >
-            Theme
-          </button>
+          </HoverCard> */}
 
           {showFetchButton && (
             <div className="flex items-center justify-center">
