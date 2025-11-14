@@ -52,7 +52,7 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
       >
         <nav
           className={cn(
-            "flex flex-col items-center flex-1 justify-evenly nunito-sans-medium sansita-bold text-4xl transition-transform duration-200 ease-in-out",
+            "flex flex-col items-center flex-1 justify-evenly nunito-sans-medium sansita-bold text-4xl transition-transform duration-200 ease-in-out p-6",
             menuOpen ? "animate-slide-down" : "animate-slide-up"
           )}
         >

@@ -10,7 +10,7 @@ const InsurerItem = ({
   const navigate = useNavigate();
   return (
     <div
-      className="flex flex-row flex-wrap gap-4 justify-center items-center p-4 max-w-[280px] min-w-[150px] text-center cursor-pointer"
+      className="flex flex-row flex-wrap gap-4 justify-center items-center max-w-[280px] min-w-[150px] text-center cursor-pointer"
       onClick={() => {
         navigate("/info");
       }}

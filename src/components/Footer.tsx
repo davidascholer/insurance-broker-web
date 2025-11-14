@@ -13,7 +13,12 @@ const FooterColumn = ({
   className?: string;
 }) => {
   return (
-    <div className={cn("flex flex-col justify-start items-start w-full max-w-[125px]", className)}>
+    <div
+      className={cn(
+        "flex flex-col justify-start items-start w-full max-w-[125px] gap-2",
+        className
+      )}
+    >
       <h2 className="text-white text-2xl font-semibold mb-2 sansita-bold">
         {header}
       </h2>
@@ -22,7 +27,7 @@ const FooterColumn = ({
           <Link
             key={index}
             to={item.url}
-            className="sansita-regular cursor-pointer nunito-sans-medium transition-transform duration-200 ease hover:-translate-y-0.5"
+            className="cursor-pointer nunito-sans-medium transition-transform duration-200 ease hover:-translate-y-0.5"
           >
             {item.msg}
           </Link>
@@ -41,7 +46,7 @@ const Footer = ({ className }: { className?: string }) => {
         className
       )}
     >
-      <div className="max-w-[1200px] mx-auto flex flex-col min-[768px]:flex-row items-center justify-between w-full p-4">
+      <div className="max-w-7xl mx-auto flex flex-col min-[768px]:flex-row items-center justify-between w-full p-16">
         <div className="pb-8 mb-auto mr-12">
           <button
             onClick={() => {
@@ -57,10 +62,10 @@ const Footer = ({ className }: { className?: string }) => {
           </button>
         </div>
 
-        <nav className="navigation flex flex-col flex-wrap min-[768px]:flex-row items-start gap-8 px-6 text-(--primary-coral) flex-1 justify-start w-full">
+        <nav className="navigation flex flex-col flex-wrap min-[768px]:flex-row items-start gap-8 px-6 text-(--primary-coral) flex-1 justify-start min-[768px]:justify-evenly w-full">
           <FooterColumn
             header="Resources"
-            className="w-full max-w-[300px] min-[768px]:max-w-[200px]"
+            className="w-full max-w-[300px] min-[768px]:max-w-[325px]"
             items={[
               { url: "/faqs", msg: "FAQs" },
               { url: "/terminology", msg: "Pet Insurance 101 - Terminology" },
@@ -92,6 +97,7 @@ const Footer = ({ className }: { className?: string }) => {
           />
           <FooterColumn
             header="Partners"
+            className="min-[768px]:max-w-[175px]"
             items={[
               { url: "/info", msg: "Prudent Pet" },
               { url: "/info", msg: "Kanguro" },
@@ -100,6 +106,7 @@ const Footer = ({ className }: { className?: string }) => {
           />
           <FooterColumn
             header="About"
+            className="min-[768px]:max-w-[175px]"
             items={[
               { url: "/about", msg: "About PIPA Broker" },
               { url: "/terms", msg: "Terms of Use" },
