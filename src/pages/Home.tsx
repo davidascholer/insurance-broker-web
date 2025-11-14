@@ -160,7 +160,7 @@ const Home = () => {
           >
             Hi, we're your modern day pet insurance broker.
           </h2>
-          <p aria-label="Service description">
+          <p aria-label="Service description" className="nunito-sans-medium">
             You answer a few simple questions and we bring you pet insurance
             quotes from trusted carriers. Fast and simple - it couldn't be any
             easier to protect the ones we love.
