@@ -46,7 +46,7 @@ const Footer = ({ className }: { className?: string }) => {
         className
       )}
     >
-      <div className="max-w-7xl mx-auto flex flex-col min-[768px]:flex-row items-center justify-between w-full p-16">
+      <div className="max-w-7xl mx-auto flex flex-col min-[1400px]:flex-row items-center justify-between w-full p-16">
         <div className="pb-8 mb-auto mr-12">
           <button
             onClick={() => {
@@ -62,7 +62,7 @@ const Footer = ({ className }: { className?: string }) => {
           </button>
         </div>
 
-        <nav className="navigation flex flex-col flex-wrap min-[768px]:flex-row items-start gap-8 px-6 text-(--primary-coral) flex-1 justify-start min-[768px]:justify-evenly w-full">
+        <nav className="navigation flex flex-col flex-wrap min-[1100px]:flex-row items-start gap-8 px-6 text-(--primary-coral) flex-1 justify-start min-[768px]:justify-evenly w-full">
           <FooterColumn
             header="Resources"
             className="w-full max-w-[300px] min-[768px]:max-w-[325px]"
