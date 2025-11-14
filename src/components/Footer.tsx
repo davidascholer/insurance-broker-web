@@ -153,7 +153,7 @@ const Footer = ({ className }: { className?: string }) => {
         </nav>
       </div>
       {/* <hr className="w-full" /> */}
-      <div className="flex flex-col items-center justify-center gap-8 p-4">
+      <div className="flex flex-col items-center justify-center gap-8 py-4 px-24 max-[768px]:px-8 max-w-7xl mx-auto">
         <p className="text-white text-sm text-center mt-2 mb-4">
           PIPA Broker, LLC (“PIPA Broker”), with its principal place of business
           in Seattle, Washington, is a licensed independent insurance broker.
