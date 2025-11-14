@@ -69,12 +69,12 @@ const Home = () => {
       <Header />
 
       <section
-        className="w-full bg-[url('/backgrounds/old_cat_and_dog_mobile_800x1200.webp')] min-[768px]:bg-[url('/backgrounds/old_cat_and_dog_1920x800.webp')] bg-no-repeat bg-[70%_100%] min-[768px]:bg-[80%_0%] bg-cover mt-16"
+        className="w-full bg-[url('/backgrounds/old_cat_and_dog_mobile_800x1200.webp')] min-[768px]:bg-[url('/backgrounds/old_cat_and_dog_1920x800.webp')] bg-no-repeat bg-[70%_100%] min-[768px]:bg-[80%_0%] bg-cover"
         aria-label="Hero section with main call to action"
       >
         <div className="bg-(--light-pink-transparent) w-full p-8">
           <div className="w-full max-w-6xl mx-auto">
-            <div className="flex flex-col gap-4 justify-center ml-4 md:ml-20 max-w-[600px] text-(--text-dark) mt-16 min-h-auto p-2">
+            <div className="flex flex-col gap-4 justify-center ml-4 md:ml-20 max-w-[600px] text-(--text-dark) mt-16 min-h-auto p-2 pt-16">
               <div>
                 <span className="tracking-wide font-bold">
                   TRUSTED COVERAGE IN MINUTES

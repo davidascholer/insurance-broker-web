@@ -180,14 +180,6 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
           </button>
         </nav>
       </div>
-      {/* Contact Menu */}
-      <Link
-        to="mailto:admin@pipabroker.com"
-        className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
-        aria-label="Contact PIPA Broker via email"
-      >
-        Contact
-      </Link>
     </>
   );
 };

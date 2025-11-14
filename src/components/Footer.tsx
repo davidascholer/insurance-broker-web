@@ -13,7 +13,7 @@ const FooterColumn = ({
   className?: string;
 }) => {
   return (
-    <div className={cn("flex flex-col justify-start items-start", className)}>
+    <div className={cn("flex flex-col justify-start items-start w-full max-w-[125px]", className)}>
       <h2 className="text-white text-2xl font-semibold mb-2 sansita-bold">
         {header}
       </h2>
@@ -37,12 +37,12 @@ const Footer = ({ className }: { className?: string }) => {
   return (
     <footer
       className={cn(
-        "bg-(--primary-teal-dark) sticky top-0 z-100 px-16 py-12",
+        "bg-(--primary-teal-dark) sticky top-0 z-100 px-2 py-12",
         className
       )}
     >
-      <div className="max-w-[1200px] mx-auto p-4 flex flex-col min-[768px]:flex-row items-center justify-between">
-        <div>
+      <div className="max-w-[1200px] mx-auto flex flex-col min-[768px]:flex-row items-center justify-between w-full p-4">
+        <div className="pb-8 mb-auto mr-12">
           <button
             onClick={() => {
               navigate("/");
@@ -57,10 +57,10 @@ const Footer = ({ className }: { className?: string }) => {
           </button>
         </div>
 
-        <nav className="navigation flex flex-col flex-wrap min-[768px]:flex-row items-start gap-16 ml-16 px-6 text-(--primary-coral) flex-1 justify-start">
+        <nav className="navigation flex flex-col flex-wrap min-[768px]:flex-row items-start gap-8 px-6 text-(--primary-coral) flex-1 justify-start w-full">
           <FooterColumn
             header="Resources"
-            className=""
+            className="w-full max-w-[300px] min-[768px]:max-w-[200px]"
             items={[
               { url: "/faqs", msg: "FAQs" },
               { url: "/terminology", msg: "Pet Insurance 101 - Terminology" },
@@ -118,7 +118,7 @@ const Footer = ({ className }: { className?: string }) => {
             >
               Email Us
             </Link>
-            <div className="w-full flex flex-row justify-center items-center mt-4 gap-2">
+            <div className="w-full flex flex-row justify-start items-center mt-4 gap-2">
               <Link
                 to="https://www.facebook.com/profile.php?id=61579696327519"
                 target="_blank"
@@ -157,7 +157,7 @@ const Footer = ({ className }: { className?: string }) => {
           The final insurance policy premium for any policy is determined by the
           underwriting insurance company following application.
         </p>
-        <div className="flex flex-col gap-0 justify-center items-center">
+        <div className="flex flex-col gap-0 justify-center items-center text-center">
           <span className="text-sm text-white">
             © Copyright 2025 PIPA Broker, LLC. All rights reserved.
           </span>
