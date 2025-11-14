@@ -3,13 +3,9 @@ import { useNavigate } from "react-router-dom";
 const InsurerItem = ({
   imagePath,
   altImageText,
-  priceText,
-  details,
 }: {
   imagePath: string;
   altImageText: string;
-  priceText: string;
-  details: string;
 }) => {
   const navigate = useNavigate();
   return (
@@ -22,10 +18,8 @@ const InsurerItem = ({
       <img
         src={imagePath}
         alt={altImageText}
-        className="min-w-[100px] max-w-[150px] h-auto max-h-[150px] object-contain text-dark mt-2"
+        className="w-[175px] h-auto max-h-[150px] object-contain text-dark mt-2"
       />
-      <p className="bold">{priceText}</p>
-      <p>{details}</p>
     </div>
   );
 };

@@ -8,10 +8,10 @@ const CoverageItem = ({
   details: string;
 }) => {
   return (
-    <div className="flex flex-row flex-wrap gap-5 justify-start, items-center p-2 max-w-[300px] min-w-[150px] text-start">
-      <img src={imagePath} alt="pet" className="min-w-[100px] max-w-[300px] h-[300px] text-sm justify-self-center mt-2 object-cover" />
-      <p className="sansita-bold text-lg mt-2">{title}</p>
-      <p>{details}</p>
+    <div className="flex flex-col gap-4 justify-start items-center p-2 text-center max-w-[250px]">
+      <img src={imagePath} alt="pet" className="w-[150px]" />
+      <p className="sansita-bold text-xl">{title}</p>
+      <p className="sansita-regular text-sm">{details}</p>
     </div>
   );
 };

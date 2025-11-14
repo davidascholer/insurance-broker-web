@@ -29,7 +29,7 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
               }}
               className="nav-link nunito-sans-medium cursor-pointer"
             >
-              <img src="/logo.png" alt="PIPA Broker" className="h-16" />
+              <img src="/logo.png" alt="PIPA Broker" className="max-h-16 w-32" />
             </button>
           </div>
 
