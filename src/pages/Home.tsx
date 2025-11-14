@@ -183,7 +183,7 @@ const Home = () => {
         className="bg-white"
         aria-label="Trusted insurance carriers showcase"
       >
-        <div className="flex flex-col items-center text-center gap-12 p-4 text-(--text-dark)">
+        <div className="flex flex-col items-center text-center gap-12 p-4 text-(--text-dark) pb-16">
           <h2
             className="sansita-bold text-5xl text-(--primary-coral) pink m-2 p-4"
             aria-label="Insurance carriers section heading"
@@ -191,7 +191,7 @@ const Home = () => {
             Get quotes from trusted carriers.
           </h2>
           <div
-            className="flex flex-row flex-wrap justify-evenly items-start gap-1 flex-wrap mt-5"
+            className="flex flex-row flex-wrap justify-evenly items-start gap-1 mt-5"
             role="list"
             aria-label="List of insurance carrier options"
           >
