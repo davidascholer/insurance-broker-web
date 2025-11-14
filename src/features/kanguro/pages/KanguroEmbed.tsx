@@ -20,38 +20,3 @@ const KanguroEmbed: React.FC = () => {
 };
 
 export default KanguroEmbed;
-
-/* Example request
-{
-  "pets": [
-    {
-      "name": "Buckley",
-      "type": "Cat",
-      "birthday": "2020-01-31",//14 years max
-      "breedId": 2,
-      "gender": "Male",
-      "neutered": true,
-      "coverage": {
-        "deductible": 500,
-        "reimbursementRate": 70,
-        "annualLimit": "Unlimited"
-      }
-    }
-  ],
-  "customer": {
-    "firstName": "Jhon",
-    "lastName": "Gruber",
-    "email": "jhon.gruber@gmail.com",
-    "phone": "13053422828",
-    "zipCode": "33331"
-  },
-  "marketing": {
-    "utm_campaign": "example_tracking_id"
-  },
-    "coverage": {
-    "deductible": 500,
-    "reimbursementRate": 70,
-    "annualLimit": "Unlimited",
-    "invoiceInterval": "MONTHLY"
-  }
-}*/
