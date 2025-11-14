@@ -69,7 +69,7 @@ const Home = () => {
       <Header />
 
       <section
-        className="w-full bg-[url('/backgrounds/old_cat_and_dog_mobile_800x1200.webp')] min-[768px]:bg-[url('/backgrounds/old_cat_and_dog_1920x800.webp')] bg-no-repeat bg-[70%_100%] min-[768px]:bg-[80%_0%] bg-cover"
+        className="w-full bg-[url('/backgrounds/old_cat_and_dog_mobile_800x1200.webp')] min-[768px]:bg-[url('/backgrounds/old_cat_and_dog_1920x800.webp')] bg-no-repeat bg-[70%_100%] min-[768px]:bg-[80%_0%] bg-cover mt-16"
         aria-label="Hero section with main call to action"
       >
         <div className="bg-(--light-pink-transparent) w-full p-8">
