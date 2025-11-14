@@ -235,7 +235,7 @@ const Home = () => {
       >
         <div className="px-2 py-24 flex flex-col gap-5 text-white max-w-6xl mx-auto">
           <h2
-            className="sansita-bold large-heading text-white text-4xl font-bold mx-16 flex flex-row justify-center items-center gap-4 flex-wrap mb-4"
+            className="sansita-bold large-heading text-white text-4xl font-bold mx-16 flex flex-row justify-center items-center gap-4 flex-wrap mb-4 text-center"
             aria-label="What pet insurance covers section heading"
           >
             What does insurance cover?
