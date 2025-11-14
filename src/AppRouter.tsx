@@ -3,7 +3,6 @@ import InfoForm from "./pages/InfoForm";
 import Home from "./pages/Home";
 import Terminology from "./pages/Terminology";
 import PartnerContact from "./pages/contact/PartnerContact";
-import InvestorContact from "./pages/contact/InvestorContact";
 import About from "./pages/About";
 import FAQs from "./pages/FAQs";
 import Quotes from "./pages/Quotes";
@@ -51,7 +50,6 @@ const AppRouter = () => {
         <Route path="/blog/pet-insurance-exclusions" element={<PetInsuranceExclusions />} />
         <Route path="/blog/how-much-does-pet-insurance-cost" element={<HowMuchDoesPetInsuranceCost />} />
         <Route path="/partners" element={<PartnerContact />} />
-        <Route path="/investors" element={<InvestorContact />} />
         <Route path="/info" element={<InfoForm />} />
         <Route path="/quotes" element={<Quotes />} />
         <Route path="/terms" element={<Terms />} />

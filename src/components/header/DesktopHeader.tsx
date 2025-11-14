@@ -153,7 +153,7 @@ const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
           </button> */}
 
           <a
-            href="mailto:EMAILADDRESS"
+            href="mailto:admin@pipabroker.com"
             className="flex flex-row flex-nowrap items-center gap-2 pointer-cursor ml-auto"
             aria-label="Contact menu"
           >

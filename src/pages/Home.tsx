@@ -69,51 +69,53 @@ const Home = () => {
       <Header />
 
       <section
-        className="w-full bg-[url('/backgrounds/old_cat_and_dog_mobile_800x1200.webp')] min-[768px]:bg-[url('/backgrounds/old_cat_and_dog_1920x800.webp')] bg-no-repeat bg-[70%_100%] min-[768px]:bg-[80%_0%] mt-16"
+        className="w-full bg-[url('/backgrounds/old_cat_and_dog_mobile_800x1200.webp')] min-[768px]:bg-[url('/backgrounds/old_cat_and_dog_1920x800.webp')] bg-no-repeat bg-[70%_100%] min-[768px]:bg-[80%_0%] bg-cover mt-16"
         aria-label="Hero section with main call to action"
       >
-        <div className="bg-(--light-pink-transparent) w-full pt-12">
-          <div className="flex flex-col gap-4 justify-center ml-4 md:ml-20 max-w-[600px] text-(--text-dark) mt-16 min-h-auto p-2">
-            <div>
-              <span className="tracking-wide font-bold">
-                TRUSTED COVERAGE IN MINUTES
-              </span>
-              <h1
-                className="sansita-bold text-5xl"
-                aria-label="Main headline for pet insurance services"
-              >
-                Compare Pet Insurance Quotes For Dogs & Cats
-              </h1>
+        <div className="bg-(--light-pink-transparent) w-full p-8 pt-12">
+          <div className="w-full max-w-6xl mx-auto">
+            <div className="flex flex-col gap-4 justify-center ml-4 md:ml-20 max-w-[600px] text-(--text-dark) mt-16 min-h-auto p-2">
+              <div>
+                <span className="tracking-wide font-bold">
+                  TRUSTED COVERAGE IN MINUTES
+                </span>
+                <h1
+                  className="sansita-bold text-5xl"
+                  aria-label="Main headline for pet insurance services"
+                >
+                  Compare Pet Insurance Quotes For Dogs & Cats
+                </h1>
+              </div>
+              <div className="p-4 flex flex-col flex-nowrap min-[768px]:flex-row text-lg sansita-bold gap-2 min-[768px]:gap-10 justify-start items-start rounded-sm cursor-pointer">
+                <ul className="flex flex-col list-disc gap-2">
+                  <li>Customized coverage</li>
+                  <li>100% FREE service</li>
+                  <li>Risk free & no credit checks</li>
+                </ul>
+                <ul className="flex flex-col list-disc gap-2">
+                  <li>Licensed and trusted providers</li>
+                  <li>Fast and easy to use</li>
+                  <li>Save money on vet care</li>
+                  {/* <li>Risk-free cancellation</li> */}
+                </ul>
+              </div>
+              <div aria-label="Primary call to action" className="mb-4">
+                <FetchQuoteButton />
+              </div>
             </div>
-            <div className="p-4 flex flex-col flex-nowrap min-[768px]:flex-row text-lg sansita-bold gap-2 min-[768px]:gap-10 justify-start items-start rounded-sm cursor-pointer">
-              <ul className="flex flex-col list-disc gap-2">
-                <li>Customized coverage</li>
-                <li>100% FREE service</li>
-                <li>Risk free & no credit checks</li>
-              </ul>
-              <ul className="flex flex-col list-disc gap-2">
-                <li>Licensed and trusted providers</li>
-                <li>Fast and easy to use</li>
-                <li>Save money on vet care</li>
-                {/* <li>Risk-free cancellation</li> */}
-              </ul>
-            </div>
-            <div aria-label="Primary call to action" className="mb-4">
-              <FetchQuoteButton />
-            </div>
+            <div
+              className="w-full h-72"
+              role="presentation"
+              aria-hidden="true"
+            ></div>
           </div>
-          <div
-            className="w-full h-72"
-            role="presentation"
-            aria-hidden="true"
-          ></div>
         </div>
       </section>
       <section
         className="bg-(--primary-teal) w-full"
         aria-label="Top insurance carriers"
       >
-        <div className="text-center flex flex-col min-[768px]:flex-row flex-nowrap justify-center items-center p-4">
+        <div className="text-center flex flex-col min-[768px]:flex-row flex-nowrap justify-center items-center p-4 max-w-3xl mx-auto">
           <p className=" text-2xl font-extrabold w-full sansita-bold text-white mb-4">
             We proudly partner with...
           </p>
@@ -132,7 +134,7 @@ const Home = () => {
             }}
           />
           <img
-            className="cursor-pointer w-[200px]"
+            className="cursor-pointer w-[200px] mb-4"
             src={kanguroImage}
             alt="Kanguro Logo"
             onMouseEnter={() =>
@@ -151,7 +153,7 @@ const Home = () => {
         className="bg-(--light-pink)"
         aria-label="Introduction to Pipa Broker services"
       >
-        <div className="p-8 flex flex-col items-center text-center gap-12">
+        <div className="p-8 flex flex-col items-center text-center gap-12 max-w-4xl mx-auto">
           <h2
             className="sansita-bold text-4xl text-(--primary-teal-dark-transparent) mt-4"
             aria-label="Company introduction heading"

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FetchQuoteButton from "../FetchQuoteButton";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -10,8 +10,7 @@ interface HeaderProps {
 
 const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [resoureLinkOpen, setResoureLinkOpen] = useState(false);
-  const [contactOpen, setContactOpen] = useState(false);
+  const [resourceLinkOpen, setResourceLinkOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleMenuClick = () => {
@@ -29,7 +28,7 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
               }}
               className="nav-link nunito-sans-medium cursor-pointer"
             >
-              <img src="/logo.png" alt="PIPA Broker" className="max-h-16 w-32" />
+              <img src="/logo.png" alt="PIPA Broker" className="h-16" />
             </button>
           </div>
 
@@ -60,34 +59,10 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
           <button
             className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
             onClick={() => {
-              navigate("/");
-            }}
-          >
-            Home
-          </button>
-          <button
-            className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
-            onClick={() => {
-              navigate("/about");
-            }}
-          >
-            About
-          </button>
-          <button
-            className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
-            onClick={() => {
-              setResoureLinkOpen(true);
+              setResourceLinkOpen(true);
             }}
           >
             Pet Insurance Resources
-          </button>
-          <button
-            className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
-            onClick={() => {
-              setContactOpen(true);
-            }}
-          >
-            Contact
           </button>
           <button
             className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
@@ -97,6 +72,22 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
           >
             FAQs
           </button>
+          <button
+            className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
+            onClick={() => {
+              navigate("/about");
+            }}
+          >
+            About
+          </button>
+          <Link
+            to="mailto:admin@pipabroker.com"
+            className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
+            aria-label="Contact PIPA Broker via email"
+          >
+            Contact
+          </Link>
+
           {showFetchButton && <FetchQuoteButton />}
         </nav>
       </div>
@@ -104,13 +95,13 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
       <div
         className={cn(
           "fixed bg-(--light-pink) z-99 flex flex-col items-center w-screen top-20 bottom-0 min-h-[400px]",
-          resoureLinkOpen ? "animate-appear" : "animate-disappear"
+          resourceLinkOpen ? "animate-appear" : "animate-disappear"
         )}
       >
         <nav
           className={cn(
             "flex flex-col items-center flex-1 justify-center gap-10 nunito-sans-medium sansita-bold text-4xl transition-transform duration-200 ease-in-out",
-            resoureLinkOpen ? "animate-slide-down" : "animate-slide-up"
+            resourceLinkOpen ? "animate-slide-down" : "animate-slide-up"
           )}
         >
           <button
@@ -165,7 +156,7 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
           <button
             type="button"
             onClick={() => {
-              setResoureLinkOpen(false);
+              setResourceLinkOpen(false);
             }}
             className="cursor-pointer text-2xl bg-(--light-pink) nunito-sans-medium sansita-bold font-medium text-center flex flex-col items-center "
           >
@@ -190,61 +181,13 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
         </nav>
       </div>
       {/* Contact Menu */}
-      <div
-        className={cn(
-          "fixed bg-(--light-pink) z-99 flex flex-col items-center w-screen top-20 bottom-0 min-h-[400px]",
-          contactOpen ? "animate-appear" : "animate-disappear"
-        )}
+      <Link
+        to="mailto:admin@pipabroker.com"
+        className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
+        aria-label="Contact PIPA Broker via email"
       >
-        <nav
-          className={cn(
-            "flex flex-col items-center flex-1 justify-center gap-10 nunito-sans-medium sansita-bold text-4xl transition-transform duration-200 ease-in-out",
-            contactOpen ? "animate-slide-down" : "animate-slide-up"
-          )}
-        >
-          <button
-            className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
-            onClick={() => {
-              navigate("/partners");
-            }}
-          >
-            Partners
-          </button>
-          <button
-            className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
-            onClick={() => {
-              navigate("/investors");
-            }}
-          >
-            Investors
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setContactOpen(false);
-            }}
-            className="cursor-pointer text-2xl bg-(--light-pink) nunito-sans-medium sansita-bold font-medium text-center flex flex-col items-center "
-          >
-            <svg
-              className="w-14 h-14 mt-8"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M5 12h14M5 12l4-4m-4 4 4 4"
-              />
-            </svg>
-          </button>
-        </nav>
-      </div>
+        Contact
+      </Link>
     </>
   );
 };
