@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import FetchQuoteButton from "../FetchQuoteButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface HeaderProps {
@@ -16,6 +16,15 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
   const handleMenuClick = () => {
     setMenuOpen((prevOpen) => !prevOpen);
   };
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+      setResourceLinkOpen(false);
+    }
+  }, [menuOpen]);
 
   return (
     <>
@@ -52,7 +61,7 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
       >
         <nav
           className={cn(
-            "flex flex-col items-center flex-1 justify-evenly nunito-sans-medium sansita-bold text-4xl transition-transform duration-200 ease-in-out p-6",
+            "flex flex-col items-center flex-1 justify-start gap-8 overflow-scroll nunito-sans-medium sansita-bold text-3xl transition-transform duration-200 ease-in-out p-6",
             menuOpen ? "animate-slide-down" : "animate-slide-up"
           )}
         >
@@ -100,7 +109,7 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
       >
         <nav
           className={cn(
-            "flex flex-col items-center flex-1 justify-center gap-10 nunito-sans-medium sansita-bold text-4xl transition-transform duration-200 ease-in-out",
+            "flex flex-col items-center flex-1 justify-center gap-10 p-4 nunito-sans-medium sansita-bold text-2xl transition-transform duration-200 ease-in-out overflow-scroll",
             resourceLinkOpen ? "animate-slide-down" : "animate-slide-up"
           )}
         >
