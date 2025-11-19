@@ -10,7 +10,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "../ui/input";
+import { Input } from "../../ui/input";
 
 const formSchema = z.object({
   email: z.email("Invalid email address"), // This validates the email format

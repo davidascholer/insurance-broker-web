@@ -45,16 +45,20 @@ const InfoFormPetInfo = ({
   onSubmit: SubmitHandler<{ petName: string }>;
   answers: AnswersType;
 }) => {
-  const [animalSelected, setAnimalSelected] = useState<"dog" | "cat" | null>(
-    null
-  );
+  const [animalSelected, setAnimalSelected] = useState<
+    "dog" | "cat" | undefined
+  >(undefined);
   const [genderSelected, setGenderSelected] = useState<
-    "male" | "female" | null
-  >(null);
-  const [weightSelected, setWeightSelected] = useState<number | null>(null);
-  const [ageSelected, setAgeSelected] = useState<number | null>(null);
-  const [breedSelected, setBreedSelected] = useState<string | null>(null);
-  const [petName, setPetName] = useState<string | null>(null);
+    "male" | "female" | undefined
+  >(undefined);
+  const [weightSelected, setWeightSelected] = useState<number | undefined>(
+    undefined
+  );
+  const [ageSelected, setAgeSelected] = useState<number | undefined>(undefined);
+  const [breedSelected, setBreedSelected] = useState<string | undefined>(
+    undefined
+  );
+  const [petName, setPetName] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     console.log("Current Answers:", answers);
@@ -88,28 +92,55 @@ const InfoFormPetInfo = ({
 
   return (
     <div className="flex flex-col items-center w-full">
-      <div className="mt-4 w-full flex flex-col gap-8 items-center justify-center">
-        <p className="h-auto flex-1 font-bold min-h-[130px] min-[610px]:min-h-[100px] sansita-bold text-xl sm:text-2xl text-(--text-dark)">
-          {`Hi! Thank you for trusting PIPA Broker to help find the right pet insurance policy for you and your furry family member. Let’s get started...`}
-        </p>
-      </div>
+      <p className="h-auto flex-1 font-bold sansita-bold text-sm min-[500px]:text-lg sm:text-2xl text-(--text-dark)">
+        {`Hi! Thank you for trusting PIPA Broker to help find the right pet insurance policy for you and your furry family member. Let’s get started...`}
+      </p>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 my-8 p-2 w-full"
+          className="space-y-8 mt-8 mb-2 w-full"
         >
-          <div className="flex flex-col justify-center items-center gap-4 p-4 rounded-lg w-full bg-green-200">
-            <div className="flex flex-row w-full flex-wrap justify-start items-center gap-16">
-              <PetNameFormItem form={form.getValues()} />
+          <div className="flex flex-col justify-evenly items-center gap-12 rounded-lg w-full mt-12">
+            <div className="flex flex-col w-full justify-start items-center max-w-sm">
+              <PetNameFormItem />
             </div>
-            <div className="flex flex-row w-full flex-wrap justify-start items-center gap-16">
-              <PetAnimalFormItem setAnimalSelected={setAnimalSelected} />
-              <PetGenderFormItem setGenderSelected={setGenderSelected} />
+            <div className="flex flex-row w-full flex-wrap justify-center items-center gap-8 bg-blue-200">
+              <div className="flex-1 flex justify-center items-center">
+                <PetAnimalFormItem
+                  setAnimalSelected={setAnimalSelected}
+                  animalSelected={animalSelected}
+                />
+              </div>
+              <div className="flex-1 flex justify-center items-cente bg-purple-400">
+                <PetGenderFormItem
+                  genderSelected={genderSelected}
+                  setGenderSelected={setGenderSelected}
+                />
+              </div>
             </div>
-            <div className="flex flex-row w-full flex-wrap justify-start items-center gap-16">
-              <PetWeightFormItem />
-              <PetAgeFormItem />
-              <PetBreedFormItem animal={animalSelected} />
+            <div className="flex flex-row w-full flex-wrap justify-evenly items-center gap-4">
+              <div className="flex flex-col w-[200px] justify-start items-center max-w-sm">
+                <PetWeightFormItem />
+                <span className="nunito-sans-light text-sm text-[--primary-teal-dark]">
+                  What is your pet's weight?
+                </span>
+              </div>
+              <div className="flex flex-col w-[200px] justify-start items-center max-w-sm">
+                <PetAgeFormItem />
+                <span className="nunito-sans-light text-sm text-[--primary-teal-dark]">
+                  What is your pet's age?
+                </span>
+              </div>
+              <div className="flex flex-col w-[200px] justify-start items-center max-w-sm">
+                <PetBreedFormItem
+                  animal={animalSelected}
+                  setBreedSelected={setBreedSelected}
+                  breedSelected={breedSelected}
+                />
+                <span className="nunito-sans-light text-sm text-[--primary-teal-dark]">
+                  What breed is your pet?
+                </span>
+              </div>
             </div>
           </div>
           <div className="w-full text-center">

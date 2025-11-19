@@ -44,7 +44,7 @@ const defaultAnswers: AnswersType = {
 };
 
 function InfoForm() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [answers, setAnswers] = useState<AnswersType>(() => {
     const savedAnswers = localStorage.getItem(PIPA_PET_KEY);
     if (savedAnswers) {
@@ -57,13 +57,14 @@ function InfoForm() {
 
   useEffect(() => {
     // Check for ?edit=question in URL to edit a specific question
-    const queryParams = new URLSearchParams(location.search);
-    const edit = queryParams.get("edit");
+    // const queryParams = new URLSearchParams(location.search);
+    // const edit = queryParams.get("edit");
     // if (!edit) navigate("/quotes");
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmitPetInfo = () => {
     // Handle pet name submission logic here
+    console.log("Pet info submitted:", answers);
   };
 
   return (
@@ -76,7 +77,7 @@ function InfoForm() {
             <div className="p-1">
               <Card>
                 <CardContent className="flex items-start justify-center p-6">
-                  <InfoFormPetInfo onSubmit={handleSubmit} answers={answers} />
+                  <InfoFormPetInfo onSubmit={handleSubmitPetInfo} answers={answers} />
                 </CardContent>
               </Card>
             </div>

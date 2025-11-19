@@ -21,7 +21,7 @@ const PetWeightFormItem = () => {
   const [weight, setWeight] = useState(0);
 
   return (
-    <div className="flex flex-col py-4 gap-4">
+    <div className="flex flex-col py-4 gap-4 sansita-sans">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button

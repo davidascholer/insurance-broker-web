@@ -14,28 +14,48 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { dogBreeds } from "@/data/dogBreeds";
 import clientCatBreeds from "@/data/catBreeds";
 
-const PetBreedFormItem = ({ animal }: { animal: "cat" | "dog" | null }) => {
+const PetBreedFormItem = ({
+  animal,
+  setBreedSelected,
+}: {
+  animal: "cat" | "dog" | undefined;
+  setBreedSelected: (breed: string | undefined) => void;
+}) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [breed, setBreed] = useState<string>("");
+  const [breed, setBreed] = useState<string | undefined>(undefined);
+  const [breedList, setBreedList] = useState<string[]>([]);
 
-  const breedList =
-    animal === "cat" ? clientCatBreeds : animal === "dog" ? dogBreeds : [];
+  useEffect(() => {
+    setBreed(undefined);
+    if (animal === "cat") {
+      setBreedList(clientCatBreeds);
+    } else if (animal === "dog") {
+      setBreedList(dogBreeds);
+    } else {
+      setBreedList([]);
+    }
+  }, [animal]);
+
+  useEffect(() => {
+    setBreedSelected(breed);
+  }, [breed, setBreedSelected]);
 
   return (
-    <div className="flex flex-col py-4 gap-4">
+    <div className="flex flex-col py-4 gap-4 sansita-sans">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             role="combobox"
+            disabled={animal === undefined}
             aria-expanded={open}
             className="justify-between max-w-[200px]"
           >
-            {breed ? breedList.find((b) => b === breed) : "Select breed..."}
+            {breed || "Select breed..."}
             <ChevronsUpDown className="opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -51,7 +71,7 @@ const PetBreedFormItem = ({ animal }: { animal: "cat" | "dog" | null }) => {
                     value={breedItem}
                     onSelect={(currentBreed) => {
                       if (currentBreed === breed) {
-                        setBreed("");
+                        setBreed(undefined);
                       } else {
                         const selectedBreed = breedList.find(
                           (b) => b === currentBreed
