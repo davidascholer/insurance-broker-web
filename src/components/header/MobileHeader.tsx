@@ -87,7 +87,7 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
               navigate("/about");
             }}
           >
-            About
+            About Us
           </button>
           <Link
             to="mailto:admin@pipabroker.com"
