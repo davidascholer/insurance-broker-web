@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { TypewriterEffect } from "@/components/ui/TypewriterEffect";
-import TextBlock from "./TextBlock";
+import TextBlock from "../TextBlock";
 import { findCurrentQuestionIndex, formatArray } from "@/lib/utils";
 import PipaIcon from "@/components/icons/PipaIcon";
 import type { AnswersType } from "@/lib/types";

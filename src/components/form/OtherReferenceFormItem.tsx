@@ -6,19 +6,21 @@ import {
 } from "@/components/ui/form";
 import { Input } from "../ui/input";
 
-const PetNameFormItem = () => {
+const OtherReferenceFormItem = () => {
   return (
     <FormField
-      // control={form.control}
-      name="petName"
+      name="reference"
       render={({ field }) => (
         <FormItem className="w-full">
           <FormControl>
-            <Input placeholder="Pet Name" {...field} className="w-full" />
+            <Input
+              placeholder="e.g. Google, LinkedIn, etc."
+              {...field}
+              className="max-w-lg"
+            />
           </FormControl>
-          {/* <FormDescription>Enter your pet's name</FormDescription> */}
           <span className="nunito-sans-light text-sm text-[--primary-teal-dark] text-center">
-            Please enter your pet's name.
+            How did you hear about us?
           </span>
           <FormMessage className="text-center" />
         </FormItem>
@@ -27,4 +29,4 @@ const PetNameFormItem = () => {
   );
 };
 
-export default PetNameFormItem;
+export default OtherReferenceFormItem;

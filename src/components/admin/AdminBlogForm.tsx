@@ -7,10 +7,10 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
-//   FormControl,
+  //   FormControl,
   FormField,
   FormItem,
-//   FormLabel,
+  //   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 // import { Link } from "react-router-dom";
@@ -60,7 +60,9 @@ function AdminBlogForm({
                     <FormItem
                       key={item.id}
                       className="flex flex-row items-center gap-2"
-                    >Not implemented. In progress...</FormItem>
+                    >
+                      Not implemented. In progress...
+                    </FormItem>
                   );
                 }}
               />

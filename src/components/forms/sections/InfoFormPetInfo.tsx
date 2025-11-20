@@ -25,15 +25,28 @@ const formSchema = z.object({
   gender: z.enum(["male", "female"] as const, {
     message: "Please select a gender.",
   }),
-  weight: z.number().min(1, {
-    message: "Please select a weight.",
-  }),
-  age: z.number().min(1, {
-    message: "Please select an age.",
-  }),
-  breed: z.string().trim().min(1, {
-    message: "Please enter a breed.",
-  }),
+  weight: z
+    .number({
+      error: "Please select a weight.",
+    })
+    .min(1, {
+      message: "Please select a weight.",
+    }),
+  age: z
+    .number({
+      error: "Please select an age.",
+    })
+    .min(1, {
+      message: "Please select an age.",
+    }),
+  breed: z
+    .string({
+      error: "Please select a breed.",
+    })
+    .trim()
+    .min(1, {
+      message: "Please enter a breed.",
+    }),
 });
 
 export type FormSchemaType = z.infer<typeof formSchema>;
@@ -42,46 +55,30 @@ const InfoFormPetInfo = ({
   onSubmit,
   answers,
 }: {
-  onSubmit: SubmitHandler<{ petName: string }>;
+  onSubmit: SubmitHandler<FormSchemaType>;
   answers: AnswersType;
 }) => {
   const [animalSelected, setAnimalSelected] = useState<
     "dog" | "cat" | undefined
-  >(undefined);
+  >(answers.animal || undefined);
   const [genderSelected, setGenderSelected] = useState<
     "male" | "female" | undefined
-  >(undefined);
+  >(answers.gender || undefined);
   const [weightSelected, setWeightSelected] = useState<number | undefined>(
-    undefined
+    answers.weight ? Number(answers.weight) : undefined
   );
-  const [ageSelected, setAgeSelected] = useState<number | undefined>(undefined);
+  const [ageSelected, setAgeSelected] = useState<number | undefined>(
+    answers.age ? Number(answers.age) : undefined
+  );
   const [breedSelected, setBreedSelected] = useState<string | undefined>(
-    undefined
+    answers.breed || undefined
   );
-  const [petName, setPetName] = useState<string | undefined>(undefined);
-
-  useEffect(() => {
-    console.log("Current Answers:", answers);
-    console.log("Animal Selected:", animalSelected);
-    console.log("Gender Selected:", genderSelected);
-    console.log("Weight Selected:", weightSelected);
-    console.log("Age Selected:", ageSelected);
-    console.log("Breed Selected:", breedSelected);
-    console.log("Pet Name:", petName);
-  }, [
-    answers,
-    animalSelected,
-    genderSelected,
-    weightSelected,
-    ageSelected,
-    breedSelected,
-    petName,
-  ]);
+  const [formValid, setFormValid] = useState<boolean>(false);
 
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      petName: petName || "",
+      petName: answers.petName || "",
       animal: animalSelected as "dog" | "cat",
       gender: genderSelected as "male" | "female",
       weight: weightSelected ?? undefined,
@@ -89,6 +86,25 @@ const InfoFormPetInfo = ({
       breed: breedSelected ?? undefined,
     },
   });
+
+  useEffect(() => {
+    // Check all of the answer to make sure every property has a value
+    let valid = true;
+    if (
+      !answers.petName ||
+      answers.petName === "" ||
+      !answers.animal ||
+      !answers.gender ||
+      !answers.age ||
+      answers.age.value === 0 ||
+      !answers.weight ||
+      answers.weight === "" ||
+      !answers.breed ||
+      answers.breed === ""
+    )
+      valid = false;
+    setFormValid(valid);
+  }, [answers]);
 
   return (
     <div className="flex flex-col items-center w-full">
@@ -104,14 +120,14 @@ const InfoFormPetInfo = ({
             <div className="flex flex-col w-full justify-start items-center max-w-sm">
               <PetNameFormItem />
             </div>
-            <div className="flex flex-row w-full flex-wrap justify-center items-center gap-8 bg-blue-200">
-              <div className="flex-1 flex justify-center items-center">
+            <div className="flex flex-row w-full flex-wrap justify-center items-center gap-8">
+              <div className="flex-1 flex justify-center items-center min-w-[150px]">
                 <PetAnimalFormItem
                   setAnimalSelected={setAnimalSelected}
                   animalSelected={animalSelected}
                 />
               </div>
-              <div className="flex-1 flex justify-center items-cente bg-purple-400">
+              <div className="flex-1 flex justify-center items-center min-w-[150px]">
                 <PetGenderFormItem
                   genderSelected={genderSelected}
                   setGenderSelected={setGenderSelected}
@@ -120,16 +136,16 @@ const InfoFormPetInfo = ({
             </div>
             <div className="flex flex-row w-full flex-wrap justify-evenly items-center gap-4">
               <div className="flex flex-col w-[200px] justify-start items-center max-w-sm">
-                <PetWeightFormItem />
-                <span className="nunito-sans-light text-sm text-[--primary-teal-dark]">
-                  What is your pet's weight?
-                </span>
+                <PetWeightFormItem
+                  weightSelected={weightSelected}
+                  setWeightSelected={setWeightSelected}
+                />
               </div>
               <div className="flex flex-col w-[200px] justify-start items-center max-w-sm">
-                <PetAgeFormItem />
-                <span className="nunito-sans-light text-sm text-[--primary-teal-dark]">
-                  What is your pet's age?
-                </span>
+                <PetAgeFormItem
+                  ageSelected={ageSelected}
+                  setAgeSelected={setAgeSelected}
+                />
               </div>
               <div className="flex flex-col w-[200px] justify-start items-center max-w-sm">
                 <PetBreedFormItem
@@ -137,15 +153,13 @@ const InfoFormPetInfo = ({
                   setBreedSelected={setBreedSelected}
                   breedSelected={breedSelected}
                 />
-                <span className="nunito-sans-light text-sm text-[--primary-teal-dark]">
-                  What breed is your pet?
-                </span>
               </div>
             </div>
           </div>
           <div className="w-full text-center">
             <Button
               type="submit"
+              disabled={false}
               className="cursor-pointer mx-auto w-full max-w-xl"
             >
               Save Pet Information

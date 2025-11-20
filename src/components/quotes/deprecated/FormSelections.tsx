@@ -10,7 +10,7 @@ import FinishForm from "@/components/form/deprecated/FinishForm";
 import NameForm from "@/components/form/deprecated/NameForm";
 import EmailForm from "@/components/form/deprecated/EmailForm";
 import ZipForm from "@/components/form/ZipForm";
-import PetWeightFormItem from "../form/PetWeightFormItem";
+import PetWeightFormItem from "../../form/PetWeightFormItem";
 
 const FormSelections = ({
   currentQuestion,

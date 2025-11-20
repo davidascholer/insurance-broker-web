@@ -37,7 +37,7 @@ const PetGenderFormItem = ({
         <FormItem className="w-full">
           <FormControl>
             {/* Hidden input ensures the field is registered & participates in form submission */}
-            <div className="flex py-4 gap-4 sansita-sans">
+              <div className="flex py-4 gap-4 sansita-sans flex-row flex-wrap justify-center  w-full">
               <Input type="hidden" {...field} value={genderSelected ?? ""} />
               <Button
                 type="button"
@@ -59,10 +59,10 @@ const PetGenderFormItem = ({
               </Button>
             </div>
           </FormControl>
-          <span className="nunito-sans-light text-sm text-[--primary-teal-dark]">
+          <span className="nunito-sans-light text-sm text-[--primary-teal-dark] text-center">
             What gender is your pet?
           </span>
-          <FormMessage className="text-start w-full" />
+          <FormMessage className="text-center w-full" />
         </FormItem>
       )}
     />
