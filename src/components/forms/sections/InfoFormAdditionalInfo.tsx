@@ -46,7 +46,7 @@ const InfoFormAdditionalInfo = ({
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 mt-8 mb-2 w-full"
         >
-          <div className="flex flex-col justify-evenly items-center gap-4 rounded-lg w-full mt-12">
+          <div className="flex flex-col justify-evenly items-center gap-4 rounded-lg w-full">
             <div className="flex flex-col w-full justify-start items-center">
               <OtherReferenceFormItem />
             </div>

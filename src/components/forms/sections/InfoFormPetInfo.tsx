@@ -133,7 +133,7 @@ const InfoFormPetInfo = ({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 mt-8 mb-2 w-full"
+          className="space-y-8 mb-2 w-full"
         >
           <div className="flex flex-row flex-wrap justify-start items-center gap-12 rounded-lg w-full mt-12">
             <div className="flex flex-col w-full justify-start items-center">

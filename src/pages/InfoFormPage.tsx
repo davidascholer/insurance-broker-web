@@ -144,11 +144,11 @@ function InfoFormPage() {
   return (
     <main className="bg-(--light-pink) w-full p-8">
       <InfoFormBanner />
-      <Carousel className="w-full mx-auto my-8 flex flex-col items-center ">
+      <Carousel className="w-full mx-auto my-8 flex flex-col items-center">
         <CarouselDots className="max-w-4xl" items={3} />
-        <CarouselContent className="">
+        <CarouselContent className="min-w-[300px] max-w-screen">
           <CarouselItem>
-            <div className="p-1 mx-auto w-full max-w-4xl ">
+            <div className="p-1 mx-auto w-full max-w-4xl">
               <Card>
                 <CardContent className="flex items-start justify-center p-6">
                   <InfoFormPetInfo
