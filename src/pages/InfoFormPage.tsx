@@ -142,7 +142,7 @@ function InfoFormPage() {
   }, [petFormValid, userFormValid]);
 
   return (
-    <main className="bg-(--light-pink) w-full p-8">
+    <main className="bg-(--light-pink) w-full p-8 overflow-y-scroll">
       <InfoFormBanner />
       <Carousel className="w-full mx-auto my-8 flex flex-col items-center">
         <CarouselDots className="max-w-4xl" items={3} />
