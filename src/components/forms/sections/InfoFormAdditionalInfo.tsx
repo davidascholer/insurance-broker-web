@@ -47,10 +47,10 @@ const InfoFormAdditionalInfo = ({
           className="space-y-8 mt-8 mb-2 w-full"
         >
           <div className="flex flex-col justify-evenly items-center gap-4 rounded-lg w-full mt-12">
-            <div className="flex flex-col w-full justify-start items-center max-w-sm">
+            <div className="flex flex-col w-full justify-start items-center">
               <OtherReferenceFormItem />
             </div>
-            <div className="flex flex-col w-full justify-start items-center max-w-sm">
+            <div className="flex flex-col w-full justify-start items-center">
               <OtherTermsFormItem />
             </div>
           </div>
@@ -58,7 +58,7 @@ const InfoFormAdditionalInfo = ({
             <Button
               type="submit"
               disabled={!formValid}
-              className="cursor-pointer mx-auto w-full max-w-xl"
+              className="cursor-pointer mx-auto w-full max-w-xl text-lg sansita-regular py-6 px-4"
             >
               Fetch my quotes!
             </Button>

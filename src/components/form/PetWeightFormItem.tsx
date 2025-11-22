@@ -39,9 +39,12 @@ const PetWeightFormItem = ({
       name="weight"
       render={({ field }) => (
         <FormItem className="w-full">
+          <span className="nunito-sans-light text-sm text-[--primary-teal-dark] text-start">
+            What is your pet's weight?
+          </span>
           <FormControl>
             {/* Hidden input keeps react-hook-form registration in sync */}
-            <div className="flex flex-col py-4 gap-4 sansita-sans">
+            <div className="flex flex-col gap-4 sansita-sans">
               <input type="hidden" {...field} value={weightSelected ?? ""} />
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
@@ -50,7 +53,7 @@ const PetWeightFormItem = ({
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className="max-w-[200px] justify-between"
+                    className="w-full hover:bg-(--light-pink)"
                   >
                     {weightSelected
                       ? `${weightSelected} lbs`
@@ -58,13 +61,13 @@ const PetWeightFormItem = ({
                     <ChevronsUpDown className="opacity-50" />
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="max-w-[200px] p-0">
+                <PopoverContent className="w-full">
                   <Command>
                     <CommandInput
                       placeholder="Search weight..."
                       className="h-9"
                     />
-                    <CommandList>
+                    <CommandList className="w-full">
                       <CommandEmpty>No matching weight found.</CommandEmpty>
                       <CommandGroup>
                         {Array.from({ length: 120 }).map((_, index) => {
@@ -109,9 +112,6 @@ const PetWeightFormItem = ({
               </Popover>
             </div>
           </FormControl>
-          <span className="nunito-sans-light text-sm text-[--primary-teal-dark] text-center">
-            What is your pet's weight?
-          </span>
           <FormMessage className="text-center w-full" />
         </FormItem>
       )}

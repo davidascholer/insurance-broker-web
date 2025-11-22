@@ -2,16 +2,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-// import { TypewriterEffect } from "../../ui/TypewriterEffect";
-// import { formatArray } from "@/lib/utils";
 import type { AnswersType } from "@/lib/types";
 import UserFirstNameFormItem from "@/components/form/UserFirstNameFormItem";
 import UserLastNameFormItem from "@/components/form/UserLastNameFormItem";
 import UserEmailFormItem from "@/components/form/UserEmailFormItem";
 import UserZipFormItem from "@/components/form/UserZipFormItem";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   firstName: z
@@ -45,12 +42,14 @@ export type FormSchemaType = z.infer<typeof formSchema>;
 const InfoFormUserInfo = ({
   onSubmit,
   answers,
+  submitButton,
+  setUserFormValid,
 }: {
   onSubmit: SubmitHandler<FormSchemaType>;
   answers: AnswersType;
+  submitButton?: React.ReactNode;
+  setUserFormValid: (valid: boolean) => void;
 }) => {
-  const [formValid, setFormValid] = useState<boolean>(false);
-
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -61,22 +60,20 @@ const InfoFormUserInfo = ({
     },
   });
 
+  const currentValues = form.getValues();
   useEffect(() => {
-    // Check all of the answer to make sure every property has a value
-    let valid = true;
-    if (
-      !answers.name ||
-      answers.name.firstName === "" ||
-      !answers.name ||
-      answers.name.lastName === "" ||
-      !answers.email ||
-      answers.email === "" ||
-      !answers.zip ||
-      answers.zip === ""
-    )
-      valid = false;
-    setFormValid(valid);
-  }, [answers]);
+    try {
+      const parsedUser = formSchema.parse(currentValues);
+      if (parsedUser) setUserFormValid(true);
+      else setUserFormValid(false);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setUserFormValid(false);
+      } else {
+        throw error;
+      }
+    }
+  }, [currentValues, setUserFormValid]);
 
   return (
     <div className="flex flex-col items-center w-full">
@@ -89,28 +86,20 @@ const InfoFormUserInfo = ({
           className="space-y-8 mt-8 mb-2 w-full"
         >
           <div className="flex flex-col justify-evenly items-center gap-4 rounded-lg w-full mt-12">
-            <div className="flex flex-col w-full justify-start items-center max-w-sm">
+            <div className="flex flex-col w-full justify-start items-center">
               <UserFirstNameFormItem />
             </div>
-            <div className="flex flex-col w-full justify-start items-center max-w-sm">
+            <div className="flex flex-col w-full justify-start items-center">
               <UserLastNameFormItem />
             </div>
-            <div className="flex flex-col w-full justify-start items-center max-w-sm">
+            <div className="flex flex-col w-full justify-start items-center">
               <UserEmailFormItem />
             </div>
-            <div className="flex flex-col w-full justify-start items-center max-w-sm">
+            <div className="flex flex-col w-full justify-start items-center">
               <UserZipFormItem />
             </div>
           </div>
-          <div className="w-full text-center">
-            <Button
-              type="submit"
-              disabled={false}
-              className="cursor-pointer mx-auto w-full max-w-xl"
-            >
-              Save Your Information
-            </Button>
-          </div>
+          <div className="w-full text-center">{submitButton}</div>
         </form>
       </Form>
     </div>

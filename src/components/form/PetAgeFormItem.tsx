@@ -23,17 +23,17 @@ import {
 import { useState } from "react";
 import { petAges } from "@/data/petAges";
 import { useFormContext } from "react-hook-form";
+import type { AgeType } from "@/lib/types";
 
 const PetAgeFormItem = ({
   ageSelected,
   setAgeSelected,
 }: {
-  ageSelected: number | undefined;
-  setAgeSelected: (age: number) => void;
+  ageSelected: AgeType | undefined;
+  setAgeSelected: (age: AgeType | undefined) => void;
 }) => {
   const form = useFormContext();
   const [open, setOpen] = useState(false);
-  const [item, setItem] = useState({ value: 0, label: "" });
 
   return (
     <FormField
@@ -41,9 +41,12 @@ const PetAgeFormItem = ({
       name="age"
       render={({ field }) => (
         <FormItem className="w-full">
+          <span className="nunito-sans-light text-sm text-[--primary-teal-dark] text-start">
+            What is your pet's age?
+          </span>
           <FormControl>
             {/* Hidden input keeps react-hook-form registration in sync */}
-            <div className="flex flex-col py-4 gap-4 sansita-sans">
+            <div className="flex flex-col gap-4 sansita-sans">
               <input
                 type="hidden"
                 {...field}
@@ -56,10 +59,11 @@ const PetAgeFormItem = ({
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className="max-w-[200px] justify-between"
+                    className="w-full hover:bg-(--light-pink)"
                   >
-                    {item.label
-                      ? petAges.find((age) => age.label === item.label)?.label
+                    {ageSelected?.label
+                      ? petAges.find((age) => age.label === ageSelected.label)
+                          ?.label
                       : "Select age..."}
                     <ChevronsUpDown className="opacity-50" />
                   </Button>
@@ -81,17 +85,17 @@ const PetAgeFormItem = ({
                               const selectedAge = petAges.find(
                                 (a) => a.label === currentLabel
                               );
+                              console.log("Selected age :", selectedAge);
                               if (selectedAge) {
-                                setItem(selectedAge);
-                                setAgeSelected(selectedAge.value);
+                                setAgeSelected(selectedAge);
                                 if (form?.setValue) {
-                                  form.setValue("age", selectedAge.value, {
+                                  form.setValue("age", selectedAge, {
                                     shouldDirty: true,
                                     shouldTouch: true,
                                     shouldValidate: true,
                                   });
                                 } else if (field?.onChange) {
-                                  field.onChange(selectedAge.value);
+                                  field.onChange(selectedAge);
                                 }
                               }
                               setOpen(false);
@@ -101,7 +105,7 @@ const PetAgeFormItem = ({
                             <Check
                               className={cn(
                                 "ml-auto",
-                                item.label === age.label
+                                ageSelected?.label === age.label
                                   ? "opacity-100"
                                   : "opacity-0"
                               )}
@@ -115,9 +119,6 @@ const PetAgeFormItem = ({
               </Popover>
             </div>
           </FormControl>
-          <span className="nunito-sans-light text-sm text-[--primary-teal-dark] text-center">
-            What is your pet's age?
-          </span>
           <FormMessage className="text-center w-full" />
         </FormItem>
       )}

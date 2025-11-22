@@ -16,10 +16,10 @@ const OtherReferenceFormItem = () => {
             <Input
               placeholder="e.g. Google, LinkedIn, etc."
               {...field}
-              className="max-w-lg"
+              className="w-full"
             />
           </FormControl>
-          <span className="nunito-sans-light text-sm text-[--primary-teal-dark] text-center">
+          <span className="nunito-sans-light text-sm text-[--primary-teal-dark] text-start">
             How did you hear about us?
           </span>
           <FormMessage className="text-center" />

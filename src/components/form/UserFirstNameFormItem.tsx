@@ -15,7 +15,7 @@ const UserFirstNameFormItem = () => {
           <FormControl>
             <Input placeholder="First Name" {...field} className="w-full" />
           </FormControl>
-          <span className="nunito-sans-light text-sm text-[--primary-teal-dark] text-center">
+          <span className="nunito-sans-light text-sm text-[--primary-teal-dark] text-start">
             Please enter your first name.
           </span>
           <FormMessage className="text-center" />

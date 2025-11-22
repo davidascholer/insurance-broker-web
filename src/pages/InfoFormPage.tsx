@@ -2,11 +2,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
+  CarouselCustomNextButton,
+  CarouselDots,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/modified/carousel";
 import type {
+  AgeType,
   AnswersOtherType,
   AnswersPetType,
   AnswersType,
@@ -48,8 +49,10 @@ const defaultAnswers: AnswersType = {
   ...defaultOtherAnswers,
 };
 
-function InfoForm() {
+function InfoFormPage() {
   const navigate = useNavigate();
+  const [petFormValid, setPetFormValid] = useState(false);
+  const [userFormValid, setUserFormValid] = useState(false);
   const [formValid, setFormValid] = useState(false);
   const [answers, setAnswers] = useState<AnswersType>(() => {
     const savedAnswers = localStorage.getItem(PIPA_PET_KEY);
@@ -90,7 +93,6 @@ function InfoForm() {
   };
 
   const handleSubmitAdditionalInfo = (data: AnswersOtherType) => {
-    console.log("Additional Info Submitted:", data);
     const updatedAnswers = {
       ...answers,
       ...data,
@@ -104,66 +106,76 @@ function InfoForm() {
   };
 
   useEffect(() => {
-    // Check all of the answer to make sure every property has a value
-    let valid = true;
-    if (
-      !answers.petName ||
-      answers.petName === "" ||
-      !answers.animal ||
-      !answers.gender ||
-      !answers.age ||
-      answers.age.value === 0 ||
-      !answers.weight ||
-      answers.weight === "" ||
-      !answers.breed ||
-      answers.breed === "" ||
-      !answers.name ||
-      answers.name.firstName === "" ||
-      !answers.name ||
-      answers.name.lastName === "" ||
-      !answers.email ||
-      answers.email === "" ||
-      !answers.zip ||
-      answers.zip === ""
-      // ||
-      // !answers.reference ||
-      // answers.reference === ""
-    )
-      valid = false;
-    setFormValid(valid);
-  }, [answers]);
+    // // Pet form validation
+    // let petValid = true;
+    // if (
+    //   !answers.petName ||
+    //   answers.petName === "" ||
+    //   !answers.animal ||
+    //   !answers.gender ||
+    //   !answers.age ||
+    //   answers.age.value === 0 ||
+    //   !answers.weight ||
+    //   answers.weight === "" ||
+    //   !answers.breed ||
+    //   answers.breed === ""
+    // ) {
+    //   petValid = false;
+    // }
+    // // setPetFormValid(petValid);
 
-  useEffect(() => {
-    console.log("Form valid state:", formValid);
-  }, [formValid]);
+    // let userValid = true;
+    // if (
+    //   !answers.name ||
+    //   answers.name.firstName === "" ||
+    //   !answers.name ||
+    //   answers.name.lastName === "" ||
+    //   !answers.email ||
+    //   answers.email === "" ||
+    //   !answers.zip ||
+    //   answers.zip === ""
+    // )
+    //   userValid = false;
+    // setUserFormValid(userValid);
+
+    setFormValid(petFormValid && userFormValid);
+  }, [petFormValid, userFormValid]);
 
   return (
     <main className="bg-(--light-pink) w-full p-8">
       <InfoFormBanner />
-
-      <Carousel className="w-full mx-auto my-8">
-              {/* <CarouselPrevious />
-        <CarouselNext /> */}
-
+      <Carousel className="w-full mx-auto my-8 flex flex-col items-center ">
+        <CarouselDots className="max-w-4xl" items={3} />
         <CarouselContent className="">
           <CarouselItem>
-            <div className="p-1">
+            <div className="p-1 mx-auto w-full max-w-4xl ">
               <Card>
                 <CardContent className="flex items-start justify-center p-6">
                   <InfoFormPetInfo
+                    submitButton={
+                      <CarouselCustomNextButton
+                        type="submit"
+                        disabled={!petFormValid}
+                        className="cursor-pointer mx-auto w-full max-w-xl text-lg sansita-regular py-6 px-4"
+                      >
+                        Save Pet Information
+                      </CarouselCustomNextButton>
+                    }
                     onSubmit={(data: {
                       petName: string;
                       animal: "dog" | "cat";
                       gender: "male" | "female";
                       weight: number;
-                      age: number;
+                      age: AgeType;
                       breed: string;
                     }) => {
                       const mapped: AnswersPetType = {
                         petName: data.petName,
                         animal: data.animal,
                         gender: data.gender,
-                        age: petAges.find((a) => a.value === data.age) ?? {
+                        age: petAges.find(
+                          (a) => a.value === data.age.value
+                        ) ?? {
                           value: 0,
                           label: "",
                         },
@@ -173,6 +185,7 @@ function InfoForm() {
                       handleSubmitPetInfo(mapped);
                     }}
                     answers={answers}
+                    setPetFormValid={setPetFormValid}
                   />
                 </CardContent>
               </Card>
@@ -183,6 +196,15 @@ function InfoForm() {
               <Card className="">
                 <CardContent className="flex items-start justify-center p-6 ">
                   <InfoFormUserInfo
+                    submitButton={
+                      <CarouselCustomNextButton
+                        type="submit"
+                        disabled={!userFormValid}
+                        className="cursor-pointer mx-auto w-full max-w-xl text-lg sansita-regular py-6 px-4"
+                      >
+                        Save Your Information
+                      </CarouselCustomNextButton>
+                    }
                     onSubmit={(data: {
                       firstName: string;
                       lastName: string;
@@ -200,6 +222,7 @@ function InfoForm() {
                       handleSubmitUserInfo(mapped);
                     }}
                     answers={answers}
+                    setUserFormValid={setUserFormValid}
                   />
                 </CardContent>
               </Card>
@@ -229,4 +252,4 @@ function InfoForm() {
   );
 }
 
-export default InfoForm;
+export default InfoFormPage;

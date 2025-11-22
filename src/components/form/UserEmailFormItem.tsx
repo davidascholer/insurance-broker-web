@@ -15,7 +15,7 @@ const UserEmailFormItem = () => {
           <FormControl>
             <Input placeholder="Email" {...field} className="w-full" />
           </FormControl>
-          <span className="nunito-sans-light text-sm text-[--primary-teal-dark] text-center">
+          <span className="nunito-sans-light text-sm text-[--primary-teal-dark] text-start">
             Please enter your email.
           </span>
           <FormMessage className="text-center" />

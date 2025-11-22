@@ -15,7 +15,7 @@ const UserZipFormItem = () => {
           <FormControl>
             <Input placeholder="ZIP Code" {...field} className="w-full" />
           </FormControl>
-          <span className="nunito-sans-light text-sm text-[--primary-teal-dark] text-center">
+          <span className="nunito-sans-light text-sm text-[--primary-teal-dark] text-start">
             Please enter your ZIP code.
           </span>
           <FormMessage className="text-center" />

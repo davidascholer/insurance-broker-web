@@ -39,15 +39,23 @@ const PetBreedFormItem = ({
   const form = useFormContext();
 
   useEffect(() => {
-    setBreedSelected(undefined);
     if (animal === "cat") {
       setBreedList(clientCatBreeds);
+      const breed = clientCatBreeds.find((b) => b === breedSelected);
+      if (!breed) {
+        setBreedSelected(undefined);
+      }
     } else if (animal === "dog") {
       setBreedList(dogBreeds);
+      const breed = dogBreeds.find((b) => b === breedSelected);
+      if (!breed) {
+        setBreedSelected(undefined);
+      }
     } else {
       setBreedList([]);
+      setBreedSelected(undefined);
     }
-  }, [animal, setBreedSelected]);
+  }, [animal, breedSelected, setBreedSelected]);
 
   return (
     <FormField
@@ -55,8 +63,11 @@ const PetBreedFormItem = ({
       name="breed"
       render={({ field }) => (
         <FormItem className="w-full">
+          <span className="nunito-sans-light text-sm text-[--primary-teal-dark] text-start">
+            What breed is your pet?
+          </span>
           <FormControl>
-            <div className="flex flex-col py-4 gap-4 sansita-sans">
+            <div className="flex flex-col gap-4 sansita-sans">
               {/* Hidden input registers the field with react-hook-form */}
               <input type="hidden" {...field} value={breedSelected ?? ""} />
               <Popover open={open} onOpenChange={setOpen}>
@@ -67,7 +78,7 @@ const PetBreedFormItem = ({
                     role="combobox"
                     disabled={animal === undefined}
                     aria-expanded={open}
-                    className="justify-between max-w-[200px]"
+                    className="w-full hover:bg-(--light-pink)"
                   >
                     {breedSelected || "Select breed..."}
                     <ChevronsUpDown className="opacity-50" />
@@ -120,9 +131,6 @@ const PetBreedFormItem = ({
               </Popover>
             </div>
           </FormControl>
-          <span className="nunito-sans-light text-sm text-[--primary-teal-dark] text-center">
-            What breed is your pet?
-          </span>
           <FormMessage className="text-center w-full" />
         </FormItem>
       )}

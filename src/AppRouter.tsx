@@ -8,7 +8,7 @@ import Quotes from "./pages/Quotes";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Licenses from "./pages/Licenses";
-import InfoForm from "./pages/InfoForm";
+import InfoForm from "./pages/InfoFormPage";
 
 import React, { useLayoutEffect } from "react";
 import { useLocation } from "react-router-dom";

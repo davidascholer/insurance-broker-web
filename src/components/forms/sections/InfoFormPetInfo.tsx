@@ -2,18 +2,30 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 // import { TypewriterEffect } from "../../ui/TypewriterEffect";
 // import { formatArray } from "@/lib/utils";
 import PetNameFormItem from "../../form/PetNameFormItem";
 import PetAgeFormItem from "../../form/PetAgeFormItem";
-import type { AnswersType } from "@/lib/types";
+import type { AgeType, AnswersType } from "@/lib/types";
 import { useEffect, useState } from "react";
 import PetBreedFormItem from "../../form/PetBreedFormItem";
 import PetAnimalFormItem from "../../form/PetAnimalFormItem";
 import PetGenderFormItem from "../../form/PetGenderFormItem";
 import PetWeightFormItem from "../../form/PetWeightFormItem";
+
+const ageSchema = z.object({
+  label: z.string().trim().min(1, {
+    message: "Please select an age.",
+  }),
+  value: z
+    .number({
+      error: "Please select an age.",
+    })
+    .min(1, {
+      message: "Please select an age.",
+    }),
+});
 
 const formSchema = z.object({
   petName: z.string().trim().min(1, {
@@ -32,13 +44,7 @@ const formSchema = z.object({
     .min(1, {
       message: "Please select a weight.",
     }),
-  age: z
-    .number({
-      error: "Please select an age.",
-    })
-    .min(1, {
-      message: "Please select an age.",
-    }),
+  age: ageSchema,
   breed: z
     .string({
       error: "Please select a breed.",
@@ -54,10 +60,17 @@ export type FormSchemaType = z.infer<typeof formSchema>;
 const InfoFormPetInfo = ({
   onSubmit,
   answers,
+  submitButton,
+  setPetFormValid,
 }: {
   onSubmit: SubmitHandler<FormSchemaType>;
   answers: AnswersType;
+  submitButton: React.ReactNode;
+  setPetFormValid: (valid: boolean) => void;
 }) => {
+  const [petNameSelected, setPetNameSelected] = useState<string>(
+    answers.petName || ""
+  );
   const [animalSelected, setAnimalSelected] = useState<
     "dog" | "cat" | undefined
   >(answers.animal || undefined);
@@ -67,13 +80,12 @@ const InfoFormPetInfo = ({
   const [weightSelected, setWeightSelected] = useState<number | undefined>(
     answers.weight ? Number(answers.weight) : undefined
   );
-  const [ageSelected, setAgeSelected] = useState<number | undefined>(
-    answers.age ? Number(answers.age) : undefined
+  const [ageSelected, setAgeSelected] = useState<AgeType | undefined>(
+    answers.age ? answers.age : undefined
   );
   const [breedSelected, setBreedSelected] = useState<string | undefined>(
     answers.breed || undefined
   );
-  const [formValid, setFormValid] = useState<boolean>(false);
 
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
@@ -89,22 +101,29 @@ const InfoFormPetInfo = ({
 
   useEffect(() => {
     // Check all of the answer to make sure every property has a value
-    let valid = true;
-    if (
-      !answers.petName ||
-      answers.petName === "" ||
-      !answers.animal ||
-      !answers.gender ||
-      !answers.age ||
-      answers.age.value === 0 ||
-      !answers.weight ||
-      answers.weight === "" ||
-      !answers.breed ||
-      answers.breed === ""
-    )
-      valid = false;
-    setFormValid(valid);
-  }, [answers]);
+    const currentValues = form.getValues();
+
+    try {
+      const parsedUser = formSchema.parse(currentValues);
+      if (parsedUser) setPetFormValid(true);
+      else setPetFormValid(false);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setPetFormValid(false);
+      } else {
+        throw error;
+      }
+    }
+  }, [
+    form,
+    setPetFormValid,
+    petNameSelected,
+    animalSelected,
+    genderSelected,
+    weightSelected,
+    ageSelected,
+    breedSelected,
+  ]);
 
   return (
     <div className="flex flex-col items-center w-full">
@@ -116,55 +135,43 @@ const InfoFormPetInfo = ({
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 mt-8 mb-2 w-full"
         >
-          <div className="flex flex-col justify-evenly items-center gap-12 rounded-lg w-full mt-12">
-            <div className="flex flex-col w-full justify-start items-center max-w-sm">
-              <PetNameFormItem />
+          <div className="flex flex-row flex-wrap justify-start items-center gap-12 rounded-lg w-full mt-12">
+            <div className="flex flex-col w-full justify-start items-center">
+              <PetNameFormItem setPetNameSelected={setPetNameSelected} />
             </div>
-            <div className="flex flex-row w-full flex-wrap justify-center items-center gap-8">
-              <div className="flex-1 flex justify-center items-center min-w-[150px]">
-                <PetAnimalFormItem
-                  setAnimalSelected={setAnimalSelected}
-                  animalSelected={animalSelected}
-                />
-              </div>
-              <div className="flex-1 flex justify-center items-center min-w-[150px]">
-                <PetGenderFormItem
-                  genderSelected={genderSelected}
-                  setGenderSelected={setGenderSelected}
-                />
-              </div>
+            <div className="w-full">
+              <PetAnimalFormItem
+                setAnimalSelected={setAnimalSelected}
+                animalSelected={animalSelected}
+              />
             </div>
-            <div className="flex flex-row w-full flex-wrap justify-evenly items-center gap-4">
-              <div className="flex flex-col w-[200px] justify-start items-center max-w-sm">
-                <PetWeightFormItem
-                  weightSelected={weightSelected}
-                  setWeightSelected={setWeightSelected}
-                />
-              </div>
-              <div className="flex flex-col w-[200px] justify-start items-center max-w-sm">
-                <PetAgeFormItem
-                  ageSelected={ageSelected}
-                  setAgeSelected={setAgeSelected}
-                />
-              </div>
-              <div className="flex flex-col w-[200px] justify-start items-center max-w-sm">
-                <PetBreedFormItem
-                  animal={animalSelected}
-                  setBreedSelected={setBreedSelected}
-                  breedSelected={breedSelected}
-                />
-              </div>
+            <div className="w-full">
+              <PetGenderFormItem
+                genderSelected={genderSelected}
+                setGenderSelected={setGenderSelected}
+              />
+            </div>
+            <div className="w-full">
+              <PetWeightFormItem
+                weightSelected={weightSelected}
+                setWeightSelected={setWeightSelected}
+              />
+            </div>
+            <div className="w-full">
+              <PetAgeFormItem
+                ageSelected={ageSelected}
+                setAgeSelected={setAgeSelected}
+              />
+            </div>
+            <div className="w-full">
+              <PetBreedFormItem
+                animal={animalSelected}
+                setBreedSelected={setBreedSelected}
+                breedSelected={breedSelected}
+              />
             </div>
           </div>
-          <div className="w-full text-center">
-            <Button
-              type="submit"
-              disabled={false}
-              className="cursor-pointer mx-auto w-full max-w-xl"
-            >
-              Save Pet Information
-            </Button>
-          </div>
+          <div className="w-full text-center mt-12">{submitButton}</div>
         </form>
       </Form>
     </div>

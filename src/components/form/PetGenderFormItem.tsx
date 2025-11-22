@@ -35,13 +35,16 @@ const PetGenderFormItem = ({
       name="gender"
       render={({ field }) => (
         <FormItem className="w-full">
+          <span className="nunito-sans-light text-sm text-[--primary-teal-dark] text-start">
+            What gender is your pet?
+          </span>
           <FormControl>
             {/* Hidden input ensures the field is registered & participates in form submission */}
-              <div className="flex py-4 gap-4 sansita-sans flex-row flex-wrap justify-center  w-full">
+            <div className="flex gap-4 sansita-sans flex-row flex-wrap justify-start  w-full">
               <Input type="hidden" {...field} value={genderSelected ?? ""} />
               <Button
                 type="button"
-                className={`cursor-pointer transition-all duration-300 ease-in-out hover:scale-105 ${
+                className={`cursor-pointer transition-all duration-300 ease-in-out hover:scale-105 flex-1 ${
                   genderSelected === "female" ? "opacity-60" : ""
                 }`}
                 onClick={() => handleSelect("male")}
@@ -50,7 +53,7 @@ const PetGenderFormItem = ({
               </Button>
               <Button
                 type="button"
-                className={`cursor-pointer transition-all duration-300 ease-in-out hover:scale-105 ${
+                className={`cursor-pointer transition-all duration-300 ease-in-out hover:scale-105 flex-1 ${
                   genderSelected === "male" ? "opacity-60" : ""
                 }`}
                 onClick={() => handleSelect("female")}
@@ -59,9 +62,7 @@ const PetGenderFormItem = ({
               </Button>
             </div>
           </FormControl>
-          <span className="nunito-sans-light text-sm text-[--primary-teal-dark] text-center">
-            What gender is your pet?
-          </span>
+
           <FormMessage className="text-center w-full" />
         </FormItem>
       )}
