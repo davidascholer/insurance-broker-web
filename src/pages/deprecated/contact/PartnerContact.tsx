@@ -22,14 +22,14 @@ const PartnerContact = () => {
   content="pet insurance partners, insurance partnership, pet insurance brokers, carrier partnerships, insurance API, pet insurance quotes" />
 <meta name="author" content="PIPA Broker" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://pipabroker.com/partners" />
+<meta property="og:url" content="https://pipabroker.com/partner-contact" />
 <meta property="og:title" content="Pet Insurance Partnership Opportunities | Partner with PIPA Broker" />
 <meta property="og:description"
   content="Partner with PIPA Broker to bring your pet insurance quotes directly to qualified customers. Connect with our team to explore partnership opportunities." />
 <meta property="og:image" content="https://pipabroker.com/og-image.png" />
 <meta property="og:site_name" content="PIPA Broker" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content="https://pipabroker.com/partners" />
+<meta property="twitter:url" content="https://pipabroker.com/partner-contact" />
 <meta property="twitter:title" content="Pet Insurance Partnership Opportunities | Partner with PIPA Broker" />
 <meta property="twitter:description"
   content="Partner with PIPA Broker to bring your pet insurance quotes directly to qualified customers. Connect with our team to explore partnership opportunities." />
@@ -39,7 +39,7 @@ const PartnerContact = () => {
 <meta name="robots" content="index, follow" />
 <meta name="language" content="English" />
 <meta name="revisit-after" content="7 days" />
-<link rel="canonical" href="https://pipabroker.com/partners" />
+<link rel="canonical" href="https://pipabroker.com/partner-contact" />
 
 <title>Pet Insurance Partnership Opportunities | Partner with PIPA Broker</title>
       

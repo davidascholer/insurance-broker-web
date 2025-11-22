@@ -99,9 +99,9 @@ const Footer = ({ className }: { className?: string }) => {
             header="Partners"
             className="min-[768px]:max-w-[175px]"
             items={[
-              { url: "/info", msg: "Prudent Pet" },
-              { url: "/info", msg: "Kanguro" },
-              { url: "/partners", msg: "Become a Partner" },
+              { url: "/partner", msg: "Prudent Pet" },
+              { url: "/partner", msg: "Kanguro" },
+              { url: "/partner", msg: "Become a Partner" },
             ]}
           />
           <FooterColumn
@@ -116,7 +116,7 @@ const Footer = ({ className }: { className?: string }) => {
           />
           <FooterColumn
             header="Contact"
-            items={[{ url: "/partners", msg: "Partner with Us" }]}
+            items={[{ url: "/partner", msg: "Partner with Us" }]}
           >
             <Link
               to="mailto:admin@pipabroker.com"

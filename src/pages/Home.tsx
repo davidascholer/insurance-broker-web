@@ -130,7 +130,7 @@ const Home = () => {
               setPrudentImage("/insurers/prudent_logo_white_wide.svg")
             }
             onClick={() => {
-              navigate("/info");
+              navigate("/partner");
             }}
           />
           <img
@@ -144,7 +144,7 @@ const Home = () => {
               setKanguroImage("/insurers/kanguro_logo_white_wide.svg")
             }
             onClick={() => {
-              navigate("/info");
+              navigate("/partner");
             }}
           />
         </div>

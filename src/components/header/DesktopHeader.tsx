@@ -192,7 +192,7 @@ const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
               <div className="flex flex-col gap-4 p-1 items-start">
                 <button
                   onClick={() => {
-                    navigate("/partners");
+                    navigate("/partner");
                   }}
                   className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 text-(--text-dark)"
                   role="menuitem"

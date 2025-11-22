@@ -5,7 +5,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
+} from "@/components/ui/modified/carousel";
 import type {
   AnswersOtherType,
   AnswersPetType,
@@ -141,7 +141,10 @@ function InfoForm() {
     <main className="bg-(--light-pink) w-full p-8">
       <InfoFormBanner />
 
-      <Carousel className="w-full max-w-3/4 mx-auto my-8">
+      <Carousel className="w-full mx-auto my-8">
+              {/* <CarouselPrevious />
+        <CarouselNext /> */}
+
         <CarouselContent className="">
           <CarouselItem>
             <div className="p-1">
@@ -221,8 +224,6 @@ function InfoForm() {
             </div>
           </CarouselItem>
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
       </Carousel>
     </main>
   );

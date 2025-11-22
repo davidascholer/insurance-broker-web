@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Terminology from "./pages/Terminology";
-import PartnerContact from "./pages/contact/PartnerContact";
+// import PartnerContact from "./pages/contact/PartnerContact";
 import About from "./pages/About";
 import FAQs from "./pages/FAQs";
 import Quotes from "./pages/Quotes";
@@ -20,6 +20,7 @@ import UnderstandPetInsuranceTypes from "./pages/blog/UnderstandingPetInsuranceT
 import PetInsuranceExclusions from "./pages/blog/PetInsuranceExclusions";
 import HowMuchDoesPetInsuranceCost from "./pages/blog/HowMuchDoesPetInsuranceCost";
 import KanguroEmbed from "./features/kanguro/pages/KanguroEmbed";
+import PartnerPage from "./pages/PartnerPage";
 
 const RouterWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -43,13 +44,32 @@ const AppRouter = () => {
         <Route path="/faqs" element={<FAQs />} />
         <Route path="/kanguro" element={<KanguroEmbed />} />
         <Route path="/terminology" element={<Terminology />} />
-        <Route path="/blog/what-is-pet-insurance" element={<WhatIsPetInsurance />} />
-        <Route path="/blog/why-consider-pet-insurance" element={<WhyConsiderPetInsurance />} />
-        <Route path="/blog/how-to-compare-pet-insurance-policies" element={<HowToComparePetInsurancePolicies />} />
-        <Route path="/blog/understanding-pet-insurance-types" element={<UnderstandPetInsuranceTypes />} />
-        <Route path="/blog/pet-insurance-exclusions" element={<PetInsuranceExclusions />} />
-        <Route path="/blog/how-much-does-pet-insurance-cost" element={<HowMuchDoesPetInsuranceCost />} />
-        <Route path="/partners" element={<PartnerContact />} />
+        <Route path="/partner" element={<PartnerPage />} />
+        <Route
+          path="/blog/what-is-pet-insurance"
+          element={<WhatIsPetInsurance />}
+        />
+        <Route
+          path="/blog/why-consider-pet-insurance"
+          element={<WhyConsiderPetInsurance />}
+        />
+        <Route
+          path="/blog/how-to-compare-pet-insurance-policies"
+          element={<HowToComparePetInsurancePolicies />}
+        />
+        <Route
+          path="/blog/understanding-pet-insurance-types"
+          element={<UnderstandPetInsuranceTypes />}
+        />
+        <Route
+          path="/blog/pet-insurance-exclusions"
+          element={<PetInsuranceExclusions />}
+        />
+        <Route
+          path="/blog/how-much-does-pet-insurance-cost"
+          element={<HowMuchDoesPetInsuranceCost />}
+        />
+        {/* <Route path="/partner-contact" element={<PartnerContact />} /> */}
         <Route path="/info" element={<InfoForm />} />
         <Route path="/quotes" element={<Quotes />} />
         <Route path="/terms" element={<Terms />} />
