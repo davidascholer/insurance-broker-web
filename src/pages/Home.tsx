@@ -19,10 +19,10 @@ const Home = () => {
   return (
     <main
       role="main"
-      aria-label="Pipa Broker Homepage"
+      aria-label="PIPA Broker Homepage"
       className="overflow-scroll no-scrollbar"
     >
-      <meta name="title" content="Pipa Broker - Pet Insurance Made Simple" />
+      <meta name="title" content="PIPA Broker - Pet Insurance Made Simple" />
       <meta
         name="description"
         content="Find the perfect pet insurance for your furry family members. Compare quotes from top providers and protect your pets with comprehensive coverage."
@@ -31,12 +31,12 @@ const Home = () => {
         name="keywords"
         content="pet insurance, dog insurance, cat insurance, pet health, veterinary care, pet coverage"
       />
-      <meta name="author" content="Pipa Broker" />
+      <meta name="author" content="PIPA Broker" />
       <meta property="og:type" content="website" />
       <meta property="og:url" content="https://pipabroker.com/" />
       <meta
         property="og:title"
-        content="Pipa Broker - Pet Insurance Made Simple"
+        content="PIPA Broker - Pet Insurance Made Simple"
       />
       <meta
         property="og:description"
@@ -48,7 +48,7 @@ const Home = () => {
       <meta property="twitter:url" content="https://pipabroker.com/" />
       <meta
         property="twitter:title"
-        content="Pipa Broker - Pet Insurance Made Simple"
+        content="PIPA Broker - Pet Insurance Made Simple"
       />
       <meta
         property="twitter:description"
@@ -64,7 +64,7 @@ const Home = () => {
       <meta name="language" content="English" />
       <meta name="revisit-after" content="7 days" />
       <link rel="canonical" href="https://pipabroker.com/" />
-      <title>Pipa Broker - Pet Insurance Made Simple</title>
+      <title>PIPA Broker - Pet Insurance Made Simple</title>
 
       <Header />
 
