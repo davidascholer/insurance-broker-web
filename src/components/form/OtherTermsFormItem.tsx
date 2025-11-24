@@ -3,15 +3,15 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { Link } from "react-router-dom";
 import { Checkbox } from "../ui/checkbox";
-import { useState } from "react";
 
-const OtherTermsFormItem = () => {
-    const [formValid, setFormValid] = useState(false);
-  
+const OtherTermsFormItem = ({
+  setTermsSelected,
+}: {
+  setTermsSelected: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   return (
     <FormField
       // control={form.control}
@@ -24,11 +24,13 @@ const OtherTermsFormItem = () => {
                 // checked={field.value?.includes(item.id)}
                 defaultChecked={false}
                 onCheckedChange={(checked) => {
-                  setFormValid(!!checked);
+                  setTermsSelected(!!checked);
                   return checked
                     ? field.onChange([...field.value, "terms"])
                     : field.onChange(
-                        field.value?.filter((value) => value !== "terms")
+                        field.value?.filter(
+                          (value: string) => value !== "terms"
+                        )
                       );
                 }}
               />

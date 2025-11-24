@@ -18,7 +18,7 @@ const HowToComparePetInsurancePolicies = () => {
         </p>
 
         <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
-          1. Comparing Plans: See Clearly, Choose Confidently
+          Comparing Plans: See Clearly, Choose Confidently
         </h2>
         <p>
           When evaluating pet insurance policies, start by comparing core
@@ -93,7 +93,7 @@ const HowToComparePetInsurancePolicies = () => {
         </ul>
 
         <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
-          2. Policy Types: Tailor to Your Pet's Needs (and Your Wallet)
+          Policy Types: Tailor to Your Pet's Needs (and Your Wallet)
         </h2>
         <p>
           Pet insurance comes in several flavors and each fits a different level
@@ -121,7 +121,7 @@ const HowToComparePetInsurancePolicies = () => {
         </p>
 
         <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
-          3. Enrollment Timing: Get In Early, Stay Protected
+          Enrollment Timing: Get In Early, Stay Protected
         </h2>
         <p>
           The biggest rule of thumb that can save you real dollars on vet costs?

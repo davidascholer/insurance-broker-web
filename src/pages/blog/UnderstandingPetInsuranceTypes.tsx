@@ -17,7 +17,7 @@ const UnderstandPetInsuranceTypes = () => {
         </p>
 
         <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
-          1. Accident-Only Plans
+          Accident-Only Plans
         </h2>
         <p>
           These plans are your budget-friendly safety net for unexpected
@@ -47,7 +47,7 @@ const UnderstandPetInsuranceTypes = () => {
         </ul>
 
         <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
-          2. Accident-and-Illness (Comprehensive) Plans
+          Accident-and-Illness (Comprehensive) Plans
         </h2>
         <p>
           The most comprehensive option, this plan covers a wide range,
@@ -81,7 +81,7 @@ const UnderstandPetInsuranceTypes = () => {
         </ul>
 
         <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
-          3. Wellness Add-Ons (Preventive Care Plans)
+          Wellness Add-Ons (Preventive Care Plans)
         </h2>
         <p>
           Wellness or preventive care coverage is not a standalone policy but an

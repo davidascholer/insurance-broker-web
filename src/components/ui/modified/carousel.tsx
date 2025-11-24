@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import type { unknown } from "zod";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -53,6 +54,7 @@ function Carousel({
     {
       ...opts,
       axis: orientation === "horizontal" ? "x" : "y",
+      watchDrag: false,
     },
     plugins
   );
@@ -74,16 +76,19 @@ function Carousel({
   }, [api]);
 
   const handleKeyDown = React.useCallback(
-    (event: React.KeyboardEvent<HTMLDivElement>) => {
-      if (event.key === "ArrowLeft") {
-        event.preventDefault();
-        scrollPrev();
-      } else if (event.key === "ArrowRight") {
-        event.preventDefault();
-        scrollNext();
-      }
+    // (event: React.KeyboardEvent<HTMLDivElement>) => {
+    () => {
+      // Omit this behavior
+      // if (event.key === "ArrowLeft") {
+      //   event.preventDefault();
+      //   scrollPrev();
+      // } else if (event.key === "ArrowRight") {
+      //   event.preventDefault();
+      //   scrollNext();
+      // }
     },
-    [scrollPrev, scrollNext]
+    // [scrollPrev, scrollNext]
+    []
   );
 
   React.useEffect(() => {
@@ -102,6 +107,27 @@ function Carousel({
     };
   }, [api, onSelect]);
 
+  const carouselContainerRef = React.useRef(null);
+  const isSwipingEnabled = false;
+
+  // ... (Other carousel state and logic)
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!isSwipingEnabled) {
+      e.preventDefault(); // Prevent default touch behavior if swipe is disabled
+      return;
+    }
+    // ... (Your existing touch start logic for swipe)
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!isSwipingEnabled) {
+      e.preventDefault();
+      return;
+    }
+    // ... (Your existing touch move logic for swipe)
+  };
+
   return (
     <CarouselContext.Provider
       value={{
@@ -118,10 +144,13 @@ function Carousel({
     >
       <div
         onKeyDownCapture={handleKeyDown}
+        ref={carouselContainerRef}
         className={cn("relative", className)}
         role="region"
         aria-roledescription="carousel"
         data-slot="carousel"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
         {...props}
       >
         {children}
@@ -299,20 +328,25 @@ function CarouselCustomNextButton({
   children,
   type = "button",
   disabled = false,
+  onSubmit,
 }: React.ComponentProps<typeof Button> & {
   children: React.ReactNode;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
+  onSubmit?: () => void;
 }) {
-  const { scrollNext, canScrollNext } = useCarousel();
+  const { scrollNext } = useCarousel();
 
   return (
     <Button
       data-slot="carousel-next-trigger"
       className={className}
       type={type}
-      disabled={disabled || !canScrollNext}
+      disabled={disabled}
       onClick={() => {
+        if (onSubmit) {
+          onSubmit();
+        }
         window.scrollTo({ top: 0, behavior: "smooth" });
         scrollNext();
       }}

@@ -11,7 +11,7 @@ const WhatIsPetInsurance = () => {
           Why Pet Insurance Deserves a Spot in Your Wallet and Your Heart
         </h1>
 
-        <ol className="list-decimal ml-5 space-y-2">
+        <ol className="list-noneA ml-5 space-y-2">
           <li>
             <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
               Pets Have Accidents—It&#39;s a Truth of Life

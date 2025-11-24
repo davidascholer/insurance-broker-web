@@ -15,7 +15,7 @@ import type {
 } from "@/lib/types";
 import InfoFormPetInfo from "../components/forms/sections/InfoFormPetInfo";
 import InfoFormBanner from "@/components/forms/InfoFormBanner";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { PIPA_PET_KEY } from "@/lib/constants";
 import { petAges } from "@/data/petAges";
 import InfoFormUserInfo from "@/components/forms/sections/InfoFormUserInfo";
@@ -53,7 +53,6 @@ function InfoFormPage() {
   const navigate = useNavigate();
   const [petFormValid, setPetFormValid] = useState(false);
   const [userFormValid, setUserFormValid] = useState(false);
-  const [formValid, setFormValid] = useState(false);
   const [answers, setAnswers] = useState<AnswersType>(() => {
     const savedAnswers = localStorage.getItem(PIPA_PET_KEY);
     if (savedAnswers) {
@@ -104,42 +103,6 @@ function InfoFormPage() {
     registerPetFormCompleted({ petObject: updatedAnswers });
     navigate("/quotes");
   };
-
-  useEffect(() => {
-    // // Pet form validation
-    // let petValid = true;
-    // if (
-    //   !answers.petName ||
-    //   answers.petName === "" ||
-    //   !answers.animal ||
-    //   !answers.gender ||
-    //   !answers.age ||
-    //   answers.age.value === 0 ||
-    //   !answers.weight ||
-    //   answers.weight === "" ||
-    //   !answers.breed ||
-    //   answers.breed === ""
-    // ) {
-    //   petValid = false;
-    // }
-    // // setPetFormValid(petValid);
-
-    // let userValid = true;
-    // if (
-    //   !answers.name ||
-    //   answers.name.firstName === "" ||
-    //   !answers.name ||
-    //   answers.name.lastName === "" ||
-    //   !answers.email ||
-    //   answers.email === "" ||
-    //   !answers.zip ||
-    //   answers.zip === ""
-    // )
-    //   userValid = false;
-    // setUserFormValid(userValid);
-
-    setFormValid(petFormValid && userFormValid);
-  }, [petFormValid, userFormValid]);
 
   return (
     <main className="bg-(--light-pink) w-full p-8 overflow-y-scroll">
@@ -196,15 +159,6 @@ function InfoFormPage() {
               <Card className="">
                 <CardContent className="flex items-start justify-center p-6 ">
                   <InfoFormUserInfo
-                    submitButton={
-                      <CarouselCustomNextButton
-                        type="submit"
-                        disabled={!userFormValid}
-                        className="cursor-pointer mx-auto w-full max-w-xl text-lg sansita-regular py-6 px-4"
-                      >
-                        Save Your Information
-                      </CarouselCustomNextButton>
-                    }
                     onSubmit={(data: {
                       firstName: string;
                       lastName: string;
@@ -223,6 +177,7 @@ function InfoFormPage() {
                     }}
                     answers={answers}
                     setUserFormValid={setUserFormValid}
+                    isValid={userFormValid}
                   />
                 </CardContent>
               </Card>
@@ -240,7 +195,7 @@ function InfoFormPage() {
                       handleSubmitAdditionalInfo(mapped);
                     }}
                     answers={answers}
-                    formValid={formValid}
+                    formValid={petFormValid && userFormValid}
                   />
                 </CardContent>
               </Card>

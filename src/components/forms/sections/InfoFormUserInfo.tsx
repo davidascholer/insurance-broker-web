@@ -8,7 +8,8 @@ import UserFirstNameFormItem from "@/components/form/UserFirstNameFormItem";
 import UserLastNameFormItem from "@/components/form/UserLastNameFormItem";
 import UserEmailFormItem from "@/components/form/UserEmailFormItem";
 import UserZipFormItem from "@/components/form/UserZipFormItem";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { CarouselCustomNextButton } from "@/components/ui/modified/carousel";
 
 const formSchema = z.object({
   firstName: z
@@ -42,12 +43,12 @@ export type FormSchemaType = z.infer<typeof formSchema>;
 const InfoFormUserInfo = ({
   onSubmit,
   answers,
-  submitButton,
   setUserFormValid,
+  isValid = true,
 }: {
   onSubmit: SubmitHandler<FormSchemaType>;
+  isValid?: boolean;
   answers: AnswersType;
-  submitButton?: React.ReactNode;
   setUserFormValid: (valid: boolean) => void;
 }) => {
   const form = useForm<FormSchemaType>({
@@ -60,8 +61,21 @@ const InfoFormUserInfo = ({
     },
   });
 
-  const currentValues = form.getValues();
+  const [firstNameSelected, setUserFirstNameSelected] = useState<string>(
+    answers.name?.firstName || ""
+  );
+  const [lastNameSelected, setUserLastNameSelected] = useState<string>(
+    answers.name?.lastName || ""
+  );
+  const [emailSelected, setUserEmailSelected] = useState<string>(
+    answers.email || ""
+  );
+  const [zipSelected, setUserZipSelected] = useState<string>(answers.zip || "");
+
   useEffect(() => {
+    // Check all of the answer to make sure every property has a value
+    const currentValues = form.getValues();
+
     try {
       const parsedUser = formSchema.parse(currentValues);
       if (parsedUser) setUserFormValid(true);
@@ -73,7 +87,14 @@ const InfoFormUserInfo = ({
         throw error;
       }
     }
-  }, [currentValues, setUserFormValid]);
+  }, [
+    form,
+    setUserFormValid,
+    firstNameSelected,
+    lastNameSelected,
+    emailSelected,
+    zipSelected,
+  ]);
 
   return (
     <div className="flex flex-col items-center w-full">
@@ -82,24 +103,39 @@ const InfoFormUserInfo = ({
       </p>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={(e) => e.preventDefault()}
           className="space-y-8 mb-2 w-full"
         >
           <div className="flex flex-col justify-evenly items-center gap-4 rounded-lg w-full mt-12">
             <div className="flex flex-col w-full justify-start items-center">
-              <UserFirstNameFormItem />
+              <UserFirstNameFormItem
+                setUserFirstNameSelected={setUserFirstNameSelected}
+              />
             </div>
             <div className="flex flex-col w-full justify-start items-center">
-              <UserLastNameFormItem />
+              <UserLastNameFormItem
+                setUserLastNameSelected={setUserLastNameSelected}
+              />
             </div>
             <div className="flex flex-col w-full justify-start items-center">
-              <UserEmailFormItem />
+              <UserEmailFormItem setUserEmailSelected={setUserEmailSelected} />
             </div>
             <div className="flex flex-col w-full justify-start items-center">
-              <UserZipFormItem />
+              <UserZipFormItem setUserZipSelected={setUserZipSelected} />
             </div>
           </div>
-          <div className="w-full text-center">{submitButton}</div>
+          <div className="w-full text-center">
+            <CarouselCustomNextButton
+              type="submit"
+              disabled={!isValid}
+              onSubmit={form.handleSubmit((data) =>
+                onSubmit(data as FormSchemaType)
+              )}
+              className="cursor-pointer mx-auto w-full max-w-xl text-lg sansita-regular py-6 px-4"
+            >
+              Save Your Information
+            </CarouselCustomNextButton>
+          </div>
         </form>
       </Form>
     </div>
