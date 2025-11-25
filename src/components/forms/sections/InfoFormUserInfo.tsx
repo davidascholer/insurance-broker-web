@@ -81,7 +81,6 @@ const InfoFormUserInfo = ({
   useEffect(() => {
     // Check all of the answer to make sure every property has a value
     const currentValues = form.getValues();
-    console.log("InfoFormUserInfo - currentValues:", currentValues);
 
     try {
       const parsedUser = formSchema.parse(currentValues);
@@ -154,7 +153,16 @@ const InfoFormUserInfo = ({
               rel="noopener noreferrer"
               className="cursor-pointer text-(--primary-coral) font-semibold"
             >
-              terms of service
+              Terms Of Service
+            </Link>
+            {" "}and{" "}
+            <Link
+              to="/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cursor-pointer text-(--primary-coral) font-semibold"
+            >
+              Privacy Policy
             </Link>
             .
           </span>

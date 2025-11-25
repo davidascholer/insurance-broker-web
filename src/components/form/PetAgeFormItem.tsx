@@ -85,7 +85,6 @@ const PetAgeFormItem = ({
                               const selectedAge = petAges.find(
                                 (a) => a.label === currentLabel
                               );
-                              console.log("Selected age :", selectedAge);
                               if (selectedAge) {
                                 setAgeSelected(selectedAge);
                                 if (form?.setValue) {

@@ -58,17 +58,16 @@ const PartnerPage = () => {
         </div>
       </div>
       <SectionBackground color="bg-(--light-pink)">
-        <div className="flex flex-row flex-wrap justify-center items-center gap-12 p-8 max-w-7xl mx-auto">
-          <></>
-          <h2 className="text-(--primary-teal) font-extrabold whitespace-pre-wrap self-start tracking-wide">
+        <div className="flex flex-row flex-wrap justify-center items-center gap-12 p-8 max-w-7xl mx-auto" >
+          <a href="#rescue-shelters" rel="noreferrer" className="text-(--primary-teal) text-center font-extrabold whitespace-pre-wrap self-start tracking-widest">
             FOR RESCUE SHELTERS
-          </h2>
-          <h2 className="text-(--primary-teal) font-extrabold whitespace-pre-wrap self-start tracking-widest">
+          </a>
+          <a href="#veterinarians" rel="noreferrer" className="text-(--primary-teal) text-center font-extrabold whitespace-pre-wrap self-start tracking-widest">
             FOR VETERINARIANS
-          </h2>
-          <h2 className="text-(--primary-teal) font-extrabold whitespace-pre-wrap self-start tracking-widest">
+          </a>
+          <a href="#pet-insurance-providers" rel="noreferrer" className="text-(--primary-teal) text-center font-extrabold whitespace-pre-wrap self-start tracking-widest">
             FOR PET INSURANCE PROVIDERS
-          </h2>
+          </a>
         </div>
       </SectionBackground>
       <SectionBackground color="bg-(--coral-pink)">
@@ -94,7 +93,7 @@ const PartnerPage = () => {
         </div>
       </SectionBackground>
       <SectionBackground color="bg-(--primary-teal-dark) ">
-        <h2 className="text-2xl sansita-bold whitespace-pre-wrap text-white">
+        <h2 id="rescue-shelters" className="text-2xl sansita-bold whitespace-pre-wrap text-white">
           Rescues save lives. We help those lives flourish.
         </h2>
       </SectionBackground>
@@ -124,7 +123,7 @@ const PartnerPage = () => {
         </div>
       </SectionBackground>
       <SectionBackground color="bg-(--primary-coral) ">
-        <h2 className="text-2xl sansita-bold whitespace-pre-wrap text-white">
+        <h2 id="veterinarians" className="text-2xl sansita-bold whitespace-pre-wrap text-white">
           We make quality care accessible for every pet through partnerships with
           veterinarians.
         </h2>
@@ -156,7 +155,7 @@ const PartnerPage = () => {
         </div>
       </SectionBackground>
       <SectionBackground color="bg-(--primary-teal-dark) ">
-        <h2 className="text-2xl sansita-bold whitespace-pre-wrap text-white">
+        <h2 id="pet-insurance-providers" className="text-2xl sansita-bold whitespace-pre-wrap text-white">
           PIPA + Pet Insurers: Making great coverage easier to find.
         </h2>
       </SectionBackground>

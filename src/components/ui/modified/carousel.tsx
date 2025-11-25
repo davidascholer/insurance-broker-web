@@ -329,11 +329,13 @@ function CarouselCustomNextButton({
   type = "button",
   disabled = false,
   onSubmit,
+  scrollRef,
 }: React.ComponentProps<typeof Button> & {
   children: React.ReactNode;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   onSubmit?: () => void;
+  scrollRef?: React.RefObject<HTMLDivElement>;
 }) {
   const { scrollNext } = useCarousel();
 
@@ -347,7 +349,16 @@ function CarouselCustomNextButton({
         if (onSubmit) {
           onSubmit();
         }
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (scrollRef?.current) {
+          const fixedHeaderHeight = 60; // Example added height
+          const scrollPosition =
+            scrollRef.current.offsetTop - fixedHeaderHeight;
+
+          window.scrollTo({
+            top: scrollPosition,
+            behavior: "smooth",
+          });
+        }
         scrollNext();
       }}
     >

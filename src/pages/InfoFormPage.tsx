@@ -15,7 +15,7 @@ import type {
 } from "@/lib/types";
 import InfoFormPetInfo from "../components/forms/sections/InfoFormPetInfo";
 import InfoFormBanner from "@/components/forms/InfoFormBanner";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { PIPA_PET_KEY } from "@/lib/constants";
 import { petAges } from "@/data/petAges";
 import InfoFormUserInfo from "@/components/forms/sections/InfoFormUserInfo";
@@ -47,6 +47,7 @@ const defaultAnswers: AnswersType = {
 
 function InfoFormPage() {
   const navigate = useNavigate();
+  const scrollRef = useRef<HTMLDivElement>(null!);
   const [petFormValid, setPetFormValid] = useState(false);
   const [userFormValid, setUserFormValid] = useState(false);
   const [answers, setAnswers] = useState<AnswersType>(() => {
@@ -126,7 +127,7 @@ function InfoFormPage() {
         </div>
       </header>
       <InfoFormBanner />
-      <Carousel className="w-full mx-auto my-8 flex flex-col items-center">
+      <Carousel className="w-full mx-auto my-8 flex flex-col items-center" ref={scrollRef}>
         <CarouselDots className="max-w-4xl" items={2} />
         <CarouselContent className="min-w-[300px] max-w-screen">
           <CarouselItem>
@@ -139,6 +140,7 @@ function InfoFormPage() {
                         type="submit"
                         disabled={!petFormValid}
                         className="cursor-pointer mx-auto w-full max-w-xl text-lg sansita-regular py-6 px-4"
+                        scrollRef={scrollRef}
                       >
                         Continue
                       </CarouselCustomNextButton>

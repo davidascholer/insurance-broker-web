@@ -60,9 +60,6 @@ const InfoFormAdditionalInfo = ({
     }
   }, [form, formValid, isValid, referenceSelected, termsSelected]);
 
-  console.log("InfoFormAdditionalInfo - isValid:", isValid);
-  console.log("InfoFormAdditionalInfo - formValid:", formValid);
-
   return (
     <div className="flex flex-col items-center w-full">
       <p className="h-auto flex-1 font-bold sansita-bold text-sm min-[500px]:text-lg sm:text-2xl text-(--text-dark)">
