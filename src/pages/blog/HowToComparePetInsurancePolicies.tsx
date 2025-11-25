@@ -5,6 +5,30 @@ import { Link } from "react-router-dom";
 const HowToComparePetInsurancePolicies = () => {
   return (
     <div className="bg-(--light-pink)">
+
+<meta name="title" content="Choosing Pet Insurance with PIPA Broker: What to Know" />
+<meta name="description" content="Learn how to compare pet insurance plans, choose the right policy type, and enroll at the best time. Clear, practical guidance from PIPA Broker to protect your pet and your budget." />
+<meta name="keywords" content="pet insurance guide, compare pet insurance, accident and illness coverage, wellness add-ons, pet insurance tips, PIPA Broker" />
+<meta name="author" content="PIPA Broker" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://pipabroker.com/blog/how-to-compare-pet-insurance-policies" />
+<meta property="og:title" content="Choosing Pet Insurance with PIPA Broker: What to Know" />
+<meta property="og:description" content="Learn how to compare pet insurance plans, choose the right policy type, and enroll at the best time. Clear, practical guidance from PIPA Broker to protect your pet and your budget." />
+<meta property="og:image" content="https://pipabroker.com/og-image.png" />
+<meta property="og:site_name" content="PIPA Broker" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="https://pipabroker.com/blog/how-to-compare-pet-insurance-policies" />
+<meta property="twitter:title" content="Choosing Pet Insurance with PIPA Broker: What to Know" />
+<meta property="twitter:description" content="Learn how to compare pet insurance plans, choose the right policy type, and enroll at the best time. Clear, practical guidance from PIPA Broker to protect your pet and your budget." />
+<meta property="twitter:image" content="https://pipabroker.com/twitter-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="robots" content="index, follow" />
+<meta name="language" content="English" />
+<meta name="revisit-after" content="7 days" />
+<link rel="canonical" href="https://pipabroker.com/blog/how-to-compare-pet-insurance-policies" />
+<title>Choosing Pet Insurance with PIPA Broker: What to Know</title>
+      
       <Header />
       <div className="flex flex-col justify-start items-start gap-6 p-12 pt-36 max-w-6xl mx-auto min-h-screen">
         <h1 className="text-(--primary-teal-dark) text-3xl sansita-bold whitespace-pre-wrap self-start">
