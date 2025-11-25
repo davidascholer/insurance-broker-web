@@ -89,8 +89,7 @@ export const verifyAnswers = (answers: AnswersType | undefined) => {
     !answers.age ||
     answers.age?.value === 0 ||
     !answers.weight ||
-    !answers.breed ||
-    !answers.reference
+    !answers.breed
   )
     return false;
   return true;

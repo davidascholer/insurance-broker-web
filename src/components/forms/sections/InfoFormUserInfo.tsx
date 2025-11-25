@@ -10,6 +10,10 @@ import UserEmailFormItem from "@/components/form/UserEmailFormItem";
 import UserZipFormItem from "@/components/form/UserZipFormItem";
 import { useEffect, useState } from "react";
 import { CarouselCustomNextButton } from "@/components/ui/modified/carousel";
+import OtherReferenceFormItem from "@/components/form/OtherReferenceFormItem";
+import { Link } from "react-router-dom";
+
+const MESSAGE = "Fetch my Quotes!";
 
 const formSchema = z.object({
   firstName: z
@@ -36,6 +40,7 @@ const formSchema = z.object({
     }),
   email: z.email("Invalid email address"),
   zip: z.string().regex(/^\d{5}$/, "Invalid 5-digit ZIP code."),
+  reference: z.optional(z.string()),
 });
 
 export type FormSchemaType = z.infer<typeof formSchema>;
@@ -58,6 +63,7 @@ const InfoFormUserInfo = ({
       lastName: answers.name?.lastName || "",
       email: answers.email || "",
       zip: answers.zip || "",
+      reference: answers.reference || "",
     },
   });
 
@@ -75,6 +81,7 @@ const InfoFormUserInfo = ({
   useEffect(() => {
     // Check all of the answer to make sure every property has a value
     const currentValues = form.getValues();
+    console.log("InfoFormUserInfo - currentValues:", currentValues);
 
     try {
       const parsedUser = formSchema.parse(currentValues);
@@ -123,6 +130,9 @@ const InfoFormUserInfo = ({
             <div className="flex flex-col w-full justify-start items-center">
               <UserZipFormItem setUserZipSelected={setUserZipSelected} />
             </div>
+            <div className="flex flex-col w-full justify-start items-center">
+              <OtherReferenceFormItem />
+            </div>
           </div>
           <div className="w-full text-center">
             <CarouselCustomNextButton
@@ -133,9 +143,21 @@ const InfoFormUserInfo = ({
               )}
               className="cursor-pointer mx-auto w-full max-w-xl text-lg sansita-regular py-6 px-4"
             >
-              Save Your Information
+              {MESSAGE}
             </CarouselCustomNextButton>
           </div>
+          <span>
+            By clicking "{MESSAGE}" you agree to our{" "}
+            <Link
+              to="/terms"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cursor-pointer text-(--primary-coral) font-semibold"
+            >
+              terms of service
+            </Link>
+            .
+          </span>
         </form>
       </Form>
     </div>

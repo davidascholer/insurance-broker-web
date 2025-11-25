@@ -121,7 +121,7 @@ const Footer = ({ className }: { className?: string }) => {
             <Link
               to="mailto:admin@pipabroker.com"
               target="_blank"
-              className="sansita-regular cursor-pointer nunito-sans-medium transition-transform duration-200 ease hover:-translate-y-0.5"
+              className="cursor-pointer nunito-sans-medium transition-transform duration-200 ease hover:-translate-y-0.5"
             >
               Email Us
             </Link>
@@ -129,7 +129,7 @@ const Footer = ({ className }: { className?: string }) => {
               <Link
                 to="https://www.facebook.com/profile.php?id=61579696327519"
                 target="_blank"
-                className="sansita-regular cursor-pointer nunito-sans-medium transition-transform duration-200 ease hover:-translate-y-0.5"
+                className="cursor-pointer nunito-sans-medium transition-transform duration-200 ease hover:-translate-y-0.5"
               >
                 <img
                   className="inline-block mb-1 mr-1 size-8"
@@ -140,7 +140,7 @@ const Footer = ({ className }: { className?: string }) => {
               <Link
                 to="https://www.instagram.com/pipabroker/"
                 target="_blank"
-                className="sansita-regular cursor-pointer nunito-sans-medium transition-transform duration-200 ease hover:-translate-y-0.5"
+                className="cursor-pointer nunito-sans-medium transition-transform duration-200 ease hover:-translate-y-0.5"
               >
                 <img
                   className="inline-block mb-1 mr-1 size-8"

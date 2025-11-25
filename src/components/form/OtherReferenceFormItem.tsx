@@ -6,29 +6,23 @@ import {
 } from "@/components/ui/form";
 import { Input } from "../ui/input";
 
-const OtherReferenceFormItem = ({
-  setReferenceSelected,
-}: {
-  setReferenceSelected: React.Dispatch<React.SetStateAction<string>>;
-}) => {
+const OtherReferenceFormItem = () => {
   return (
     <FormField
       name="reference"
       render={({ field }) => (
         <FormItem className="w-full">
+          <span className="nunito-sans-light text-sm text-[--primary-teal-dark] text-start">
+            How did you hear about us?
+          </span>
           <FormControl>
             <Input
               placeholder="e.g. Google, LinkedIn, etc."
               {...field}
               className="w-full"
-              onChangeCapture={(e) => {
-                setReferenceSelected(e.currentTarget.value);
-              }}
             />
           </FormControl>
-          <span className="nunito-sans-light text-sm text-[--primary-teal-dark] text-start">
-            How did you hear about us?
-          </span>
+
           <FormMessage className="text-center" />
         </FormItem>
       )}

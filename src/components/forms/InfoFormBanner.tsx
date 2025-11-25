@@ -7,7 +7,7 @@ const InfoFormBanner = () => {
       >
         Compare pet insurance plans for dogs & cats.
       </h1>
-      <ul className="flex flex-row flex-wrap w-full list-disc gap-8 justify-evenly px-4 mb-4">
+      <ul className="flex flex-row flex-wrap w-full list-disc gap-8 justify-evenly px-4 mb-4 max-w-4xl">
         <li>Customized coverage</li>
         <li>100% free service</li>
         <li>No credit check</li>

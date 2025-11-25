@@ -59,6 +59,7 @@ const PartnerPage = () => {
       </div>
       <SectionBackground color="bg-(--light-pink)">
         <div className="flex flex-row flex-wrap justify-center items-center gap-12 p-8 max-w-7xl mx-auto">
+          <></>
           <h2 className="text-(--primary-teal) font-extrabold whitespace-pre-wrap self-start tracking-wide">
             FOR RESCUE SHELTERS
           </h2>
@@ -124,7 +125,7 @@ const PartnerPage = () => {
       </SectionBackground>
       <SectionBackground color="bg-(--primary-coral) ">
         <h2 className="text-2xl sansita-bold whitespace-pre-wrap text-white">
-          We make quality care accessible for every pet through partnership with
+          We make quality care accessible for every pet through partnerships with
           veterinarians.
         </h2>
       </SectionBackground>

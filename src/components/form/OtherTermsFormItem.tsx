@@ -18,7 +18,7 @@ const OtherTermsFormItem = ({
       name="item"
       render={({ field }) => {
         return (
-          <FormItem className="flex flex-row items-center gap-2">
+          <FormItem className="flex flex-row items-center w-full justify-start gap-2">
             <FormControl>
               <Checkbox
                 // checked={field.value?.includes(item.id)}

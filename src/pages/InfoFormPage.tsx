@@ -19,10 +19,10 @@ import { useState } from "react";
 import { PIPA_PET_KEY } from "@/lib/constants";
 import { petAges } from "@/data/petAges";
 import InfoFormUserInfo from "@/components/forms/sections/InfoFormUserInfo";
-import InfoFormAdditionalInfo from "@/components/forms/sections/InfoFormAdditionalInfo";
+// import InfoFormAdditionalInfo from "@/components/forms/sections/InfoFormAdditionalInfo";
 import { formSubmitted } from "@/api/api";
 import { registerPetFormCompleted } from "@/features/analytics/emitters";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const defaultPetAnswers: AnswersPetType = {
   petName: "",
@@ -33,20 +33,16 @@ const defaultPetAnswers: AnswersPetType = {
   breed: "",
 };
 
-const defaultUserAnswers: AnswersUserType = {
+const defaultUserAnswers: AnswersUserType & AnswersOtherType = {
   name: { firstName: "", lastName: "" },
   email: "",
   zip: "",
-};
-
-const defaultOtherAnswers: AnswersOtherType = {
   reference: "",
 };
 
 const defaultAnswers: AnswersType = {
   ...defaultPetAnswers,
   ...defaultUserAnswers,
-  ...defaultOtherAnswers,
 };
 
 function InfoFormPage() {
@@ -82,16 +78,7 @@ function InfoFormPage() {
     setAnswers(updatedAnswers);
   };
 
-  const handleSubmitUserInfo = (data: AnswersUserType) => {
-    const updatedAnswers = {
-      ...answers,
-      ...data,
-    };
-    localStorage.setItem(PIPA_PET_KEY, JSON.stringify(updatedAnswers));
-    setAnswers(updatedAnswers);
-  };
-
-  const handleSubmitAdditionalInfo = (data: AnswersOtherType) => {
+  const handleSubmitUserInfo = (data: AnswersUserType & AnswersOtherType) => {
     const updatedAnswers = {
       ...answers,
       ...data,
@@ -104,11 +91,43 @@ function InfoFormPage() {
     navigate("/quotes");
   };
 
+  // const handleSubmitAdditionalInfo = (data: AnswersOtherType) => {
+  //   const updatedAnswers = {
+  //     ...answers,
+  //     ...data,
+  //   };
+  //   localStorage.setItem(PIPA_PET_KEY, JSON.stringify(updatedAnswers));
+  //   setAnswers(updatedAnswers);
+
+  //   formSubmitted(updatedAnswers);
+  //   registerPetFormCompleted({ petObject: updatedAnswers });
+  //   navigate("/quotes");
+  // };
+
   return (
-    <main className="bg-(--light-pink) w-full p-8 overflow-y-scroll">
+    <main className="bg-(--light-pink) w-full p-8 overflow-y-scroll no-scrollbar pt-28">
+      <header
+        className="bg-(--light-pink) dark:bg-(--primary-teal-dark) fixed top-0 left-0 right-0 z-100 h-24 shadow-md text-center flex items-center justify-center"
+        role="banner"
+        aria-label="Main navigation header"
+      >
+        <div className="flex max-w-5xl h-full px-4 items-center w-full justify-start gap-8 xl:text-lg">
+          <Link
+            to="/"
+            className="sansita-regular cursor-pointer w-32"
+            aria-label="Go to Pipa Broker homepage"
+          >
+            <img
+              src="/logo.png"
+              alt="PIPA Broker logo - Pet insurance made simple"
+              className="max-h-20"
+            />
+          </Link>
+        </div>
+      </header>
       <InfoFormBanner />
       <Carousel className="w-full mx-auto my-8 flex flex-col items-center">
-        <CarouselDots className="max-w-4xl" items={3} />
+        <CarouselDots className="max-w-4xl" items={2} />
         <CarouselContent className="min-w-[300px] max-w-screen">
           <CarouselItem>
             <div className="p-1 mx-auto w-full max-w-4xl">
@@ -121,7 +140,7 @@ function InfoFormPage() {
                         disabled={!petFormValid}
                         className="cursor-pointer mx-auto w-full max-w-xl text-lg sansita-regular py-6 px-4"
                       >
-                        Save Pet Information
+                        Continue
                       </CarouselCustomNextButton>
                     }
                     onSubmit={(data: {
@@ -155,7 +174,7 @@ function InfoFormPage() {
             </div>
           </CarouselItem>
           <CarouselItem className="">
-            <div className="p-1">
+            <div className="p-1 mx-auto w-full max-w-4xl">
               <Card className="">
                 <CardContent className="flex items-start justify-center p-6 ">
                   <InfoFormUserInfo
@@ -164,27 +183,29 @@ function InfoFormPage() {
                       lastName: string;
                       email: string;
                       zip: string;
+                      reference?: string;
                     }) => {
-                      const mapped: AnswersUserType = {
+                      const mapped: AnswersUserType & AnswersOtherType = {
                         name: {
                           firstName: data.firstName,
                           lastName: data.lastName,
                         },
                         email: data.email,
                         zip: data.zip,
+                        reference: data.reference || "",
                       };
                       handleSubmitUserInfo(mapped);
                     }}
                     answers={answers}
                     setUserFormValid={setUserFormValid}
-                    isValid={userFormValid}
+                    isValid={petFormValid && userFormValid}
                   />
                 </CardContent>
               </Card>
             </div>
           </CarouselItem>
-          <CarouselItem className="">
-            <div className="p-1">
+          {/* <CarouselItem className="">
+            <div className="p-1 mx-auto w-full max-w-4xl">
               <Card className="">
                 <CardContent className="flex items-start justify-center p-6 ">
                   <InfoFormAdditionalInfo
@@ -200,7 +221,7 @@ function InfoFormPage() {
                 </CardContent>
               </Card>
             </div>
-          </CarouselItem>
+          </CarouselItem> */}
         </CarouselContent>
       </Carousel>
     </main>
