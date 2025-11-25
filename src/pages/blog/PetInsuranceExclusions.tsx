@@ -5,6 +5,30 @@ import { Link } from "react-router-dom";
 const PetInsuranceExclusions = () => {
   return (
     <div className="bg-(--light-pink)">
+
+<meta name="title" content="What Pet Insurance Doesn't Cover? How to Protect Your Pet Anyway?" />
+<meta name="description" content="See the most common pet insurance exclusions—pre-existing issues, waiting periods, routine care, hereditary conditions—and learn smart ways to protect your pet anyway with help from PIPA Broker." />
+<meta name="keywords" content="pet insurance exclusions, what pet insurance doesn’t cover, pre-existing conditions pets, waiting periods pet insurance, hereditary conditions pets" />
+<meta name="author" content="PIPA Broker" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://pipabroker.com/blog/what-pet-insurance-doesnt-cover" />
+<meta property="og:title" content="What Pet Insurance Doesn't Cover? How to Protect Your Pet Anyway?" />
+<meta property="og:description" content="See the most common pet insurance exclusions—pre-existing issues, waiting periods, routine care, hereditary conditions—and learn smart ways to protect your pet anyway with help from PIPA Broker." />
+<meta property="og:image" content="https://pipabroker.com/og-image.png" />
+<meta property="og:site_name" content="PIPA Broker" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="https://pipabroker.com/blog/what-pet-insurance-doesnt-cover" />
+<meta property="twitter:title" content="What Pet Insurance Doesn't Cover? How to Protect Your Pet Anyway?" />
+<meta property="twitter:description" content="See the most common pet insurance exclusions—pre-existing issues, waiting periods, routine care, hereditary conditions—and learn smart ways to protect your pet anyway with help from PIPA Broker." />
+<meta property="twitter:image" content="https://pipabroker.com/twitter-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="robots" content="index, follow" />
+<meta name="language" content="English" />
+<meta name="revisit-after" content="7 days" />
+<link rel="canonical" href="https://pipabroker.com/blog/what-pet-insurance-doesnt-cover" />
+<title>What Pet Insurance Doesn't Cover? How to Protect Your Pet Anyway?</title>
+      
       <Header />
       <div className="flex flex-col justify-start items-start gap-6 p-12 pt-36 max-w-6xl mx-auto min-h-screen">
         <h1 className="text-(--primary-teal-dark) text-3xl sansita-bold whitespace-pre-wrap self-start">
