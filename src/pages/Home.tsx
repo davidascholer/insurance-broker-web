@@ -33,7 +33,7 @@ const Home = () => {
       />
       <meta name="author" content="PIPA Broker" />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content="https://pipabroker.com/" />
+      <meta property="og:url" content="https://www.pipabroker.com/" />
       <meta
         property="og:title"
         content="PIPA Broker - Pet Insurance Made Simple"
@@ -42,10 +42,10 @@ const Home = () => {
         property="og:description"
         content="Find the perfect pet insurance for your furry family members. Compare quotes from top providers and protect your pets with comprehensive coverage."
       />
-      <meta property="og:image" content="https://pipabroker.com/og-image.png" />
+      <meta property="og:image" content="https://www.pipabroker.com/og-image.png" />
       <meta property="og:site_name" content="Pipa Broker" />
       <meta property="twitter:card" content="summary_large_image" />
-      <meta property="twitter:url" content="https://pipabroker.com/" />
+      <meta property="twitter:url" content="https://www.pipabroker.com/" />
       <meta
         property="twitter:title"
         content="PIPA Broker - Pet Insurance Made Simple"
@@ -56,14 +56,14 @@ const Home = () => {
       />
       <meta
         property="twitter:image"
-        content="https://pipabroker.com/twitter-image.png"
+        content="https://www.pipabroker.com/twitter-image.png"
       />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta name="robots" content="index, follow" />
       <meta name="language" content="English" />
       <meta name="revisit-after" content="7 days" />
-      <link rel="canonical" href="https://pipabroker.com/" />
+      <link rel="canonical" href="https://www.pipabroker.com/" />
       <title>PIPA Broker - Pet Insurance Made Simple</title>
 
       <Header />
