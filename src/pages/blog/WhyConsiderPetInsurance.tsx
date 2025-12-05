@@ -11,22 +11,22 @@ const WhatIsPetInsurance = () => {
 <meta name="keywords" content="pet insurance, why get pet insurance, vet costs, pet healthcare, pet insurance benefits, PIPA Broker" />
 <meta name="author" content="PIPA Broker" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://pipabroker.com/blog/why-consider-pet-insurance" />
+<meta property="og:url" content="https://www.pipabroker.com/blog/why-consider-pet-insurance" />
 <meta property="og:title" content="Why Pet Insurance Matters for Your Pet’s Health & Your Wallet" />
 <meta property="og:description" content="Pet insurance protects you from rising vet costs, unexpected accidents, and costly illnesses. Learn why coverage is a smart financial move for every pet owner." />
-<meta property="og:image" content="https://pipabroker.com/og-image.png" />
+<meta property="og:image" content="https://www.pipabroker.com/og-image.png" />
 <meta property="og:site_name" content="PIPA Broker" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content="https://pipabroker.com/blog/why-consider-pet-insurance" />
+<meta property="twitter:url" content="https://www.pipabroker.com/blog/why-consider-pet-insurance" />
 <meta property="twitter:title" content="Why Pet Insurance Matters for Your Pet’s Health & Your Wallet" />
 <meta property="twitter:description" content="Pet insurance protects you from rising vet costs, unexpected accidents, and costly illnesses. Learn why coverage is a smart financial move for every pet owner." />
-<meta property="twitter:image" content="https://pipabroker.com/twitter-image.png" />
+<meta property="twitter:image" content="https://www.pipabroker.com/twitter-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="robots" content="index, follow" />
 <meta name="language" content="English" />
 <meta name="revisit-after" content="7 days" />
-<link rel="canonical" href="https://pipabroker.com/blog/why-consider-pet-insurance" />
+<link rel="canonical" href="https://www.pipabroker.com/blog/why-consider-pet-insurance" />
 <title>Why Pet Insurance Matters for Your Pet’s Health & Your Wallet</title>
       
       <Header />

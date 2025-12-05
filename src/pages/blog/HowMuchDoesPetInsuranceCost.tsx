@@ -11,22 +11,22 @@ const HowMuchDoesPetInsuranceCost = () => {
 <meta name="keywords" content="pet insurance cost, average pet insurance cost, pet insurance prices 2025, dog insurance cost, cat insurance cost, vet bill coverage" />
 <meta name="author" content="PIPA Broker" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://pipabroker.com/blog/how-much-does-pet-insurance-cost" />
+<meta property="og:url" content="https://www.pipabroker.com/blog/how-much-does-pet-insurance-cost" />
 <meta property="og:title" content="How Much Does Pet Insurance Cost? Average Pricing in 2025" />
 <meta property="og:description" content="See what pet insurance really costs in 2025. Compare average premiums for dogs and cats, what drives pricing, and how to choose the right plan for your budget." />
-<meta property="og:image" content="https://pipabroker.com/og-image.png" />
+<meta property="og:image" content="https://www.pipabroker.com/og-image.png" />
 <meta property="og:site_name" content="PIPA Broker" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content="https://pipabroker.com/blog/how-much-does-pet-insurance-cost" />
+<meta property="twitter:url" content="https://www.pipabroker.com/blog/how-much-does-pet-insurance-cost" />
 <meta property="twitter:title" content="How Much Does Pet Insurance Cost? Average Pricing in 2025" />
 <meta property="twitter:description" content="See what pet insurance really costs in 2025. Compare average premiums for dogs and cats, what drives pricing, and how to choose the right plan for your budget." />
-<meta property="twitter:image" content="https://pipabroker.com/twitter-image.png" />
+<meta property="twitter:image" content="https://www.pipabroker.com/twitter-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="robots" content="index, follow" />
 <meta name="language" content="English" />
 <meta name="revisit-after" content="7 days" />
-<link rel="canonical" href="https://pipabroker.com/blog/how-much-does-pet-insurance-cost" />
+<link rel="canonical" href="https://www.pipabroker.com/blog/how-much-does-pet-insurance-cost" />
 <title>How Much Does Pet Insurance Cost? Average Pricing in 2025</title>
       
       <Header />

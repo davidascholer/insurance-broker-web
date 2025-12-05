@@ -11,22 +11,22 @@ const UnderstandPetInsuranceTypes = () => {
 <meta name="keywords" content="pet insurance types, accident-only pet insurance, accident and illness coverage, wellness add-ons pets, pet insurance comparison" />
 <meta name="author" content="PIPA Broker" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://pipabroker.com/blog/understanding-pet-insurance-types" />
+<meta property="og:url" content="https://www.pipabroker.com/blog/understanding-pet-insurance-types" />
 <meta property="og:title" content="Understanding Pet Insurance Types | PIPA Broker" />
 <meta property="og:description" content="Explore accident-only, comprehensive, and wellness pet insurance plans. Learn how to choose coverage that fits your pet’s needs and your budget with PIPA Broker." />
-<meta property="og:image" content="https://pipabroker.com/og-image.png" />
+<meta property="og:image" content="https://www.pipabroker.com/og-image.png" />
 <meta property="og:site_name" content="PIPA Broker" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content="https://pipabroker.com/blog/understanding-pet-insurance-types" />
+<meta property="twitter:url" content="https://www.pipabroker.com/blog/understanding-pet-insurance-types" />
 <meta property="twitter:title" content="Understanding Pet Insurance Types | PIPA Broker" />
 <meta property="twitter:description" content="Explore accident-only, comprehensive, and wellness pet insurance plans. Learn how to choose coverage that fits your pet’s needs and your budget with PIPA Broker." />
-<meta property="twitter:image" content="https://pipabroker.com/twitter-image.png" />
+<meta property="twitter:image" content="https://www.pipabroker.com/twitter-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="robots" content="index, follow" />
 <meta name="language" content="English" />
 <meta name="revisit-after" content="7 days" />
-<link rel="canonical" href="https://pipabroker.com/blog/understanding-pet-insurance-types" />
+<link rel="canonical" href="https://www.pipabroker.com/blog/understanding-pet-insurance-types" />
 <title>Understanding Pet Insurance Types | PIPA Broker</title>
       
       <Header />
