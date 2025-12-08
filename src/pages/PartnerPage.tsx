@@ -50,7 +50,7 @@ const PartnerPage = () => {
           </div>
           <div className="flex-1 h-full">
             <img
-              src="/partner/cats_dogs_photo_3x2.webp"
+              src="/backgrounds/cats_dogs_photo_3x2.webp"
               alt="Partner with PIPA"
               className="h-full w-full object-cover"
             />
@@ -73,7 +73,7 @@ const PartnerPage = () => {
       <SectionBackground color="bg-(--coral-pink)">
         <div className="flex flex-row portrait:flex-col justify-center items-center gap-4 p-8 max-w-7xl mx-auto">
           <img
-            src="/partner/connection.svg"
+            src="/icons/connection.svg"
             alt="Connection Icon"
             className="size-26"
           />
@@ -100,7 +100,7 @@ const PartnerPage = () => {
       <SectionBackground color="bg-white" className="p-2">
         <div className="flex flex-row portrait:flex-col justify-center items-center gap-12 p-8 max-w-7xl mx-auto">
           <img
-            src="/partner/hero_dog_sq.webp"
+            src="/pets/hero_dog_sq.webp"
             alt="Connection Icon"
             className="w-[500px] aspect-square"
           />
@@ -148,7 +148,7 @@ const PartnerPage = () => {
             <GetInTouchButton />
           </div>
           <img
-            src="/partner/vet_crispy_sq.webp"
+            src="/pets/vet_crispy_sq.webp"
             alt="Connection Icon"
             className="w-[500px] aspect-square"
           />
@@ -162,7 +162,7 @@ const PartnerPage = () => {
       <SectionBackground color="bg-white" className="p-2">
         <div className="flex flex-row portrait:flex-col justify-center items-center gap-12 p-8 max-w-7xl mx-auto">
           <img
-            src="/partner/golden_retreiver_in_tie_sq.webp"
+            src="/pets/golden_retreiver_in_tie_sq.webp"
             alt="Connection Icon"
             className="w-[500px] aspect-square"
           />
