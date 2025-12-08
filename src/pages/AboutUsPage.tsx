@@ -27,6 +27,22 @@ const SectionBackground = ({
   );
 };
 
+const UITContainer = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="">
+      {children}
+    </div>
+  );
+};
+
+const UITPreHeader = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="">
+      {children}
+    </div>
+  );
+};
+
 const AboutUsPage = () => {
   const navigate = useNavigate();
 

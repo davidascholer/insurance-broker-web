@@ -271,7 +271,7 @@ const Home = () => {
       </section>
 
       <section
-        className="w-full bg-[url('/backgrounds/mrc_wide_quote.webp')] min-h-[200px] bg-no-repeat bg-cover bg-right flex justify-start py-8"
+        className="w-full bg-[url('/backgrounds/mrc_wide2_quote.webp')] min-h-[200px] bg-no-repeat bg-cover bg-right flex justify-start py-8"
         aria-label="Hero section with main call to action"
       >
         <div className="w-full max-w-3xl mx-auto flex flex-col justify-center items-start">
