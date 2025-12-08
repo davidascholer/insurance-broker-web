@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Terminology from "./pages/Terminology";
 // import PartnerContact from "./pages/contact/PartnerContact";
-import About from "./pages/About";
 import FAQs from "./pages/FAQs";
 import Quotes from "./pages/Quotes";
 import Privacy from "./pages/Privacy";
@@ -21,6 +20,7 @@ import PetInsuranceExclusions from "./pages/blog/PetInsuranceExclusions";
 import HowMuchDoesPetInsuranceCost from "./pages/blog/HowMuchDoesPetInsuranceCost";
 import KanguroEmbed from "./features/kanguro/pages/KanguroEmbed";
 import PartnerPage from "./pages/PartnerPage";
+import AboutUsPage from "./pages/AboutUsPage";
 
 const RouterWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -40,11 +40,11 @@ const AppRouter = () => {
     <RouterWrapper>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
         <Route path="/faqs" element={<FAQs />} />
         <Route path="/kanguro" element={<KanguroEmbed />} />
         <Route path="/terminology" element={<Terminology />} />
         <Route path="/partner" element={<PartnerPage />} />
+        <Route path="/about-us" element={<AboutUsPage />} />
         <Route
           path="/blog/what-is-pet-insurance"
           element={<WhatIsPetInsurance />}

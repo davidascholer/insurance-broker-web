@@ -84,7 +84,7 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
           <button
             className="cursor-pointer hover:-translate-y-1 transition-transform duration-300 ease-in-out"
             onClick={() => {
-              navigate("/about");
+              navigate("/about-us");
             }}
           >
             About Us

@@ -139,7 +139,7 @@ const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
           </button>
           <button
             className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center font-bold text-nowrap"
-            onClick={() => navigate("/about")}
+            onClick={() => navigate("/about-us")}
             aria-label="Navigate to about page"
           >
             About Us

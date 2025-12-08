@@ -64,7 +64,7 @@ const FAQs = () => {
             more about us, like our mission, qualifications, and licensing
             information,{" "}
             <button
-              onClick={() => navigate("/about")}
+              onClick={() => navigate("/about-us")}
               className="text-(--primary-coral) font-semibold underline cursor-pointer"
             >
               click here

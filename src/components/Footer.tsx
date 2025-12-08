@@ -108,7 +108,7 @@ const Footer = ({ className }: { className?: string }) => {
             header="About"
             className="min-[768px]:max-w-[175px]"
             items={[
-              { url: "/about", msg: "About PIPA Broker" },
+              { url: "/about-us", msg: "About PIPA Broker" },
               { url: "/terms", msg: "Terms of Use" },
               { url: "/privacy", msg: "Privacy Policy" },
               { url: "/licenses", msg: "Licenses" },

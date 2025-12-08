@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 
-const FetchQuoteButton = ({ className }: { className?: string }) => {
+const GetInTouchButton = ({ className }: { className?: string }) => {
   return (
     <Link
       to="mailto:admin@pipabroker.com"
@@ -16,4 +16,4 @@ const FetchQuoteButton = ({ className }: { className?: string }) => {
   );
 };
 
-export default FetchQuoteButton;
+export default GetInTouchButton;
