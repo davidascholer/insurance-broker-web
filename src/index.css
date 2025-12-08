@@ -206,6 +206,7 @@ body {
   --light-pink-transparent: #fdefe699;
   --primary-teal-dark: #0c5163;
   --primary-teal-dark-transparent: #0c5163dd;
+  --white: #ffffff;
 }
 
 @layer base {

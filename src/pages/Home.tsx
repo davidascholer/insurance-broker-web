@@ -277,7 +277,7 @@ const Home = () => {
         <div className="w-full max-w-3xl mx-auto flex flex-col justify-center items-start">
           <div className="max-w-[200px] ml-[10vw] min-[768px]:max-w-[400px] text-center flex flex-col items-center justify-center">
             <span className="sansita-bold text-xl min-[768px]:text-3xl">
-              Thanks to PIPA Broker, I'm getting all nine lives I was promised.
+              "Thanks to PIPA Broker, I'm getting all nine lives I was promised."
             </span>
             <FetchQuoteButton className="py-2 px-4 text-nowrap mt-4" />
           </div>
