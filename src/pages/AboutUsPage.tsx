@@ -245,13 +245,13 @@ const UITCustomCircularImage = ({
 }) => {
   return (
     <div
-      className={cn(`p-2 flex justify-center items-center size-56`, className)}
+      className={cn(`p-2 flex justify-center items-center`, className)}
     >
       <img
         src={src}
         alt={alt ?? ""}
         className={cn(
-          `w-full h-full aspect-square rounded-full`,
+          `rounded-full w-56 aspect-square object-cover object-center`,
           imageClassName
         )}
       />
@@ -554,11 +554,11 @@ Fast and simple, we make finding pet insurance modern and stress-free. Answer a 
         </UITCustomContainer>
       </UITCustomContainer>
       <section
-        className="w-full bg-[url('/backgrounds/bear_quote_16x9.webp')] min-h-[600px] bg-no-repeat bg-cover bg-left-top flex justify-start py-8 text-white "
+        className={cn("w-full bg-[url('/backgrounds/bear_quote_16x9.webp')] min-h-[600px] bg-no-repeat bg-cover bg-[30%_90%] flex justify-start py-8 text-white min-md:bg-left-top" )}
         aria-label="Hero section with main call to action"
       >
         <div className="w-full mx-auto flex flex-col justify-center items-start">
-          <div className="max-w-[200px] ml-[50vw] min-[768px]:max-w-[400px] text-center flex flex-col items-center justify-center gap-2">
+          <div className="max-w-[200px] ml-[60vw] min-[768px]:max-w-[400px] text-center flex flex-col items-center justify-center gap-2">
             <span className="sansita-bold text-3xl min-[768px]:text-5xl">
               “I take pet insurance ‘Beary’ seriously.”
             </span>
