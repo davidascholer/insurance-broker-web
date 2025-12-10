@@ -271,13 +271,13 @@ const Home = () => {
       </section>
 
       <section
-        className="w-full bg-[url('/backgrounds/mrc_wide2_quote.webp')] min-h-[200px] bg-no-repeat bg-cover bg-right flex justify-start py-8"
+        className="w-full bg-[url('/backgrounds/mrc_wide2_quote.webp')] bg-no-repeat bg-contain bg-right flex justify-start py-8 aspect-[2.3/1]"
         aria-label="Hero section with main call to action"
       >
         <div className="w-full max-w-3xl mx-auto flex flex-col justify-center items-start">
           <div className="max-w-[200px] ml-[10vw] min-[768px]:max-w-[400px] text-center flex flex-col items-center justify-center">
             <span className="sansita-bold text-xl min-[768px]:text-3xl">
-              "Thanks to PIPA Broker, I'm getting all nine lives I was promised."
+              <span className="scale-y-[-1]">"</span>Thanks to PIPA Broker, I'm getting all nine lives I was promised."
             </span>
             <FetchQuoteButton className="py-2 px-4 text-nowrap mt-4" />
           </div>
