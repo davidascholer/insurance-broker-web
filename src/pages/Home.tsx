@@ -42,7 +42,10 @@ const Home = () => {
         property="og:description"
         content="Find the perfect pet insurance for your furry family members. Compare quotes from top providers and protect your pets with comprehensive coverage."
       />
-      <meta property="og:image" content="https://www.pipabroker.com/og-image.png" />
+      <meta
+        property="og:image"
+        content="https://www.pipabroker.com/og-image.png"
+      />
       <meta property="og:site_name" content="Pipa Broker" />
       <meta property="twitter:card" content="summary_large_image" />
       <meta property="twitter:url" content="https://www.pipabroker.com/" />
@@ -276,9 +279,9 @@ const Home = () => {
       >
         <div className="w-full max-w-3xl mx-auto flex flex-col justify-center items-start">
           <div className="max-w-[200px] ml-[10vw] min-[768px]:max-w-[400px] text-center flex flex-col items-center justify-center">
-            <span className="sansita-bold text-xl min-[768px]:text-3xl">
-              <span className="scale-y-[-1]">"</span>Thanks to PIPA Broker, I'm getting all nine lives I was promised."
-            </span>
+            <q className="sansita-bold text-xl min-[768px]:text-3xl">
+              Thanks to PIPA Broker, I'm getting all nine lives I was promised.
+            </q>
             <FetchQuoteButton className="py-2 px-4 text-nowrap mt-4" />
           </div>
         </div>
