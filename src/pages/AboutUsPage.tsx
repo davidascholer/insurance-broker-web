@@ -328,7 +328,7 @@ Fast and simple, we make finding pet insurance modern and stress-free. Answer a 
               We’re a licensed Property & Casualty producer in the U.S.A. What
               does that mean? That means you can trust that everything we
               provide follows industry standards and complies with the laws and
-              regulations that protect you. See a list of where we are licensed
+              regulations that protect you. See a list of where we are licensed{" "}
               <Link
                 className="text-(--primary-coral) font-semibold"
                 to="/licenses"
