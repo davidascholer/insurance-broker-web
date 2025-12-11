@@ -61,6 +61,7 @@ body {
   background-color: var(--background-light);
   color: var(--text-dark);
   line-height: 1.6;
+  touch-action: pan-y pan-x;
 }
 
 @theme {
@@ -233,6 +234,9 @@ body {
     -o-transition: 0.5s ease-in-out;
     transition: 0.5s ease-in-out;
     cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
   }
 
   #mobile-header-menu span {
@@ -252,6 +256,7 @@ body {
     -moz-transition: 0.25s ease-in-out;
     -o-transition: 0.25s ease-in-out;
     transition: 0.25s ease-in-out;
+    pointer-events: none;
   }
 
   #mobile-header-menu span:nth-child(1) {
@@ -407,6 +412,19 @@ body {
 }
 
 @layer utilities {
+  /* Touch-friendly interaction */
+  .touch-manipulation {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  /* Prevent overscroll bounce on iOS */
+  .overscroll-contain {
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
   /* For Chrome, Safari, and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
