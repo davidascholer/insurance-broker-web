@@ -328,14 +328,14 @@ Fast and simple, we make finding pet insurance modern and stress-free. Answer a 
               We’re a licensed Property & Casualty producer in the U.S.A. What
               does that mean? That means you can trust that everything we
               provide follows industry standards and complies with the laws and
-              regulations that protect you.{" "}
+              regulations that protect you. See a list of where we are licensed
               <Link
                 className="text-(--primary-coral) font-semibold"
                 to="/licenses"
               >
-                See a list
-              </Link>{" "}
-              of where we are licensed here.
+                here
+              </Link>
+              .
             </>
           }
           textColor={pipaColorOptions.tealDark}
@@ -345,9 +345,9 @@ Fast and simple, we make finding pet insurance modern and stress-free. Answer a 
           headerText="We’re Independent"
           paragraphText={
             <>
-              We exist to serve you—our customers. Being independent means
-              being able to bring the pet insurance market and all the best
-              options directly to you.{" "}
+              We exist to serve you—our customers. Being independent means being
+              able to bring the pet insurance market and all the best options
+              directly to you.{" "}
               <Link
                 className="text-(--primary-coral) font-semibold"
                 to="/quotes"
