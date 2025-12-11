@@ -1,6 +1,6 @@
 import Footer from "@/components/Footer";
 import Header from "../components/header/Header";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import FetchQuoteButton from "@/components/FetchQuoteButton";
 
@@ -139,7 +139,7 @@ const UITCustomParagraph = ({
   textColor,
   paragraphClassNames,
 }: {
-  text: string;
+  text: string | React.ReactNode;
   textColor: string;
   paragraphClassNames?: string;
 }) => {
@@ -214,7 +214,7 @@ const UITCustomParagraphWithHeader = ({
   containerClassName,
 }: {
   headerText: string;
-  paragraphText: string;
+  paragraphText: string | React.ReactNode;
   textColor: string;
   containerClassName?: string;
 }) => {
@@ -244,9 +244,7 @@ const UITCustomCircularImage = ({
   className?: string;
 }) => {
   return (
-    <div
-      className={cn(`p-2 flex justify-center items-center`, className)}
-    >
+    <div className={cn(`p-2 flex justify-center items-center`, className)}>
       <img
         src={src}
         alt={alt ?? ""}
@@ -260,7 +258,7 @@ const UITCustomCircularImage = ({
 };
 
 const AboutUsPage = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   return (
     <div className="bg-(--light-pink) pt-24">
@@ -325,13 +323,41 @@ Fast and simple, we make finding pet insurance modern and stress-free. Answer a 
         />
         <UITCustomParagraphWithHeader
           headerText="We’re Licensed"
-          paragraphText="We’re a licensed Property & Casualty producer in the U.S.A. What does that mean? That means you can trust that everything we provide follows industry standards and complies with the laws and regulations that protect you. See a list of where we are licensed here."
+          paragraphText={
+            <>
+              We’re a licensed Property & Casualty producer in the U.S.A. What
+              does that mean? That means you can trust that everything we
+              provide follows industry standards and complies with the laws and
+              regulations that protect you.{" "}
+              <Link
+                className="text-(--primary-coral) font-semibold"
+                to="/licenses"
+              >
+                See a list
+              </Link>{" "}
+              of where we are licensed here.
+            </>
+          }
           textColor={pipaColorOptions.tealDark}
           containerClassName=""
         />
         <UITCustomParagraphWithHeader
           headerText="We’re Independent"
-          paragraphText="We exist to serve you—our customers. Being independent means being able to bring the pet insurance market and all the best options directly to you. Our recommendations are always based on your pet’s needs, your budget, and your preferences."
+          paragraphText={
+            <>
+              We exist to serve you—our customers. Being independent means
+              being able to bring the pet insurance market and all the best
+              options directly to you.{" "}
+              <Link
+                className="text-(--primary-coral) font-semibold"
+                to="/quotes"
+              >
+                Our recommendations
+              </Link>{" "}
+              are always based on your pet’s needs, your budget, and your
+              preferences.
+            </>
+          }
           textColor={pipaColorOptions.tealDark}
           containerClassName=""
         />
@@ -554,7 +580,9 @@ Fast and simple, we make finding pet insurance modern and stress-free. Answer a 
         </UITCustomContainer>
       </UITCustomContainer>
       <section
-        className={cn("w-full bg-[url('/backgrounds/bear_quote_16x9.webp')] min-h-[600px] bg-no-repeat bg-cover bg-[30%_90%] flex justify-start py-8 text-white min-md:bg-left-top" )}
+        className={cn(
+          "w-full bg-[url('/backgrounds/bear_quote_16x9.webp')] min-h-[600px] bg-no-repeat bg-cover bg-[30%_90%] flex justify-start py-8 text-white min-md:bg-left-top"
+        )}
         aria-label="Hero section with main call to action"
       >
         <div className="w-full mx-auto flex flex-col justify-center items-start">

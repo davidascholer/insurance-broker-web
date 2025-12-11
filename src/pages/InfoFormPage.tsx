@@ -101,7 +101,7 @@ function InfoFormPage() {
   //   setAnswers(updatedAnswers);
 
   //   formSubmitted(updatedAnswers);
-  //   registerPetFormCompleted({ petObject: updatedAnswers });
+    // registerPetFormCompleted({ petObject: updatedAnswers });
   //   navigate("/quotes");
   // };
 
