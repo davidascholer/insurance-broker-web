@@ -29,6 +29,35 @@ const SectionBackground = ({
 const PartnerPage = () => {
   return (
     <div className="bg-(--light-pink) pt-24">
+
+<meta name="title" content="Pet Insurance Partnership Opportunities | Partner with PIPA Broker" />
+<meta name="description"
+  content="Partner with PIPA Broker to bring your pet insurance quotes directly to qualified customers. Connect with our team to explore partnership opportunities." />
+<meta name="keywords"
+  content="pet insurance partners, insurance partnership, pet insurance brokers, carrier partnerships, insurance API, pet insurance quotes" />
+<meta name="author" content="PIPA Broker" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://pipabroker.com/partner-contact" />
+<meta property="og:title" content="Pet Insurance Partnership Opportunities | Partner with PIPA Broker" />
+<meta property="og:description"
+  content="Partner with PIPA Broker to bring your pet insurance quotes directly to qualified customers. Connect with our team to explore partnership opportunities." />
+<meta property="og:image" content="https://pipabroker.com/og-image.png" />
+<meta property="og:site_name" content="PIPA Broker" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="https://pipabroker.com/partner-contact" />
+<meta property="twitter:title" content="Pet Insurance Partnership Opportunities | Partner with PIPA Broker" />
+<meta property="twitter:description"
+  content="Partner with PIPA Broker to bring your pet insurance quotes directly to qualified customers. Connect with our team to explore partnership opportunities." />
+<meta property="twitter:image" content="https://pipabroker.com/twitter-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="robots" content="index, follow" />
+<meta name="language" content="English" />
+<meta name="revisit-after" content="7 days" />
+<link rel="canonical" href="https://pipabroker.com/partner-contact" />
+
+<title>Pet Insurance Partnership Opportunities | Partner with PIPA Broker</title>
+      
       <Header />
       <div className="flex flex-row gap-2 bg-white">
         <div className="flex flex-row portrait:flex-col-reverse gap-0">
@@ -78,9 +107,9 @@ const PartnerPage = () => {
             className="size-26"
           />
           <div className="flex flex-col gap-4 justify-center items-center">
-            <h1 className="text-(--primary-teal-dark) text-4xl sansita-bold whitespace-pre-wrap">
+            <h2 className="text-(--primary-teal-dark) text-4xl sansita-bold whitespace-pre-wrap">
               Connection
-            </h1>
+            </h2>
             <p className="text-(--primary-teal-dark) text-xl text-center nunito-sans-medium whitespace-pre-wrap">
               Connection is one of PIPA’s core values. We believe strong
               partnerships lead to better care for pets and peace of mind for
@@ -108,9 +137,9 @@ const PartnerPage = () => {
             <h2 className="text-(--primary-teal) text-lg font-bold whitespace-pre-wrap self-start tracking-widest">
               RESCUE SHELTERS X PIPA
             </h2>
-            <h1 className="text-(--primary-teal) text-4xl sansita-bold whitespace-pre-wrap text-start">
+            <h2 className="text-(--primary-teal) text-4xl sansita-bold whitespace-pre-wrap text-start">
               Support Pets from Day One
-            </h1>
+            </h2>
             <p className="text-(--primary-teal) text-xl text-start nunito-sans-medium whitespace-pre-wrap">
               Rescues play a vital role in giving pets a second chance and we
               want to support your mission. By partnering with us, you can offer
@@ -134,9 +163,9 @@ const PartnerPage = () => {
             <h2 className="text-(--primary-teal) text-lg font-bold whitespace-pre-wrap self-start tracking-widest">
               VETERINARIANS X PIPA
             </h2>
-            <h1 className="text-(--primary-teal) text-4xl sansita-bold whitespace-pre-wrap text-start">
+            <h2 className="text-(--primary-teal) text-4xl sansita-bold whitespace-pre-wrap text-start">
               Enhance Pet Care Beyond the Clinic
-            </h1>
+            </h2>
             <p className="text-(--primary-teal) text-xl text-start nunito-sans-medium whitespace-pre-wrap">
               Your commitment to pet health goes beyond the exam room. Partner
               with us to provide your clients with trusted pet insurance options
@@ -170,9 +199,9 @@ const PartnerPage = () => {
             <h2 className="text-(--primary-teal) text-lg font-bold whitespace-pre-wrap self-start tracking-widest">
               PET INSURANCE PROVIDERS X PIPA
             </h2>
-            <h1 className="text-(--primary-teal) text-4xl sansita-bold whitespace-pre-wrap text-start">
+            <h2 className="text-(--primary-teal) text-4xl sansita-bold whitespace-pre-wrap text-start">
               Reach More Pet Parents
-            </h1>
+            </h2>
             <p className="text-(--primary-teal) text-xl text-start nunito-sans-medium whitespace-pre-wrap">
               As a trusted pet insurance marketplace, partnering with us means
               gaining exposure to engaged pet owners actively seeking coverage.
