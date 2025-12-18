@@ -321,7 +321,7 @@ const AboutUsPage = () => {
         flexDirection="flex-col"
         flexClassNames="gap-8 p-24 bg-white"
       >
-        <UITCustomHeader
+        <UITCustomPreHeader
           text="Who We Are"
           textColor={pipaColorOptions.tealDark}
         />
