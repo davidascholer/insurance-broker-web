@@ -114,6 +114,29 @@ const UITCustomHeader = ({
   );
 };
 
+const UITCustomHeaderH3 = ({
+  text,
+  textColor,
+  headerClassNames,
+}: {
+  text: string;
+  textColor: string;
+  headerClassNames?: string;
+}) => {
+  return (
+    <div className="w-full p-2">
+      <h3
+        className={cn(
+          `text-(${textColor}) text-5xl sansita-bold whitespace-pre-wrap text-center`,
+          headerClassNames
+        )}
+      >
+        {text}
+      </h3>
+    </div>
+  );
+};
+
 const UITCustomSecondaryHeader = ({
   text,
   textColor,
@@ -124,14 +147,14 @@ const UITCustomSecondaryHeader = ({
   headerClassNames?: string;
 }) => {
   return (
-    <h2
+    <h3
       className={cn(
         `text-(${textColor}) text-4xl sansita-bold whitespace-pre-wrap text-center`,
         headerClassNames
       )}
     >
       {text}
-    </h2>
+    </h3>
   );
 };
 
@@ -440,7 +463,7 @@ Fast and simple, we make finding pet insurance modern and stress-free. Answer a 
               src="/people/jeff_crispy_team.webp"
               alt="Team member"
             />
-            <UITCustomHeader
+            <UITCustomHeaderH3
               text="Jeffrey Hanschmann"
               textColor={pipaColorOptions.tealDark}
               headerClassNames="text-3xl"
@@ -464,7 +487,7 @@ Fast and simple, we make finding pet insurance modern and stress-free. Answer a 
               src="/people/david_kitties_team.webp"
               alt="Team member"
             />
-            <UITCustomHeader
+            <UITCustomHeaderH3
               text="David Scholer"
               textColor={pipaColorOptions.tealDark}
               headerClassNames="text-3xl"
@@ -489,7 +512,7 @@ Fast and simple, we make finding pet insurance modern and stress-free. Answer a 
               src="/people/caitlin_crispy_team.webp"
               alt="Team member"
             />
-            <UITCustomHeader
+            <UITCustomHeaderH3
               text="Caitlin Stoskopf"
               textColor={pipaColorOptions.tealDark}
               headerClassNames="text-3xl"
@@ -543,7 +566,7 @@ Fast and simple, we make finding pet insurance modern and stress-free. Answer a 
               alt="Integrity Icon"
               className="size-38"
             />
-            <UITCustomHeader
+            <UITCustomHeaderH3
               text={"Integrity"}
               textColor={""}
               headerClassNames="text-white text-4xl"
@@ -562,7 +585,7 @@ Fast and simple, we make finding pet insurance modern and stress-free. Answer a 
               alt="Accessible Icon"
               className="size-38"
             />
-            <UITCustomHeader
+            <UITCustomHeaderH3
               text={"Accessible"}
               textColor={""}
               headerClassNames="text-white text-3xl text-center"
@@ -581,7 +604,7 @@ Fast and simple, we make finding pet insurance modern and stress-free. Answer a 
               alt="Empowerment Icon"
               className="size-38"
             />
-            <UITCustomHeader
+            <UITCustomHeaderH3
               text={"Empowerment"}
               textColor={""}
               headerClassNames="text-white text-3xl text-center"
@@ -600,7 +623,7 @@ Fast and simple, we make finding pet insurance modern and stress-free. Answer a 
               alt="Continuous Improvement Icon"
               className="size-38"
             />
-            <UITCustomHeader
+            <UITCustomHeaderH3
               text={"Continuous Improvement"}
               textColor={""}
               headerClassNames="text-white text-3xl text-center"
