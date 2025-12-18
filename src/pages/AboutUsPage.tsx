@@ -68,6 +68,29 @@ const UITCustomPreHeader = ({
   );
 };
 
+const UITCustomHeaderH1 = ({
+  text,
+  textColor,
+  headerClassNames,
+}: {
+  text: string;
+  textColor: string;
+  headerClassNames?: string;
+}) => {
+  return (
+    <div className="w-full p-2">
+      <h1
+        className={cn(
+          `text-(${textColor}) text-5xl sansita-bold whitespace-pre-wrap text-center`,
+          headerClassNames
+        )}
+      >
+        {text}
+      </h1>
+    </div>
+  );
+};
+
 const UITCustomHeader = ({
   text,
   textColor,
@@ -101,14 +124,14 @@ const UITCustomSecondaryHeader = ({
   headerClassNames?: string;
 }) => {
   return (
-    <h1
+    <h2
       className={cn(
         `text-(${textColor}) text-4xl sansita-bold whitespace-pre-wrap text-center`,
         headerClassNames
       )}
     >
       {text}
-    </h1>
+    </h2>
   );
 };
 
@@ -305,7 +328,7 @@ const AboutUsPage = () => {
           textColor={pipaColorOptions.lightPink}
           preHeaderClassNames="text-xl"
         />
-        <UITCustomHeader
+        <UITCustomHeaderH1
           text="Your Tool to Find to the Right Pet Insurance."
           textColor={pipaColorOptions.lightPink}
           headerClassNames="spacing-widest"
