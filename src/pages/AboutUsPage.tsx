@@ -262,6 +262,38 @@ const AboutUsPage = () => {
 
   return (
     <div className="bg-(--light-pink) pt-24">
+
+      <meta name="title" content="About PIPA Broker | Simplifying Pet Insurance Decisions" />
+<meta name="description"
+  content="Learn about PIPA Broker and our mission to simplify pet insurance. We help pet owners compare trusted plans, understand coverage, and make smarter decisions with confidence." />
+<meta name="keywords"
+  content="about PIPA Broker, pet insurance broker, pet insurance comparison, dog insurance, cat insurance, pet coverage options" />
+<meta name="author" content="PIPA Broker" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.pipabroker.com/about-us" />
+<meta property="og:title" content="About PIPA Broker | Simplifying Pet Insurance Decisions" />
+<meta property="og:description"
+  content="Learn about PIPA Broker and our mission to simplify pet insurance. We help pet owners compare trusted plans, understand coverage, and make smarter decisions with confidence." />
+<meta property="og:image" content="https://www.pipabroker.com/og-image.png" />
+<meta property="og:site_name" content="PIPA Broker" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="https://www.pipabroker.com/about-us" />
+<meta property="twitter:title" content="About PIPA Broker | Simplifying Pet Insurance Decisions" />
+<meta property="twitter:description"
+  content="Learn about PIPA Broker and our mission to simplify pet insurance. We help pet owners compare trusted plans, understand coverage, and make smarter decisions with confidence." />
+<meta property="twitter:image" content="https://www.pipabroker.com/twitter-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="robots" content="index, follow" />
+<meta name="language" content="English" />
+<meta name="revisit-after" content="7 days" />
+<link rel="canonical" href="https://www.pipabroker.com/about-us" />
+
+<title>About PIPA Broker | Simplifying Pet Insurance Decisions</title>
+
+      
+
+      
       <Header />
       <UITCustomContainer
         backgroundColorClassName={`bg-(${pipaColorOptions.tealDark})`}
