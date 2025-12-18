@@ -79,14 +79,14 @@ const UITCustomHeader = ({
 }) => {
   return (
     <div className="w-full p-2">
-      <h1
+      <h2
         className={cn(
           `text-(${textColor}) text-5xl sansita-bold whitespace-pre-wrap text-center`,
           headerClassNames
         )}
       >
         {text}
-      </h1>
+      </h2>
     </div>
   );
 };
@@ -321,7 +321,7 @@ const AboutUsPage = () => {
         flexDirection="flex-col"
         flexClassNames="gap-8 p-24 bg-white"
       >
-        <UITCustomPreHeader
+        <UITCustomHeader
           text="Who We Are"
           textColor={pipaColorOptions.tealDark}
         />
