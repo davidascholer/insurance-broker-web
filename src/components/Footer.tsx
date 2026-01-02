@@ -166,7 +166,7 @@ const Footer = ({ className }: { className?: string }) => {
         </p>
         <div className="flex flex-col gap-0 justify-center items-center text-center">
           <span className="text-sm text-white">
-            © Copyright 2025 PIPA Broker, LLC. All rights reserved.
+            © Copyright 2026 PIPA Broker, LLC. All rights reserved.
           </span>
           <span className="text-sm text-white">
             PIPA Broker conducts business as Insurance Services by PIPA in the
