@@ -1,6 +1,30 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/header/Header";
 import { Link } from "react-router-dom";
+import FetchQuoteButton from "@/components/FetchQuoteButton";
+import { cn } from "@/lib/utils";
+
+const SectionBackground = ({
+  color,
+  children,
+  className,
+}: {
+  color: string;
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  return (
+    <div
+      className={cn(
+        "flex flex-row portrait:flex-col gap-2 justify-center items-center p-12",
+        color,
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+};
 
 const PetInsuranceExclusions = () => {
   return (
@@ -329,6 +353,14 @@ const PetInsuranceExclusions = () => {
           </li>
         </ol>
       </div>
+      <SectionBackground color="bg-(--white)">
+        <div className="flex flex-col gap-4 justify-center items-center">
+          <h2 className="text-4xl sansita-bold whitespace-pre-wrap text-(--primary-teal) ">
+            Looking for pet insurance for your cat or your dog?
+          </h2>
+          <FetchQuoteButton />
+        </div>
+      </SectionBackground>
       <Footer />
     </div>
   );
