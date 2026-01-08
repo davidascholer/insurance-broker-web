@@ -26,7 +26,6 @@ const SectionBackground = ({
   );
 };
 
-
 const WhatIsPetInsurance = () => {
   return (
     <div className="bg-(--light-pink)">
