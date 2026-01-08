@@ -169,7 +169,7 @@ const WhatIsPetInsurance = () => {
           </li>
         </ol>
       </div>
-      <SectionBackground color="bg-(--light-pink)">
+      <SectionBackground color="bg-(--white)">
         <div className="flex flex-col gap-4 justify-center items-center">
           <h2 className="text-4xl sansita-bold whitespace-pre-wrap text-(--primary-teal) ">
             Looking for pet insurance for your cat or your dog?
