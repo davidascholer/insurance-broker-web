@@ -49,28 +49,33 @@ const SectionContainer = ({
 const PartnerHeader = ({
   title,
   children,
+  imgUrl,
   reviewStars,
   className,
 }: {
   title: string;
   children: React.ReactNode;
+  imgUrl: string;
   reviewStars: number;
   className?: string;
 }) => {
   return (
-    <div className={cn("", className)}>
-      <span className="flex flex-nowrap gap-2 justify-center items-center">
-        <StarRating
-          starRating={reviewStars}
-          className="text-lg"
-          starStyles="text-[#ED8F82]"
-        />
-        <span className="text-xs font-bold">{`Trustpilot rating: ${reviewStars} out of 5 (2,353 Customer Reviews)`}</span>
-      </span>
-      <h1 className="text-(--primary-teal-dark) text-4xl md:text-5xl sansita-bold text-center">
-        {title}
-      </h1>
-      <p className="text-xs md:text-sm space-y-5">{children}</p>
+    <div className={cn("flex flex-col flex-nowrap min-sm:flex-row justify-center items-center gap-4", className)}>
+      <div className="flex-1 flex flex-col items-start gap-1 tracking-tight max-w-3xl px-4 w-full justify-start xl:text-lg">
+        <span className="flex flex-nowrap gap-2 justify-center items-center">
+          <StarRating
+            starRating={reviewStars}
+            className="text-lg"
+            starStyles="text-[#ED8F82]"
+          />
+          <span className="text-xs font-bold">{`Trustpilot rating: ${reviewStars} out of 5 (2,353 Customer Reviews)`}</span>
+        </span>
+        <h1 className="text-(--primary-teal-dark) text-4xl md:text-5xl sansita-bold text-center">
+          {title}
+        </h1>
+        <p className="text-xs md:text-sm space-y-5">{children}</p>
+      </div>
+      <img src={imgUrl} alt={title} className="mx-auto mb-4 w-48" />
     </div>
   );
 };
@@ -427,7 +432,8 @@ const PrudentPet = () => {
         <PartnerHeader
           title="Prudent Pet Insurance"
           reviewStars={4.8}
-          className="flex flex-col items-start gap-1 tracking-tight max-w-3xl px-4 w-full justify-start xl:text-lg"
+          imgUrl="/text_logos/prudent_logo_blue_horz.svg"
+          className=""
         >
           Reviewed by Jeffrey Hanschmann, Licensed Insurance Producer
           <br />
@@ -681,7 +687,7 @@ const PrudentPet = () => {
             </ContentImageListItem>
           </ContentImageList>
         </ContentWithHeading>
-        <span className="px-2  w-full">
+        <span className="px-2 w-full max-w-3xl">
           <em>
             Note: Claims must be filed within ~90 days after the end of the
             policy term to be eligible.

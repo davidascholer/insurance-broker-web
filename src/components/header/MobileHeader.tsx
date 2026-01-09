@@ -32,10 +32,13 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
     setResourceLinkOpen(false);
   }, []);
 
-  const handleNavigation = useCallback((path: string) => {
-    closeMenu();
-    navigate(path);
-  }, [navigate, closeMenu]);
+  const handleNavigation = useCallback(
+    (path: string) => {
+      closeMenu();
+      navigate(path);
+    },
+    [navigate, closeMenu]
+  );
 
   // Handle menu mounting for animation
   useEffect(() => {
@@ -66,7 +69,7 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
       document.body.style.position = "fixed";
       document.body.style.top = `-${scrollY}px`;
       document.body.style.width = "100%";
-      
+
       return () => {
         // Restore scroll position when menu closes
         const scrollY = document.body.style.top;
@@ -93,7 +96,11 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
               className="nav-link nunito-sans-medium cursor-pointer touch-manipulation"
               aria-label="Go to home page"
             >
-              <img src="/logo.png" alt="PIPA Broker" className="h-16 pointer-events-none" />
+              <img
+                src="/logo.png"
+                alt="PIPA Broker"
+                className="h-16 pointer-events-none"
+              />
             </button>
           </div>
 
@@ -117,7 +124,7 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
             "fixed bg-(--light-pink) z-99 flex flex-col items-center w-screen top-20 bottom-0 min-h-screen overflow-y-auto overscroll-contain",
             menuOpen ? "animate-appear" : "animate-disappear"
           )}
-          style={{ pointerEvents: menuOpen ? 'auto' : 'none' }}
+          style={{ pointerEvents: menuOpen ? "auto" : "none" }}
           role="dialog"
           aria-modal="true"
           aria-label="Main navigation menu"
@@ -174,7 +181,7 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
             "fixed bg-(--light-pink) z-100 flex flex-col items-center w-screen top-20 bottom-0 min-h-[400px] overflow-y-auto overscroll-contain",
             resourceLinkOpen ? "animate-appear" : "animate-disappear"
           )}
-          style={{ pointerEvents: resourceLinkOpen ? 'auto' : 'none' }}
+          style={{ pointerEvents: resourceLinkOpen ? "auto" : "none" }}
           role="dialog"
           aria-modal="true"
           aria-label="Pet insurance resources menu"
@@ -202,14 +209,18 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
             </button>
             <button
               className="cursor-pointer active:scale-95 transition-transform duration-150 ease-in-out touch-manipulation w-full text-center"
-              onClick={() => handleNavigation("/blog/how-to-compare-pet-insurance-policies")}
+              onClick={() =>
+                handleNavigation("/blog/how-to-compare-pet-insurance-policies")
+              }
               type="button"
             >
               How to Compare Pet Insurance Policies
             </button>
             <button
               className="cursor-pointer active:scale-95 transition-transform duration-150 ease-in-out touch-manipulation w-full text-center"
-              onClick={() => handleNavigation("/blog/understanding-pet-insurance-types")}
+              onClick={() =>
+                handleNavigation("/blog/understanding-pet-insurance-types")
+              }
               type="button"
             >
               Understanding Pet Insurance Types
@@ -223,10 +234,22 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
             </button>
             <button
               className="cursor-pointer active:scale-95 transition-transform duration-150 ease-in-out touch-manipulation w-full text-center"
-              onClick={() => handleNavigation("/blog/how-much-does-pet-insurance-cost")}
+              onClick={() =>
+                handleNavigation("/blog/how-much-does-pet-insurance-cost")
+              }
               type="button"
             >
               How Much Does Pet Insurance Cost?
+            </button>
+            <button
+              onClick={() => {
+                navigate("/blog");
+              }}
+              className="cursor-pointer active:scale-95 transition-transform duration-150 ease-in-out touch-manipulation w-full text-center"
+              role="menuitem"
+              aria-label="Navigate to Blog page"
+            >
+              Pet Insurance Resources - Blog
             </button>
 
             <button
