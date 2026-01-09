@@ -124,6 +124,16 @@ const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
                 >
                   How Much Does Pet Insurance Cost
                 </button>
+                <button
+                  onClick={() => {
+                    navigate("/blog");
+                  }}
+                  className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center justify-center text-(--text-dark) text-nowrap"
+                  role="menuitem"
+                  aria-label="Navigate to Blog page"
+                >
+                  Pet Insurance Resources - Blog
+                </button>
               </div>
             </HoverCardContent>
           </HoverCard>
