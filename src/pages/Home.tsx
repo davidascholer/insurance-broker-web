@@ -133,7 +133,7 @@ const Home = () => {
               setPrudentImage("/insurers/prudent_logo_white_wide.svg")
             }
             onClick={() => {
-              navigate("/partner");
+              navigate("/partner/prudent-pet");
             }}
           />
           <img
