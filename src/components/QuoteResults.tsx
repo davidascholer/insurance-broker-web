@@ -550,9 +550,9 @@ function QuoteResults({
                         {card.providerId === "kanguro" &&
                           (card.extras?.planId &&
                           card.extras.planId.includes("EssentialPlus") ? (
-                            <p className="text-center">Essential Plus</p>
+                            <p className="text-center">A&I & Wellness</p>
                           ) : (
-                            <p className="text-center">Essential</p>
+                            <p className="text-center">Accident & Illness</p>
                           ))}
                       </div>
                     </div>
