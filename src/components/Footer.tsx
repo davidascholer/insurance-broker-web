@@ -99,7 +99,7 @@ const Footer = ({ className }: { className?: string }) => {
             header="Partners"
             className="min-[768px]:max-w-[175px]"
             items={[
-              { url: "/partner", msg: "Prudent Pet" },
+              { url: "/partner/prudent-pet", msg: "Prudent Pet" },
               { url: "/partner", msg: "Kanguro" },
               { url: "/partner", msg: "Become a Partner" },
             ]}
