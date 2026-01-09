@@ -27,7 +27,7 @@ const BlogCard = ({ data, onLabelClick, className }: BlogCardProps) => {
       )}
       onClick={() => navigate(data.path)}
     >
-      <div className="w-full h-48 overflow-hidden">
+      <div className="w-full h-64 overflow-hidden">
         <img
           src={data.image}
           alt={data.title}
@@ -41,7 +41,7 @@ const BlogCard = ({ data, onLabelClick, className }: BlogCardProps) => {
         <p className="text-(--text-dark) text-sm nunito-sans">
           {data.date}
         </p>
-        <p className="text-(--text-dark) nunito-sans line-clamp-3">
+        <p className="text-(--text-dark) nunito-sans">
           {data.description}
         </p>
         <div className="flex flex-wrap gap-2 mt-2">
