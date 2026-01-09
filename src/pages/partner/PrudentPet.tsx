@@ -35,12 +35,11 @@ const SectionContainer = ({
   return (
     <div
       className={cn(
-        "flex flex-col gap-4 justify-center items-center w-full my-0 py-0 text-sm md:text-base",
+        "flex flex-col gap-4 justify-center items-center w-full my-0 py-0 text-sm md:text-base scroll-mt-36 md:scroll-mt-40",
         color,
         className
       )}
       id={id}
-      style={id ? { scrollMarginTop: "84px" } : undefined}
     >
       {children}
     </div>
@@ -436,10 +435,10 @@ const PrudentPet = () => {
         </PartnerHeader>
       </SectionContainer>
 
-      <SectionContainer 
-        id="anchor-list" 
-        color="bg-(--primary-teal-dark) p-2"
-        className="sticky top-24 z-40"
+      <SectionContainer
+        color="bg-(--primary-teal-dark)"
+        className="sticky top-20 md:top-24 z-40 py-2"
+        id="section-navigation"
       >
         <HorizontalAnchorList anchors={sectionIDs} />
       </SectionContainer>
