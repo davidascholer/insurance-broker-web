@@ -292,9 +292,9 @@ function QuoteResults({
                     {active.providerId === "kanguro" &&
                       (active.extras?.planId &&
                       active.extras.planId.includes("EssentialPlus") ? (
-                        <p className="text-center">Essential Plus</p>
+                        <p className="text-center">A&I & Wellness</p>
                       ) : (
-                        <p className="text-center">Essential</p>
+                        <p className="text-center">Accident & Illness</p>
                       ))}
                     <div className="flex flex-col min-[500px]:flex-row justify-between items-center min-[500px]:items-end gap-4 mt-4">
                       <div className="">

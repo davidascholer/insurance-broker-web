@@ -119,9 +119,9 @@ const KanguroQuoteDetail = ({
         </p>
         {relatedPlan.extras?.planId &&
         relatedPlan.extras.planId.includes("EssentialPlus") ? (
-          <p className="text-center">Essential Plus</p>
+          <p className="text-center">A&I & Wellness<br/>(Essential Plus)</p>
         ) : (
-          <p className="text-center">Essential</p>
+          <p className="text-center">Accident & Illness<br/>(Essential)</p>
         )}
       </div>
       <div className="flex flex-col justify-center items-center">
