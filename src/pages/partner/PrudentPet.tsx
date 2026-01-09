@@ -35,7 +35,7 @@ const SectionContainer = ({
   return (
     <div
       className={cn(
-        "flex flex-col gap-4 justify-center items-center w-full my-0 py-0 text-sm md:text-base scroll-mt-36 md:scroll-mt-40",
+        "flex flex-col gap-4 justify-center items-center w-full my-0 py-1 text-sm md:text-base scroll-mt-36 md:scroll-mt-40",
         color,
         className
       )}
@@ -519,11 +519,11 @@ const PrudentPet = () => {
                   <li>Dental injuries & disease</li>
                   <li>Alternative/holistic therapies</li>
                 </ContentUnorderedList>
-                <em>
-                  Note: coverage depends on plan type and limits selected.
-                </em>
               </div>
             </ContentWithImage>
+            <span className="px-2">
+              <em>Note: coverage depends on plan type and limits selected.</em>
+            </span>
             <ContentWithImage
               heading="NOT COVERED"
               imageSrc="/pages/partner/prudentpet/none.svg"
@@ -543,9 +543,11 @@ const PrudentPet = () => {
                   </li>
                   <li>Funerals, Urns, and burials</li>
                 </ContentUnorderedList>
-                <em>Routine care isn’t covered without a wellness add-on.</em>
               </div>
             </ContentWithImage>
+            <span className="w-full">
+              <em>Routine care isn’t covered without a wellness add-on.</em>
+            </span>
           </div>
         </ContentWithHeading>
         <FetchQuoteButton className="mt-2" />
@@ -679,7 +681,7 @@ const PrudentPet = () => {
             </ContentImageListItem>
           </ContentImageList>
         </ContentWithHeading>
-        <span>
+        <span className="px-2  w-full">
           <em>
             Note: Claims must be filed within ~90 days after the end of the
             policy term to be eligible.
