@@ -15,7 +15,7 @@ const FetchQuoteButton = ({ className }: { className?: string }) => {
       )}
       onClick={handleClick}
     >
-      Fetch Free Quotes
+      Fetch&nbsp;Free&nbsp;Quotes
     </button>
   );
 };

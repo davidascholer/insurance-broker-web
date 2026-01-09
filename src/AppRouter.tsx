@@ -21,6 +21,7 @@ import HowMuchDoesPetInsuranceCost from "./pages/blog/HowMuchDoesPetInsuranceCos
 import KanguroEmbed from "./features/kanguro/pages/KanguroEmbed";
 import PartnerPage from "./pages/PartnerPage";
 import AboutUsPage from "./pages/AboutUsPage";
+import PrudentPet from "./pages/partner/PrudentPet";
 
 const RouterWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -44,6 +45,7 @@ const AppRouter = () => {
         <Route path="/kanguro" element={<KanguroEmbed />} />
         <Route path="/terminology" element={<Terminology />} />
         <Route path="/partner" element={<PartnerPage />} />
+        <Route path="/partner/prudent-pet" element={<PrudentPet />} />
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route
           path="/blog/what-is-pet-insurance"
