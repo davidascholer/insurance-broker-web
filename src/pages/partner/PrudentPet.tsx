@@ -436,11 +436,15 @@ const PrudentPet = () => {
         </PartnerHeader>
       </SectionContainer>
 
-      <SectionContainer color="bg-(--primary-teal-dark) p-2">
+      <SectionContainer 
+        id="anchor-list" 
+        color="bg-(--primary-teal-dark) p-2"
+        className="sticky top-24 z-40"
+      >
         <HorizontalAnchorList anchors={sectionIDs} />
       </SectionContainer>
 
-      <SectionContainer color="bg-white" className="p-2" id={sectionIDs[0].id}>
+      <SectionContainer color="bg-white" id={sectionIDs[0].id}>
         <ContentWithHeading heading="Pricing">
           <button
             className="whitespace-nowrap rounded-md text-(--primary-coral) font-bold tracking-wider cursor-pointer transition-transform duration-300 ease hover:-translate-y-1"
