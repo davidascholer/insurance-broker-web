@@ -8,7 +8,7 @@ export const licenses = [
   { state: "Connecticut", license: "3003765671" },
   { state: "Delaware", license: "3003765685" },
   { state: "District of Columbia", license: "3003765674" },
-  { state: "Florida", license: "TBD" },
+  { state: "Florida", license: "L134524" },
   { state: "Georgia", license: "242390" },
   { state: "Hawaii", license: "3003772639" },
   { state: "Idaho", license: "3003761667" },
