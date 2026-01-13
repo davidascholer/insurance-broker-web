@@ -2,7 +2,8 @@ import { DEV } from "@/lib/constants";
 
 export const PIPA_API_URL = DEV
   ? "http://localhost:3000/"
-  : "https://pipa-server-41b9ae62ecfa.herokuapp.com/";
+  : "https://pipa-server-41b9ae62ecfa.herokuapp.co/";
+  // : "https://pipa-server-41b9ae62ecfa.herokuapp.com/";
 export const PIPA_QUOTES_URL = PIPA_API_URL + "api/v1/quotes";
 export const PIPA_FALLBACK_QUOTES_URL = PIPA_API_URL + "api/v1/quotes/fallback";
 export const PIPA_EMAIL_URL = PIPA_API_URL + "api/v1/email";
