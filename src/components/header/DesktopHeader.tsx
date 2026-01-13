@@ -137,7 +137,20 @@ const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
               </div>
             </HoverCardContent>
           </HoverCard>
-
+          <button
+            className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center font-bold text-nowrap"
+            onClick={() => navigate("/about-us")}
+            aria-label="Navigate to about page"
+          >
+            About Us
+          </button>
+          <button
+            className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center font-bold text-nowrap"
+            onClick={() => navigate("/blog")}
+            aria-label="Navigate to blog page"
+          >
+            Blog
+          </button>
           <button
             onClick={() => {
               navigate("/faqs");
@@ -147,13 +160,7 @@ const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
           >
             FAQs
           </button>
-          <button
-            className="sansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center font-bold text-nowrap"
-            onClick={() => navigate("/about-us")}
-            aria-label="Navigate to about page"
-          >
-            About Us
-          </button>
+
           {/* <button
             onClick={changeTheme}
             className="nansita-regular cursor-pointer transition-transform duration-200 ease hover:-translate-y-0.5 flex items-center hidden"
@@ -164,10 +171,10 @@ const DesktopHeader = ({ showFetchButton = true }: HeaderProps) => {
 
           <a
             href="mailto:admin@pipabroker.com"
-            className="flex flex-row flex-nowrap items-center gap-2 pointer-cursor ml-auto"
+            className="flex flex-row flex-wrap items-center justify-center gap-2 pointer-cursor ml-auto"
             aria-label="Contact menu"
           >
-            <span className="sansita-regular flex items-center ml-auto font-bold">
+            <span className="sansita-regular flex items-center font-bold">
               Contact
             </span>
             <img

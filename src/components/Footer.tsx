@@ -67,6 +67,7 @@ const Footer = ({ className }: { className?: string }) => {
             header="Resources"
             className="w-full max-w-[300px] min-[768px]:max-w-[325px]"
             items={[
+              { url: "/blog", msg: "Blog" },
               { url: "/faqs", msg: "FAQs" },
               { url: "/terminology", msg: "Pet Insurance 101 - Terminology" },
               {

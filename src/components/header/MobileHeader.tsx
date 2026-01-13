@@ -145,18 +145,27 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
             </button>
             <button
               className="cursor-pointer active:scale-95 transition-transform duration-150 ease-in-out touch-manipulation w-full text-center"
-              onClick={() => handleNavigation("/faqs")}
-              type="button"
-            >
-              FAQs
-            </button>
-            <button
-              className="cursor-pointer active:scale-95 transition-transform duration-150 ease-in-out touch-manipulation w-full text-center"
               onClick={() => handleNavigation("/about-us")}
               type="button"
             >
               About Us
             </button>
+            <button
+              className="cursor-pointer active:scale-95 transition-transform duration-150 ease-in-out touch-manipulation w-full text-center"
+              onClick={() => handleNavigation("/blog")}
+              type="button"
+            >
+              Blog
+            </button>
+
+            <button
+              className="cursor-pointer active:scale-95 transition-transform duration-150 ease-in-out touch-manipulation w-full text-center"
+              onClick={() => handleNavigation("/faqs")}
+              type="button"
+            >
+              FAQs
+            </button>
+
             <Link
               to="mailto:admin@pipabroker.com"
               className="cursor-pointer active:scale-95 transition-transform duration-150 ease-in-out touch-manipulation w-full text-center"
