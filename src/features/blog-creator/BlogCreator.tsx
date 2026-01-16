@@ -1,6 +1,17 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { GripVertical, Trash2, Download, Eye, Code, X, Bold, Italic, Link, Type } from "lucide-react";
+import {
+  GripVertical,
+  Trash2,
+  Download,
+  Eye,
+  Code,
+  X,
+  Bold,
+  Italic,
+  Link,
+  Type,
+} from "lucide-react";
 import Header from "@/components/header/Header";
 import Footer from "@/components/Footer";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
@@ -49,6 +60,13 @@ type SavedPage = {
   name: string;
   components: SavedComponentType[];
   timestamp: Date;
+  card?: {
+    title: string;
+    description: string;
+    date: string;
+    imageUrl: string;
+    labels: string[];
+  };
 };
 
 interface AvailableComponent {
@@ -220,22 +238,24 @@ const componentMap: Record<
 const BlogCreator = () => {
   const [components, setComponents] = useState<ComponentItem[]>([]);
   const [pageName, setPageName] = useState("");
-  
+
   // Blog metadata fields
   const [blogTitle, setBlogTitle] = useState("");
-  const [blogHeader, setBlogHeader] = useState("");
   const [blogDescription, setBlogDescription] = useState("");
-  const [blogDate, setBlogDate] = useState(new Date().toISOString().split('T')[0]);
+  const [blogDate, setBlogDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
   const [blogImageUrl, setBlogImageUrl] = useState("https://picsum.photos/200");
   const [blogLabels, setBlogLabels] = useState<string[]>([]);
   const [labelsDropdownOpen, setLabelsDropdownOpen] = useState(false);
   const labelsDropdownRef = useRef<HTMLDivElement>(null!);
-  
+
   const [draggedComponent, setDraggedComponent] = useState<string | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [showPreview, setShowPreview] = useState(false);
   const [showCode, setShowCode] = useState(false);
-  const [editingComponent, setEditingComponent] = useState<ComponentItem | null>(null);
+  const [editingComponent, setEditingComponent] =
+    useState<ComponentItem | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [fontDropdownOpen, setFontDropdownOpen] = useState(false);
   const fontDropdownRef = useRef<HTMLDivElement>(null!);
@@ -244,7 +264,7 @@ const BlogCreator = () => {
   const [pageSaved, setPageSaved] = useState(false);
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
-    type: 'prompt' | 'confirm';
+    type: "prompt" | "confirm";
     title: string;
     message: string;
     inputValue: string;
@@ -252,16 +272,68 @@ const BlogCreator = () => {
     onCancel: () => void;
   }>({
     isOpen: false,
-    type: 'confirm',
-    title: '',
-    message: '',
-    inputValue: '',
+    type: "confirm",
+    title: "",
+    message: "",
+    inputValue: "",
     onConfirm: () => {},
     onCancel: () => {},
   });
 
   useOutsideClick(fontDropdownRef, () => setFontDropdownOpen(false));
   useOutsideClick(labelsDropdownRef, () => setLabelsDropdownOpen(false));
+
+  // Auto-save entire page after 1 second of editing
+  useEffect(() => {
+    if (!pageName) return;
+
+    const timer = setTimeout(() => {
+      // Convert ComponentItem[] to SavedComponentType[]
+      const savedComponents: SavedComponentType[] = components.map(
+        (component) => ({
+          name: component.name,
+          props: component.props,
+        })
+      );
+
+      const pageData: SavedPage = {
+        name: pageName,
+        components: savedComponents,
+        timestamp: new Date(),
+        card: {
+          title: blogTitle,
+          description: blogDescription,
+          date: blogDate,
+          imageUrl: blogImageUrl,
+          labels: blogLabels,
+        },
+      };
+
+      // Get existing pages from localStorage
+      const existingPagesJson = localStorage.getItem("pages");
+      const existingPages: SavedPage[] = existingPagesJson
+        ? JSON.parse(existingPagesJson)
+        : [];
+
+      // Find the page by name
+      const existingPageIndex = existingPages.findIndex(
+        (p) => p.name === pageName
+      );
+
+      if (existingPageIndex >= 0) {
+        // Update existing page
+        existingPages[existingPageIndex] = pageData;
+      } else {
+        // Add new page
+        existingPages.push(pageData);
+      }
+
+      // Save to localStorage without showing toast
+      localStorage.setItem("pages", JSON.stringify(existingPages));
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [pageName, blogTitle, blogDescription, blogDate, blogImageUrl, blogLabels, components]);
 
   // Re-enable save button when page content changes
   const [lastSavedState, setLastSavedState] = useState("");
@@ -274,11 +346,17 @@ const BlogCreator = () => {
   }
 
   // Rich Text Editor Component
-  const RichTextEditor = ({ value, onChange }: { value: string; onChange: (val: string) => void }) => {
+  const RichTextEditor = ({
+    value,
+    onChange,
+  }: {
+    value: string;
+    onChange: (val: string) => void;
+  }) => {
     const editorRef = useRef<HTMLDivElement>(null);
     const [isBoldActive, setIsBoldActive] = useState(false);
     const [isItalicActive, setIsItalicActive] = useState(false);
-    
+
     const checkFormatting = () => {
       const selection = window.getSelection();
       if (!selection || selection.rangeCount === 0) {
@@ -289,9 +367,10 @@ const BlogCreator = () => {
 
       const range = selection.getRangeAt(0);
       const container = range.commonAncestorContainer;
-      const parentElement = container.nodeType === Node.TEXT_NODE 
-        ? container.parentElement 
-        : container as Element;
+      const parentElement =
+        container.nodeType === Node.TEXT_NODE
+          ? container.parentElement
+          : (container as Element);
 
       // Check for bold
       let element = parentElement;
@@ -317,34 +396,35 @@ const BlogCreator = () => {
       }
       setIsItalicActive(hasItalic);
     };
-    
+
     const applyFormatting = (command: string, formatValue?: string) => {
       const selection = window.getSelection();
       if (!selection || selection.rangeCount === 0) return;
 
       const range = selection.getRangeAt(0);
       const selectedText = range.toString();
-      
+
       if (!selectedText && command !== "insertHTML") return;
 
       // Check if selection is already formatted
       const container = range.commonAncestorContainer;
-      const parentElement = container.nodeType === Node.TEXT_NODE 
-        ? container.parentElement 
-        : container as Element;
+      const parentElement =
+        container.nodeType === Node.TEXT_NODE
+          ? container.parentElement
+          : (container as Element);
 
       // For bold/italic, check if we need to remove formatting
       if (command === "bold" || command === "italic") {
         const tagName = command === "bold" ? "STRONG" : "EM";
         let element = parentElement;
-        
+
         // Traverse up to find the formatting tag
         while (element && element !== editorRef.current) {
           if (element.tagName === tagName) {
             // Remove the formatting by replacing with text
             const textNode = document.createTextNode(element.textContent || "");
             element.parentNode?.replaceChild(textNode, element);
-            
+
             if (editorRef.current) {
               onChange(editorRef.current.innerHTML);
             }
@@ -355,7 +435,7 @@ const BlogCreator = () => {
       }
 
       let newElement: HTMLElement;
-      
+
       switch (command) {
         case "bold":
           newElement = document.createElement("strong");
@@ -370,20 +450,25 @@ const BlogCreator = () => {
           if (url) {
             // Convert to absolute URL if needed
             let finalUrl = url;
-            if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("mailto:") && !url.startsWith("tel:")) {
+            if (
+              !url.startsWith("http://") &&
+              !url.startsWith("https://") &&
+              !url.startsWith("mailto:") &&
+              !url.startsWith("tel:")
+            ) {
               finalUrl = "https://" + url;
             }
-            
+
             const linkElement = document.createElement("a");
             linkElement.setAttribute("href", finalUrl);
             linkElement.setAttribute("target", "_blank");
             linkElement.setAttribute("rel", "noopener noreferrer");
             linkElement.className = "text-(--primary-teal) hover:underline";
             linkElement.textContent = selectedText;
-            
+
             range.deleteContents();
             range.insertNode(linkElement);
-            
+
             if (editorRef.current) {
               onChange(editorRef.current.innerHTML);
             }
@@ -403,12 +488,12 @@ const BlogCreator = () => {
 
       range.deleteContents();
       range.insertNode(newElement);
-      
+
       // Update the content
       if (editorRef.current) {
         onChange(editorRef.current.innerHTML);
       }
-      
+
       // Check formatting state after applying
       setTimeout(() => checkFormatting(), 0);
     };
@@ -458,9 +543,9 @@ const BlogCreator = () => {
               <Link className="w-4 h-4" />
             </button>
           </div>
-          
+
           <div className="border-l border-gray-300 mx-1" />
-          
+
           <div className="flex items-center gap-2">
             <Type className="w-4 h-4 text-gray-600" />
             <select
@@ -496,29 +581,49 @@ const BlogCreator = () => {
             editingComponent?.props?.fontFamily || "nunito-sans"
           )}
           style={{
-            fontFamily: editingComponent?.props?.fontFamily === "nunito-sans" ? '"Nunito Sans", sans-serif' :
-                        editingComponent?.props?.fontFamily === "nunito-sans-light" ? '"Nunito Sans", sans-serif' :
-                        editingComponent?.props?.fontFamily === "nunito-sans-medium" ? '"Nunito Sans", sans-serif' :
-                        editingComponent?.props?.fontFamily === "nunito-sans-semibold" ? '"Nunito Sans", sans-serif' :
-                        editingComponent?.props?.fontFamily === "nunito-sans-bold" ? '"Nunito Sans", sans-serif' :
-                        editingComponent?.props?.fontFamily === "sansita-regular" ? '"Sansita", sans-serif' :
-                        editingComponent?.props?.fontFamily === "sansita-bold" ? '"Sansita", sans-serif' :
-                        editingComponent?.props?.fontFamily === "sansita-extrabold" ? '"Sansita", sans-serif' :
-                        editingComponent?.props?.fontFamily === "sansita-black" ? '"Sansita", sans-serif' :
-                        '"Nunito Sans", sans-serif',
-            fontWeight: editingComponent?.props?.fontFamily === "nunito-sans-light" ? 300 :
-                        editingComponent?.props?.fontFamily === "nunito-sans" ? 400 :
-                        editingComponent?.props?.fontFamily === "nunito-sans-medium" ? 500 :
-                        editingComponent?.props?.fontFamily === "nunito-sans-semibold" ? 600 :
-                        editingComponent?.props?.fontFamily === "nunito-sans-bold" ? 700 :
-                        editingComponent?.props?.fontFamily === "sansita-regular" ? 400 :
-                        editingComponent?.props?.fontFamily === "sansita-bold" ? 700 :
-                        editingComponent?.props?.fontFamily === "sansita-extrabold" ? 800 :
-                        editingComponent?.props?.fontFamily === "sansita-black" ? 900 :
-                        400,
+            fontFamily:
+              editingComponent?.props?.fontFamily === "nunito-sans"
+                ? '"Nunito Sans", sans-serif'
+                : editingComponent?.props?.fontFamily === "nunito-sans-light"
+                ? '"Nunito Sans", sans-serif'
+                : editingComponent?.props?.fontFamily === "nunito-sans-medium"
+                ? '"Nunito Sans", sans-serif'
+                : editingComponent?.props?.fontFamily === "nunito-sans-semibold"
+                ? '"Nunito Sans", sans-serif'
+                : editingComponent?.props?.fontFamily === "nunito-sans-bold"
+                ? '"Nunito Sans", sans-serif'
+                : editingComponent?.props?.fontFamily === "sansita-regular"
+                ? '"Sansita", sans-serif'
+                : editingComponent?.props?.fontFamily === "sansita-bold"
+                ? '"Sansita", sans-serif'
+                : editingComponent?.props?.fontFamily === "sansita-extrabold"
+                ? '"Sansita", sans-serif'
+                : editingComponent?.props?.fontFamily === "sansita-black"
+                ? '"Sansita", sans-serif'
+                : '"Nunito Sans", sans-serif',
+            fontWeight:
+              editingComponent?.props?.fontFamily === "nunito-sans-light"
+                ? 300
+                : editingComponent?.props?.fontFamily === "nunito-sans"
+                ? 400
+                : editingComponent?.props?.fontFamily === "nunito-sans-medium"
+                ? 500
+                : editingComponent?.props?.fontFamily === "nunito-sans-semibold"
+                ? 600
+                : editingComponent?.props?.fontFamily === "nunito-sans-bold"
+                ? 700
+                : editingComponent?.props?.fontFamily === "sansita-regular"
+                ? 400
+                : editingComponent?.props?.fontFamily === "sansita-bold"
+                ? 700
+                : editingComponent?.props?.fontFamily === "sansita-extrabold"
+                ? 800
+                : editingComponent?.props?.fontFamily === "sansita-black"
+                ? 900
+                : 400,
           }}
         />
-        
+
         <p className="text-xs text-gray-500">
           Select text to apply formatting, or edit directly
         </p>
@@ -580,19 +685,19 @@ const BlogCreator = () => {
   const handleDelete = (id: string) => {
     const component = components.find((c) => c.id === id);
     const componentName = component?.name || "this component";
-    
+
     setModalState({
       isOpen: true,
-      type: 'confirm',
-      title: 'Delete Component',
+      type: "confirm",
+      title: "Delete Component",
       message: `Are you sure you want to delete ${componentName}?`,
-      inputValue: '',
+      inputValue: "",
       onConfirm: () => {
         setComponents(components.filter((c) => c.id !== id));
-        setModalState(prev => ({ ...prev, isOpen: false }));
+        setModalState((prev) => ({ ...prev, isOpen: false }));
       },
       onCancel: () => {
-        setModalState(prev => ({ ...prev, isOpen: false }));
+        setModalState((prev) => ({ ...prev, isOpen: false }));
       },
     });
   };
@@ -691,7 +796,7 @@ const BlogCreator = () => {
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
-              
+
               <div>
                 <label className="block text-xs font-semibold text-gray-600 mb-1">
                   Image URL
@@ -699,7 +804,9 @@ const BlogCreator = () => {
                 <input
                   type="text"
                   value={item.imageUrl || ""}
-                  onChange={(e) => updateItem(index, "imageUrl", e.target.value)}
+                  onChange={(e) =>
+                    updateItem(index, "imageUrl", e.target.value)
+                  }
                   className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:border-(--primary-teal) focus:outline-none"
                   placeholder="/path/to/image.jpg"
                 />
@@ -712,7 +819,9 @@ const BlogCreator = () => {
                 <input
                   type="text"
                   value={item.imageAlt || ""}
-                  onChange={(e) => updateItem(index, "imageAlt", e.target.value)}
+                  onChange={(e) =>
+                    updateItem(index, "imageAlt", e.target.value)
+                  }
                   className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:border-(--primary-teal) focus:outline-none"
                   placeholder="Image description"
                 />
@@ -724,7 +833,9 @@ const BlogCreator = () => {
                 </label>
                 <textarea
                   value={String(item.children || "")}
-                  onChange={(e) => updateItem(index, "children", e.target.value)}
+                  onChange={(e) =>
+                    updateItem(index, "children", e.target.value)
+                  }
                   className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:border-(--primary-teal) focus:outline-none resize-vertical"
                   rows={2}
                   placeholder="Item description"
@@ -732,7 +843,7 @@ const BlogCreator = () => {
               </div>
             </div>
           ))}
-          
+
           <button
             onClick={addItem}
             className="w-full px-4 py-2 border-2 border-dashed border-(--primary-teal) text-(--primary-teal) rounded-lg hover:bg-(--light-pink) transition-colors font-semibold"
@@ -770,18 +881,65 @@ const BlogCreator = () => {
     // Special handling for fontFamily prop in ContentText
     if (key === "fontFamily" && editingComponent?.type === "ContentText") {
       const fontFamilyOptions = [
-        { label: "Nunito Sans", value: "nunito-sans", fontFamily: '"Nunito Sans", sans-serif', fontWeight: 400 },
-        { label: "Nunito Sans Light", value: "nunito-sans-light", fontFamily: '"Nunito Sans", sans-serif', fontWeight: 300 },
-        { label: "Nunito Sans Medium", value: "nunito-sans-medium", fontFamily: '"Nunito Sans", sans-serif', fontWeight: 500 },
-        { label: "Nunito Sans SemiBold", value: "nunito-sans-semibold", fontFamily: '"Nunito Sans", sans-serif', fontWeight: 600 },
-        { label: "Nunito Sans Bold", value: "nunito-sans-bold", fontFamily: '"Nunito Sans", sans-serif', fontWeight: 700 },
-        { label: "Sansita Regular", value: "sansita-regular", fontFamily: '"Sansita", sans-serif', fontWeight: 400 },
-        { label: "Sansita Bold", value: "sansita-bold", fontFamily: '"Sansita", sans-serif', fontWeight: 700 },
-        { label: "Sansita Extra Bold", value: "sansita-extrabold", fontFamily: '"Sansita", sans-serif', fontWeight: 800 },
-        { label: "Sansita Black", value: "sansita-black", fontFamily: '"Sansita", sans-serif', fontWeight: 900 },
+        {
+          label: "Nunito Sans",
+          value: "nunito-sans",
+          fontFamily: '"Nunito Sans", sans-serif',
+          fontWeight: 400,
+        },
+        {
+          label: "Nunito Sans Light",
+          value: "nunito-sans-light",
+          fontFamily: '"Nunito Sans", sans-serif',
+          fontWeight: 300,
+        },
+        {
+          label: "Nunito Sans Medium",
+          value: "nunito-sans-medium",
+          fontFamily: '"Nunito Sans", sans-serif',
+          fontWeight: 500,
+        },
+        {
+          label: "Nunito Sans SemiBold",
+          value: "nunito-sans-semibold",
+          fontFamily: '"Nunito Sans", sans-serif',
+          fontWeight: 600,
+        },
+        {
+          label: "Nunito Sans Bold",
+          value: "nunito-sans-bold",
+          fontFamily: '"Nunito Sans", sans-serif',
+          fontWeight: 700,
+        },
+        {
+          label: "Sansita Regular",
+          value: "sansita-regular",
+          fontFamily: '"Sansita", sans-serif',
+          fontWeight: 400,
+        },
+        {
+          label: "Sansita Bold",
+          value: "sansita-bold",
+          fontFamily: '"Sansita", sans-serif',
+          fontWeight: 700,
+        },
+        {
+          label: "Sansita Extra Bold",
+          value: "sansita-extrabold",
+          fontFamily: '"Sansita", sans-serif',
+          fontWeight: 800,
+        },
+        {
+          label: "Sansita Black",
+          value: "sansita-black",
+          fontFamily: '"Sansita", sans-serif',
+          fontWeight: 900,
+        },
       ];
 
-      const selectedOption = fontFamilyOptions.find(opt => opt.value === value) || fontFamilyOptions[0];
+      const selectedOption =
+        fontFamilyOptions.find((opt) => opt.value === value) ||
+        fontFamilyOptions[0];
 
       return (
         <div className="relative" ref={fontDropdownRef}>
@@ -789,11 +947,24 @@ const BlogCreator = () => {
             type="button"
             onClick={() => setFontDropdownOpen(!fontDropdownOpen)}
             className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none text-left flex items-center justify-between"
-            style={{ fontFamily: selectedOption.fontFamily, fontWeight: selectedOption.fontWeight }}
+            style={{
+              fontFamily: selectedOption.fontFamily,
+              fontWeight: selectedOption.fontWeight,
+            }}
           >
             <span>{selectedOption.label}</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
             </svg>
           </button>
           {fontDropdownOpen && (
@@ -809,7 +980,10 @@ const BlogCreator = () => {
                     "px-3 py-2 cursor-pointer hover:bg-(--light-pink) transition-colors",
                     option.value === value && "bg-(--light-pink)"
                   )}
-                  style={{ fontFamily: option.fontFamily, fontWeight: option.fontWeight }}
+                  style={{
+                    fontFamily: option.fontFamily,
+                    fontWeight: option.fontWeight,
+                  }}
                 >
                   {option.label}
                 </div>
@@ -898,7 +1072,6 @@ const BlogCreator = () => {
   const validateBlogMetadata = (): boolean => {
     return !!(
       blogTitle.trim() &&
-      blogHeader.trim() &&
       blogDescription.trim() &&
       blogDate &&
       blogImageUrl.trim() &&
@@ -913,7 +1086,9 @@ const BlogCreator = () => {
     }
 
     if (!validatePageName(pageName)) {
-      alert("Page name must start with an uppercase letter and contain only alphanumeric characters (no spaces or special characters)");
+      alert(
+        "Page name must start with an uppercase letter and contain only alphanumeric characters (no spaces or special characters)"
+      );
       return;
     }
 
@@ -923,24 +1098,37 @@ const BlogCreator = () => {
     }
 
     // Convert ComponentItem[] to SavedComponentType[]
-    const savedComponents: SavedComponentType[] = components.map(component => ({
-      name: component.name,
-      props: component.props,
-      // Children not implemented in current structure
-    }));
+    const savedComponents: SavedComponentType[] = components.map(
+      (component) => ({
+        name: component.name,
+        props: component.props,
+        // Children not implemented in current structure
+      })
+    );
 
     const newPage: SavedPage = {
       name: pageName,
       components: savedComponents,
       timestamp: new Date(),
+      card: {
+        title: blogTitle,
+        description: blogDescription,
+        date: blogDate,
+        imageUrl: blogImageUrl,
+        labels: blogLabels,
+      },
     };
 
     // Get existing pages from localStorage
     const existingPagesJson = localStorage.getItem("pages");
-    const existingPages: SavedPage[] = existingPagesJson ? JSON.parse(existingPagesJson) : [];
+    const existingPages: SavedPage[] = existingPagesJson
+      ? JSON.parse(existingPagesJson)
+      : [];
 
     // Check if page name already exists
-    const existingPageIndex = existingPages.findIndex(p => p.name === pageName);
+    const existingPageIndex = existingPages.findIndex(
+      (p) => p.name === pageName
+    );
     if (existingPageIndex >= 0) {
       existingPages[existingPageIndex] = newPage;
     } else {
@@ -949,7 +1137,7 @@ const BlogCreator = () => {
 
     // Save to localStorage
     localStorage.setItem("pages", JSON.stringify(existingPages));
-    
+
     // Show toast and disable save button
     setPageSaved(true);
     setToastMessage(`Page "${pageName}" saved successfully!`);
@@ -995,7 +1183,7 @@ const BlogCreator = () => {
               type="text"
               value={pageName}
               onChange={(e) => setPageName(e.target.value)}
-              placeholder="e.g., MyBlogPage (starts with uppercase, alphanumeric only)"
+              placeholder="e.g., MyBlogPage"
               className={cn(
                 "w-full max-w-md px-4 py-2 border-2 rounded-lg focus:outline-none transition-colors",
                 pageName && !validatePageName(pageName)
@@ -1005,7 +1193,8 @@ const BlogCreator = () => {
             />
             {pageName && !validatePageName(pageName) && (
               <p className="text-red-500 text-sm mt-1">
-                Must start with uppercase letter and contain only alphanumeric characters
+                Must start with uppercase letter and contain only alphanumeric
+                characters
               </p>
             )}
           </div>
@@ -1013,11 +1202,13 @@ const BlogCreator = () => {
           <div className="flex gap-4 mb-4">
             <button
               onClick={() => setShowPreview(!showPreview)}
+              disabled={!pageName}
               className={cn(
                 "flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors",
                 showPreview
                   ? "bg-(--primary-teal) text-white"
-                  : "bg-white text-(--primary-teal-dark) border-2 border-(--primary-teal)"
+                  : "bg-white text-(--primary-teal-dark) border-2 border-(--primary-teal)",
+                !pageName && "opacity-50 cursor-not-allowed"
               )}
             >
               <Eye className="w-4 h-4" />
@@ -1025,11 +1216,13 @@ const BlogCreator = () => {
             </button>
             <button
               onClick={() => setShowCode(!showCode)}
+              disabled={!pageName}
               className={cn(
                 "flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors",
                 showCode
                   ? "bg-(--primary-teal) text-white"
-                  : "bg-white text-(--primary-teal-dark) border-2 border-(--primary-teal)"
+                  : "bg-white text-(--primary-teal-dark) border-2 border-(--primary-teal)",
+                !pageName && "opacity-50 cursor-not-allowed"
               )}
             >
               <Code className="w-4 h-4" />
@@ -1037,7 +1230,7 @@ const BlogCreator = () => {
             </button>
             <button
               onClick={exportHTML}
-              disabled={components.length === 0}
+              disabled={components.length === 0 || !pageName}
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-(--primary-coral) text-white font-semibold hover:bg-(--coral-pink) disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <Download className="w-4 h-4" />
@@ -1046,7 +1239,10 @@ const BlogCreator = () => {
           </div>
 
           {/* Blog Metadata Section */}
-          <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+          <div className={cn(
+            "bg-white rounded-lg shadow-lg p-6 mb-6 transition-opacity",
+            !pageName && "opacity-50 pointer-events-none"
+          )}>
             <h2 className="text-2xl font-bold text-(--primary-teal-dark) sansita-bold mb-4">
               Blog Card Information
             </h2>
@@ -1062,19 +1258,6 @@ const BlogCreator = () => {
                     value={blogTitle}
                     onChange={(e) => setBlogTitle(e.target.value)}
                     placeholder="Enter blog title"
-                    className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-(--primary-teal-dark) mb-2">
-                    Page Header <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={blogHeader}
-                    onChange={(e) => setBlogHeader(e.target.value)}
-                    placeholder="Enter page header"
                     className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none"
                   />
                 </div>
@@ -1129,11 +1312,23 @@ const BlogCreator = () => {
                     >
                       <span className="text-gray-500">
                         {blogLabels.length > 0
-                          ? `${blogLabels.length} label${blogLabels.length > 1 ? 's' : ''} selected`
-                          : 'Select labels'}
+                          ? `${blogLabels.length} label${
+                              blogLabels.length > 1 ? "s" : ""
+                            } selected`
+                          : "Select labels"}
                       </span>
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
                       </svg>
                     </button>
                     {labelsDropdownOpen && (
@@ -1143,7 +1338,9 @@ const BlogCreator = () => {
                             key={label}
                             onClick={() => {
                               if (blogLabels.includes(label)) {
-                                setBlogLabels(blogLabels.filter(l => l !== label));
+                                setBlogLabels(
+                                  blogLabels.filter((l) => l !== label)
+                                );
                               } else {
                                 setBlogLabels([...blogLabels, label]);
                               }
@@ -1153,13 +1350,27 @@ const BlogCreator = () => {
                               blogLabels.includes(label) && "bg-(--light-pink)"
                             )}
                           >
-                            <div className={cn(
-                              "w-4 h-4 border-2 rounded flex items-center justify-center",
-                              blogLabels.includes(label) ? "border-(--primary-teal) bg-(--primary-teal)" : "border-gray-300"
-                            )}>
+                            <div
+                              className={cn(
+                                "w-4 h-4 border-2 rounded flex items-center justify-center",
+                                blogLabels.includes(label)
+                                  ? "border-(--primary-teal) bg-(--primary-teal)"
+                                  : "border-gray-300"
+                              )}
+                            >
                               {blogLabels.includes(label) && (
-                                <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                <svg
+                                  className="w-3 h-3 text-white"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={3}
+                                    d="M5 13l4 4L19 7"
+                                  />
                                 </svg>
                               )}
                             </div>
@@ -1178,7 +1389,11 @@ const BlogCreator = () => {
                         >
                           {label}
                           <button
-                            onClick={() => setBlogLabels(blogLabels.filter(l => l !== label))}
+                            onClick={() =>
+                              setBlogLabels(
+                                blogLabels.filter((l) => l !== label)
+                              )
+                            }
                             className="hover:bg-white hover:text-(--primary-teal) rounded-full p-0.5"
                           >
                             <X className="w-3 h-3" />
@@ -1203,7 +1418,8 @@ const BlogCreator = () => {
                         alt={blogTitle || "Blog preview"}
                         className="w-full h-full object-cover"
                         onError={(e) => {
-                          (e.target as HTMLImageElement).src = "https://via.placeholder.com/400x300?text=Invalid+Image+URL";
+                          (e.target as HTMLImageElement).src =
+                            "https://via.placeholder.com/400x300?text=Invalid+Image+URL";
                         }}
                       />
                     ) : (
@@ -1217,10 +1433,17 @@ const BlogCreator = () => {
                       {blogTitle || "Blog Title"}
                     </h3>
                     <p className="text-(--text-dark) text-sm nunito-sans">
-                      {blogDate ? new Date(blogDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : "Date"}
+                      {blogDate
+                        ? new Date(blogDate + 'T00:00:00').toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })
+                        : "Date"}
                     </p>
                     <p className="text-(--text-dark) nunito-sans line-clamp-3">
-                      {blogDescription || "Blog description will appear here..."}
+                      {blogDescription ||
+                        "Blog description will appear here..."}
                     </p>
                     <div className="flex flex-wrap gap-2 mt-2">
                       {blogLabels.length > 0 ? (
@@ -1233,7 +1456,9 @@ const BlogCreator = () => {
                           </span>
                         ))
                       ) : (
-                        <span className="text-gray-400 text-sm">No labels selected</span>
+                        <span className="text-gray-400 text-sm">
+                          No labels selected
+                        </span>
                       )}
                     </div>
                   </div>
@@ -1242,7 +1467,10 @@ const BlogCreator = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <div className={cn(
+            "grid grid-cols-1 lg:grid-cols-4 gap-6 transition-opacity",
+            !pageName && "opacity-50 pointer-events-none"
+          )}>
             {/* Component Palette */}
             {!showPreview && !showCode && (
               <div className="lg:col-span-1">
@@ -1309,25 +1537,28 @@ const BlogCreator = () => {
                   <div className="space-y-4">
                     {components.map((component, index) => (
                       <div
-                        key={`${component.id}-${JSON.stringify(component.props)}`}
-                        {...(!showPreview && { 
+                        key={`${component.id}-${JSON.stringify(
+                          component.props
+                        )}`}
+                        {...(!showPreview && {
                           draggable: true,
-                          onClick: () => handleEdit(component, index)
+                          onClick: () => handleEdit(component, index),
                         })}
                         onDragStart={(e) =>
                           !showPreview && handleDragStartCanvas(index, e)
                         }
                         onDragOver={!showPreview ? handleDragOver : undefined}
                         onDrop={
-                          !showPreview
-                            ? (e) => handleDrop(e, index)
-                            : undefined
+                          !showPreview ? (e) => handleDrop(e, index) : undefined
                         }
                         className={cn(
                           "relative group",
-                          !showPreview && "border-2 border-transparent hover:border-(--primary-teal) rounded-lg cursor-pointer"
+                          !showPreview &&
+                            "border-2 border-transparent hover:border-(--primary-teal) rounded-lg cursor-pointer"
                         )}
-                        style={showPreview ? { pointerEvents: 'auto' } : undefined}
+                        style={
+                          showPreview ? { pointerEvents: "auto" } : undefined
+                        }
                       >
                         {!showPreview && (
                           <div className="absolute -left-3 top-0 bottom-0 flex flex-col justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
@@ -1393,20 +1624,22 @@ const BlogCreator = () => {
 
             {/* Modal Body */}
             <div className="p-6">
-              {modalState.type === 'prompt' && (
+              {modalState.type === "prompt" && (
                 <input
                   type="text"
                   value={modalState.inputValue}
-                  onChange={(e) => setModalState({
-                    ...modalState,
-                    inputValue: e.target.value
-                  })}
+                  onChange={(e) =>
+                    setModalState({
+                      ...modalState,
+                      inputValue: e.target.value,
+                    })
+                  }
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
+                    if (e.key === "Enter") {
                       e.preventDefault();
                       modalState.onConfirm(modalState.inputValue);
                       setModalState({ ...modalState, isOpen: false });
-                    } else if (e.key === 'Escape') {
+                    } else if (e.key === "Escape") {
                       modalState.onCancel();
                       setModalState({ ...modalState, isOpen: false });
                     }
@@ -1436,7 +1669,7 @@ const BlogCreator = () => {
                 }}
                 className="px-6 py-2 rounded-lg bg-(--primary-teal) text-white font-semibold hover:bg-(--primary-teal-dark) transition-colors"
               >
-                {modalState.type === 'confirm' ? 'Delete' : 'OK'}
+                {modalState.type === "confirm" ? "Delete" : "OK"}
               </button>
             </div>
           </div>
@@ -1505,7 +1738,13 @@ const BlogCreator = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <button
           onClick={savePage}
-          disabled={!pageName || !validatePageName(pageName) || !validateBlogMetadata() || components.length === 0 || pageSaved}
+          disabled={
+            !pageName ||
+            !validatePageName(pageName) ||
+            !validateBlogMetadata() ||
+            components.length === 0 ||
+            pageSaved
+          }
           className="w-full max-w-md mx-auto flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-(--primary-teal) text-white font-semibold hover:bg-(--primary-teal-dark) disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           <Download className="w-5 h-5" />
@@ -1513,7 +1752,7 @@ const BlogCreator = () => {
         </button>
         {(components.length === 0 || !validateBlogMetadata()) && (
           <p className="text-center text-gray-500 text-sm mt-2">
-            {components.length === 0 
+            {components.length === 0
               ? "Add components to your page before saving"
               : "Fill out all blog card fields to enable saving"}
           </p>
@@ -1525,11 +1764,23 @@ const BlogCreator = () => {
         <div className="fixed bottom-8 right-8 z-[70] animate-slide-up">
           <div className="bg-white border-2 border-(--primary-teal) px-6 py-4 rounded-lg shadow-lg flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-(--primary-teal) flex items-center justify-center flex-shrink-0">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <svg
+                className="w-5 h-5 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
             </div>
-            <span className="font-semibold text-(--primary-teal-dark) nunito-sans">{toastMessage}</span>
+            <span className="font-semibold text-(--primary-teal-dark) nunito-sans">
+              {toastMessage}
+            </span>
           </div>
         </div>
       )}
