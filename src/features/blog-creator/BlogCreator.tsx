@@ -1,562 +1,37 @@
 import { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import {
-  GripVertical,
-  Trash2,
-  Download,
-  Eye,
-  Code,
-  X,
-  Bold,
-  Italic,
-  Link,
-  Type,
-  Edit,
-} from "lucide-react";
+import { GripVertical, Trash2, Download, Eye, Code, X, Edit } from "lucide-react";
 import Header from "@/components/header/Header";
 import Footer from "@/components/Footer";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 
-// Import all components
-import SectionContainer from "./templates/SectionContainer";
-import PartnerHeader from "./templates/PartnerHeader";
-import HorizontalAnchorList from "./components/HorizontalAnchorList";
-import ContentWithHeading from "./templates/ContentWithHeading";
-import ContentWithImage from "./templates/ContentWithImage";
-import ContentUnorderedList from "./templates/ContentUnorderedList";
-import ContentImageList from "./templates/ContentImageList";
-import ContentText from "./components/ContentText";
-import PartnerFooter from "./templates/PartnerFooter";
+// Import types
+import type { ComponentItem, SavedPage, ModalState } from "./types";
 
-// Common themes/labels across blog pages
-const ALL_LABELS = [
-  "Basics",
-  "Coverage",
-  "Costs",
-  "Comparison",
-  "Exclusions",
-  "Claims",
-  "Benefits",
-  "Pet Health",
-  "Types",
-  "Terminology",
-];
+// Import components
+import { RichTextEditor } from "./components/RichTextEditor";
+import { ConfirmModal } from "./components/ConfirmModal";
+import { EditModal } from "./components/EditModal";
 
-interface ComponentItem {
-  id: string;
-  type: string;
-  name: string;
-  props: Record<string, unknown>;
-  children?: ComponentItem[]; // For Section Containers
-}
+// Import configuration
+import {
+  ALL_LABELS,
+  sectionContainerComponents,
+  availableComponents,
+  componentMap,
+} from "./config/components";
 
-type PropList = { [key: string]: unknown };
+// Import utilities
+import {
+  validatePageName,
+  validateBlogMetadata,
+  convertFromSaved,
+  convertToSaved,
+  savePage as savePageUtil,
+  generateHTML,
+} from "./utils/helpers";
 
-type SavedComponentType = {
-  name: string;
-  props: PropList;
-  children?: SavedComponentType;
-};
-
-type SavedPage = {
-  name: string;
-  components: SavedComponentType[];
-  timestamp: Date;
-  card?: {
-    title: string;
-    description: string;
-    date: string;
-    imageUrl: string;
-    labels: string[];
-  };
-};
-
-interface AvailableComponent {
-  type: string;
-  name: string;
-  icon: string;
-  defaultProps: Record<string, unknown>;
-  description: string;
-}
-
-const sectionContainerComponents: AvailableComponent[] = [
-  {
-    type: "SectionContainer",
-    name: "Section Container",
-    icon: "📦",
-    description: "A container for grouping content with scroll behavior",
-    defaultProps: {
-      color: "bg-white",
-      id: "section-1",
-      children: "Section content goes here",
-    },
-  },
-];
-
-const availableComponents: AvailableComponent[] = [
-  {
-    type: "PartnerHeader",
-    name: "Partner Header",
-    icon: "🏢",
-    description: "Header with logo, title, and review stars",
-    defaultProps: {
-      title: "Partner Name",
-      imgUrl: "/backgrounds/cats_dogs_photo_3x2.webp",
-      reviewStars: 4.5,
-      children: "Partner description goes here",
-    },
-  },
-  {
-    type: "HorizontalAnchorList",
-    name: "Anchor Navigation",
-    icon: "🔗",
-    description: "Horizontal scrolling navigation with anchors",
-    defaultProps: {
-      anchors: [
-        { id: "section-1", label: "SECTION 1" },
-        { id: "section-2", label: "SECTION 2" },
-      ],
-    },
-  },
-  {
-    type: "ContentWithHeading",
-    name: "Content with Heading",
-    icon: "📝",
-    description: "Text content with a heading",
-    defaultProps: {
-      heading: "Heading Text",
-      children: "Content goes here",
-    },
-  },
-  {
-    type: "ContentWithImage",
-    name: "Content with Image",
-    icon: "🖼️",
-    description: "Content with an icon/image beside it",
-    defaultProps: {
-      heading: "Image Content",
-      imageSrc: "/pages/partner/prudentpet/coverage.svg",
-      children: "Description text",
-    },
-  },
-  {
-    type: "ContentUnorderedList",
-    name: "Unordered List",
-    icon: "📋",
-    description: "Bulleted list of items",
-    defaultProps: {
-      children: (
-        <>
-          <li>List item 1</li>
-          <li>List item 2</li>
-          <li>List item 3</li>
-        </>
-      ),
-    },
-  },
-  {
-    type: "ContentImageList",
-    name: "Image List",
-    icon: "🎨",
-    description: "Horizontal list with images",
-    defaultProps: {
-      imageListItems: [
-        {
-          imageUrl: "/pages/partner/prudentpet/pet_insurance.svg",
-          imageAlt: "Image 1",
-          children: {
-            type: "ContentText",
-            props: {
-              content: "Item description 1",
-              fontFamily: "nunito-sans",
-            },
-          },
-        },
-        {
-          imageUrl: "/pages/partner/prudentpet/pet_insurance.svg",
-          imageAlt: "Image 2",
-          children: {
-            type: "ContentText",
-            props: {
-              content: "Item description 2",
-              fontFamily: "nunito-sans",
-            },
-          },
-        },
-      ],
-    },
-  },
-  {
-    type: "ContentText",
-    name: "Content Text",
-    icon: "✍️",
-    description: "Rich text with formatting options",
-    defaultProps: {
-      content: "Enter your text here",
-      fontFamily: "nunito-sans",
-    },
-  },
-  {
-    type: "PartnerFooter",
-    name: "Partner Footer",
-    icon: "👣",
-    description: "Footer with review section and CTA",
-    defaultProps: {
-      children: "Review content goes here",
-    },
-  },
-];
-
-const componentMap: Record<
-  string,
-  React.ComponentType<{
-    [key: string]: unknown;
-    children?: React.ReactNode;
-  }>
-> = {
-  SectionContainer: SectionContainer as unknown as React.ComponentType<{
-    [key: string]: unknown;
-    children?: React.ReactNode;
-  }>,
-  PartnerHeader: PartnerHeader as unknown as React.ComponentType<{
-    [key: string]: unknown;
-    children?: React.ReactNode;
-  }>,
-  HorizontalAnchorList: HorizontalAnchorList as unknown as React.ComponentType<{
-    [key: string]: unknown;
-    children?: React.ReactNode;
-  }>,
-  ContentWithHeading: ContentWithHeading as unknown as React.ComponentType<{
-    [key: string]: unknown;
-    children?: React.ReactNode;
-  }>,
-  ContentWithImage: ContentWithImage as unknown as React.ComponentType<{
-    [key: string]: unknown;
-    children?: React.ReactNode;
-  }>,
-  ContentUnorderedList: ContentUnorderedList as unknown as React.ComponentType<{
-    [key: string]: unknown;
-    children?: React.ReactNode;
-  }>,
-  ContentImageList: ContentImageList as unknown as React.ComponentType<{
-    [key: string]: unknown;
-    children?: React.ReactNode;
-  }>,
-  ContentText: ContentText as unknown as React.ComponentType<{
-    [key: string]: unknown;
-    children?: React.ReactNode;
-  }>,
-  PartnerFooter: PartnerFooter as unknown as React.ComponentType<{
-    [key: string]: unknown;
-    children?: React.ReactNode;
-  }>,
-};
-
-// Rich Text Editor Component (moved outside to prevent re-creation on every render)
-const RichTextEditor = ({
-  value,
-  onChange,
-  fontFamily,
-}: {
-  value: string;
-  onChange: (val: string) => void;
-  fontFamily?: string;
-}) => {
-  const editorRef = useRef<HTMLDivElement>(null);
-  const [isBoldActive, setIsBoldActive] = useState(false);
-  const [isItalicActive, setIsItalicActive] = useState(false);
-  const isUserTypingRef = useRef(false);
-
-  // Update content only when value changes from outside (not from user typing)
-  useEffect(() => {
-    if (editorRef.current && !isUserTypingRef.current && editorRef.current.innerHTML !== value) {
-      const selection = window.getSelection();
-      const hadFocus = document.activeElement === editorRef.current;
-      
-      editorRef.current.innerHTML = value || "";
-      
-      // Restore focus if it was focused before
-      if (hadFocus && selection) {
-        editorRef.current.focus();
-      }
-    }
-    isUserTypingRef.current = false;
-  }, [value]);
-
-  const checkFormatting = () => {
-    const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) {
-      setIsBoldActive(false);
-      setIsItalicActive(false);
-      return;
-    }
-
-    const range = selection.getRangeAt(0);
-    const container = range.commonAncestorContainer;
-    const parentElement =
-      container.nodeType === Node.TEXT_NODE
-        ? container.parentElement
-        : (container as Element);
-
-    // Check for bold
-    let element = parentElement;
-    let hasBold = false;
-    while (element && element !== editorRef.current) {
-      if (element.tagName === "STRONG") {
-        hasBold = true;
-        break;
-      }
-      element = element.parentElement;
-    }
-    setIsBoldActive(hasBold);
-
-    // Check for italic
-    element = parentElement;
-    let hasItalic = false;
-    while (element && element !== editorRef.current) {
-      if (element.tagName === "EM") {
-        hasItalic = true;
-        break;
-      }
-      element = element.parentElement;
-    }
-    setIsItalicActive(hasItalic);
-  };
-
-  const applyFormatting = (command: string, formatValue?: string) => {
-    const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) return;
-
-    const range = selection.getRangeAt(0);
-    const selectedText = range.toString();
-
-    if (!selectedText && command !== "insertHTML") return;
-
-    // Check if selection is already formatted
-    const container = range.commonAncestorContainer;
-    const parentElement =
-      container.nodeType === Node.TEXT_NODE
-        ? container.parentElement
-        : (container as Element);
-
-    // For bold/italic, check if we need to remove formatting
-    if (command === "bold" || command === "italic") {
-      const tagName = command === "bold" ? "STRONG" : "EM";
-      let element = parentElement;
-
-      // Traverse up to find the formatting tag
-      while (element && element !== editorRef.current) {
-        if (element.tagName === tagName) {
-          // Remove the formatting by replacing with text
-          const textNode = document.createTextNode(element.textContent || "");
-          element.parentNode?.replaceChild(textNode, element);
-
-          if (editorRef.current) {
-            onChange(editorRef.current.innerHTML);
-          }
-          return;
-        }
-        element = element.parentElement;
-      }
-    }
-
-    let newElement: HTMLElement;
-
-    switch (command) {
-      case "bold":
-        newElement = document.createElement("strong");
-        newElement.textContent = selectedText;
-        break;
-      case "italic":
-        newElement = document.createElement("em");
-        newElement.textContent = selectedText;
-        break;
-      case "link": {
-        const url = prompt("Enter URL:");
-        if (url) {
-          // Convert to absolute URL if needed
-          let finalUrl = url;
-          if (
-            !url.startsWith("http://") &&
-            !url.startsWith("https://") &&
-            !url.startsWith("mailto:") &&
-            !url.startsWith("tel:")
-          ) {
-            finalUrl = "https://" + url;
-          }
-
-          const linkElement = document.createElement("a");
-          linkElement.setAttribute("href", finalUrl);
-          linkElement.setAttribute("target", "_blank");
-          linkElement.setAttribute("rel", "noopener noreferrer");
-          linkElement.className = "text-(--primary-teal) hover:underline";
-          linkElement.textContent = selectedText;
-
-          range.deleteContents();
-          range.insertNode(linkElement);
-
-          if (editorRef.current) {
-            onChange(editorRef.current.innerHTML);
-          }
-          setTimeout(() => checkFormatting(), 0);
-        }
-        return;
-      }
-      case "fontSize":
-        if (!formatValue) return;
-        newElement = document.createElement("span");
-        newElement.className = formatValue;
-        newElement.textContent = selectedText;
-        break;
-      default:
-        return;
-    }
-
-    range.deleteContents();
-    range.insertNode(newElement);
-
-    // Update the content
-    if (editorRef.current) {
-      onChange(editorRef.current.innerHTML);
-    }
-
-    // Check formatting state after applying
-    setTimeout(() => checkFormatting(), 0);
-  };
-
-  const fontSizeOptions = [
-    { label: "Extra Small", value: "text-xs" },
-    { label: "Small", value: "text-sm" },
-    { label: "Base", value: "text-base" },
-    { label: "Large", value: "text-lg" },
-    { label: "Extra Large", value: "text-xl" },
-    { label: "2XL", value: "text-2xl" },
-    { label: "3XL", value: "text-3xl" },
-    { label: "4XL", value: "text-4xl" },
-  ];
-
-  return (
-    <div className="space-y-3">
-      {/* Formatting Toolbar */}
-      <div className="flex flex-wrap gap-2 p-3 bg-gray-100 rounded-lg border border-gray-300">
-        <div className="flex items-center gap-1">
-          <span className="text-xs font-semibold text-gray-600 mr-2">
-            Selected Text:
-          </span>
-          <button
-            onClick={() => applyFormatting("bold")}
-            className={`p-2 hover:bg-gray-200 rounded transition-colors ${
-              isBoldActive ? "bg-gray-300 shadow-inner" : ""
-            }`}
-            title="Bold"
-          >
-            <Bold className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => applyFormatting("italic")}
-            className={`p-2 hover:bg-gray-200 rounded transition-colors ${
-              isItalicActive ? "bg-gray-300 shadow-inner" : ""
-            }`}
-            title="Italic"
-          >
-            <Italic className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => applyFormatting("link")}
-            className="p-2 hover:bg-gray-200 rounded transition-colors"
-            title="Add Link"
-          >
-            <Link className="w-4 h-4" />
-          </button>
-        </div>
-
-        <div className="border-l border-gray-300 mx-1" />
-
-        <div className="flex items-center gap-2">
-          <Type className="w-4 h-4 text-gray-600" />
-          <select
-            onChange={(e) => applyFormatting("fontSize", e.target.value)}
-            className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:border-(--primary-teal)"
-            defaultValue=""
-          >
-            <option value="" disabled>
-              Font Size
-            </option>
-            {fontSizeOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      {/* Content Editor */}
-      <div
-        ref={editorRef}
-        contentEditable
-        suppressContentEditableWarning
-        onInput={(e) => {
-          isUserTypingRef.current = true;
-          onChange(e.currentTarget.innerHTML);
-        }}
-        onMouseUp={checkFormatting}
-        onKeyUp={checkFormatting}
-        className={cn(
-          "w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none min-h-[150px] bg-white",
-          fontFamily || "nunito-sans"
-        )}
-        style={{
-          fontFamily:
-            fontFamily === "nunito-sans"
-              ? '"Nunito Sans", sans-serif'
-              : fontFamily === "nunito-sans-light"
-              ? '"Nunito Sans", sans-serif'
-              : fontFamily === "nunito-sans-medium"
-              ? '"Nunito Sans", sans-serif'
-              : fontFamily === "nunito-sans-semibold"
-              ? '"Nunito Sans", sans-serif'
-              : fontFamily === "nunito-sans-bold"
-              ? '"Nunito Sans", sans-serif'
-              : fontFamily === "sansita-regular"
-              ? '"Sansita", sans-serif'
-              : fontFamily === "sansita-bold"
-              ? '"Sansita", sans-serif'
-              : fontFamily === "sansita-extrabold"
-              ? '"Sansita", sans-serif'
-              : fontFamily === "sansita-black"
-              ? '"Sansita", sans-serif'
-              : '"Nunito Sans", sans-serif',
-          fontWeight:
-            fontFamily === "nunito-sans-light"
-              ? 300
-              : fontFamily === "nunito-sans"
-              ? 400
-              : fontFamily === "nunito-sans-medium"
-              ? 500
-              : fontFamily === "nunito-sans-semibold"
-              ? 600
-              : fontFamily === "nunito-sans-bold"
-              ? 700
-              : fontFamily === "sansita-regular"
-              ? 400
-              : fontFamily === "sansita-bold"
-              ? 700
-              : fontFamily === "sansita-extrabold"
-              ? 800
-              : fontFamily === "sansita-black"
-              ? 900
-              : 400,
-        }}
-      />
-
-      <p className="text-xs text-gray-500">
-        Select text to apply formatting, or edit directly
-      </p>
-    </div>
-  );
-};
 
 const BlogCreator = () => {
   const { pageName: urlPageName } = useParams<{ pageName: string }>();
@@ -583,29 +58,7 @@ const BlogCreator = () => {
         const existingPage = pages.find((p) => p.name === urlPageName);
         if (existingPage) {
           setPageName(existingPage.name);
-
-          // Recursive function to load components with children
-          const loadComponents = (
-            savedComps: SavedComponentType[],
-            parentId = ""
-          ): ComponentItem[] => {
-            return savedComps.map((comp, index) => ({
-              id: `${comp.name}-${parentId}-${index}-${Date.now()}`,
-              type: comp.name,
-              name: comp.name,
-              props: comp.props,
-              ...(comp.children && {
-                children: loadComponents(
-                  [comp.children] as unknown as SavedComponentType[],
-                  `${parentId}-${index}`
-                ),
-              }),
-            }));
-          };
-
-          const loadedComponents: ComponentItem[] = loadComponents(
-            existingPage.components
-          );
+          const loadedComponents = convertFromSaved(existingPage.components);
           setComponents(loadedComponents);
 
           // Load blog card data
@@ -617,11 +70,9 @@ const BlogCreator = () => {
             setBlogLabels(existingPage.card.labels);
           }
         } else {
-          // New page - just set the name from URL
           setPageName(urlPageName);
         }
       } else {
-        // No pages exist yet - just set the name from URL
         setPageName(urlPageName);
       }
     }
@@ -644,15 +95,7 @@ const BlogCreator = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [pageSaved, setPageSaved] = useState(false);
-  const [modalState, setModalState] = useState<{
-    isOpen: boolean;
-    type: "prompt" | "confirm";
-    title: string;
-    message: string;
-    inputValue: string;
-    onConfirm: (value?: string) => void;
-    onCancel: () => void;
-  }>({
+  const [modalState, setModalState] = useState<ModalState>({
     isOpen: false,
     type: "confirm",
     title: "",
@@ -670,20 +113,7 @@ const BlogCreator = () => {
     if (!pageName) return;
 
     const timer = setTimeout(() => {
-      // Recursive function to convert ComponentItem[] to SavedComponentType[]
-      const convertToSaved = (items: ComponentItem[]): SavedComponentType[] => {
-        return items.map((component) => ({
-          name: component.name,
-          props: component.props,
-          ...(component.children && {
-            children: convertToSaved(
-              component.children
-            ) as unknown as SavedComponentType,
-          }),
-        }));
-      };
-
-      const savedComponents: SavedComponentType[] = convertToSaved(components);
+      const savedComponents = convertToSaved(components);
 
       const pageData: SavedPage = {
         name: pageName,
@@ -710,10 +140,8 @@ const BlogCreator = () => {
       );
 
       if (existingPageIndex >= 0) {
-        // Update existing page
         existingPages[existingPageIndex] = pageData;
       } else {
-        // Add new page
         existingPages.push(pageData);
       }
 
@@ -976,7 +404,7 @@ const BlogCreator = () => {
         <RichTextEditor
           value={value as string}
           onChange={(newValue) => updateProp(key, newValue)}
-          fontFamily={editingComponent?.props?.fontFamily as string}
+          editingComponent={editingComponent}
         />
       );
     }
@@ -1373,22 +801,8 @@ const BlogCreator = () => {
     );
   };
 
-  const generateHTML = () => {
-    // Basic HTML generation - this could be more sophisticated
-    const html = components
-      .map((comp) => {
-        return `<!-- ${comp.name} -->
-<div class="${comp.type}">
-  ${JSON.stringify(comp.props, null, 2)}
-</div>`;
-      })
-      .join("\n\n");
-
-    return html;
-  };
-
   const exportHTML = () => {
-    const html = generateHTML();
+    const html = generateHTML(components);
     const blob = new Blob([html], { type: "text/html" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -1398,90 +812,24 @@ const BlogCreator = () => {
     URL.revokeObjectURL(url);
   };
 
-  const validatePageName = (name: string): boolean => {
-    // Must start with uppercase letter and contain only alphanumeric characters
-    const regex = /^[A-Z][a-zA-Z0-9]*$/;
-    return regex.test(name);
-  };
-
-  const validateBlogMetadata = (): boolean => {
-    return !!(
-      blogTitle.trim() &&
-      blogDescription.trim() &&
-      blogDate &&
-      blogImageUrl.trim() &&
-      blogLabels.length > 0
+  const handleSavePage = () => {
+    const result = savePageUtil(
+      pageName,
+      components,
+      blogTitle,
+      blogDescription,
+      blogDate,
+      blogImageUrl,
+      blogLabels
     );
-  };
 
-  const savePage = () => {
-    if (!pageName) {
-      alert("Please enter a page name");
+    if (!result.success) {
+      alert(result.message);
       return;
     }
 
-    if (!validatePageName(pageName)) {
-      alert(
-        "Page name must start with an uppercase letter and contain only alphanumeric characters (no spaces or special characters)"
-      );
-      return;
-    }
-
-    if (components.length === 0) {
-      alert("Cannot save an empty page");
-      return;
-    }
-
-    // Recursive function to convert ComponentItem[] to SavedComponentType[]
-    const convertToSaved = (items: ComponentItem[]): SavedComponentType[] => {
-      return items.map((component) => ({
-        name: component.name,
-        props: component.props,
-        ...(component.children && {
-          children: convertToSaved(
-            component.children
-          ) as unknown as SavedComponentType,
-        }),
-      }));
-    };
-
-    const savedComponents: SavedComponentType[] = convertToSaved(components);
-
-    const newPage: SavedPage = {
-      name: pageName,
-      components: savedComponents,
-      timestamp: new Date(),
-      card: {
-        title: blogTitle,
-        description: blogDescription,
-        date: blogDate,
-        imageUrl: blogImageUrl,
-        labels: blogLabels,
-      },
-    };
-
-    // Get existing pages from localStorage
-    const existingPagesJson = localStorage.getItem("pages");
-    const existingPages: SavedPage[] = existingPagesJson
-      ? JSON.parse(existingPagesJson)
-      : [];
-
-    // Check if page name already exists
-    const existingPageIndex = existingPages.findIndex(
-      (p) => p.name === pageName
-    );
-    if (existingPageIndex >= 0) {
-      existingPages[existingPageIndex] = newPage;
-    } else {
-      existingPages.push(newPage);
-    }
-
-    // Save to localStorage
-    localStorage.setItem("pages", JSON.stringify(existingPages));
-
-    // Show toast and disable save button
     setPageSaved(true);
-    setToastMessage(`Page "${pageName}" saved successfully!`);
+    setToastMessage(result.message);
     setShowToast(true);
     setTimeout(() => setShowToast(false), 3000);
   };
@@ -1873,7 +1221,7 @@ const BlogCreator = () => {
                       Generated HTML
                     </h2>
                     <pre className="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm">
-                      <code>{generateHTML()}</code>
+                      <code>{generateHTML(components)}</code>
                     </pre>
                   </div>
                 ) : components.length === 0 ? (
@@ -2099,141 +1447,38 @@ const BlogCreator = () => {
       </div>
 
       {/* Custom Modal for URL Input and Confirmations */}
-      {modalState.isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-4">
-          <div className="bg-white rounded-lg shadow-2xl max-w-md w-full">
-            {/* Modal Header */}
-            <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-bold text-(--primary-teal-dark) sansita-bold">
-                {modalState.title}
-              </h2>
-              {modalState.message && (
-                <p className="text-sm text-gray-600 mt-2">
-                  {modalState.message}
-                </p>
-              )}
-            </div>
-
-            {/* Modal Body */}
-            <div className="p-6">
-              {modalState.type === "prompt" && (
-                <input
-                  type="text"
-                  value={modalState.inputValue}
-                  onChange={(e) =>
-                    setModalState({
-                      ...modalState,
-                      inputValue: e.target.value,
-                    })
-                  }
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      modalState.onConfirm(modalState.inputValue);
-                      setModalState({ ...modalState, isOpen: false });
-                    } else if (e.key === "Escape") {
-                      modalState.onCancel();
-                      setModalState({ ...modalState, isOpen: false });
-                    }
-                  }}
-                  autoFocus
-                  className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-(--primary-teal)"
-                  placeholder="Enter URL..."
-                />
-              )}
-            </div>
-
-            {/* Modal Footer */}
-            <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-200 bg-gray-50">
-              <button
-                onClick={() => {
-                  modalState.onCancel();
-                  setModalState({ ...modalState, isOpen: false });
-                }}
-                className="px-6 py-2 rounded-lg border-2 border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  modalState.onConfirm(modalState.inputValue);
-                  setModalState({ ...modalState, isOpen: false });
-                }}
-                className="px-6 py-2 rounded-lg bg-(--primary-teal) text-white font-semibold hover:bg-(--primary-teal-dark) transition-colors"
-              >
-                {modalState.type === "confirm" ? "Delete" : "OK"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmModal
+        modalState={modalState}
+        onClose={() => setModalState({ ...modalState, isOpen: false })}
+        onInputChange={(value) =>
+          setModalState({ ...modalState, inputValue: value })
+        }
+      />
 
       {/* Edit Modal */}
       {editingComponent && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <div>
-                <h2 className="text-2xl font-bold text-(--primary-teal-dark) sansita-bold">
-                  Edit {editingComponent.name}
-                </h2>
-                <p className="text-sm text-gray-600 mt-1">
-                  Update the properties below
-                </p>
-              </div>
-              <button
-                onClick={handleCancelEdit}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Modal Body */}
-            <div className="flex-1 overflow-y-auto p-6">
-              <div className="space-y-4">
-                {Object.entries(editingComponent.props).map(([key, value]) => (
-                  <div key={key}>
-                    <label className="block text-sm font-semibold text-(--primary-teal-dark) mb-2 capitalize">
-                      {key.replace(/([A-Z])/g, " $1").trim()}
-                    </label>
-                    {renderPropEditor(key, value)}
-                    <p className="text-xs text-gray-500 mt-1">
-                      Type: {Array.isArray(value) ? "array" : typeof value}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Modal Footer */}
-            <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-200 bg-gray-50">
-              <button
-                onClick={handleCancelEdit}
-                className="px-6 py-2 rounded-lg border-2 border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSaveEdit}
-                className="px-6 py-2 rounded-lg bg-(--primary-teal) text-white font-semibold hover:bg-(--primary-teal-dark) transition-colors"
-              >
-                Save Changes
-              </button>
-            </div>
-          </div>
-        </div>
+        <EditModal
+          editingComponent={editingComponent}
+          onCancel={handleCancelEdit}
+          onSave={handleSaveEdit}
+          renderPropEditor={renderPropEditor}
+        />
       )}
 
       {/* Save Page Button */}
       <div className="max-w-7xl mx-auto px-4 py-8">
         <button
-          onClick={savePage}
+          onClick={handleSavePage}
           disabled={
             !pageName ||
             !validatePageName(pageName) ||
-            !validateBlogMetadata() ||
+            !validateBlogMetadata(
+              blogTitle,
+              blogDescription,
+              blogDate,
+              blogImageUrl,
+              blogLabels
+            ) ||
             components.length === 0 ||
             pageSaved
           }
@@ -2242,7 +1487,14 @@ const BlogCreator = () => {
           <Download className="w-5 h-5" />
           {pageSaved ? "Page Saved" : "Save Page"}
         </button>
-        {(components.length === 0 || !validateBlogMetadata()) && (
+        {(components.length === 0 ||
+          !validateBlogMetadata(
+            blogTitle,
+            blogDescription,
+            blogDate,
+            blogImageUrl,
+            blogLabels
+          )) && (
           <p className="text-center text-gray-500 text-sm mt-2">
             {components.length === 0
               ? "Add components to your page before saving"
