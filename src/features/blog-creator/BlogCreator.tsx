@@ -196,6 +196,23 @@ const BlogCreator = () => {
   const [showCode, setShowCode] = useState(false);
   const [editingComponent, setEditingComponent] = useState<ComponentItem | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [modalState, setModalState] = useState<{
+    isOpen: boolean;
+    type: 'prompt' | 'confirm';
+    title: string;
+    message: string;
+    inputValue: string;
+    onConfirm: (value?: string) => void;
+    onCancel: () => void;
+  }>({
+    isOpen: false,
+    type: 'confirm',
+    title: '',
+    message: '',
+    inputValue: '',
+    onConfirm: () => {},
+    onCancel: () => {},
+  });
 
   // Rich Text Editor Component
   const RichTextEditor = ({ value, onChange }: { value: string; onChange: (val: string) => void }) => {
@@ -290,21 +307,30 @@ const BlogCreator = () => {
           newElement.textContent = selectedText;
           break;
         case "link": {
-          let url = prompt("Enter URL:");
-          if (!url) return;
-          
-          // Convert to absolute URL if needed
-          if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("mailto:") && !url.startsWith("tel:")) {
-            url = "https://" + url;
+          const url = prompt("Enter URL:");
+          if (url) {
+            // Convert to absolute URL if needed
+            let finalUrl = url;
+            if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("mailto:") && !url.startsWith("tel:")) {
+              finalUrl = "https://" + url;
+            }
+            
+            const linkElement = document.createElement("a");
+            linkElement.setAttribute("href", finalUrl);
+            linkElement.setAttribute("target", "_blank");
+            linkElement.setAttribute("rel", "noopener noreferrer");
+            linkElement.className = "text-(--primary-teal) hover:underline";
+            linkElement.textContent = selectedText;
+            
+            range.deleteContents();
+            range.insertNode(linkElement);
+            
+            if (editorRef.current) {
+              onChange(editorRef.current.innerHTML);
+            }
+            setTimeout(() => checkFormatting(), 0);
           }
-          
-          newElement = document.createElement("a");
-          newElement.setAttribute("href", url);
-          newElement.setAttribute("target", "_blank");
-          newElement.setAttribute("rel", "noopener noreferrer");
-          newElement.className = "text-(--primary-teal) hover:underline";
-          newElement.textContent = selectedText;
-          break;
+          return;
         }
         case "fontSize":
           if (!formatValue) return;
@@ -493,7 +519,23 @@ const BlogCreator = () => {
   };
 
   const handleDelete = (id: string) => {
-    setComponents(components.filter((c) => c.id !== id));
+    const component = components.find((c) => c.id === id);
+    const componentName = component?.name || "this component";
+    
+    setModalState({
+      isOpen: true,
+      type: 'confirm',
+      title: 'Delete Component',
+      message: `Are you sure you want to delete ${componentName}?`,
+      inputValue: '',
+      onConfirm: () => {
+        setComponents(components.filter((c) => c.id !== id));
+        setModalState(prev => ({ ...prev, isOpen: false }));
+      },
+      onCancel: () => {
+        setModalState(prev => ({ ...prev, isOpen: false }));
+      },
+    });
   };
 
   const handleEdit = (component: ComponentItem, index: number) => {
@@ -897,7 +939,10 @@ const BlogCreator = () => {
                     {components.map((component, index) => (
                       <div
                         key={`${component.id}-${JSON.stringify(component.props)}`}
-                        draggable={!showPreview}
+                        {...(!showPreview && { 
+                          draggable: true,
+                          onClick: () => handleEdit(component, index)
+                        })}
                         onDragStart={(e) =>
                           !showPreview && handleDragStartCanvas(index, e)
                         }
@@ -907,11 +952,11 @@ const BlogCreator = () => {
                             ? (e) => handleDrop(e, index)
                             : undefined
                         }
-                        onClick={!showPreview ? () => handleEdit(component, index) : undefined}
                         className={cn(
                           "relative group",
                           !showPreview && "border-2 border-transparent hover:border-(--primary-teal) rounded-lg cursor-pointer"
                         )}
+                        style={showPreview ? { pointerEvents: 'auto' } : undefined}
                       >
                         {!showPreview && (
                           <div className="absolute -left-3 top-0 bottom-0 flex flex-col justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
@@ -958,6 +1003,74 @@ const BlogCreator = () => {
           </div>
         </div>
       </div>
+
+      {/* Custom Modal for URL Input and Confirmations */}
+      {modalState.isOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-4">
+          <div className="bg-white rounded-lg shadow-2xl max-w-md w-full">
+            {/* Modal Header */}
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-xl font-bold text-(--primary-teal-dark) sansita-bold">
+                {modalState.title}
+              </h2>
+              {modalState.message && (
+                <p className="text-sm text-gray-600 mt-2">
+                  {modalState.message}
+                </p>
+              )}
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6">
+              {modalState.type === 'prompt' && (
+                <input
+                  type="text"
+                  value={modalState.inputValue}
+                  onChange={(e) => setModalState({
+                    ...modalState,
+                    inputValue: e.target.value
+                  })}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      modalState.onConfirm(modalState.inputValue);
+                      setModalState({ ...modalState, isOpen: false });
+                    } else if (e.key === 'Escape') {
+                      modalState.onCancel();
+                      setModalState({ ...modalState, isOpen: false });
+                    }
+                  }}
+                  autoFocus
+                  className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-(--primary-teal)"
+                  placeholder="Enter URL..."
+                />
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-200 bg-gray-50">
+              <button
+                onClick={() => {
+                  modalState.onCancel();
+                  setModalState({ ...modalState, isOpen: false });
+                }}
+                className="px-6 py-2 rounded-lg border-2 border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  modalState.onConfirm(modalState.inputValue);
+                  setModalState({ ...modalState, isOpen: false });
+                }}
+                className="px-6 py-2 rounded-lg bg-(--primary-teal) text-white font-semibold hover:bg-(--primary-teal-dark) transition-colors"
+              >
+                {modalState.type === 'confirm' ? 'Delete' : 'OK'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Edit Modal */}
       {editingComponent && (
