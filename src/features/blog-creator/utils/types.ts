@@ -44,3 +44,21 @@ export interface ModalState {
   onConfirm: (value?: string) => void;
   onCancel: () => void;
 }
+
+export interface ContentTextProps {
+  content: string;
+  fontFamily?: string;
+  className?: string;
+}
+
+export interface PartnerHeaderProps {
+  title: string;
+  imgUrl: string;
+  reviewStars: number;
+  children: ContentTextProps;
+}
+
+export interface PartnerFooterProps {
+  children: React.ReactNode;
+  className?: string;
+}

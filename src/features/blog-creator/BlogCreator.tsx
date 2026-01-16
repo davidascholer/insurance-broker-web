@@ -1,13 +1,21 @@
 import { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { GripVertical, Trash2, Download, Eye, Code, X, Edit } from "lucide-react";
+import {
+  GripVertical,
+  Trash2,
+  Download,
+  Eye,
+  Code,
+  X,
+  Edit,
+} from "lucide-react";
 import Header from "@/components/header/Header";
 import Footer from "@/components/Footer";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 
 // Import types
-import type { ComponentItem, SavedPage, ModalState } from "./types";
+import type { ComponentItem, SavedPage, ModalState } from "./utils/types";
 
 // Import components
 import { RichTextEditor } from "./components/RichTextEditor";
@@ -19,7 +27,6 @@ import {
   ALL_LABELS,
   sectionContainerComponents,
   availableComponents,
-  componentMap,
 } from "./config/components";
 
 // Import utilities
@@ -31,7 +38,7 @@ import {
   savePage as savePageUtil,
   generateHTML,
 } from "./utils/helpers";
-
+import RenderedComponent from "./components/RenderedComponent";
 
 const BlogCreator = () => {
   const { pageName: urlPageName } = useParams<{ pageName: string }>();
@@ -92,6 +99,8 @@ const BlogCreator = () => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [fontDropdownOpen, setFontDropdownOpen] = useState(false);
   const fontDropdownRef = useRef<HTMLDivElement>(null!);
+  const [colorDropdownOpen, setColorDropdownOpen] = useState(false);
+  const colorDropdownRef = useRef<HTMLDivElement>(null!);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [pageSaved, setPageSaved] = useState(false);
@@ -107,6 +116,7 @@ const BlogCreator = () => {
 
   useOutsideClick(fontDropdownRef, () => setFontDropdownOpen(false));
   useOutsideClick(labelsDropdownRef, () => setLabelsDropdownOpen(false));
+  useOutsideClick(colorDropdownRef, () => setColorDropdownOpen(false));
 
   // Auto-save entire page after 1 second of editing
   useEffect(() => {
@@ -757,6 +767,89 @@ const BlogCreator = () => {
       );
     }
 
+    // Special handling for color prop in SectionContainer
+    if (key === "color" && editingComponent?.type === "SectionContainer") {
+      const colorOptions = [
+        { label: "White", value: "bg-white" },
+        { label: "Light Pink", value: "bg-(--light-pink)" },
+        { label: "Light Gray", value: "bg-gray-50" },
+        { label: "Gray 100", value: "bg-gray-100" },
+        { label: "Gray 200", value: "bg-gray-200" },
+        { label: "Primary Teal", value: "bg-(--primary-teal)" },
+        { label: "Primary Teal Dark", value: "bg-(--primary-teal-dark)" },
+        { label: "Primary Coral", value: "bg-(--primary-coral)" },
+        { label: "Coral Pink", value: "bg-(--coral-pink)" },
+        { label: "Teal 50", value: "bg-teal-50" },
+        { label: "Teal 100", value: "bg-teal-100" },
+        { label: "Pink 50", value: "bg-pink-50" },
+        { label: "Pink 100", value: "bg-pink-100" },
+        { label: "Blue 50", value: "bg-blue-50" },
+        { label: "Blue 100", value: "bg-blue-100" },
+        { label: "Transparent", value: "bg-transparent" },
+      ];
+
+      const selectedOption =
+        colorOptions.find((opt) => opt.value === value) || colorOptions[0];
+
+      return (
+        <div className="relative" ref={colorDropdownRef}>
+          <button
+            type="button"
+            onClick={() => setColorDropdownOpen(!colorDropdownOpen)}
+            className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none text-left flex items-center justify-between"
+          >
+            <div className="flex items-center gap-3">
+              <div
+                className={cn(
+                  "w-8 h-8 rounded border-2 border-gray-300",
+                  selectedOption.value
+                )}
+              />
+              <span>{selectedOption.label}</span>
+            </div>
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+          {colorDropdownOpen && (
+            <div className="absolute z-50 w-full mt-1 bg-white border-2 border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+              {colorOptions.map((option) => (
+                <div
+                  key={option.value}
+                  onClick={() => {
+                    updateProp(key, option.value);
+                    setColorDropdownOpen(false);
+                  }}
+                  className={cn(
+                    "px-3 py-2 cursor-pointer hover:bg-(--light-pink) transition-colors flex items-center gap-3",
+                    option.value === value && "bg-(--light-pink)"
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "w-8 h-8 rounded border-2 border-gray-300",
+                      option.value
+                    )}
+                  />
+                  <span>{option.label}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+
     if (typeof value === "boolean") {
       return (
         <label className="flex items-center gap-2 cursor-pointer">
@@ -832,22 +925,6 @@ const BlogCreator = () => {
     setToastMessage(result.message);
     setShowToast(true);
     setTimeout(() => setShowToast(false), 3000);
-  };
-
-  const renderComponent = (item: ComponentItem) => {
-    const Component = componentMap[item.type];
-    if (!Component) return <div>Component not found: {item.type}</div>;
-
-    try {
-      // Add a key based on props to force re-render when props change
-      return <Component key={JSON.stringify(item.props)} {...item.props} />;
-    } catch (error) {
-      return (
-        <div className="text-red-500">
-          Error rendering {item.name}: {String(error)}
-        </div>
-      );
-    }
   };
 
   return (
@@ -1263,7 +1340,10 @@ const BlogCreator = () => {
                             "relative group border-2 rounded-lg p-4",
                             !showPreview
                               ? "border-(--primary-coral) bg-(--primary-coral) bg-opacity-5"
-                              : "border-transparent"
+                              : cn(
+                                  "border-transparent",
+                                  component.props.color as string
+                                )
                           )}
                         >
                           {!showPreview && (
@@ -1319,7 +1399,8 @@ const BlogCreator = () => {
                             className={cn(
                               "min-h-[150px] rounded-lg",
                               !showPreview &&
-                                "border-2 border-dashed border-gray-300 p-4"
+                                "border-2 border-dashed border-gray-300 p-4",
+                              showPreview && (component.props.color as string)
                             )}
                           >
                             {component.children &&
@@ -1419,7 +1500,7 @@ const BlogCreator = () => {
                                         </div>
                                       </>
                                     )}
-                                    {renderComponent(child)}
+                                    {<RenderedComponent item={child} />}
                                   </div>
                                 ))}
                               </div>

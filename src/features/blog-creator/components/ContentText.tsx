@@ -1,10 +1,7 @@
 import { cn } from "@/lib/utils";
+import type { ContentTextProps } from "../utils/types";
 
-interface ContentTextProps {
-  content: string;
-  fontFamily?: string;
-  className?: string;
-}
+
 
 const ContentText = ({
   content,

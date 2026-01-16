@@ -7,7 +7,7 @@ import ContentUnorderedList from "../templates/ContentUnorderedList";
 import ContentImageList from "../templates/ContentImageList";
 import ContentText from "../components/ContentText";
 import PartnerFooter from "../templates/PartnerFooter";
-import type { AvailableComponent } from "../types";
+import type { AvailableComponent } from "../utils/types";
 
 export const ALL_LABELS = [
   "Basics",
@@ -44,7 +44,7 @@ export const availableComponents: AvailableComponent[] = [
     description: "Header with logo, title, and review stars",
     defaultProps: {
       title: "Partner Name",
-      imgUrl: "/backgrounds/cats_dogs_photo_3x2.webp",
+      imgUrl: "/text_logos/prudent_logo_blue_horz.svg",
       reviewStars: 4.5,
       children: "Partner description goes here",
     },

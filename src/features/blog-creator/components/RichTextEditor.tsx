@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Bold, Italic, Link, Type } from "lucide-react";
-import type { ComponentItem } from "../types";
+import type { ComponentItem } from "../utils/types";
 
 interface RichTextEditorProps {
   value: string;

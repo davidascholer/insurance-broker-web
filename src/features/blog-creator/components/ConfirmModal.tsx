@@ -1,4 +1,4 @@
-import type { ModalState } from "../types";
+import type { ModalState } from "../utils/types";
 
 interface ConfirmModalProps {
   modalState: ModalState;

@@ -1,4 +1,4 @@
-import type { ComponentItem, SavedComponentType, SavedPage } from "../types";
+import type { ComponentItem, SavedComponentType, SavedPage } from "./types";
 
 export const validatePageName = (name: string): boolean => {
   // Must start with uppercase letter and contain only alphanumeric characters

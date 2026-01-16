@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import type { ComponentItem } from "../types";
+import type { ComponentItem } from "../utils/types";
 
 interface EditModalProps {
   editingComponent: ComponentItem;
@@ -38,17 +38,25 @@ export const EditModal = ({
         {/* Modal Body */}
         <div className="flex-1 overflow-y-auto p-6">
           <div className="space-y-4">
-            {Object.entries(editingComponent.props).map(([key, value]) => (
-              <div key={key}>
-                <label className="block text-sm font-semibold text-(--primary-teal-dark) mb-2 capitalize">
-                  {key.replace(/([A-Z])/g, " $1").trim()}
-                </label>
-                {renderPropEditor(key, value)}
-                <p className="text-xs text-gray-500 mt-1">
-                  Type: {Array.isArray(value) ? "array" : typeof value}
-                </p>
-              </div>
-            ))}
+            {Object.entries(editingComponent.props)
+              .filter(([key]) => {
+                // Hide children field for SectionContainer
+                if (editingComponent.type === "SectionContainer" && key === "children") {
+                  return false;
+                }
+                return true;
+              })
+              .map(([key, value]) => (
+                <div key={key}>
+                  <label className="block text-sm font-semibold text-(--primary-teal-dark) mb-2 capitalize">
+                    {key.replace(/([A-Z])/g, " $1").trim()}
+                  </label>
+                  {renderPropEditor(key, value)}
+                  <p className="text-xs text-gray-500 mt-1">
+                    Type: {Array.isArray(value) ? "array" : typeof value}
+                  </p>
+                </div>
+              ))}
           </div>
         </div>
 

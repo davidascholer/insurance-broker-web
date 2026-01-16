@@ -1,13 +1,11 @@
 import FetchQuoteButton from "@/components/FetchQuoteButton";
 import { cn } from "@/lib/utils";
+import type { PartnerFooterProps } from "../utils/types";
 
 const PartnerFooter = ({
   children,
   className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
+}: PartnerFooterProps) => {
   return (
     <div className="w-full bg-(--light-pink) items-center p-2 mt-4">
       <div className="flex flow-row flex-wrap justify-center items-start gap-0 max-w-5xl mx-auto">
