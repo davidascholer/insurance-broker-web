@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { GripVertical, Trash2, Download, Eye, Code, X, Bold, Italic, Link, Type } from "lucide-react";
 import Header from "@/components/header/Header";
 import Footer from "@/components/Footer";
+import { useOutsideClick } from "@/hooks/useOutsideClick";
 
 // Import all components
 import SectionContainer from "./components/SectionContainer";
@@ -196,6 +197,8 @@ const BlogCreator = () => {
   const [showCode, setShowCode] = useState(false);
   const [editingComponent, setEditingComponent] = useState<ComponentItem | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [fontDropdownOpen, setFontDropdownOpen] = useState(false);
+  const fontDropdownRef = useRef<HTMLDivElement>(null!);
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
     type: 'prompt' | 'confirm';
@@ -213,6 +216,8 @@ const BlogCreator = () => {
     onConfirm: () => {},
     onCancel: () => {},
   });
+
+  useOutsideClick(fontDropdownRef, () => setFontDropdownOpen(false));
 
   // Rich Text Editor Component
   const RichTextEditor = ({ value, onChange }: { value: string; onChange: (val: string) => void }) => {
@@ -711,29 +716,53 @@ const BlogCreator = () => {
     // Special handling for fontFamily prop in ContentText
     if (key === "fontFamily" && editingComponent?.type === "ContentText") {
       const fontFamilyOptions = [
-        { label: "Nunito Sans", value: "nunito-sans" },
-        { label: "Nunito Sans Light", value: "nunito-sans-light" },
-        { label: "Nunito Sans Medium", value: "nunito-sans-medium" },
-        { label: "Nunito Sans SemiBold", value: "nunito-sans-semibold" },
-        { label: "Nunito Sans Bold", value: "nunito-sans-bold" },
-        { label: "Sansita Regular", value: "sansita-regular" },
-        { label: "Sansita Bold", value: "sansita-bold" },
-        { label: "Sansita Extra Bold", value: "sansita-extrabold" },
-        { label: "Sansita Black", value: "sansita-black" },
+        { label: "Nunito Sans", value: "nunito-sans", fontFamily: '"Nunito Sans", sans-serif', fontWeight: 400 },
+        { label: "Nunito Sans Light", value: "nunito-sans-light", fontFamily: '"Nunito Sans", sans-serif', fontWeight: 300 },
+        { label: "Nunito Sans Medium", value: "nunito-sans-medium", fontFamily: '"Nunito Sans", sans-serif', fontWeight: 500 },
+        { label: "Nunito Sans SemiBold", value: "nunito-sans-semibold", fontFamily: '"Nunito Sans", sans-serif', fontWeight: 600 },
+        { label: "Nunito Sans Bold", value: "nunito-sans-bold", fontFamily: '"Nunito Sans", sans-serif', fontWeight: 700 },
+        { label: "Sansita Regular", value: "sansita-regular", fontFamily: '"Sansita", sans-serif', fontWeight: 400 },
+        { label: "Sansita Bold", value: "sansita-bold", fontFamily: '"Sansita", sans-serif', fontWeight: 700 },
+        { label: "Sansita Extra Bold", value: "sansita-extrabold", fontFamily: '"Sansita", sans-serif', fontWeight: 800 },
+        { label: "Sansita Black", value: "sansita-black", fontFamily: '"Sansita", sans-serif', fontWeight: 900 },
       ];
 
+      const selectedOption = fontFamilyOptions.find(opt => opt.value === value) || fontFamilyOptions[0];
+
       return (
-        <select
-          value={value as string}
-          onChange={(e) => updateProp(key, e.target.value)}
-          className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none"
-        >
-          {fontFamilyOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+        <div className="relative" ref={fontDropdownRef}>
+          <button
+            type="button"
+            onClick={() => setFontDropdownOpen(!fontDropdownOpen)}
+            className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none text-left flex items-center justify-between"
+            style={{ fontFamily: selectedOption.fontFamily, fontWeight: selectedOption.fontWeight }}
+          >
+            <span>{selectedOption.label}</span>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {fontDropdownOpen && (
+            <div className="absolute z-50 w-full mt-1 bg-white border-2 border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+              {fontFamilyOptions.map((option) => (
+                <div
+                  key={option.value}
+                  onClick={() => {
+                    updateProp(key, option.value);
+                    setFontDropdownOpen(false);
+                  }}
+                  className={cn(
+                    "px-3 py-2 cursor-pointer hover:bg-(--light-pink) transition-colors",
+                    option.value === value && "bg-(--light-pink)"
+                  )}
+                  style={{ fontFamily: option.fontFamily, fontWeight: option.fontWeight }}
+                >
+                  {option.label}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       );
     }
 
