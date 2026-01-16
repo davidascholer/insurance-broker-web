@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { GripVertical, Trash2, Download, Eye, Code } from "lucide-react";
+import { GripVertical, Trash2, Download, Eye, Code, Settings, X } from "lucide-react";
 import Header from "@/components/header/Header";
 import Footer from "@/components/Footer";
 
@@ -12,7 +12,6 @@ import ContentWithHeading from "./components/ContentWithHeading";
 import ContentWithImage from "./components/ContentWithImage";
 import ContentUnorderedList from "./components/ContentUnorderedList";
 import ContentImageList from "./components/ContentImageList";
-import ContentImageListItem from "./components/ContentImageListItem";
 import PartnerFooter from "./components/PartnerFooter";
 
 interface ComponentItem {
@@ -108,18 +107,18 @@ const availableComponents: AvailableComponent[] = [
     icon: "🎨",
     description: "Horizontal list with images",
     defaultProps: {
-      children: "Image list items go here",
-    },
-  },
-  {
-    type: "ContentImageListItem",
-    name: "Image List Item",
-    icon: "🖼️",
-    description: "Individual item for image list",
-    defaultProps: {
-      imageUrl: "/backgrounds/cats_dogs_photo_3x2.webp",
-      imageAlt: "Image",
-      children: "Item description",
+      imageListItems: [
+        {
+          imageUrl: "/backgrounds/cats_dogs_photo_3x2.webp",
+          imageAlt: "Image 1",
+          children: "Item description 1",
+        },
+        {
+          imageUrl: "/backgrounds/cats_dogs_photo_3x2.webp",
+          imageAlt: "Image 2",
+          children: "Item description 2",
+        },
+      ],
     },
   },
   {
@@ -141,7 +140,6 @@ const componentMap: Record<string, React.ComponentType<any>> = {
   ContentWithImage,
   ContentUnorderedList,
   ContentImageList,
-  ContentImageListItem,
   PartnerFooter,
 };
 
@@ -151,6 +149,8 @@ const BlogCreator = () => {
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [showPreview, setShowPreview] = useState(false);
   const [showCode, setShowCode] = useState(false);
+  const [editingComponent, setEditingComponent] = useState<ComponentItem | null>(null);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
   const handleDragStart = (type: string, e: React.DragEvent) => {
     e.dataTransfer.effectAllowed = "copy";
@@ -205,6 +205,210 @@ const BlogCreator = () => {
 
   const handleDelete = (id: string) => {
     setComponents(components.filter((c) => c.id !== id));
+  };
+
+  const handleEdit = (component: ComponentItem, index: number) => {
+    setEditingComponent({ ...component });
+    setEditingIndex(index);
+  };
+
+  const handleSaveEdit = () => {
+    if (editingComponent && editingIndex !== null) {
+      const newComponents = [...components];
+      newComponents[editingIndex] = editingComponent;
+      setComponents(newComponents);
+      setEditingComponent(null);
+      setEditingIndex(null);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingComponent(null);
+    setEditingIndex(null);
+  };
+
+  const updateProp = (key: string, value: any) => {
+    if (editingComponent) {
+      setEditingComponent({
+        ...editingComponent,
+        props: {
+          ...editingComponent.props,
+          [key]: value,
+        },
+      });
+    }
+  };
+
+  const renderPropEditor = (key: string, value: any) => {
+    // Special handling for imageListItems
+    if (key === "imageListItems" && Array.isArray(value)) {
+      const items = value as Array<{
+        imageUrl: string;
+        imageAlt?: string;
+        children: React.ReactNode;
+        className?: string;
+      }>;
+
+      const addItem = () => {
+        const newItems = [
+          ...items,
+          {
+            imageUrl: "/backgrounds/cats_dogs_photo_3x2.webp",
+            imageAlt: "New Image",
+            children: "New item description",
+          },
+        ];
+        updateProp(key, newItems);
+      };
+
+      const removeItem = (index: number) => {
+        const newItems = items.filter((_, i) => i !== index);
+        updateProp(key, newItems);
+      };
+
+      const updateItem = (index: number, field: string, newValue: any) => {
+        const newItems = [...items];
+        newItems[index] = { ...newItems[index], [field]: newValue };
+        updateProp(key, newItems);
+      };
+
+      return (
+        <div className="space-y-3">
+          {items.map((item, index) => (
+            <div
+              key={index}
+              className="p-4 border-2 border-gray-200 rounded-lg space-y-2 bg-gray-50"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-semibold text-sm text-(--primary-teal-dark)">
+                  Item {index + 1}
+                </span>
+                <button
+                  onClick={() => removeItem(index)}
+                  className="p-1 text-red-500 hover:bg-red-50 rounded"
+                  title="Remove item"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+              
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1">
+                  Image URL
+                </label>
+                <input
+                  type="text"
+                  value={item.imageUrl || ""}
+                  onChange={(e) => updateItem(index, "imageUrl", e.target.value)}
+                  className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:border-(--primary-teal) focus:outline-none"
+                  placeholder="/path/to/image.jpg"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1">
+                  Alt Text
+                </label>
+                <input
+                  type="text"
+                  value={item.imageAlt || ""}
+                  onChange={(e) => updateItem(index, "imageAlt", e.target.value)}
+                  className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:border-(--primary-teal) focus:outline-none"
+                  placeholder="Image description"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1">
+                  Description
+                </label>
+                <textarea
+                  value={String(item.children || "")}
+                  onChange={(e) => updateItem(index, "children", e.target.value)}
+                  className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:border-(--primary-teal) focus:outline-none resize-vertical"
+                  rows={2}
+                  placeholder="Item description"
+                />
+              </div>
+            </div>
+          ))}
+          
+          <button
+            onClick={addItem}
+            className="w-full px-4 py-2 border-2 border-dashed border-(--primary-teal) text-(--primary-teal) rounded-lg hover:bg-(--light-pink) transition-colors font-semibold"
+          >
+            + Add Item
+          </button>
+        </div>
+      );
+    }
+
+    // Handle different prop types
+    if (key === "children" && typeof value === "object") {
+      return (
+        <textarea
+          value={value?.toString() || ""}
+          onChange={(e) => updateProp(key, e.target.value)}
+          className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none resize-vertical min-h-[100px] font-mono text-sm"
+          placeholder="Enter content"
+        />
+      );
+    }
+
+    if (typeof value === "number") {
+      return (
+        <input
+          type="number"
+          step="0.1"
+          value={value}
+          onChange={(e) => updateProp(key, parseFloat(e.target.value))}
+          className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none"
+        />
+      );
+    }
+
+    if (typeof value === "boolean") {
+      return (
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={value}
+            onChange={(e) => updateProp(key, e.target.checked)}
+            className="w-5 h-5 text-(--primary-teal) border-gray-300 rounded focus:ring-(--primary-teal)"
+          />
+          <span className="text-sm">{value ? "True" : "False"}</span>
+        </label>
+      );
+    }
+
+    if (Array.isArray(value)) {
+      return (
+        <textarea
+          value={JSON.stringify(value, null, 2)}
+          onChange={(e) => {
+            try {
+              const parsed = JSON.parse(e.target.value);
+              updateProp(key, parsed);
+            } catch (err) {
+              // Invalid JSON, don't update
+            }
+          }}
+          className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none resize-vertical min-h-[150px] font-mono text-sm"
+          placeholder="Enter JSON array"
+        />
+      );
+    }
+
+    // Default to text input for strings
+    return (
+      <input
+        type="text"
+        value={value || ""}
+        onChange={(e) => updateProp(key, e.target.value)}
+        className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none"
+        placeholder={`Enter ${key}`}
+      />
+    );
   };
 
   const moveComponent = (index: number, direction: "up" | "down") => {
@@ -411,6 +615,13 @@ const BlogCreator = () => {
                         {!showPreview && (
                           <div className="absolute -right-3 top-0 bottom-0 flex flex-col justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                             <button
+                              onClick={() => handleEdit(component, index)}
+                              className="p-2 bg-(--primary-coral) text-white rounded-full hover:bg-(--coral-pink)"
+                              title="Edit component"
+                            >
+                              <Settings className="w-4 h-4" />
+                            </button>
+                            <button
                               onClick={() => handleDelete(component.id)}
                               className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600"
                               title="Delete component"
@@ -438,6 +649,65 @@ const BlogCreator = () => {
           </div>
         </div>
       </div>
+
+      {/* Edit Modal */}
+      {editingComponent && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <div>
+                <h2 className="text-2xl font-bold text-(--primary-teal-dark) sansita-bold">
+                  Edit {editingComponent.name}
+                </h2>
+                <p className="text-sm text-gray-600 mt-1">
+                  Update the properties below
+                </p>
+              </div>
+              <button
+                onClick={handleCancelEdit}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="flex-1 overflow-y-auto p-6">
+              <div className="space-y-4">
+                {Object.entries(editingComponent.props).map(([key, value]) => (
+                  <div key={key}>
+                    <label className="block text-sm font-semibold text-(--primary-teal-dark) mb-2 capitalize">
+                      {key.replace(/([A-Z])/g, " $1").trim()}
+                    </label>
+                    {renderPropEditor(key, value)}
+                    <p className="text-xs text-gray-500 mt-1">
+                      Type: {Array.isArray(value) ? "array" : typeof value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-200 bg-gray-50">
+              <button
+                onClick={handleCancelEdit}
+                className="px-6 py-2 rounded-lg border-2 border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveEdit}
+                className="px-6 py-2 rounded-lg bg-(--primary-teal) text-white font-semibold hover:bg-(--primary-teal-dark) transition-colors"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </div>
   );
