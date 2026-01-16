@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { cn } from "@/lib/utils";
-import { GripVertical, Trash2, Download, Eye, Code, Settings, X, Bold, Italic, Link, Type } from "lucide-react";
+import { GripVertical, Trash2, Download, Eye, Code, X, Bold, Italic, Link } from "lucide-react";
 import Header from "@/components/header/Header";
 import Footer from "@/components/Footer";
 
@@ -130,6 +130,7 @@ const availableComponents: AvailableComponent[] = [
     defaultProps: {
       content: "Enter your text here",
       fontFamily: "nunito-sans",
+      fontSize: "text-base",
     },
   },
   {
@@ -242,7 +243,7 @@ const BlogCreator = () => {
       setIsItalicActive(hasItalic);
     };
     
-    const applyFormatting = (command: string, formatValue?: string) => {
+    const applyFormatting = (command: string) => {
       const selection = window.getSelection();
       if (!selection || selection.rangeCount === 0) return;
 
@@ -306,12 +307,6 @@ const BlogCreator = () => {
           newElement.textContent = selectedText;
           break;
         }
-        case "fontSize":
-          if (!formatValue) return;
-          newElement = document.createElement("span");
-          newElement.className = formatValue;
-          newElement.textContent = selectedText;
-          break;
         default:
           return;
       }
@@ -327,17 +322,6 @@ const BlogCreator = () => {
       // Check formatting state after applying
       setTimeout(() => checkFormatting(), 0);
     };
-
-    const fontSizeOptions = [
-      { label: "Extra Small", value: "text-xs" },
-      { label: "Small", value: "text-sm" },
-      { label: "Base", value: "text-base" },
-      { label: "Large", value: "text-lg" },
-      { label: "Extra Large", value: "text-xl" },
-      { label: "2XL", value: "text-2xl" },
-      { label: "3XL", value: "text-3xl" },
-      { label: "4XL", value: "text-4xl" },
-    ];
 
     return (
       <div className="space-y-3">
@@ -373,26 +357,6 @@ const BlogCreator = () => {
               <Link className="w-4 h-4" />
             </button>
           </div>
-          
-          <div className="border-l border-gray-300 mx-1" />
-          
-          <div className="flex items-center gap-2">
-            <Type className="w-4 h-4 text-gray-600" />
-            <select
-              onChange={(e) => applyFormatting("fontSize", e.target.value)}
-              className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:border-(--primary-teal)"
-              defaultValue=""
-            >
-              <option value="" disabled>
-                Font Size
-              </option>
-              {fontSizeOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
         </div>
 
         {/* Content Editor */}
@@ -408,7 +372,8 @@ const BlogCreator = () => {
           dangerouslySetInnerHTML={{ __html: value || "" }}
           className={cn(
             "w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none min-h-[150px] bg-white",
-            editingComponent?.props?.fontFamily || "nunito-sans"
+            editingComponent?.props?.fontFamily || "nunito-sans",
+            editingComponent?.props?.fontSize || "text-base"
           )}
           style={{
             fontFamily: editingComponent?.props?.fontFamily === "nunito-sans" ? '"Nunito Sans", sans-serif' :
@@ -695,6 +660,34 @@ const BlogCreator = () => {
       );
     }
 
+    // Special handling for fontSize prop in ContentText
+    if (key === "fontSize" && editingComponent?.type === "ContentText") {
+      const fontSizeOptions = [
+        { label: "Extra Small", value: "text-xs" },
+        { label: "Small", value: "text-sm" },
+        { label: "Base", value: "text-base" },
+        { label: "Large", value: "text-lg" },
+        { label: "Extra Large", value: "text-xl" },
+        { label: "2XL", value: "text-2xl" },
+        { label: "3XL", value: "text-3xl" },
+        { label: "4XL", value: "text-4xl" },
+      ];
+
+      return (
+        <select
+          value={value as string}
+          onChange={(e) => updateProp(key, e.target.value)}
+          className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none"
+        >
+          {fontSizeOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      );
+    }
+
     if (typeof value === "boolean") {
       return (
         <label className="flex items-center gap-2 cursor-pointer">
@@ -907,9 +900,10 @@ const BlogCreator = () => {
                             ? (e) => handleDrop(e, index)
                             : undefined
                         }
+                        onClick={() => !showPreview && handleEdit(component, index)}
                         className={cn(
                           "relative group",
-                          !showPreview && "border-2 border-transparent hover:border-(--primary-teal) rounded-lg"
+                          !showPreview && "border-2 border-transparent hover:border-(--primary-teal) rounded-lg cursor-pointer"
                         )}
                       >
                         {!showPreview && (
@@ -927,14 +921,10 @@ const BlogCreator = () => {
                         {!showPreview && (
                           <div className="absolute -right-3 top-0 bottom-0 flex flex-col justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                             <button
-                              onClick={() => handleEdit(component, index)}
-                              className="p-2 bg-(--primary-coral) text-white rounded-full hover:bg-(--coral-pink)"
-                              title="Edit component"
-                            >
-                              <Settings className="w-4 h-4" />
-                            </button>
-                            <button
-                              onClick={() => handleDelete(component.id)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDelete(component.id);
+                              }}
                               className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600"
                               title="Delete component"
                             >

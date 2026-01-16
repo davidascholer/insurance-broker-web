@@ -3,18 +3,21 @@ import { cn } from "@/lib/utils";
 interface ContentTextProps {
   content: string;
   fontFamily?: string;
+  fontSize?: string;
   className?: string;
 }
 
 const ContentText = ({
   content,
   fontFamily = "nunito-sans",
+  fontSize = "text-base",
   className,
 }: ContentTextProps) => {
   return (
     <div
       className={cn(
         fontFamily,
+        fontSize,
         "tracking-tight max-w-3xl px-4 w-full !font-[inherit]",
         className
       )}
