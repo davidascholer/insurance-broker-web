@@ -19,14 +19,14 @@ interface ComponentItem {
   id: string;
   type: string;
   name: string;
-  props: Record<string, any>;
+  props: Record<string, unknown>;
 }
 
 interface AvailableComponent {
   type: string;
   name: string;
   icon: string;
-  defaultProps: Record<string, any>;
+  defaultProps: Record<string, unknown>;
   description: string;
 }
 
@@ -129,10 +129,7 @@ const availableComponents: AvailableComponent[] = [
     description: "Rich text with formatting options",
     defaultProps: {
       content: "Enter your text here",
-      fontSize: "text-base",
       fontFamily: "nunito-sans",
-      isBold: false,
-      isItalic: false,
     },
   },
   {
@@ -146,16 +143,49 @@ const availableComponents: AvailableComponent[] = [
   },
 ];
 
-const componentMap: Record<string, React.ComponentType<any>> = {
-  SectionContainer,
-  PartnerHeader,
-  HorizontalAnchorList,
-  ContentWithHeading,
-  ContentWithImage,
-  ContentUnorderedList,
-  ContentImageList,
-  ContentText,
-  PartnerFooter,
+const componentMap: Record<
+  string,
+  React.ComponentType<{
+    [key: string]: unknown;
+    children?: React.ReactNode;
+  }>
+> = {
+  SectionContainer: SectionContainer as unknown as React.ComponentType<{
+    [key: string]: unknown;
+    children?: React.ReactNode;
+  }>,
+  PartnerHeader: PartnerHeader as unknown as React.ComponentType<{
+    [key: string]: unknown;
+    children?: React.ReactNode;
+  }>,
+  HorizontalAnchorList: HorizontalAnchorList as unknown as React.ComponentType<{
+    [key: string]: unknown;
+    children?: React.ReactNode;
+  }>,
+  ContentWithHeading: ContentWithHeading as unknown as React.ComponentType<{
+    [key: string]: unknown;
+    children?: React.ReactNode;
+  }>,
+  ContentWithImage: ContentWithImage as unknown as React.ComponentType<{
+    [key: string]: unknown;
+    children?: React.ReactNode;
+  }>,
+  ContentUnorderedList: ContentUnorderedList as unknown as React.ComponentType<{
+    [key: string]: unknown;
+    children?: React.ReactNode;
+  }>,
+  ContentImageList: ContentImageList as unknown as React.ComponentType<{
+    [key: string]: unknown;
+    children?: React.ReactNode;
+  }>,
+  ContentText: ContentText as unknown as React.ComponentType<{
+    [key: string]: unknown;
+    children?: React.ReactNode;
+  }>,
+  PartnerFooter: PartnerFooter as unknown as React.ComponentType<{
+    [key: string]: unknown;
+    children?: React.ReactNode;
+  }>,
 };
 
 const BlogCreator = () => {
@@ -170,6 +200,47 @@ const BlogCreator = () => {
   // Rich Text Editor Component
   const RichTextEditor = ({ value, onChange }: { value: string; onChange: (val: string) => void }) => {
     const editorRef = useRef<HTMLDivElement>(null);
+    const [isBoldActive, setIsBoldActive] = useState(false);
+    const [isItalicActive, setIsItalicActive] = useState(false);
+    
+    const checkFormatting = () => {
+      const selection = window.getSelection();
+      if (!selection || selection.rangeCount === 0) {
+        setIsBoldActive(false);
+        setIsItalicActive(false);
+        return;
+      }
+
+      const range = selection.getRangeAt(0);
+      const container = range.commonAncestorContainer;
+      const parentElement = container.nodeType === Node.TEXT_NODE 
+        ? container.parentElement 
+        : container as Element;
+
+      // Check for bold
+      let element = parentElement;
+      let hasBold = false;
+      while (element && element !== editorRef.current) {
+        if (element.tagName === "STRONG") {
+          hasBold = true;
+          break;
+        }
+        element = element.parentElement;
+      }
+      setIsBoldActive(hasBold);
+
+      // Check for italic
+      element = parentElement;
+      let hasItalic = false;
+      while (element && element !== editorRef.current) {
+        if (element.tagName === "EM") {
+          hasItalic = true;
+          break;
+        }
+        element = element.parentElement;
+      }
+      setIsItalicActive(hasItalic);
+    };
     
     const applyFormatting = (command: string, formatValue?: string) => {
       const selection = window.getSelection();
@@ -179,6 +250,33 @@ const BlogCreator = () => {
       const selectedText = range.toString();
       
       if (!selectedText && command !== "insertHTML") return;
+
+      // Check if selection is already formatted
+      const container = range.commonAncestorContainer;
+      const parentElement = container.nodeType === Node.TEXT_NODE 
+        ? container.parentElement 
+        : container as Element;
+
+      // For bold/italic, check if we need to remove formatting
+      if (command === "bold" || command === "italic") {
+        const tagName = command === "bold" ? "STRONG" : "EM";
+        let element = parentElement;
+        
+        // Traverse up to find the formatting tag
+        while (element && element !== editorRef.current) {
+          if (element.tagName === tagName) {
+            // Remove the formatting by replacing with text
+            const textNode = document.createTextNode(element.textContent || "");
+            element.parentNode?.replaceChild(textNode, element);
+            
+            if (editorRef.current) {
+              onChange(editorRef.current.innerHTML);
+            }
+            return;
+          }
+          element = element.parentElement;
+        }
+      }
 
       let newElement: HTMLElement;
       
@@ -191,9 +289,15 @@ const BlogCreator = () => {
           newElement = document.createElement("em");
           newElement.textContent = selectedText;
           break;
-        case "link":
-          const url = prompt("Enter URL:");
+        case "link": {
+          let url = prompt("Enter URL:");
           if (!url) return;
+          
+          // Convert to absolute URL if needed
+          if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("mailto:") && !url.startsWith("tel:")) {
+            url = "https://" + url;
+          }
+          
           newElement = document.createElement("a");
           newElement.setAttribute("href", url);
           newElement.setAttribute("target", "_blank");
@@ -201,6 +305,7 @@ const BlogCreator = () => {
           newElement.className = "text-(--primary-teal) hover:underline";
           newElement.textContent = selectedText;
           break;
+        }
         case "fontSize":
           if (!formatValue) return;
           newElement = document.createElement("span");
@@ -218,6 +323,9 @@ const BlogCreator = () => {
       if (editorRef.current) {
         onChange(editorRef.current.innerHTML);
       }
+      
+      // Check formatting state after applying
+      setTimeout(() => checkFormatting(), 0);
     };
 
     const fontSizeOptions = [
@@ -241,14 +349,18 @@ const BlogCreator = () => {
             </span>
             <button
               onClick={() => applyFormatting("bold")}
-              className="p-2 hover:bg-gray-200 rounded transition-colors"
+              className={`p-2 hover:bg-gray-200 rounded transition-colors ${
+                isBoldActive ? "bg-gray-300 shadow-inner" : ""
+              }`}
               title="Bold"
             >
               <Bold className="w-4 h-4" />
             </button>
             <button
               onClick={() => applyFormatting("italic")}
-              className="p-2 hover:bg-gray-200 rounded transition-colors"
+              className={`p-2 hover:bg-gray-200 rounded transition-colors ${
+                isItalicActive ? "bg-gray-300 shadow-inner" : ""
+              }`}
               title="Italic"
             >
               <Italic className="w-4 h-4" />
@@ -291,8 +403,35 @@ const BlogCreator = () => {
           onInput={(e) => {
             onChange(e.currentTarget.innerHTML);
           }}
+          onMouseUp={checkFormatting}
+          onKeyUp={checkFormatting}
           dangerouslySetInnerHTML={{ __html: value || "" }}
-          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none min-h-[150px] bg-white"
+          className={cn(
+            "w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none min-h-[150px] bg-white",
+            editingComponent?.props?.fontFamily || "nunito-sans"
+          )}
+          style={{
+            fontFamily: editingComponent?.props?.fontFamily === "nunito-sans" ? '"Nunito Sans", sans-serif' :
+                        editingComponent?.props?.fontFamily === "nunito-sans-light" ? '"Nunito Sans", sans-serif' :
+                        editingComponent?.props?.fontFamily === "nunito-sans-medium" ? '"Nunito Sans", sans-serif' :
+                        editingComponent?.props?.fontFamily === "nunito-sans-semibold" ? '"Nunito Sans", sans-serif' :
+                        editingComponent?.props?.fontFamily === "nunito-sans-bold" ? '"Nunito Sans", sans-serif' :
+                        editingComponent?.props?.fontFamily === "sansita-regular" ? '"Sansita", sans-serif' :
+                        editingComponent?.props?.fontFamily === "sansita-bold" ? '"Sansita", sans-serif' :
+                        editingComponent?.props?.fontFamily === "sansita-extrabold" ? '"Sansita", sans-serif' :
+                        editingComponent?.props?.fontFamily === "sansita-black" ? '"Sansita", sans-serif' :
+                        '"Nunito Sans", sans-serif',
+            fontWeight: editingComponent?.props?.fontFamily === "nunito-sans-light" ? 300 :
+                        editingComponent?.props?.fontFamily === "nunito-sans" ? 400 :
+                        editingComponent?.props?.fontFamily === "nunito-sans-medium" ? 500 :
+                        editingComponent?.props?.fontFamily === "nunito-sans-semibold" ? 600 :
+                        editingComponent?.props?.fontFamily === "nunito-sans-bold" ? 700 :
+                        editingComponent?.props?.fontFamily === "sansita-regular" ? 400 :
+                        editingComponent?.props?.fontFamily === "sansita-bold" ? 700 :
+                        editingComponent?.props?.fontFamily === "sansita-extrabold" ? 800 :
+                        editingComponent?.props?.fontFamily === "sansita-black" ? 900 :
+                        400,
+          }}
         />
         
         <p className="text-xs text-gray-500">
@@ -377,7 +516,7 @@ const BlogCreator = () => {
     setEditingIndex(null);
   };
 
-  const updateProp = (key: string, value: any) => {
+  const updateProp = (key: string, value: unknown) => {
     if (editingComponent) {
       setEditingComponent({
         ...editingComponent,
@@ -389,12 +528,12 @@ const BlogCreator = () => {
     }
   };
 
-  const renderPropEditor = (key: string, value: any) => {
+  const renderPropEditor = (key: string, value: unknown) => {
     // Special handling for ContentText content editor
     if (key === "content" && editingComponent?.type === "ContentText") {
       return (
         <RichTextEditor
-          value={value}
+          value={value as string}
           onChange={(newValue) => updateProp(key, newValue)}
         />
       );
@@ -426,7 +565,7 @@ const BlogCreator = () => {
         updateProp(key, newItems);
       };
 
-      const updateItem = (index: number, field: string, newValue: any) => {
+      const updateItem = (index: number, field: string, newValue: unknown) => {
         const newItems = [...items];
         newItems[index] = { ...newItems[index], [field]: newValue };
         updateProp(key, newItems);
@@ -504,10 +643,10 @@ const BlogCreator = () => {
     }
 
     // Handle different prop types
-    if (key === "children" && typeof value === "object") {
+    if (key === "children" && typeof value === "object" && value !== null) {
       return (
         <textarea
-          value={value?.toString() || ""}
+          value={(value as { toString(): string }).toString()}
           onChange={(e) => updateProp(key, e.target.value)}
           className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none resize-vertical min-h-[100px] font-mono text-sm"
           placeholder="Enter content"
@@ -520,38 +659,10 @@ const BlogCreator = () => {
         <input
           type="number"
           step="0.1"
-          value={value}
+          value={value as number}
           onChange={(e) => updateProp(key, parseFloat(e.target.value))}
           className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none"
         />
-      );
-    }
-
-    // Special handling for fontSize prop in ContentText
-    if (key === "fontSize" && editingComponent?.type === "ContentText") {
-      const fontSizeOptions = [
-        { label: "Extra Small", value: "text-xs" },
-        { label: "Small", value: "text-sm" },
-        { label: "Base", value: "text-base" },
-        { label: "Large", value: "text-lg" },
-        { label: "Extra Large", value: "text-xl" },
-        { label: "2XL", value: "text-2xl" },
-        { label: "3XL", value: "text-3xl" },
-        { label: "4XL", value: "text-4xl" },
-      ];
-
-      return (
-        <select
-          value={value}
-          onChange={(e) => updateProp(key, e.target.value)}
-          className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none"
-        >
-          {fontSizeOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
       );
     }
 
@@ -571,7 +682,7 @@ const BlogCreator = () => {
 
       return (
         <select
-          value={value}
+          value={value as string}
           onChange={(e) => updateProp(key, e.target.value)}
           className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none"
         >
@@ -589,7 +700,7 @@ const BlogCreator = () => {
         <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="checkbox"
-            checked={value}
+            checked={value as boolean}
             onChange={(e) => updateProp(key, e.target.checked)}
             className="w-5 h-5 text-(--primary-teal) border-gray-300 rounded focus:ring-(--primary-teal)"
           />
@@ -601,12 +712,12 @@ const BlogCreator = () => {
     if (Array.isArray(value)) {
       return (
         <textarea
-          value={JSON.stringify(value, null, 2)}
+          value={JSON.stringify(value as unknown[], null, 2)}
           onChange={(e) => {
             try {
               const parsed = JSON.parse(e.target.value);
               updateProp(key, parsed);
-            } catch (err) {
+            } catch {
               // Invalid JSON, don't update
             }
           }}
@@ -620,29 +731,12 @@ const BlogCreator = () => {
     return (
       <input
         type="text"
-        value={value || ""}
+        value={(value as string) || ""}
         onChange={(e) => updateProp(key, e.target.value)}
         className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none"
         placeholder={`Enter ${key}`}
       />
     );
-  };
-
-  const moveComponent = (index: number, direction: "up" | "down") => {
-    if (
-      (direction === "up" && index === 0) ||
-      (direction === "down" && index === components.length - 1)
-    ) {
-      return;
-    }
-
-    const newComponents = [...components];
-    const targetIndex = direction === "up" ? index - 1 : index + 1;
-    [newComponents[index], newComponents[targetIndex]] = [
-      newComponents[targetIndex],
-      newComponents[index],
-    ];
-    setComponents(newComponents);
   };
 
   const generateHTML = () => {

@@ -2,28 +2,19 @@ import { cn } from "@/lib/utils";
 
 interface ContentTextProps {
   content: string;
-  fontSize?: string;
   fontFamily?: string;
-  isBold?: boolean;
-  isItalic?: boolean;
   className?: string;
 }
 
 const ContentText = ({
   content,
-  fontSize = "text-base",
   fontFamily = "nunito-sans",
-  isBold = false,
-  isItalic = false,
   className,
 }: ContentTextProps) => {
   return (
     <div
       className={cn(
-        fontSize,
         fontFamily,
-        isBold && "font-bold",
-        isItalic && "italic",
         "tracking-tight max-w-3xl px-4 w-full !font-[inherit]",
         className
       )}
@@ -47,7 +38,7 @@ const ContentText = ({
                     fontFamily === "sansita-bold" ? 700 :
                     fontFamily === "sansita-extrabold" ? 800 :
                     fontFamily === "sansita-black" ? 900 :
-                    isBold ? 700 : undefined,
+                    undefined,
       }}
       dangerouslySetInnerHTML={{ __html: content }}
     />
