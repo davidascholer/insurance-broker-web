@@ -1206,7 +1206,7 @@ const BlogCreator = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <div className="pt-20 pb-8">
+      <div className="pt-30 pb-8">
         <div className="max-w-7xl mx-auto px-4">
           <div className="mb-6">
             <h1 className="text-4xl font-bold text-(--primary-teal-dark) sansita-bold mb-2">

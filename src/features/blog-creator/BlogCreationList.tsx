@@ -92,7 +92,7 @@ const BlogCreationList = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <div className="pt-20 pb-8">
+      <div className="pt-30 pb-8">
         <div className="max-w-7xl mx-auto px-4">
           <div className="mb-6 flex items-center justify-between">
             <div>
@@ -214,40 +214,78 @@ const BlogCreationList = () => {
               {pages.map((page) => (
                 <div
                   key={page.name}
-                  className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+                  className="group"
                 >
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-(--primary-teal-dark) sansita-bold mb-2">
+                  <div className="mb-2">
+                    <h3 className="text-lg font-bold text-(--primary-teal-dark) sansita-bold">
                       {page.name}
                     </h3>
-                    {page.card && (
-                      <div className="mb-4">
-                        <p className="text-sm text-gray-600 mb-1">
-                          {page.card.title}
-                        </p>
-                        <p className="text-xs text-gray-500 line-clamp-2">
-                          {page.card.description}
-                        </p>
+                  </div>
+                  <div className="flex flex-col bg-white rounded-xl shadow-md overflow-hidden border-2 border-gray-200 hover:shadow-xl transition-shadow">
+                    <div className="w-full h-48 overflow-hidden bg-gray-100">
+                      {page.card?.imageUrl ? (
+                        <img
+                          src={page.card.imageUrl}
+                          alt={page.card.title || page.name}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src =
+                              "https://via.placeholder.com/400x300?text=No+Image";
+                          }}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-400">
+                          No image
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-6 flex flex-col gap-3">
+                      <h4 className="text-(--primary-teal-dark) text-xl sansita-bold line-clamp-2">
+                        {page.card?.title || "Untitled"}
+                      </h4>
+                      <p className="text-(--text-dark) text-sm nunito-sans">
+                        {page.card?.date
+                          ? new Date(page.card.date + 'T00:00:00').toLocaleDateString("en-US", {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            })
+                          : "No date"}
+                      </p>
+                      <p className="text-(--text-dark) nunito-sans line-clamp-3">
+                        {page.card?.description || "No description"}
+                      </p>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {page.card?.labels && page.card.labels.length > 0 ? (
+                          page.card.labels.map((label) => (
+                            <span
+                              key={label}
+                              className="px-3 py-1 text-xs rounded-full bg-(--light-pink) text-(--primary-teal-dark) nunito-sans font-semibold"
+                            >
+                              {label}
+                            </span>
+                          ))
+                        ) : (
+                          <span className="text-gray-400 text-sm">
+                            No labels
+                          </span>
+                        )}
                       </div>
-                    )}
-                    <p className="text-sm text-gray-500 mb-4">
-                      {page.components.length} component
-                      {page.components.length !== 1 ? "s" : ""}
-                    </p>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleEdit(page.name)}
-                        className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-(--primary-teal) text-white font-semibold hover:bg-(--primary-teal-dark) transition-colors"
-                      >
-                        <Edit className="w-4 h-4" />
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(page.name)}
-                        className="px-4 py-2 rounded-lg bg-red-500 text-white font-semibold hover:bg-red-600 transition-colors"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      <div className="flex gap-2 mt-4 pt-4 border-t border-gray-200">
+                        <button
+                          onClick={() => handleEdit(page.name)}
+                          className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-(--primary-teal) text-white font-semibold hover:bg-(--primary-teal-dark) transition-colors"
+                        >
+                          <Edit className="w-4 h-4" />
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(page.name)}
+                          className="px-4 py-2 rounded-lg bg-red-500 text-white font-semibold hover:bg-red-600 transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
