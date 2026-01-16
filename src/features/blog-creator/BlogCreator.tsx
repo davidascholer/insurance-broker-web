@@ -12,21 +12,22 @@ import {
   Italic,
   Link,
   Type,
+  Edit,
 } from "lucide-react";
 import Header from "@/components/header/Header";
 import Footer from "@/components/Footer";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 
 // Import all components
-import SectionContainer from "./components/SectionContainer";
-import PartnerHeader from "./components/PartnerHeader";
+import SectionContainer from "./templates/SectionContainer";
+import PartnerHeader from "./templates/PartnerHeader";
 import HorizontalAnchorList from "./components/HorizontalAnchorList";
-import ContentWithHeading from "./components/ContentWithHeading";
-import ContentWithImage from "./components/ContentWithImage";
-import ContentUnorderedList from "./components/ContentUnorderedList";
-import ContentImageList from "./components/ContentImageList";
+import ContentWithHeading from "./templates/ContentWithHeading";
+import ContentWithImage from "./templates/ContentWithImage";
+import ContentUnorderedList from "./templates/ContentUnorderedList";
+import ContentImageList from "./templates/ContentImageList";
 import ContentText from "./components/ContentText";
-import PartnerFooter from "./components/PartnerFooter";
+import PartnerFooter from "./templates/PartnerFooter";
 
 // Common themes/labels across blog pages
 const ALL_LABELS = [
@@ -47,6 +48,7 @@ interface ComponentItem {
   type: string;
   name: string;
   props: Record<string, unknown>;
+  children?: ComponentItem[]; // For Section Containers
 }
 
 type PropList = { [key: string]: unknown };
@@ -78,7 +80,7 @@ interface AvailableComponent {
   description: string;
 }
 
-const availableComponents: AvailableComponent[] = [
+const sectionContainerComponents: AvailableComponent[] = [
   {
     type: "SectionContainer",
     name: "Section Container",
@@ -90,6 +92,9 @@ const availableComponents: AvailableComponent[] = [
       children: "Section content goes here",
     },
   },
+];
+
+const availableComponents: AvailableComponent[] = [
   {
     type: "PartnerHeader",
     name: "Partner Header",
@@ -131,7 +136,7 @@ const availableComponents: AvailableComponent[] = [
     description: "Content with an icon/image beside it",
     defaultProps: {
       heading: "Image Content",
-      imageSrc: "/backgrounds/cats_dogs_photo_3x2.webp",
+      imageSrc: "/pages/partner/prudentpet/coverage.svg",
       children: "Description text",
     },
   },
@@ -158,21 +163,33 @@ const availableComponents: AvailableComponent[] = [
     defaultProps: {
       imageListItems: [
         {
-          imageUrl: "/backgrounds/cats_dogs_photo_3x2.webp",
+          imageUrl: "/pages/partner/prudentpet/pet_insurance.svg",
           imageAlt: "Image 1",
-          children: "Item description 1",
+          children: {
+            type: "ContentText",
+            props: {
+              content: "Item description 1",
+              fontFamily: "nunito-sans",
+            },
+          },
         },
         {
-          imageUrl: "/backgrounds/cats_dogs_photo_3x2.webp",
+          imageUrl: "/pages/partner/prudentpet/pet_insurance.svg",
           imageAlt: "Image 2",
-          children: "Item description 2",
+          children: {
+            type: "ContentText",
+            props: {
+              content: "Item description 2",
+              fontFamily: "nunito-sans",
+            },
+          },
         },
       ],
     },
   },
   {
     type: "ContentText",
-    name: "Rich Text",
+    name: "Content Text",
     icon: "✍️",
     description: "Rich text with formatting options",
     defaultProps: {
@@ -261,15 +278,28 @@ const BlogCreator = () => {
         const existingPage = pages.find((p) => p.name === urlPageName);
         if (existingPage) {
           setPageName(existingPage.name);
-          
-          // Load components
-          const loadedComponents: ComponentItem[] = existingPage.components.map(
-            (comp, index) => ({
-              id: `${comp.name}-${index}`,
+
+          // Recursive function to load components with children
+          const loadComponents = (
+            savedComps: SavedComponentType[],
+            parentId = ""
+          ): ComponentItem[] => {
+            return savedComps.map((comp, index) => ({
+              id: `${comp.name}-${parentId}-${index}-${Date.now()}`,
               type: comp.name,
               name: comp.name,
               props: comp.props,
-            })
+              ...(comp.children && {
+                children: loadComponents(
+                  [comp.children] as unknown as SavedComponentType[],
+                  `${parentId}-${index}`
+                ),
+              }),
+            }));
+          };
+
+          const loadedComponents: ComponentItem[] = loadComponents(
+            existingPage.components
           );
           setComponents(loadedComponents);
 
@@ -294,6 +324,11 @@ const BlogCreator = () => {
 
   const [draggedComponent, setDraggedComponent] = useState<string | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [draggedFromContainer, setDraggedFromContainer] = useState<
+    string | null
+  >(null);
+  const [isDraggingSectionContainer, setIsDraggingSectionContainer] =
+    useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [showCode, setShowCode] = useState(false);
   const [editingComponent, setEditingComponent] =
@@ -330,13 +365,20 @@ const BlogCreator = () => {
     if (!pageName) return;
 
     const timer = setTimeout(() => {
-      // Convert ComponentItem[] to SavedComponentType[]
-      const savedComponents: SavedComponentType[] = components.map(
-        (component) => ({
+      // Recursive function to convert ComponentItem[] to SavedComponentType[]
+      const convertToSaved = (items: ComponentItem[]): SavedComponentType[] => {
+        return items.map((component) => ({
           name: component.name,
           props: component.props,
-        })
-      );
+          ...(component.children && {
+            children: convertToSaved(
+              component.children
+            ) as unknown as SavedComponentType,
+          }),
+        }));
+      };
+
+      const savedComponents: SavedComponentType[] = convertToSaved(components);
 
       const pageData: SavedPage = {
         name: pageName,
@@ -375,7 +417,15 @@ const BlogCreator = () => {
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [pageName, blogTitle, blogDescription, blogDate, blogImageUrl, blogLabels, components]);
+  }, [
+    pageName,
+    blogTitle,
+    blogDescription,
+    blogDate,
+    blogImageUrl,
+    blogLabels,
+    components,
+  ]);
 
   // Re-enable save button when page content changes
   const [lastSavedState, setLastSavedState] = useState("");
@@ -673,14 +723,26 @@ const BlogCreator = () => {
     );
   };
 
-  const handleDragStart = (type: string, e: React.DragEvent) => {
+  const handleDragStart = (
+    type: string,
+    e: React.DragEvent,
+    isContainer = false
+  ) => {
     e.dataTransfer.effectAllowed = "copy";
     setDraggedComponent(type);
+    setIsDraggingSectionContainer(isContainer);
   };
 
-  const handleDragStartCanvas = (index: number, e: React.DragEvent) => {
+  const handleDragStartCanvas = (
+    index: number,
+    e: React.DragEvent,
+    containerId?: string,
+    isContainer = false
+  ) => {
     e.dataTransfer.effectAllowed = "move";
     setDraggedIndex(index);
+    setDraggedFromContainer(containerId || null);
+    setIsDraggingSectionContainer(isContainer);
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -688,14 +750,38 @@ const BlogCreator = () => {
     e.dataTransfer.dropEffect = draggedIndex !== null ? "move" : "copy";
   };
 
-  const handleDrop = (e: React.DragEvent, dropIndex?: number) => {
+  const handleDrop = (
+    e: React.DragEvent,
+    dropIndex?: number,
+    targetContainerId?: string
+  ) => {
     e.preventDefault();
+    e.stopPropagation();
+
+    // Only Section Containers can be dropped on the main canvas
+    if (!targetContainerId && !isDraggingSectionContainer) {
+      setDraggedComponent(null);
+      setDraggedIndex(null);
+      setDraggedFromContainer(null);
+      setIsDraggingSectionContainer(false);
+      return;
+    }
+
+    // Section Containers cannot be dropped inside other containers
+    if (targetContainerId && isDraggingSectionContainer) {
+      setDraggedComponent(null);
+      setDraggedIndex(null);
+      setDraggedFromContainer(null);
+      setIsDraggingSectionContainer(false);
+      return;
+    }
 
     if (draggedComponent) {
       // Dropping from palette
-      const component = availableComponents.find(
-        (c) => c.type === draggedComponent
-      );
+      const allComponents = isDraggingSectionContainer
+        ? sectionContainerComponents
+        : availableComponents;
+      const component = allComponents.find((c) => c.type === draggedComponent);
       if (!component) return;
 
       const newComponent: ComponentItem = {
@@ -703,25 +789,113 @@ const BlogCreator = () => {
         type: component.type,
         name: component.name,
         props: { ...component.defaultProps },
+        ...(isDraggingSectionContainer && { children: [] }),
       };
 
-      if (dropIndex !== undefined) {
+      if (targetContainerId) {
+        // Drop into a container
         const newComponents = [...components];
-        newComponents.splice(dropIndex, 0, newComponent);
-        setComponents(newComponents);
+        const containerIndex = newComponents.findIndex(
+          (c) => c.id === targetContainerId
+        );
+        if (containerIndex >= 0 && newComponents[containerIndex].children) {
+          if (dropIndex !== undefined) {
+            newComponents[containerIndex].children!.splice(
+              dropIndex,
+              0,
+              newComponent
+            );
+          } else {
+            newComponents[containerIndex].children!.push(newComponent);
+          }
+          setComponents(newComponents);
+        }
       } else {
-        setComponents([...components, newComponent]);
+        // Drop on main canvas (only Section Containers)
+        if (dropIndex !== undefined) {
+          const newComponents = [...components];
+          newComponents.splice(dropIndex, 0, newComponent);
+          setComponents(newComponents);
+        } else {
+          setComponents([...components, newComponent]);
+        }
       }
-    } else if (draggedIndex !== null && dropIndex !== undefined) {
-      // Reordering within canvas
-      const newComponents = [...components];
-      const [removed] = newComponents.splice(draggedIndex, 1);
-      newComponents.splice(dropIndex, 0, removed);
-      setComponents(newComponents);
+    } else if (draggedIndex !== null) {
+      // Reordering/moving existing components
+      if (
+        draggedFromContainer &&
+        targetContainerId &&
+        draggedFromContainer === targetContainerId
+      ) {
+        // Reordering within the same container
+        const newComponents = [...components];
+        const containerIndex = newComponents.findIndex(
+          (c) => c.id === targetContainerId
+        );
+        if (
+          containerIndex >= 0 &&
+          newComponents[containerIndex].children &&
+          dropIndex !== undefined
+        ) {
+          const children = [...newComponents[containerIndex].children!];
+          const [removed] = children.splice(draggedIndex, 1);
+          children.splice(dropIndex, 0, removed);
+          newComponents[containerIndex].children = children;
+          setComponents(newComponents);
+        }
+      } else if (!draggedFromContainer && !targetContainerId) {
+        // Reordering Section Containers on main canvas
+        if (dropIndex !== undefined) {
+          const newComponents = [...components];
+          const [removed] = newComponents.splice(draggedIndex, 1);
+          newComponents.splice(dropIndex, 0, removed);
+          setComponents(newComponents);
+        }
+      } else if (
+        draggedFromContainer &&
+        targetContainerId &&
+        draggedFromContainer !== targetContainerId
+      ) {
+        // Moving between containers
+        const newComponents = [...components];
+        const sourceIndex = newComponents.findIndex(
+          (c) => c.id === draggedFromContainer
+        );
+        const targetIndex = newComponents.findIndex(
+          (c) => c.id === targetContainerId
+        );
+
+        if (
+          sourceIndex >= 0 &&
+          targetIndex >= 0 &&
+          newComponents[sourceIndex].children &&
+          newComponents[targetIndex].children
+        ) {
+          const sourceChildren = [...newComponents[sourceIndex].children!];
+          const [removed] = sourceChildren.splice(draggedIndex, 1);
+          newComponents[sourceIndex].children = sourceChildren;
+
+          if (dropIndex !== undefined) {
+            newComponents[targetIndex].children!.splice(dropIndex, 0, removed);
+          } else {
+            newComponents[targetIndex].children!.push(removed);
+          }
+          setComponents(newComponents);
+        }
+      } else if (draggedFromContainer && !targetContainerId) {
+        // Cannot move regular components to main canvas
+        setDraggedComponent(null);
+        setDraggedIndex(null);
+        setDraggedFromContainer(null);
+        setIsDraggingSectionContainer(false);
+        return;
+      }
     }
 
     setDraggedComponent(null);
     setDraggedIndex(null);
+    setDraggedFromContainer(null);
+    setIsDraggingSectionContainer(false);
   };
 
   const handleDelete = (id: string) => {
@@ -802,7 +976,13 @@ const BlogCreator = () => {
           {
             imageUrl: "/backgrounds/cats_dogs_photo_3x2.webp",
             imageAlt: "New Image",
-            children: "New item description",
+            children: {
+              type: "ContentText",
+              props: {
+                content: "New item description",
+                fontFamily: "nunito-sans",
+              },
+            },
           },
         ];
         updateProp(key, newItems);
@@ -871,17 +1051,110 @@ const BlogCreator = () => {
 
               <div>
                 <label className="block text-xs font-semibold text-gray-600 mb-1">
-                  Description
+                  Description (Rich Text)
                 </label>
-                <textarea
-                  value={String(item.children || "")}
-                  onChange={(e) =>
-                    updateItem(index, "children", e.target.value)
-                  }
-                  className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:border-(--primary-teal) focus:outline-none resize-vertical"
-                  rows={2}
-                  placeholder="Item description"
-                />
+                {typeof item.children === "object" &&
+                item.children !== null &&
+                (item.children as { type?: string }).type === "ContentText" ? (
+                  <div className="border border-gray-200 rounded p-2 bg-white">
+                    <RichTextEditor
+                      value={
+                        (
+                          item.children as {
+                            type: string;
+                            props: { content?: string };
+                          }
+                        ).props?.content || ""
+                      }
+                      onChange={(newContent) => {
+                        const updatedChild = {
+                          type: "ContentText",
+                          props: {
+                            ...(
+                              item.children as {
+                                type: string;
+                                props: { [key: string]: unknown };
+                              }
+                            ).props,
+                            content: newContent,
+                          },
+                        };
+                        updateItem(index, "children", updatedChild);
+                      }}
+                    />
+                    <div className="mt-2">
+                      <label className="block text-xs font-semibold text-gray-600 mb-1">
+                        Font Family
+                      </label>
+                      <select
+                        value={
+                          typeof item.children === "object" &&
+                          item.children !== null &&
+                          "props" in item.children
+                            ? ((
+                                item.children as {
+                                  props?: { fontFamily?: string };
+                                }
+                              ).props?.fontFamily as string) || "nunito-sans"
+                            : "nunito-sans"
+                        }
+                        onChange={(e) => {
+                          const updatedChild = {
+                            type: "ContentText",
+                            props: {
+                              ...(
+                                item.children as {
+                                  type: string;
+                                  props: { [key: string]: unknown };
+                                }
+                              ).props,
+                              fontFamily: e.target.value,
+                            },
+                          };
+                          updateItem(index, "children", updatedChild);
+                        }}
+                        className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:border-(--primary-teal)"
+                      >
+                        <option value="nunito-sans">Nunito Sans</option>
+                        <option value="nunito-sans-light">
+                          Nunito Sans Light
+                        </option>
+                        <option value="nunito-sans-medium">
+                          Nunito Sans Medium
+                        </option>
+                        <option value="nunito-sans-semibold">
+                          Nunito Sans SemiBold
+                        </option>
+                        <option value="nunito-sans-bold">
+                          Nunito Sans Bold
+                        </option>
+                        <option value="sansita-regular">Sansita Regular</option>
+                        <option value="sansita-bold">Sansita Bold</option>
+                        <option value="sansita-extrabold">
+                          Sansita Extra Bold
+                        </option>
+                        <option value="sansita-black">Sansita Black</option>
+                      </select>
+                    </div>
+                  </div>
+                ) : (
+                  <textarea
+                    value={String(item.children || "")}
+                    onChange={(e) => {
+                      const newChild = {
+                        type: "ContentText",
+                        props: {
+                          content: e.target.value,
+                          fontFamily: "nunito-sans",
+                        },
+                      };
+                      updateItem(index, "children", newChild);
+                    }}
+                    className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:border-(--primary-teal) focus:outline-none resize-vertical"
+                    rows={2}
+                    placeholder="Item description"
+                  />
+                )}
               </div>
             </div>
           ))}
@@ -1139,14 +1412,20 @@ const BlogCreator = () => {
       return;
     }
 
-    // Convert ComponentItem[] to SavedComponentType[]
-    const savedComponents: SavedComponentType[] = components.map(
-      (component) => ({
+    // Recursive function to convert ComponentItem[] to SavedComponentType[]
+    const convertToSaved = (items: ComponentItem[]): SavedComponentType[] => {
+      return items.map((component) => ({
         name: component.name,
         props: component.props,
-        // Children not implemented in current structure
-      })
-    );
+        ...(component.children && {
+          children: convertToSaved(
+            component.children
+          ) as unknown as SavedComponentType,
+        }),
+      }));
+    };
+
+    const savedComponents: SavedComponentType[] = convertToSaved(components);
 
     const newPage: SavedPage = {
       name: pageName,
@@ -1257,10 +1536,12 @@ const BlogCreator = () => {
           </div>
 
           {/* Blog Metadata Section */}
-          <div className={cn(
-            "bg-white rounded-lg shadow-lg p-6 mb-6 transition-opacity",
-            !pageName && "opacity-50 pointer-events-none"
-          )}>
+          <div
+            className={cn(
+              "bg-white rounded-lg shadow-lg p-6 mb-6 transition-opacity",
+              !pageName && "opacity-50 pointer-events-none"
+            )}
+          >
             <h2 className="text-2xl font-bold text-(--primary-teal-dark) sansita-bold mb-4">
               Blog Card Information
             </h2>
@@ -1452,11 +1733,14 @@ const BlogCreator = () => {
                     </h3>
                     <p className="text-(--text-dark) text-sm nunito-sans">
                       {blogDate
-                        ? new Date(blogDate + 'T00:00:00').toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })
+                        ? new Date(blogDate + "T00:00:00").toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )
                         : "Date"}
                     </p>
                     <p className="text-(--text-dark) nunito-sans line-clamp-3">
@@ -1485,36 +1769,72 @@ const BlogCreator = () => {
             </div>
           </div>
 
-          <div className={cn(
-            "grid grid-cols-1 lg:grid-cols-4 gap-6 transition-opacity",
-            !pageName && "opacity-50 pointer-events-none"
-          )}>
+          <div
+            className={cn(
+              "grid grid-cols-1 lg:grid-cols-4 gap-6 transition-opacity",
+              !pageName && "opacity-50 pointer-events-none"
+            )}
+          >
             {/* Component Palette */}
             {!showPreview && !showCode && (
               <div className="lg:col-span-1">
-                <div className="bg-white rounded-lg shadow-lg p-4 sticky top-24">
-                  <h2 className="text-xl font-bold text-(--primary-teal-dark) mb-4 sansita-bold">
-                    Components
-                  </h2>
-                  <div className="space-y-2">
-                    {availableComponents.map((component) => (
-                      <div
-                        key={component.type}
-                        draggable
-                        onDragStart={(e) => handleDragStart(component.type, e)}
-                        className="p-3 bg-(--light-pink) rounded-lg cursor-move hover:bg-(--primary-teal) hover:text-white transition-colors group"
-                      >
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-2xl">{component.icon}</span>
-                          <span className="font-semibold text-sm">
-                            {component.name}
-                          </span>
+                <div className="bg-white rounded-lg shadow-lg p-4 sticky top-24 space-y-6">
+                  {/* Section Containers */}
+                  <div>
+                    <h2 className="text-xl font-bold text-(--primary-teal-dark) mb-4 sansita-bold">
+                      Containers
+                    </h2>
+                    <div className="space-y-2">
+                      {sectionContainerComponents.map((component) => (
+                        <div
+                          key={component.type}
+                          draggable
+                          onDragStart={(e) =>
+                            handleDragStart(component.type, e, true)
+                          }
+                          className="p-3 bg-(--primary-coral) bg-opacity-20 border-2 border-(--primary-coral) rounded-lg cursor-move hover:bg-(--primary-coral) hover:text-white transition-colors group"
+                        >
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-2xl">{component.icon}</span>
+                            <span className="font-semibold text-sm">
+                              {component.name}
+                            </span>
+                          </div>
+                          <p className="text-xs opacity-75 group-hover:opacity-100">
+                            {component.description}
+                          </p>
                         </div>
-                        <p className="text-xs opacity-75 group-hover:opacity-100">
-                          {component.description}
-                        </p>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Regular Components */}
+                  <div>
+                    <h2 className="text-xl font-bold text-(--primary-teal-dark) mb-4 sansita-bold">
+                      Components
+                    </h2>
+                    <div className="space-y-2">
+                      {availableComponents.map((component) => (
+                        <div
+                          key={component.type}
+                          draggable
+                          onDragStart={(e) =>
+                            handleDragStart(component.type, e, false)
+                          }
+                          className="p-3 bg-(--light-pink) rounded-lg cursor-move hover:bg-(--primary-teal) hover:text-white transition-colors group"
+                        >
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-2xl">{component.icon}</span>
+                            <span className="font-semibold text-sm">
+                              {component.name}
+                            </span>
+                          </div>
+                          <p className="text-xs opacity-75 group-hover:opacity-100">
+                            {component.description}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1544,78 +1864,212 @@ const BlogCreator = () => {
                   >
                     <div className="text-center text-gray-500">
                       <p className="text-xl font-semibold mb-2">
-                        Drop components here
+                        Drop Section Containers here
                       </p>
                       <p className="text-sm">
-                        Drag components from the left panel to start building
+                        Start by dragging a Section Container from the
+                        Containers section
                       </p>
                     </div>
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {components.map((component, index) => (
-                      <div
-                        key={`${component.id}-${JSON.stringify(
-                          component.props
-                        )}`}
-                        {...(!showPreview && {
-                          draggable: true,
-                          onClick: () => handleEdit(component, index),
-                        })}
-                        onDragStart={(e) =>
-                          !showPreview && handleDragStartCanvas(index, e)
-                        }
-                        onDragOver={!showPreview ? handleDragOver : undefined}
-                        onDrop={
-                          !showPreview ? (e) => handleDrop(e, index) : undefined
-                        }
-                        className={cn(
-                          "relative group",
-                          !showPreview &&
-                            "border-2 border-transparent hover:border-(--primary-teal) rounded-lg cursor-pointer"
-                        )}
-                        style={
-                          showPreview ? { pointerEvents: "auto" } : undefined
-                        }
-                      >
-                        {!showPreview && (
-                          <div className="absolute -left-3 top-0 bottom-0 flex flex-col justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                            <button
-                              onMouseDown={(e) => e.stopPropagation()}
-                              className="p-2 bg-(--primary-teal) text-white rounded-full cursor-move hover:bg-(--primary-teal-dark)"
-                              title="Drag to reorder"
-                            >
-                              <GripVertical className="w-4 h-4" />
-                            </button>
-                          </div>
-                        )}
+                    {components.map((component, index) =>
+                      component.type === "SectionContainer" ? (
+                        <div
+                          key={component.id}
+                          {...(!showPreview && {
+                            draggable: true,
+                          })}
+                          onDragStart={(e) =>
+                            !showPreview &&
+                            handleDragStartCanvas(index, e, undefined, true)
+                          }
+                          onDragOver={!showPreview ? handleDragOver : undefined}
+                          onDrop={
+                            !showPreview
+                              ? (e) => handleDrop(e, index)
+                              : undefined
+                          }
+                          className={cn(
+                            "relative group border-2 rounded-lg p-4",
+                            !showPreview
+                              ? "border-(--primary-coral) bg-(--primary-coral) bg-opacity-5"
+                              : "border-transparent"
+                          )}
+                        >
+                          {!showPreview && (
+                            <>
+                              <div className="absolute -left-3 top-4 flex flex-col justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                                <button
+                                  onMouseDown={(e) => e.stopPropagation()}
+                                  className="p-2 bg-(--primary-coral) text-white rounded-full cursor-move hover:bg-(--coral-pink)"
+                                  title="Drag to reorder"
+                                >
+                                  <GripVertical className="w-4 h-4" />
+                                </button>
+                              </div>
+                              <div className="absolute -right-3 top-4 flex flex-col justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDelete(component.id);
+                                  }}
+                                  className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600"
+                                  title="Delete"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleEdit(component, index);
+                                  }}
+                                  className="p-2 bg-(--primary-teal) text-white rounded-full hover:bg-(--primary-teal-dark)"
+                                  title="Edit"
+                                >
+                                  <Edit className="w-4 h-4" />
+                                </button>
+                              </div>
+                              <div className="mb-3 text-xs font-semibold text-(--primary-coral) uppercase">
+                                Section Container
+                              </div>
+                            </>
+                          )}
 
-                        {!showPreview && (
-                          <div className="absolute -right-3 top-0 bottom-0 flex flex-col justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleDelete(component.id);
-                              }}
-                              className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600"
-                              title="Delete component"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
+                          {/* Section Container Children */}
+                          <div
+                            onDragOver={(e) => {
+                              e.stopPropagation();
+                              if (!showPreview) handleDragOver(e);
+                            }}
+                            onDrop={(e) => {
+                              e.stopPropagation();
+                              if (!showPreview)
+                                handleDrop(e, undefined, component.id);
+                            }}
+                            className={cn(
+                              "min-h-[150px] rounded-lg",
+                              !showPreview &&
+                                "border-2 border-dashed border-gray-300 p-4"
+                            )}
+                          >
+                            {component.children &&
+                            component.children.length > 0 ? (
+                              <div className="space-y-3">
+                                {component.children.map((child, childIndex) => (
+                                  <div
+                                    key={child.id}
+                                    {...(!showPreview && {
+                                      draggable: true,
+                                    })}
+                                    onDragStart={(e) => {
+                                      e.stopPropagation();
+                                      if (!showPreview)
+                                        handleDragStartCanvas(
+                                          childIndex,
+                                          e,
+                                          component.id,
+                                          false
+                                        );
+                                    }}
+                                    onDragOver={(e) => {
+                                      e.stopPropagation();
+                                      if (!showPreview) handleDragOver(e);
+                                    }}
+                                    onDrop={(e) => {
+                                      e.stopPropagation();
+                                      if (!showPreview)
+                                        handleDrop(e, childIndex, component.id);
+                                    }}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      if (!showPreview) {
+                                        // Find the child in the parent's children array
+                                        const parentIndex =
+                                          components.findIndex(
+                                            (c) => c.id === component.id
+                                          );
+                                        if (
+                                          parentIndex >= 0 &&
+                                          components[parentIndex].children
+                                        ) {
+                                          handleEdit(child, childIndex);
+                                        }
+                                      }
+                                    }}
+                                    className={cn(
+                                      "relative group",
+                                      !showPreview &&
+                                        "border-2 border-transparent hover:border-(--primary-teal) rounded-lg cursor-pointer p-2"
+                                    )}
+                                  >
+                                    {!showPreview && (
+                                      <>
+                                        <div className="absolute -left-2 top-0 bottom-0 flex flex-col justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                                          <button
+                                            onMouseDown={(e) =>
+                                              e.stopPropagation()
+                                            }
+                                            className="p-1 bg-(--primary-teal) text-white rounded-full cursor-move hover:bg-(--primary-teal-dark)"
+                                            title="Drag to reorder"
+                                          >
+                                            <GripVertical className="w-3 h-3" />
+                                          </button>
+                                        </div>
+                                        <div className="absolute -right-2 top-0 bottom-0 flex flex-col justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                                          <button
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              const newComponents = [
+                                                ...components,
+                                              ];
+                                              const parentIndex =
+                                                newComponents.findIndex(
+                                                  (c) => c.id === component.id
+                                                );
+                                              if (
+                                                parentIndex >= 0 &&
+                                                newComponents[parentIndex]
+                                                  .children
+                                              ) {
+                                                newComponents[
+                                                  parentIndex
+                                                ].children = newComponents[
+                                                  parentIndex
+                                                ].children!.filter(
+                                                  (_, i) => i !== childIndex
+                                                );
+                                                setComponents(newComponents);
+                                              }
+                                            }}
+                                            className="p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
+                                            title="Delete"
+                                          >
+                                            <Trash2 className="w-3 h-3" />
+                                          </button>
+                                        </div>
+                                      </>
+                                    )}
+                                    {renderComponent(child)}
+                                  </div>
+                                ))}
+                              </div>
+                            ) : (
+                              !showPreview && (
+                                <div className="flex items-center justify-center h-full text-gray-400 text-sm">
+                                  Drop components here
+                                </div>
+                              )
+                            )}
                           </div>
-                        )}
-
-                        <div className={cn(!showPreview && "p-4")}>
-                          {renderComponent(component)}
                         </div>
-
-                        {!showPreview && (
-                          <div className="absolute top-2 left-2 bg-(--primary-teal) text-white px-2 py-1 rounded text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
-                            {component.name}
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                      ) : (
+                        <div key={component.id}>
+                          Unexpected non-container component at root level
+                        </div>
+                      )
+                    )}
                   </div>
                 )}
               </div>
