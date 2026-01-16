@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { cn } from "@/lib/utils";
-import { GripVertical, Trash2, Download, Eye, Code, Settings, X } from "lucide-react";
+import { GripVertical, Trash2, Download, Eye, Code, Settings, X, Bold, Italic, Link, Type } from "lucide-react";
 import Header from "@/components/header/Header";
 import Footer from "@/components/Footer";
 
@@ -12,6 +12,7 @@ import ContentWithHeading from "./components/ContentWithHeading";
 import ContentWithImage from "./components/ContentWithImage";
 import ContentUnorderedList from "./components/ContentUnorderedList";
 import ContentImageList from "./components/ContentImageList";
+import ContentText from "./components/ContentText";
 import PartnerFooter from "./components/PartnerFooter";
 
 interface ComponentItem {
@@ -122,6 +123,19 @@ const availableComponents: AvailableComponent[] = [
     },
   },
   {
+    type: "ContentText",
+    name: "Rich Text",
+    icon: "✍️",
+    description: "Rich text with formatting options",
+    defaultProps: {
+      content: "Enter your text here",
+      fontSize: "text-base",
+      fontFamily: "nunito-sans",
+      isBold: false,
+      isItalic: false,
+    },
+  },
+  {
     type: "PartnerFooter",
     name: "Partner Footer",
     icon: "👣",
@@ -140,6 +154,7 @@ const componentMap: Record<string, React.ComponentType<any>> = {
   ContentWithImage,
   ContentUnorderedList,
   ContentImageList,
+  ContentText,
   PartnerFooter,
 };
 
@@ -151,6 +166,141 @@ const BlogCreator = () => {
   const [showCode, setShowCode] = useState(false);
   const [editingComponent, setEditingComponent] = useState<ComponentItem | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+
+  // Rich Text Editor Component
+  const RichTextEditor = ({ value, onChange }: { value: string; onChange: (val: string) => void }) => {
+    const editorRef = useRef<HTMLDivElement>(null);
+    
+    const applyFormatting = (command: string, formatValue?: string) => {
+      const selection = window.getSelection();
+      if (!selection || selection.rangeCount === 0) return;
+
+      const range = selection.getRangeAt(0);
+      const selectedText = range.toString();
+      
+      if (!selectedText && command !== "insertHTML") return;
+
+      let newElement: HTMLElement;
+      
+      switch (command) {
+        case "bold":
+          newElement = document.createElement("strong");
+          newElement.textContent = selectedText;
+          break;
+        case "italic":
+          newElement = document.createElement("em");
+          newElement.textContent = selectedText;
+          break;
+        case "link":
+          const url = prompt("Enter URL:");
+          if (!url) return;
+          newElement = document.createElement("a");
+          newElement.setAttribute("href", url);
+          newElement.setAttribute("target", "_blank");
+          newElement.setAttribute("rel", "noopener noreferrer");
+          newElement.className = "text-(--primary-teal) hover:underline";
+          newElement.textContent = selectedText;
+          break;
+        case "fontSize":
+          if (!formatValue) return;
+          newElement = document.createElement("span");
+          newElement.className = formatValue;
+          newElement.textContent = selectedText;
+          break;
+        default:
+          return;
+      }
+
+      range.deleteContents();
+      range.insertNode(newElement);
+      
+      // Update the content
+      if (editorRef.current) {
+        onChange(editorRef.current.innerHTML);
+      }
+    };
+
+    const fontSizeOptions = [
+      { label: "Extra Small", value: "text-xs" },
+      { label: "Small", value: "text-sm" },
+      { label: "Base", value: "text-base" },
+      { label: "Large", value: "text-lg" },
+      { label: "Extra Large", value: "text-xl" },
+      { label: "2XL", value: "text-2xl" },
+      { label: "3XL", value: "text-3xl" },
+      { label: "4XL", value: "text-4xl" },
+    ];
+
+    return (
+      <div className="space-y-3">
+        {/* Formatting Toolbar */}
+        <div className="flex flex-wrap gap-2 p-3 bg-gray-100 rounded-lg border border-gray-300">
+          <div className="flex items-center gap-1">
+            <span className="text-xs font-semibold text-gray-600 mr-2">
+              Selected Text:
+            </span>
+            <button
+              onClick={() => applyFormatting("bold")}
+              className="p-2 hover:bg-gray-200 rounded transition-colors"
+              title="Bold"
+            >
+              <Bold className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => applyFormatting("italic")}
+              className="p-2 hover:bg-gray-200 rounded transition-colors"
+              title="Italic"
+            >
+              <Italic className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => applyFormatting("link")}
+              className="p-2 hover:bg-gray-200 rounded transition-colors"
+              title="Add Link"
+            >
+              <Link className="w-4 h-4" />
+            </button>
+          </div>
+          
+          <div className="border-l border-gray-300 mx-1" />
+          
+          <div className="flex items-center gap-2">
+            <Type className="w-4 h-4 text-gray-600" />
+            <select
+              onChange={(e) => applyFormatting("fontSize", e.target.value)}
+              className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:border-(--primary-teal)"
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Font Size
+              </option>
+              {fontSizeOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Content Editor */}
+        <div
+          ref={editorRef}
+          contentEditable
+          suppressContentEditableWarning
+          onInput={(e) => {
+            onChange(e.currentTarget.innerHTML);
+          }}
+          dangerouslySetInnerHTML={{ __html: value || "" }}
+          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none min-h-[150px] bg-white"
+        />
+        
+        <p className="text-xs text-gray-500">
+          Select text to apply formatting, or edit directly
+        </p>
+      </div>
+    );
+  };
 
   const handleDragStart = (type: string, e: React.DragEvent) => {
     e.dataTransfer.effectAllowed = "copy";
@@ -240,6 +390,16 @@ const BlogCreator = () => {
   };
 
   const renderPropEditor = (key: string, value: any) => {
+    // Special handling for ContentText content editor
+    if (key === "content" && editingComponent?.type === "ContentText") {
+      return (
+        <RichTextEditor
+          value={value}
+          onChange={(newValue) => updateProp(key, newValue)}
+        />
+      );
+    }
+
     // Special handling for imageListItems
     if (key === "imageListItems" && Array.isArray(value)) {
       const items = value as Array<{
@@ -367,6 +527,63 @@ const BlogCreator = () => {
       );
     }
 
+    // Special handling for fontSize prop in ContentText
+    if (key === "fontSize" && editingComponent?.type === "ContentText") {
+      const fontSizeOptions = [
+        { label: "Extra Small", value: "text-xs" },
+        { label: "Small", value: "text-sm" },
+        { label: "Base", value: "text-base" },
+        { label: "Large", value: "text-lg" },
+        { label: "Extra Large", value: "text-xl" },
+        { label: "2XL", value: "text-2xl" },
+        { label: "3XL", value: "text-3xl" },
+        { label: "4XL", value: "text-4xl" },
+      ];
+
+      return (
+        <select
+          value={value}
+          onChange={(e) => updateProp(key, e.target.value)}
+          className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none"
+        >
+          {fontSizeOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      );
+    }
+
+    // Special handling for fontFamily prop in ContentText
+    if (key === "fontFamily" && editingComponent?.type === "ContentText") {
+      const fontFamilyOptions = [
+        { label: "Nunito Sans", value: "nunito-sans" },
+        { label: "Nunito Sans Light", value: "nunito-sans-light" },
+        { label: "Nunito Sans Medium", value: "nunito-sans-medium" },
+        { label: "Nunito Sans SemiBold", value: "nunito-sans-semibold" },
+        { label: "Nunito Sans Bold", value: "nunito-sans-bold" },
+        { label: "Sansita Regular", value: "sansita-regular" },
+        { label: "Sansita Bold", value: "sansita-bold" },
+        { label: "Sansita Extra Bold", value: "sansita-extrabold" },
+        { label: "Sansita Black", value: "sansita-black" },
+      ];
+
+      return (
+        <select
+          value={value}
+          onChange={(e) => updateProp(key, e.target.value)}
+          className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none"
+        >
+          {fontFamilyOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      );
+    }
+
     if (typeof value === "boolean") {
       return (
         <label className="flex items-center gap-2 cursor-pointer">
@@ -458,7 +675,8 @@ const BlogCreator = () => {
     if (!Component) return <div>Component not found: {item.type}</div>;
 
     try {
-      return <Component {...item.props} />;
+      // Add a key based on props to force re-render when props change
+      return <Component key={JSON.stringify(item.props)} {...item.props} />;
     } catch (error) {
       return (
         <div className="text-red-500">
@@ -584,7 +802,7 @@ const BlogCreator = () => {
                   <div className="space-y-4">
                     {components.map((component, index) => (
                       <div
-                        key={component.id}
+                        key={`${component.id}-${JSON.stringify(component.props)}`}
                         draggable={!showPreview}
                         onDragStart={(e) =>
                           !showPreview && handleDragStartCanvas(index, e)
