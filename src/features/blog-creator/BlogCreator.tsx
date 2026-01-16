@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
   GripVertical,
@@ -236,6 +237,7 @@ const componentMap: Record<
 };
 
 const BlogCreator = () => {
+  const { pageName: urlPageName } = useParams<{ pageName: string }>();
   const [components, setComponents] = useState<ComponentItem[]>([]);
   const [pageName, setPageName] = useState("");
 
@@ -249,6 +251,46 @@ const BlogCreator = () => {
   const [blogLabels, setBlogLabels] = useState<string[]>([]);
   const [labelsDropdownOpen, setLabelsDropdownOpen] = useState(false);
   const labelsDropdownRef = useRef<HTMLDivElement>(null!);
+
+  // Load page data from localStorage if editing existing page
+  useEffect(() => {
+    if (urlPageName) {
+      const pagesJson = localStorage.getItem("pages");
+      if (pagesJson) {
+        const pages: SavedPage[] = JSON.parse(pagesJson);
+        const existingPage = pages.find((p) => p.name === urlPageName);
+        if (existingPage) {
+          setPageName(existingPage.name);
+          
+          // Load components
+          const loadedComponents: ComponentItem[] = existingPage.components.map(
+            (comp, index) => ({
+              id: `${comp.name}-${index}`,
+              type: comp.name,
+              name: comp.name,
+              props: comp.props,
+            })
+          );
+          setComponents(loadedComponents);
+
+          // Load blog card data
+          if (existingPage.card) {
+            setBlogTitle(existingPage.card.title);
+            setBlogDescription(existingPage.card.description);
+            setBlogDate(existingPage.card.date);
+            setBlogImageUrl(existingPage.card.imageUrl);
+            setBlogLabels(existingPage.card.labels);
+          }
+        } else {
+          // New page - just set the name from URL
+          setPageName(urlPageName);
+        }
+      } else {
+        // No pages exist yet - just set the name from URL
+        setPageName(urlPageName);
+      }
+    }
+  }, [urlPageName]);
 
   const [draggedComponent, setDraggedComponent] = useState<string | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
@@ -1168,35 +1210,11 @@ const BlogCreator = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="mb-6">
             <h1 className="text-4xl font-bold text-(--primary-teal-dark) sansita-bold mb-2">
-              Blog Creator
+              Blog Creator{pageName && ` - ${pageName}`}
             </h1>
             <p className="text-(--text-dark) nunito-sans">
               Drag and drop components to build your blog page
             </p>
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-sm font-semibold text-(--primary-teal-dark) mb-2">
-              Page Name <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              value={pageName}
-              onChange={(e) => setPageName(e.target.value)}
-              placeholder="e.g., MyBlogPage"
-              className={cn(
-                "w-full max-w-md px-4 py-2 border-2 rounded-lg focus:outline-none transition-colors",
-                pageName && !validatePageName(pageName)
-                  ? "border-red-500 focus:border-red-600"
-                  : "border-gray-300 focus:border-(--primary-teal)"
-              )}
-            />
-            {pageName && !validatePageName(pageName) && (
-              <p className="text-red-500 text-sm mt-1">
-                Must start with uppercase letter and contain only alphanumeric
-                characters
-              </p>
-            )}
           </div>
 
           <div className="flex gap-4 mb-4">
