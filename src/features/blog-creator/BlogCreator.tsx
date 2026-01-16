@@ -16,6 +16,20 @@ import ContentImageList from "./components/ContentImageList";
 import ContentText from "./components/ContentText";
 import PartnerFooter from "./components/PartnerFooter";
 
+// Common themes/labels across blog pages
+const ALL_LABELS = [
+  "Basics",
+  "Coverage",
+  "Costs",
+  "Comparison",
+  "Exclusions",
+  "Claims",
+  "Benefits",
+  "Pet Health",
+  "Types",
+  "Terminology",
+];
+
 interface ComponentItem {
   id: string;
   type: string;
@@ -206,6 +220,17 @@ const componentMap: Record<
 const BlogCreator = () => {
   const [components, setComponents] = useState<ComponentItem[]>([]);
   const [pageName, setPageName] = useState("");
+  
+  // Blog metadata fields
+  const [blogTitle, setBlogTitle] = useState("");
+  const [blogHeader, setBlogHeader] = useState("");
+  const [blogDescription, setBlogDescription] = useState("");
+  const [blogDate, setBlogDate] = useState(new Date().toISOString().split('T')[0]);
+  const [blogImageUrl, setBlogImageUrl] = useState("https://picsum.photos/200");
+  const [blogLabels, setBlogLabels] = useState<string[]>([]);
+  const [labelsDropdownOpen, setLabelsDropdownOpen] = useState(false);
+  const labelsDropdownRef = useRef<HTMLDivElement>(null!);
+  
   const [draggedComponent, setDraggedComponent] = useState<string | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [showPreview, setShowPreview] = useState(false);
@@ -236,6 +261,7 @@ const BlogCreator = () => {
   });
 
   useOutsideClick(fontDropdownRef, () => setFontDropdownOpen(false));
+  useOutsideClick(labelsDropdownRef, () => setLabelsDropdownOpen(false));
 
   // Re-enable save button when page content changes
   const [lastSavedState, setLastSavedState] = useState("");
@@ -869,6 +895,17 @@ const BlogCreator = () => {
     return regex.test(name);
   };
 
+  const validateBlogMetadata = (): boolean => {
+    return !!(
+      blogTitle.trim() &&
+      blogHeader.trim() &&
+      blogDescription.trim() &&
+      blogDate &&
+      blogImageUrl.trim() &&
+      blogLabels.length > 0
+    );
+  };
+
   const savePage = () => {
     if (!pageName) {
       alert("Please enter a page name");
@@ -1006,6 +1043,203 @@ const BlogCreator = () => {
               <Download className="w-4 h-4" />
               Export HTML
             </button>
+          </div>
+
+          {/* Blog Metadata Section */}
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 className="text-2xl font-bold text-(--primary-teal-dark) sansita-bold mb-4">
+              Blog Card Information
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Input Fields */}
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold text-(--primary-teal-dark) mb-2">
+                    Page Title <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={blogTitle}
+                    onChange={(e) => setBlogTitle(e.target.value)}
+                    placeholder="Enter blog title"
+                    className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-(--primary-teal-dark) mb-2">
+                    Page Header <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={blogHeader}
+                    onChange={(e) => setBlogHeader(e.target.value)}
+                    placeholder="Enter page header"
+                    className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-(--primary-teal-dark) mb-2">
+                    Page Description <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    value={blogDescription}
+                    onChange={(e) => setBlogDescription(e.target.value)}
+                    placeholder="Enter page description"
+                    rows={4}
+                    className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none resize-vertical"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-(--primary-teal-dark) mb-2">
+                    Date <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    value={blogDate}
+                    onChange={(e) => setBlogDate(e.target.value)}
+                    className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-(--primary-teal-dark) mb-2">
+                    Image URL <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={blogImageUrl}
+                    onChange={(e) => setBlogImageUrl(e.target.value)}
+                    placeholder="https://picsum.photos/200"
+                    className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-(--primary-teal-dark) mb-2">
+                    Labels <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative" ref={labelsDropdownRef}>
+                    <button
+                      type="button"
+                      onClick={() => setLabelsDropdownOpen(!labelsDropdownOpen)}
+                      className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none text-left flex items-center justify-between"
+                    >
+                      <span className="text-gray-500">
+                        {blogLabels.length > 0
+                          ? `${blogLabels.length} label${blogLabels.length > 1 ? 's' : ''} selected`
+                          : 'Select labels'}
+                      </span>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    {labelsDropdownOpen && (
+                      <div className="absolute z-50 w-full mt-1 bg-white border-2 border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                        {ALL_LABELS.map((label) => (
+                          <div
+                            key={label}
+                            onClick={() => {
+                              if (blogLabels.includes(label)) {
+                                setBlogLabels(blogLabels.filter(l => l !== label));
+                              } else {
+                                setBlogLabels([...blogLabels, label]);
+                              }
+                            }}
+                            className={cn(
+                              "px-4 py-2 cursor-pointer hover:bg-(--light-pink) transition-colors flex items-center gap-2",
+                              blogLabels.includes(label) && "bg-(--light-pink)"
+                            )}
+                          >
+                            <div className={cn(
+                              "w-4 h-4 border-2 rounded flex items-center justify-center",
+                              blogLabels.includes(label) ? "border-(--primary-teal) bg-(--primary-teal)" : "border-gray-300"
+                            )}>
+                              {blogLabels.includes(label) && (
+                                <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                </svg>
+                              )}
+                            </div>
+                            <span>{label}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  {blogLabels.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {blogLabels.map((label) => (
+                        <span
+                          key={label}
+                          className="px-3 py-1 text-xs rounded-full bg-(--primary-teal) text-white flex items-center gap-1"
+                        >
+                          {label}
+                          <button
+                            onClick={() => setBlogLabels(blogLabels.filter(l => l !== label))}
+                            className="hover:bg-white hover:text-(--primary-teal) rounded-full p-0.5"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Live Preview */}
+              <div>
+                <h3 className="text-lg font-semibold text-(--primary-teal-dark) mb-3 sansita-bold">
+                  Preview
+                </h3>
+                <div className="flex flex-col bg-white rounded-xl shadow-md overflow-hidden border-2 border-gray-200">
+                  <div className="w-full h-64 overflow-hidden bg-gray-100">
+                    {blogImageUrl ? (
+                      <img
+                        src={blogImageUrl}
+                        alt={blogTitle || "Blog preview"}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "https://via.placeholder.com/400x300?text=Invalid+Image+URL";
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        No image
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-6 flex flex-col gap-3">
+                    <h3 className="text-(--primary-teal-dark) text-xl sansita-bold line-clamp-2">
+                      {blogTitle || "Blog Title"}
+                    </h3>
+                    <p className="text-(--text-dark) text-sm nunito-sans">
+                      {blogDate ? new Date(blogDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : "Date"}
+                    </p>
+                    <p className="text-(--text-dark) nunito-sans line-clamp-3">
+                      {blogDescription || "Blog description will appear here..."}
+                    </p>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {blogLabels.length > 0 ? (
+                        blogLabels.map((label) => (
+                          <span
+                            key={label}
+                            className="px-3 py-1 text-xs rounded-full bg-(--light-pink) text-(--primary-teal-dark) nunito-sans font-semibold"
+                          >
+                            {label}
+                          </span>
+                        ))
+                      ) : (
+                        <span className="text-gray-400 text-sm">No labels selected</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -1271,15 +1505,17 @@ const BlogCreator = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <button
           onClick={savePage}
-          disabled={!pageName || !validatePageName(pageName) || components.length === 0 || pageSaved}
+          disabled={!pageName || !validatePageName(pageName) || !validateBlogMetadata() || components.length === 0 || pageSaved}
           className="w-full max-w-md mx-auto flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-(--primary-teal) text-white font-semibold hover:bg-(--primary-teal-dark) disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           <Download className="w-5 h-5" />
           {pageSaved ? "Page Saved" : "Save Page"}
         </button>
-        {components.length === 0 && (
+        {(components.length === 0 || !validateBlogMetadata()) && (
           <p className="text-center text-gray-500 text-sm mt-2">
-            Add components to your page before saving
+            {components.length === 0 
+              ? "Add components to your page before saving"
+              : "Fill out all blog card fields to enable saving"}
           </p>
         )}
       </div>
