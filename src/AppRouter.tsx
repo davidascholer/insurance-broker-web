@@ -23,6 +23,7 @@ import PartnerPage from "./pages/PartnerPage";
 import AboutUsPage from "./pages/AboutUsPage";
 import PrudentPet from "./pages/partner/PrudentPet";
 import BlogPage from "./pages/BlogPage";
+import BlogCreator from "./features/blog-creator/blogCreator";
 
 const RouterWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -49,6 +50,7 @@ const AppRouter = () => {
         <Route path="/partner/prudent-pet" element={<PrudentPet />} />
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/creator" element={<BlogCreator />} />
         <Route
           path="/blog/what-is-pet-insurance"
           element={<WhatIsPetInsurance />}
