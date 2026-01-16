@@ -458,7 +458,12 @@ const BlogCreator = () => {
   };
 
   const handleDelete = (id: string) => {
-    setComponents(components.filter((c) => c.id !== id));
+    const component = components.find((c) => c.id === id);
+    const componentName = component?.name || "this component";
+    
+    if (window.confirm(`Are you sure you want to delete ${componentName}?`)) {
+      setComponents(components.filter((c) => c.id !== id));
+    }
   };
 
   const handleEdit = (component: ComponentItem, index: number) => {
