@@ -23,6 +23,20 @@ interface ComponentItem {
   props: Record<string, unknown>;
 }
 
+type PropList = { [key: string]: unknown };
+
+type SavedComponentType = {
+  name: string;
+  props: PropList;
+  children?: SavedComponentType;
+};
+
+type SavedPage = {
+  name: string;
+  components: SavedComponentType[];
+  timestamp: Date;
+};
+
 interface AvailableComponent {
   type: string;
   name: string;
@@ -191,6 +205,7 @@ const componentMap: Record<
 
 const BlogCreator = () => {
   const [components, setComponents] = useState<ComponentItem[]>([]);
+  const [pageName, setPageName] = useState("");
   const [draggedComponent, setDraggedComponent] = useState<string | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [showPreview, setShowPreview] = useState(false);
@@ -199,6 +214,9 @@ const BlogCreator = () => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [fontDropdownOpen, setFontDropdownOpen] = useState(false);
   const fontDropdownRef = useRef<HTMLDivElement>(null!);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [pageSaved, setPageSaved] = useState(false);
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
     type: 'prompt' | 'confirm';
@@ -218,6 +236,16 @@ const BlogCreator = () => {
   });
 
   useOutsideClick(fontDropdownRef, () => setFontDropdownOpen(false));
+
+  // Re-enable save button when page content changes
+  const [lastSavedState, setLastSavedState] = useState("");
+  const currentState = JSON.stringify({ pageName, components });
+  if (pageSaved && currentState !== lastSavedState) {
+    setPageSaved(false);
+  }
+  if (pageSaved && lastSavedState === "") {
+    setLastSavedState(currentState);
+  }
 
   // Rich Text Editor Component
   const RichTextEditor = ({ value, onChange }: { value: string; onChange: (val: string) => void }) => {
@@ -835,6 +863,63 @@ const BlogCreator = () => {
     URL.revokeObjectURL(url);
   };
 
+  const validatePageName = (name: string): boolean => {
+    // Must start with uppercase letter and contain only alphanumeric characters
+    const regex = /^[A-Z][a-zA-Z0-9]*$/;
+    return regex.test(name);
+  };
+
+  const savePage = () => {
+    if (!pageName) {
+      alert("Please enter a page name");
+      return;
+    }
+
+    if (!validatePageName(pageName)) {
+      alert("Page name must start with an uppercase letter and contain only alphanumeric characters (no spaces or special characters)");
+      return;
+    }
+
+    if (components.length === 0) {
+      alert("Cannot save an empty page");
+      return;
+    }
+
+    // Convert ComponentItem[] to SavedComponentType[]
+    const savedComponents: SavedComponentType[] = components.map(component => ({
+      name: component.name,
+      props: component.props,
+      // Children not implemented in current structure
+    }));
+
+    const newPage: SavedPage = {
+      name: pageName,
+      components: savedComponents,
+      timestamp: new Date(),
+    };
+
+    // Get existing pages from localStorage
+    const existingPagesJson = localStorage.getItem("pages");
+    const existingPages: SavedPage[] = existingPagesJson ? JSON.parse(existingPagesJson) : [];
+
+    // Check if page name already exists
+    const existingPageIndex = existingPages.findIndex(p => p.name === pageName);
+    if (existingPageIndex >= 0) {
+      existingPages[existingPageIndex] = newPage;
+    } else {
+      existingPages.push(newPage);
+    }
+
+    // Save to localStorage
+    localStorage.setItem("pages", JSON.stringify(existingPages));
+    
+    // Show toast and disable save button
+    setPageSaved(true);
+    setToastMessage(`Page "${pageName}" saved successfully!`);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
+
   const renderComponent = (item: ComponentItem) => {
     const Component = componentMap[item.type];
     if (!Component) return <div>Component not found: {item.type}</div>;
@@ -863,6 +948,29 @@ const BlogCreator = () => {
             <p className="text-(--text-dark) nunito-sans">
               Drag and drop components to build your blog page
             </p>
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-(--primary-teal-dark) mb-2">
+              Page Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              value={pageName}
+              onChange={(e) => setPageName(e.target.value)}
+              placeholder="e.g., MyBlogPage (starts with uppercase, alphanumeric only)"
+              className={cn(
+                "w-full max-w-md px-4 py-2 border-2 rounded-lg focus:outline-none transition-colors",
+                pageName && !validatePageName(pageName)
+                  ? "border-red-500 focus:border-red-600"
+                  : "border-gray-300 focus:border-(--primary-teal)"
+              )}
+            />
+            {pageName && !validatePageName(pageName) && (
+              <p className="text-red-500 text-sm mt-1">
+                Must start with uppercase letter and contain only alphanumeric characters
+              </p>
+            )}
           </div>
 
           <div className="flex gap-4 mb-4">
@@ -1155,6 +1263,37 @@ const BlogCreator = () => {
                 Save Changes
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Save Page Button */}
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <button
+          onClick={savePage}
+          disabled={!pageName || !validatePageName(pageName) || components.length === 0 || pageSaved}
+          className="w-full max-w-md mx-auto flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-(--primary-teal) text-white font-semibold hover:bg-(--primary-teal-dark) disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          <Download className="w-5 h-5" />
+          {pageSaved ? "Page Saved" : "Save Page"}
+        </button>
+        {components.length === 0 && (
+          <p className="text-center text-gray-500 text-sm mt-2">
+            Add components to your page before saving
+          </p>
+        )}
+      </div>
+
+      {/* Toast Notification */}
+      {showToast && (
+        <div className="fixed bottom-8 right-8 z-[70] animate-slide-up">
+          <div className="bg-white border-2 border-(--primary-teal) px-6 py-4 rounded-lg shadow-lg flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-(--primary-teal) flex items-center justify-center flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <span className="font-semibold text-(--primary-teal-dark) nunito-sans">{toastMessage}</span>
           </div>
         </div>
       )}
