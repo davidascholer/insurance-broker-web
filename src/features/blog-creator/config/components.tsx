@@ -34,7 +34,7 @@ export const availableComponents: AvailableComponent[] = [
     icon: "✍️",
     description: "Rich text with formatting options",
     defaultProps: {
-      content: "<p>Enter your text here</p>",
+      content: "<span>Enter your text here</span>",
       fontFamily: "nunito-sans",
     },
   },

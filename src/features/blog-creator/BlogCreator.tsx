@@ -4,9 +4,7 @@ import { cn } from "@/lib/utils";
 import {
   GripVertical,
   Trash2,
-  Download,
   Eye,
-  Code,
   X,
   Edit,
 } from "lucide-react";
@@ -37,7 +35,6 @@ import {
   convertFromSaved,
   convertToSaved,
   savePage as savePageUtil,
-  generateHTML,
 } from "./utils/helpers";
 import RenderedComponent from "./components/RenderedComponent";
 import type { SavedPage } from "./utils/export-types";
@@ -96,7 +93,6 @@ const BlogCreator = () => {
   const [isDraggingSectionContainer, setIsDraggingSectionContainer] =
     useState(false);
   const [showPreview, setShowPreview] = useState(false);
-  const [showCode, setShowCode] = useState(false);
   const [editingComponent, setEditingComponent] =
     useState<InternalComponentItem | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -914,17 +910,6 @@ const BlogCreator = () => {
     );
   };
 
-  const exportHTML = () => {
-    const html = generateHTML(components);
-    const blob = new Blob([html], { type: "text/html" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "blog-page.html";
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
   const handleSavePage = () => {
     const result = savePageUtil(
       pageName,
@@ -961,46 +946,6 @@ const BlogCreator = () => {
             </p>
           </div>
 
-          <div className="flex gap-4 mb-4">
-            <button
-              onClick={() => setShowPreview(!showPreview)}
-              disabled={!pageName}
-              className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors",
-                showPreview
-                  ? "bg-(--primary-teal) text-white"
-                  : "bg-white text-(--primary-teal-dark) border-2 border-(--primary-teal)",
-                !pageName && "opacity-50 cursor-not-allowed"
-              )}
-            >
-              <Eye className="w-4 h-4" />
-              {showPreview ? "Edit Mode" : "Preview"}
-            </button>
-            <button
-              onClick={() => setShowCode(!showCode)}
-              disabled={!pageName}
-              className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors",
-                showCode
-                  ? "bg-(--primary-teal) text-white"
-                  : "bg-white text-(--primary-teal-dark) border-2 border-(--primary-teal)",
-                !pageName && "opacity-50 cursor-not-allowed"
-              )}
-            >
-              <Code className="w-4 h-4" />
-              View Code
-            </button>
-            <button
-              onClick={exportHTML}
-              disabled={components.length === 0 || !pageName}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-(--primary-coral) text-white font-semibold hover:bg-(--coral-pink) disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              <Download className="w-4 h-4" />
-              Export HTML
-            </button>
-          </div>
-
-          {/* Blog Metadata Section */}
           <div
             className={cn(
               "bg-white rounded-lg shadow-lg p-6 mb-6 transition-opacity",
@@ -1234,6 +1179,23 @@ const BlogCreator = () => {
             </div>
           </div>
 
+          <div className="flex gap-4 mb-6">
+            <button
+              onClick={() => setShowPreview(!showPreview)}
+              disabled={!pageName}
+              className={cn(
+                "flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors",
+                showPreview
+                  ? "bg-(--primary-teal) text-white"
+                  : "bg-white text-(--primary-teal-dark) border-2 border-(--primary-teal)",
+                !pageName && "opacity-50 cursor-not-allowed"
+              )}
+            >
+              <Eye className="w-4 h-4" />
+              {showPreview ? "Edit Mode" : "Preview"}
+            </button>
+          </div>
+
           <div
             className={cn(
               "grid grid-cols-1 lg:grid-cols-4 gap-6 transition-opacity",
@@ -1241,7 +1203,7 @@ const BlogCreator = () => {
             )}
           >
             {/* Component Palette */}
-            {!showPreview && !showCode && (
+            {!showPreview && (
               <div className="lg:col-span-1">
                 <div className="bg-white rounded-lg shadow-lg p-4 sticky top-24 space-y-6">
                   {/* Section Containers */}
@@ -1308,20 +1270,11 @@ const BlogCreator = () => {
             {/* Canvas Area */}
             <div
               className={cn(
-                showPreview || showCode ? "lg:col-span-4" : "lg:col-span-3"
+                showPreview ? "lg:col-span-4" : "lg:col-span-3"
               )}
             >
               <div className="bg-white rounded-lg shadow-lg p-6 min-h-[600px]">
-                {showCode ? (
-                  <div className="space-y-4">
-                    <h2 className="text-2xl font-bold text-(--primary-teal-dark) sansita-bold">
-                      Generated HTML
-                    </h2>
-                    <pre className="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm">
-                      <code>{generateHTML(components)}</code>
-                    </pre>
-                  </div>
-                ) : components.length === 0 ? (
+                {components.length === 0 ? (
                   <div
                     onDragOver={handleDragOver}
                     onDrop={(e) => handleDrop(e)}
@@ -1594,7 +1547,6 @@ const BlogCreator = () => {
           }
           className="w-full max-w-md mx-auto flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-(--primary-teal) text-white font-semibold hover:bg-(--primary-teal-dark) disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          <Download className="w-5 h-5" />
           {pageSaved ? "Page Saved" : "Save Page"}
         </button>
         {(components.length === 0 ||
