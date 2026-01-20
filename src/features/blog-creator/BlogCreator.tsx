@@ -100,6 +100,7 @@ const BlogCreator = () => {
   const [editingComponent, setEditingComponent] =
     useState<InternalComponentItem | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [editingParentId, setEditingParentId] = useState<string | null>(null);
   const [fontDropdownOpen, setFontDropdownOpen] = useState(false);
   const fontDropdownRef = useRef<HTMLDivElement>(null!);
   const [colorDropdownOpen, setColorDropdownOpen] = useState(false);
@@ -378,24 +379,38 @@ const BlogCreator = () => {
     });
   };
 
-  const handleEdit = (component: InternalComponentItem, index: number) => {
+  const handleEdit = (component: InternalComponentItem, index: number, parentId?: string) => {
     setEditingComponent({ ...component });
     setEditingIndex(index);
+    setEditingParentId(parentId || null);
   };
 
   const handleSaveEdit = () => {
     if (editingComponent && editingIndex !== null) {
       const newComponents = [...components];
-      newComponents[editingIndex] = editingComponent;
+      
+      if (editingParentId) {
+        // Editing a child component - save it back to its parent container
+        const parentIndex = newComponents.findIndex((c) => c.id === editingParentId);
+        if (parentIndex >= 0 && newComponents[parentIndex].children) {
+          newComponents[parentIndex].children![editingIndex] = editingComponent;
+        }
+      } else {
+        // Editing a root-level component
+        newComponents[editingIndex] = editingComponent;
+      }
+      
       setComponents(newComponents);
       setEditingComponent(null);
       setEditingIndex(null);
+      setEditingParentId(null);
     }
   };
 
   const handleCancelEdit = () => {
     setEditingComponent(null);
     setEditingIndex(null);
+    setEditingParentId(null);
   };
 
   const updateProp = (key: string, value: unknown) => {
@@ -1457,7 +1472,7 @@ const BlogCreator = () => {
                                           parentIndex >= 0 &&
                                           components[parentIndex].children
                                         ) {
-                                          handleEdit(child, childIndex);
+                                          handleEdit(child, childIndex, component.id);
                                         }
                                       }
                                     }}
