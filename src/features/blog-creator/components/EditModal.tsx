@@ -1,8 +1,8 @@
 import { X } from "lucide-react";
-import type { ComponentItem } from "../utils/types";
+import type { InternalComponentItem } from "../utils/internal-types";
 
 interface EditModalProps {
-  editingComponent: ComponentItem;
+  editingComponent: InternalComponentItem;
   onCancel: () => void;
   onSave: () => void;
   renderPropEditor: (key: string, value: unknown) => React.ReactNode;

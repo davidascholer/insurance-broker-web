@@ -15,7 +15,8 @@ import Footer from "@/components/Footer";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 
 // Import types
-import type { ComponentItem, SavedPage, ModalState } from "./utils/types";
+import type { ModalState } from "./utils/types";
+import type { InternalComponentItem } from "./utils/internal-types";
 
 // Import components
 import { RichTextEditor } from "./components/RichTextEditor";
@@ -39,10 +40,12 @@ import {
   generateHTML,
 } from "./utils/helpers";
 import RenderedComponent from "./components/RenderedComponent";
+import type { SavedPage } from "./utils/export-types";
+import { internalToExport } from "./utils/helpers";
 
 const BlogCreator = () => {
   const { pageName: urlPageName } = useParams<{ pageName: string }>();
-  const [components, setComponents] = useState<ComponentItem[]>([]);
+  const [components, setComponents] = useState<InternalComponentItem[]>([]);
   const [pageName, setPageName] = useState("");
 
   // Blog metadata fields
@@ -95,7 +98,7 @@ const BlogCreator = () => {
   const [showPreview, setShowPreview] = useState(false);
   const [showCode, setShowCode] = useState(false);
   const [editingComponent, setEditingComponent] =
-    useState<ComponentItem | null>(null);
+    useState<InternalComponentItem | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [fontDropdownOpen, setFontDropdownOpen] = useState(false);
   const fontDropdownRef = useRef<HTMLDivElement>(null!);
@@ -241,9 +244,9 @@ const BlogCreator = () => {
       const component = allComponents.find((c) => c.type === draggedComponent);
       if (!component) return;
 
-      const newComponent: ComponentItem = {
+      const newComponent: InternalComponentItem = {
         id: `${component.type}-${Date.now()}`,
-        type: component.type,
+        type: component.type as InternalComponentItem["type"],
         name: component.name,
         props: { ...component.defaultProps },
         ...(isDraggingSectionContainer && { children: [] }),
@@ -375,7 +378,7 @@ const BlogCreator = () => {
     });
   };
 
-  const handleEdit = (component: ComponentItem, index: number) => {
+  const handleEdit = (component: InternalComponentItem, index: number) => {
     setEditingComponent({ ...component });
     setEditingIndex(index);
   };
@@ -408,13 +411,14 @@ const BlogCreator = () => {
   };
 
   const renderPropEditor = (key: string, value: unknown) => {
-    // Special handling for ContentText content editor
-    if (key === "content" && editingComponent?.type === "ContentText") {
+    // Special handling for InnerText content editor
+    if (key === "content" && editingComponent?.type === "InnerText") {
       return (
         <RichTextEditor
           value={value as string}
           onChange={(newValue) => updateProp(key, newValue)}
           editingComponent={editingComponent}
+          onFontFamilyChange={(fontFamily) => updateProp("fontFamily", fontFamily)}
         />
       );
     }
@@ -524,6 +528,7 @@ const BlogCreator = () => {
                           }
                         ).props?.content || ""
                       }
+                      editingComponent={null}
                       onChange={(newContent) => {
                         const updatedChild = {
                           type: "ContentText",
@@ -651,8 +656,8 @@ const BlogCreator = () => {
       );
     }
 
-    // Special handling for fontFamily prop in ContentText
-    if (key === "fontFamily" && editingComponent?.type === "ContentText") {
+    // Special handling for fontFamily prop in InnerText
+    if (key === "fontFamily" && editingComponent?.type === "InnerText") {
       const fontFamilyOptions = [
         {
           label: "Nunito Sans",
@@ -1342,7 +1347,11 @@ const BlogCreator = () => {
                               ? "border-(--primary-coral) bg-(--primary-coral) bg-opacity-5"
                               : cn(
                                   "border-transparent",
-                                  component.props.color as string
+                                  typeof component.props === "object" &&
+                                  component.props !== null &&
+                                  "color" in component.props
+                                    ? (component.props as Record<string, unknown>).color as string
+                                    : ""
                                 )
                           )}
                         >
@@ -1400,7 +1409,12 @@ const BlogCreator = () => {
                               "min-h-[150px] rounded-lg",
                               !showPreview &&
                                 "border-2 border-dashed border-gray-300 p-4",
-                              showPreview && (component.props.color as string)
+                              showPreview &&
+                              typeof component.props === "object" &&
+                              component.props !== null &&
+                              "color" in component.props
+                                ? (component.props as Record<string, unknown>).color as string
+                                : ""
                             )}
                           >
                             {component.children &&
@@ -1500,7 +1514,7 @@ const BlogCreator = () => {
                                         </div>
                                       </>
                                     )}
-                                    {<RenderedComponent item={child} />}
+                                    {<RenderedComponent item={internalToExport(child)} />}
                                   </div>
                                 ))}
                               </div>

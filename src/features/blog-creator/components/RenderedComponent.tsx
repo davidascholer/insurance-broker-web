@@ -1,40 +1,61 @@
 import PartnerFooter from "../templates/PartnerFooter";
 import PartnerHeader from "../templates/PartnerHeader";
-import type { PartnerFooterProps, PartnerHeaderProps } from "../utils/types";
-import ContentText from "./ContentText";
+import SectionContainer from "../templates/SectionContainer";
+import InnerText from "../components/InnerText";
+import type {
+  ComponentItem,
+  PartnerFooterType,
+  PartnerHeaderType,
+  SectionContainerType,
+  InnerTextType,
+} from "../utils/export-types";
 
-const RenderedComponent = ({ item }: { item: { type: string; props: PartnerHeaderProps | PartnerFooterProps } }) => {
-  switch (item.type) {
+const RenderedComponent = ({ item }: { item: ComponentItem }) => {
+  switch (item.name) {
+    case "SectionContainer": {
+      const containerProps = item.component as SectionContainerType;
+      return (
+        <SectionContainer
+          color={containerProps.color}
+          children={containerProps.children}
+          className={containerProps.className}
+          id={containerProps.id}
+        />
+      );
+    }
+    case "InnerText": {
+      const textProps = item.component as InnerTextType;
+      return (
+        <InnerText
+          content={textProps.content}
+          fontFamily={textProps.fontFamily}
+          className={textProps.className}
+        />
+      );
+    }
     case "PartnerHeader": {
-      const headerProps = item.props as PartnerHeaderProps;
+      const headerProps = item.component as PartnerHeaderType;
       return (
         <PartnerHeader
           title={headerProps.title}
           imgUrl={headerProps.imgUrl}
           reviewStars={headerProps.reviewStars}
-        >
-          {headerProps.children &&
-            <ContentText
-              content={headerProps.children.content}
-              fontFamily={headerProps.children.fontFamily}
-              className={headerProps.children.className}
-            />
-          }
-        </PartnerHeader>
+          innerText={headerProps.innerText}
+          className={headerProps.className}
+        />
       );
     }
     case "PartnerFooter": {
-      const footerProps = item.props as PartnerFooterProps;
+      const footerProps = item.component as PartnerFooterType;
       return (
-        <PartnerFooter className={footerProps.className}>
-          {/* <ContentText content={footerProps.children.content} fontFamily={footerProps.children.fontFamily} className={footerProps.children.className} /> */}
-          {footerProps.children}
-        </PartnerFooter>
+        <PartnerFooter
+          className={footerProps.className}
+          innerText={footerProps.innerText}
+        />
       );
     }
-    // Add more cases as needed for other component types
     default:
-      return item.type;
+      return <div>Component not found: {item.name}</div>;
   }
 };
 export default RenderedComponent;

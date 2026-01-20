@@ -1,16 +1,13 @@
 import { cn } from "@/lib/utils";
+import type { SectionContainerType } from "../utils/export-types";
+import RenderedComponent from "../components/RenderedComponent";
 
 const SectionContainer = ({
   color,
   children,
   className,
   id,
-}: {
-  color: string;
-  children: React.ReactNode;
-  className?: string;
-  id?: string;
-}) => {
+}: SectionContainerType) => {
   return (
     <div
       className={cn(
@@ -20,7 +17,11 @@ const SectionContainer = ({
       )}
       id={id}
     >
-      {children}
+      {Array.isArray(children)
+        ? children.map((item, idx) => (
+            <RenderedComponent key={idx} item={item} />
+          ))
+        : children}
     </div>
   );
 };

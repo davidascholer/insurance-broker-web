@@ -1,162 +1,84 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Bold, Italic, Link, Type } from "lucide-react";
-import type { ComponentItem } from "../utils/types";
+import type { InternalComponentItem } from "../utils/internal-types";
 
 interface RichTextEditorProps {
   value: string;
   onChange: (val: string) => void;
-  editingComponent?: ComponentItem | null;
+  editingComponent?: InternalComponentItem | null;
+  onFontFamilyChange?: (fontFamily: string) => void;
 }
 
 export const RichTextEditor = ({
   value,
   onChange,
   editingComponent,
+  onFontFamilyChange,
 }: RichTextEditorProps) => {
-  const editorRef = useRef<HTMLDivElement>(null);
-  const [isBoldActive, setIsBoldActive] = useState(false);
-  const [isItalicActive, setIsItalicActive] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const checkFormatting = () => {
-    const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) {
-      setIsBoldActive(false);
-      setIsItalicActive(false);
+  const wrapSelection = (before: string, after: string) => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = value.substring(start, end);
+
+    if (!selectedText) {
+      alert("Please select text first");
       return;
     }
 
-    const range = selection.getRangeAt(0);
-    const container = range.commonAncestorContainer;
-    const parentElement =
-      container.nodeType === Node.TEXT_NODE
-        ? container.parentElement
-        : (container as Element);
+    const newValue =
+      value.substring(0, start) +
+      before +
+      selectedText +
+      after +
+      value.substring(end);
 
-    // Check for bold
-    let element = parentElement;
-    let hasBold = false;
-    while (element && element !== editorRef.current) {
-      if (element.tagName === "STRONG") {
-        hasBold = true;
-        break;
-      }
-      element = element.parentElement;
-    }
-    setIsBoldActive(hasBold);
+    onChange(newValue);
 
-    // Check for italic
-    element = parentElement;
-    let hasItalic = false;
-    while (element && element !== editorRef.current) {
-      if (element.tagName === "EM") {
-        hasItalic = true;
-        break;
-      }
-      element = element.parentElement;
-    }
-    setIsItalicActive(hasItalic);
+    // Restore focus and cursor position after the inserted text
+    setTimeout(() => {
+      textarea.focus();
+      const newCursorPos = start + before.length + selectedText.length + after.length;
+      textarea.setSelectionRange(newCursorPos, newCursorPos);
+    }, 0);
   };
 
-  const applyFormatting = (command: string, formatValue?: string) => {
-    const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) return;
+  const handleBold = () => {
+    wrapSelection("<strong>", "</strong>");
+  };
 
-    const range = selection.getRangeAt(0);
-    const selectedText = range.toString();
+  const handleItalic = () => {
+    wrapSelection("<em>", "</em>");
+  };
 
-    if (!selectedText && command !== "insertHTML") return;
+  const handleLink = () => {
+    const url = prompt("Enter URL:");
+    if (!url) return;
 
-    // Check if selection is already formatted
-    const container = range.commonAncestorContainer;
-    const parentElement =
-      container.nodeType === Node.TEXT_NODE
-        ? container.parentElement
-        : (container as Element);
-
-    // For bold/italic, check if we need to remove formatting
-    if (command === "bold" || command === "italic") {
-      const tagName = command === "bold" ? "STRONG" : "EM";
-      let element = parentElement;
-
-      // Traverse up to find the formatting tag
-      while (element && element !== editorRef.current) {
-        if (element.tagName === tagName) {
-          // Remove the formatting by replacing with text
-          const textNode = document.createTextNode(element.textContent || "");
-          element.parentNode?.replaceChild(textNode, element);
-
-          if (editorRef.current) {
-            onChange(editorRef.current.innerHTML);
-          }
-          return;
-        }
-        element = element.parentElement;
-      }
+    // Convert to absolute URL if needed
+    let finalUrl = url;
+    if (
+      !url.startsWith("http://") &&
+      !url.startsWith("https://") &&
+      !url.startsWith("mailto:") &&
+      !url.startsWith("tel:")
+    ) {
+      finalUrl = "https://" + url;
     }
 
-    let newElement: HTMLElement;
+    wrapSelection(
+      `<a href="${finalUrl}" className="cursor-pointer font-bold" target="_blank">`,
+      "</a>"
+    );
+  };
 
-    switch (command) {
-      case "bold":
-        newElement = document.createElement("strong");
-        newElement.textContent = selectedText;
-        break;
-      case "italic":
-        newElement = document.createElement("em");
-        newElement.textContent = selectedText;
-        break;
-      case "link": {
-        const url = prompt("Enter URL:");
-        if (url) {
-          // Convert to absolute URL if needed
-          let finalUrl = url;
-          if (
-            !url.startsWith("http://") &&
-            !url.startsWith("https://") &&
-            !url.startsWith("mailto:") &&
-            !url.startsWith("tel:")
-          ) {
-            finalUrl = "https://" + url;
-          }
-
-          const linkElement = document.createElement("a");
-          linkElement.setAttribute("href", finalUrl);
-          linkElement.setAttribute("target", "_blank");
-          linkElement.setAttribute("rel", "noopener noreferrer");
-          linkElement.className = "text-(--primary-teal) hover:underline";
-          linkElement.textContent = selectedText;
-
-          range.deleteContents();
-          range.insertNode(linkElement);
-
-          if (editorRef.current) {
-            onChange(editorRef.current.innerHTML);
-          }
-          setTimeout(() => checkFormatting(), 0);
-        }
-        return;
-      }
-      case "fontSize":
-        if (!formatValue) return;
-        newElement = document.createElement("span");
-        newElement.className = formatValue;
-        newElement.textContent = selectedText;
-        break;
-      default:
-        return;
-    }
-
-    range.deleteContents();
-    range.insertNode(newElement);
-
-    // Update the content
-    if (editorRef.current) {
-      onChange(editorRef.current.innerHTML);
-    }
-
-    // Check formatting state after applying
-    setTimeout(() => checkFormatting(), 0);
+  const handleFontSize = (sizeClass: string) => {
+    wrapSelection(`<span className="${sizeClass}">`, "</span>");
   };
 
   const fontSizeOptions = [
@@ -170,36 +92,51 @@ export const RichTextEditor = ({
     { label: "4XL", value: "text-4xl" },
   ];
 
+  const fontFamilyOptions = [
+    { label: "Nunito Sans", value: "nunito-sans" },
+    { label: "Nunito Sans Light", value: "nunito-sans-light" },
+    { label: "Nunito Sans Medium", value: "nunito-sans-medium" },
+    { label: "Nunito Sans SemiBold", value: "nunito-sans-semibold" },
+    { label: "Nunito Sans Bold", value: "nunito-sans-bold" },
+    { label: "Sansita Regular", value: "sansita-regular" },
+    { label: "Sansita Bold", value: "sansita-bold" },
+    { label: "Sansita Extra Bold", value: "sansita-extrabold" },
+    { label: "Sansita Black", value: "sansita-black" },
+  ];
+
+  const currentFontFamily =
+    ((editingComponent?.props as Record<string, unknown>)?.fontFamily as string) ||
+    "nunito-sans";
+
   return (
     <div className="space-y-3">
       {/* Formatting Toolbar */}
-      <div className="flex flex-wrap gap-2 p-3 bg-gray-100 rounded-lg border border-gray-300">
+      <div className="flex flex-wrap gap-3 p-3 bg-gray-100 rounded-lg border border-gray-300">
         <div className="flex items-center gap-1">
           <span className="text-xs font-semibold text-gray-600 mr-2">
-            Selected Text:
+            Format Text:
           </span>
           <button
-            onClick={() => applyFormatting("bold")}
-            className={`p-2 hover:bg-gray-200 rounded transition-colors ${
-              isBoldActive ? "bg-gray-300 shadow-inner" : ""
-            }`}
-            title="Bold"
+            type="button"
+            onClick={handleBold}
+            className="p-2 hover:bg-gray-200 rounded transition-colors"
+            title="Bold - Wrap selected text in <strong>"
           >
             <Bold className="w-4 h-4" />
           </button>
           <button
-            onClick={() => applyFormatting("italic")}
-            className={`p-2 hover:bg-gray-200 rounded transition-colors ${
-              isItalicActive ? "bg-gray-300 shadow-inner" : ""
-            }`}
-            title="Italic"
+            type="button"
+            onClick={handleItalic}
+            className="p-2 hover:bg-gray-200 rounded transition-colors"
+            title="Italic - Wrap selected text in <em>"
           >
             <Italic className="w-4 h-4" />
           </button>
           <button
-            onClick={() => applyFormatting("link")}
+            type="button"
+            onClick={handleLink}
             className="p-2 hover:bg-gray-200 rounded transition-colors"
-            title="Add Link"
+            title="Add Link - Wrap selected text in <a>"
           >
             <Link className="w-4 h-4" />
           </button>
@@ -210,7 +147,12 @@ export const RichTextEditor = ({
         <div className="flex items-center gap-2">
           <Type className="w-4 h-4 text-gray-600" />
           <select
-            onChange={(e) => applyFormatting("fontSize", e.target.value)}
+            onChange={(e) => {
+              if (e.target.value) {
+                handleFontSize(e.target.value);
+                e.target.value = ""; // Reset dropdown
+              }
+            }}
             className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:border-(--primary-teal)"
             defaultValue=""
           >
@@ -224,70 +166,53 @@ export const RichTextEditor = ({
             ))}
           </select>
         </div>
+
+        <div className="border-l border-gray-300 mx-1" />
+
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold text-gray-600">
+            Component Font:
+          </span>
+          <select
+            value={currentFontFamily}
+            onChange={(e) => {
+              if (onFontFamilyChange) {
+                onFontFamilyChange(e.target.value);
+              }
+            }}
+            className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:border-(--primary-teal)"
+          >
+            {fontFamilyOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      {/* Content Editor */}
-      <div
-        ref={editorRef}
-        contentEditable
-        suppressContentEditableWarning
-        onInput={(e) => {
-          onChange(e.currentTarget.innerHTML);
-        }}
-        onMouseUp={checkFormatting}
-        onKeyUp={checkFormatting}
-        dangerouslySetInnerHTML={{ __html: value || "" }}
+      {/* HTML Textarea */}
+      <textarea
+        ref={textareaRef}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         className={cn(
-          "w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none min-h-[150px] bg-white",
-          editingComponent?.props?.fontFamily || "nunito-sans"
+          "w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none min-h-[200px] bg-white font-mono text-sm",
+          "resize-y"
         )}
-        style={{
-          fontFamily:
-            editingComponent?.props?.fontFamily === "nunito-sans"
-              ? '"Nunito Sans", sans-serif'
-              : editingComponent?.props?.fontFamily === "nunito-sans-light"
-              ? '"Nunito Sans", sans-serif'
-              : editingComponent?.props?.fontFamily === "nunito-sans-medium"
-              ? '"Nunito Sans", sans-serif'
-              : editingComponent?.props?.fontFamily === "nunito-sans-semibold"
-              ? '"Nunito Sans", sans-serif'
-              : editingComponent?.props?.fontFamily === "nunito-sans-bold"
-              ? '"Nunito Sans", sans-serif'
-              : editingComponent?.props?.fontFamily === "sansita-regular"
-              ? '"Sansita", sans-serif'
-              : editingComponent?.props?.fontFamily === "sansita-bold"
-              ? '"Sansita", sans-serif'
-              : editingComponent?.props?.fontFamily === "sansita-extrabold"
-              ? '"Sansita", sans-serif'
-              : editingComponent?.props?.fontFamily === "sansita-black"
-              ? '"Sansita", sans-serif'
-              : '"Nunito Sans", sans-serif',
-          fontWeight:
-            editingComponent?.props?.fontFamily === "nunito-sans-light"
-              ? 300
-              : editingComponent?.props?.fontFamily === "nunito-sans"
-              ? 400
-              : editingComponent?.props?.fontFamily === "nunito-sans-medium"
-              ? 500
-              : editingComponent?.props?.fontFamily === "nunito-sans-semibold"
-              ? 600
-              : editingComponent?.props?.fontFamily === "nunito-sans-bold"
-              ? 700
-              : editingComponent?.props?.fontFamily === "sansita-regular"
-              ? 400
-              : editingComponent?.props?.fontFamily === "sansita-bold"
-              ? 700
-              : editingComponent?.props?.fontFamily === "sansita-extrabold"
-              ? 800
-              : editingComponent?.props?.fontFamily === "sansita-black"
-              ? 900
-              : 400,
-        }}
+        placeholder="Write HTML here... Select text and use toolbar buttons to add formatting tags."
+        spellCheck={false}
       />
 
-      <p className="text-xs text-gray-500">
-        Select text to apply formatting, or edit directly
-      </p>
+      <div className="text-xs text-gray-500 space-y-1">
+        <p>
+          <strong>Tip:</strong> Select text and click toolbar buttons to wrap with HTML tags
+        </p>
+        <p className="font-mono text-gray-400">
+          Examples: &lt;strong&gt;bold&lt;/strong&gt;, &lt;em&gt;italic&lt;/em&gt;, &lt;span className="text-lg"&gt;large&lt;/span&gt;
+        </p>
+      </div>
     </div>
   );
 };
+

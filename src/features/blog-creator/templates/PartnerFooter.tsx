@@ -1,11 +1,9 @@
 import FetchQuoteButton from "@/components/FetchQuoteButton";
 import { cn } from "@/lib/utils";
-import type { PartnerFooterProps } from "../utils/types";
+import type { PartnerFooterType } from "../utils/export-types";
+import InnerText from "../components/InnerText";
 
-const PartnerFooter = ({
-  children,
-  className,
-}: PartnerFooterProps) => {
+const PartnerFooter = ({ className, innerText }: PartnerFooterType) => {
   return (
     <div className="w-full bg-(--light-pink) items-center p-2 mt-4">
       <div className="flex flow-row flex-wrap justify-center items-start gap-0 max-w-5xl mx-auto">
@@ -24,7 +22,9 @@ const PartnerFooter = ({
             <h2 className="text-(--primary-teal-dark) sansita-bold text-xl">
               PIPA's Review
             </h2>
-            <div className="ml-4 cursor-pointer">{children}</div>
+            <div className="ml-4 cursor-pointer">
+              <InnerText {...innerText} />
+            </div>
           </div>
         </div>
         <FetchQuoteButton className="mt-2 flex-nowrap" />
