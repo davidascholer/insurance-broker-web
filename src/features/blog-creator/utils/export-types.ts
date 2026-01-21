@@ -4,7 +4,7 @@ export interface ComponentItem {
     | "PartnerFooter"
     | "SectionContainer"
     | "HorizontalAnchorList"
-    | "ContentWithHeading"
+    | "HeaderWithText"
     | "ContentWithImage"
     | "ContentUnorderedList"
     | "ContentImageList"

@@ -97,6 +97,8 @@ const BlogCreator = () => {
   const [showPreview, setShowPreview] = useState(false);
   const [editingComponent, setEditingComponent] =
     useState<InternalComponentItem | null>(null);
+  const [originalEditingComponent, setOriginalEditingComponent] =
+    useState<InternalComponentItem | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingParentId, setEditingParentId] = useState<string | null>(null);
   const [fontDropdownOpen, setFontDropdownOpen] = useState(false);
@@ -398,7 +400,9 @@ const BlogCreator = () => {
   };
 
   const handleEdit = (component: InternalComponentItem, index: number, parentId?: string) => {
-    setEditingComponent({ ...component });
+    const componentCopy = JSON.parse(JSON.stringify(component));
+    setEditingComponent(componentCopy);
+    setOriginalEditingComponent(componentCopy);
     setEditingIndex(index);
     setEditingParentId(parentId || null);
   };
@@ -420,15 +424,41 @@ const BlogCreator = () => {
       
       setComponents(newComponents);
       setEditingComponent(null);
+      setOriginalEditingComponent(null);
       setEditingIndex(null);
       setEditingParentId(null);
     }
   };
 
   const handleCancelEdit = () => {
-    setEditingComponent(null);
-    setEditingIndex(null);
-    setEditingParentId(null);
+    // Check if changes were made
+    const hasChanges = editingComponent && originalEditingComponent && 
+      JSON.stringify(editingComponent) !== JSON.stringify(originalEditingComponent);
+
+    if (hasChanges) {
+      setModalState({
+        isOpen: true,
+        type: "confirm",
+        title: "Discard Changes?",
+        message: "You have unsaved changes. Are you sure you want to cancel? All changes will be lost.",
+        inputValue: "",
+        onConfirm: () => {
+          setEditingComponent(null);
+          setOriginalEditingComponent(null);
+          setEditingIndex(null);
+          setEditingParentId(null);
+          setModalState((prev) => ({ ...prev, isOpen: false }));
+        },
+        onCancel: () => {
+          setModalState((prev) => ({ ...prev, isOpen: false }));
+        },
+      });
+    } else {
+      setEditingComponent(null);
+      setOriginalEditingComponent(null);
+      setEditingIndex(null);
+      setEditingParentId(null);
+    }
   };
 
   const updateProp = (key: string, value: unknown) => {

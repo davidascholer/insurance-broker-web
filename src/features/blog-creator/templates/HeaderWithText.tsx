@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-const ContentWithHeading = ({
+const HeaderWithText = ({
   heading,
   children,
   className,
@@ -31,4 +31,4 @@ const ContentWithHeading = ({
   );
 };
 
-export default ContentWithHeading;
+export default HeaderWithText;
