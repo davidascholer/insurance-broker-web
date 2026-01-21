@@ -723,6 +723,45 @@ const BlogCreator = () => {
       );
     }
 
+    // Special handling for reviewStars (0-5.0, one decimal place)
+    if (key === "reviewStars" && editingComponent?.type === "PartnerHeader") {
+      return (
+        <input
+          type="number"
+          min="0"
+          max="5.0"
+          step="0.1"
+          value={value as number}
+          onChange={(e) => {
+            const val = parseFloat(e.target.value);
+            if (!isNaN(val) && val >= 0 && val <= 5.0) {
+              updateProp(key, Math.round(val * 10) / 10);
+            }
+          }}
+          className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none"
+        />
+      );
+    }
+
+    // Special handling for reviewCount (whole number > 0)
+    if (key === "reviewCount" && editingComponent?.type === "PartnerHeader") {
+      return (
+        <input
+          type="number"
+          min="1"
+          step="1"
+          value={value as number}
+          onChange={(e) => {
+            const val = parseInt(e.target.value, 10);
+            if (!isNaN(val) && val > 0) {
+              updateProp(key, val);
+            }
+          }}
+          className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none"
+        />
+      );
+    }
+
     if (typeof value === "number") {
       return (
         <input
@@ -1677,7 +1716,7 @@ const BlogCreator = () => {
         </div>
       )}
 
-      <Footer />
+      {!editingComponent && <Footer />}
     </div>
   );
 };
