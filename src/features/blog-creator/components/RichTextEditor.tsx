@@ -114,8 +114,8 @@ export const RichTextEditor = ({
     }
 
     wrapSelection(
-      `<a href="${finalUrl}" className="cursor-pointer font-bold" target="_blank">`,
-      "</a>"
+      `<a href="${finalUrl}" className="cursor-pointer" target="_blank"><strong>`,
+      "</strong></a>"
     );
   };
 
