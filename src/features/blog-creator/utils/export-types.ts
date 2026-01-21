@@ -35,6 +35,7 @@ export interface PartnerHeaderType {
   title: string;
   imgUrl: string;
   reviewStars: number;
+  reviewCount: number;
   description: InnerTextType;
   className?: string;
 }

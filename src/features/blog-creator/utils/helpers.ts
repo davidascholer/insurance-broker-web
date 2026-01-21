@@ -63,6 +63,7 @@ export const internalToExport = (
         title: (item.props.title as string) || "Title",
         imgUrl: (item.props.imgUrl as string) || "",
         reviewStars: (item.props.reviewStars as number) || 0,
+        reviewCount: (item.props.reviewCount as number) || 0,
         description: (item.props.description as InnerTextType) || {
           content: "<span>Description</span>",
           fontFamily: "nunito-sans",
@@ -137,6 +138,7 @@ export const exportToInternal = (
           title: comp.title,
           imgUrl: comp.imgUrl,
           reviewStars: comp.reviewStars,
+          reviewCount: comp.reviewCount,
           description: comp.description,
           className: comp.className,
         },

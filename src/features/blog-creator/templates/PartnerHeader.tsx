@@ -7,6 +7,7 @@ const PartnerHeader = ({
   title,
   imgUrl,
   reviewStars,
+  reviewCount,
   description,
   className
 }: PartnerHeaderType) => {
@@ -24,12 +25,12 @@ const PartnerHeader = ({
             className="text-lg"
             starStyles="text-[#ED8F82]"
           />
-          <span className="text-xs font-bold">{`Trustpilot rating: ${reviewStars} out of 5 (2,353 Customer Reviews)`}</span>
+          <span className="text-xs font-bold">{`Trustpilot rating: ${reviewStars} out of 5 (${reviewCount} Customer Reviews)`}</span>
         </span>
         <h1 className="text-(--primary-teal-dark) text-4xl md:text-5xl sansita-bold text-center">
           {title}
         </h1>
-        <p className="text-xs md:text-sm space-y-5"><InnerText {...description} /></p>
+        <span className="text-xs md:text-sm space-y-5"><InnerText {...description} /></span>
       </div>
       <img src={imgUrl} alt={title} className="mx-auto mb-4 w-48" />
     </div>

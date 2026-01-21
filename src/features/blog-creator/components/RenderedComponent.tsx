@@ -40,6 +40,7 @@ const RenderedComponent = ({ item }: { item: ComponentItem }) => {
           title={headerProps.title}
           imgUrl={headerProps.imgUrl}
           reviewStars={headerProps.reviewStars}
+          reviewCount={headerProps.reviewCount}
           description={headerProps.description}
           className={headerProps.className}
         />

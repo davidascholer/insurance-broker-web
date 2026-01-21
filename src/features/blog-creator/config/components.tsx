@@ -47,7 +47,8 @@ export const availableComponents: AvailableComponent[] = [
       title: "Partner Name",
       imgUrl: "/text_logos/prudent_logo_blue_horz.svg",
       reviewStars: 4.5,
-      innerText: {
+      reviewCount: 1000,
+      description: {
         content: "<p>Partner description goes here</p>",
         fontFamily: "nunito-sans",
       },
@@ -59,7 +60,7 @@ export const availableComponents: AvailableComponent[] = [
     icon: "👣",
     description: "Footer with review section and CTA",
     defaultProps: {
-      innerText: {
+      reviewContent: {
         content: "<p>Review content goes here</p>",
         fontFamily: "nunito-sans",
       },
