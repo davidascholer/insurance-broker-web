@@ -35,11 +35,11 @@ import {
   validateBlogMetadata,
   convertFromSaved,
   convertToSaved,
-  savePage as savePageUtil,
 } from "./utils/helpers";
 import RenderedComponent from "./components/RenderedComponent";
 import type { SavedPage } from "./utils/export-types";
 import { internalToExport } from "./utils/helpers";
+import { savePage as savePageApi } from "./api/blogApi";
 
 const BlogCreator = () => {
   const { pageName: urlPageName } = useParams<{ pageName: string }>();
@@ -427,6 +427,30 @@ const BlogCreator = () => {
       setOriginalEditingComponent(null);
       setEditingIndex(null);
       setEditingParentId(null);
+
+      // Save to server
+      savePageApi({
+        pageName,
+        components: newComponents,
+        blogTitle,
+        blogDescription,
+        blogDate,
+        blogImageUrl,
+        blogLabels,
+      }).then((result) => {
+        if (result.success) {
+          setPageSaved(true);
+          setToastMessage("Page saved successfully");
+          setShowToast(true);
+          setTimeout(() => setShowToast(false), 3000);
+        } else {
+          setPageSaved(false);
+          setToastMessage("Failed to save page");
+          setShowToast(true);
+          setTimeout(() => setShowToast(false), 3000);
+          console.error("Failed to save:", result.message);
+        }
+      });
     }
   };
 
@@ -1048,25 +1072,28 @@ const BlogCreator = () => {
   };
 
   const handleSavePage = () => {
-    const result = savePageUtil(
+    // Call API to save page
+    savePageApi({
       pageName,
       components,
       blogTitle,
       blogDescription,
       blogDate,
       blogImageUrl,
-      blogLabels
-    );
-
-    if (!result.success) {
-      alert(result.message);
-      return;
-    }
-
-    setPageSaved(true);
-    setToastMessage(result.message);
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000);
+      blogLabels,
+    }).then((result) => {
+      if (result.success) {
+        setPageSaved(true);
+        setToastMessage("Page saved successfully");
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+      } else {
+        setPageSaved(false);
+        setToastMessage("Failed to save page");
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+      }
+    });
   };
 
   return (
@@ -1720,26 +1747,55 @@ const BlogCreator = () => {
         )}
       </div>
 
-      {/* Toast Notification */}
       {showToast && (
         <div className="fixed bottom-8 right-8 z-[70] animate-slide-up">
-          <div className="bg-white border-2 border-(--primary-teal) px-6 py-4 rounded-lg shadow-lg flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-(--primary-teal) flex items-center justify-center flex-shrink-0">
+          <div
+            className={cn(
+              "bg-white border-2 px-6 py-4 rounded-lg shadow-lg flex items-center gap-3",
+              toastMessage === "Failed to save page"
+                ? "border-red-500"
+                : "border-(--primary-teal)"
+            )}
+          >
+            <div
+              className={cn(
+                "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",
+                toastMessage === "Failed to save page"
+                  ? "bg-red-500"
+                  : "bg-(--primary-teal)"
+              )}
+            >
               <svg
                 className="w-5 h-5 text-white"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
+                {toastMessage === "Failed to save page" ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                )}
               </svg>
             </div>
-            <span className="font-semibold text-(--primary-teal-dark) nunito-sans">
+            <span
+              className={cn(
+                "font-semibold nunito-sans",
+                toastMessage === "Failed to save page"
+                  ? "text-red-700"
+                  : "text-(--primary-teal-dark)"
+              )}
+            >
               {toastMessage}
             </span>
           </div>
