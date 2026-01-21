@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Bold, Italic, Link, Type } from "lucide-react";
 import type { InternalComponentItem } from "../utils/internal-types";
@@ -17,6 +17,48 @@ export const RichTextEditor = ({
   onFontFamilyChange,
 }: RichTextEditorProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [htmlError, setHtmlError] = useState<string>("");
+
+  // Validate HTML whenever value changes
+  useEffect(() => {
+    const validateHTML = (html: string) => {
+      try {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+        
+        // Check for parsing errors
+        const parserError = doc.querySelector("parsererror");
+        if (parserError) {
+          setHtmlError("Invalid HTML: " + parserError.textContent);
+          return false;
+        }
+
+        // Check for unclosed tags
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = html;
+        
+        // If innerHTML doesn't match after parsing, there might be unclosed tags
+        if (tempDiv.innerHTML !== html) {
+          // Additional validation: check if it's a simple formatting difference or actual error
+          const normalized1 = tempDiv.innerHTML.replace(/\s+/g, " ").trim();
+          const normalized2 = html.replace(/\s+/g, " ").trim();
+          
+          if (normalized1.toLowerCase() !== normalized2.toLowerCase()) {
+            setHtmlError("Warning: HTML may have unclosed or invalid tags");
+            return false;
+          }
+        }
+
+        setHtmlError("");
+        return true;
+      } catch (e) {
+        setHtmlError("Invalid HTML syntax");
+        return false;
+      }
+    };
+
+    validateHTML(value);
+  }, [value]);
 
   const wrapSelection = (before: string, after: string) => {
     const textarea = textareaRef.current;
@@ -197,12 +239,22 @@ export const RichTextEditor = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className={cn(
-          "w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-(--primary-teal) focus:outline-none min-h-[200px] bg-white font-mono text-sm",
-          "resize-y"
+          "w-full px-4 py-3 border-2 rounded-lg focus:outline-none min-h-[200px] bg-white font-mono text-sm",
+          "resize-y",
+          htmlError 
+            ? "border-red-500 focus:border-red-600" 
+            : "border-gray-300 focus:border-(--primary-teal)"
         )}
         placeholder="Write HTML here... Select text and use toolbar buttons to add formatting tags."
         spellCheck={false}
       />
+
+      {/* Error Message */}
+      {htmlError && (
+        <div className="px-3 py-2 bg-red-50 border border-red-300 rounded-lg text-red-700 text-sm">
+          <strong>⚠️ HTML Validation Error:</strong> {htmlError}
+        </div>
+      )}
 
       <div className="text-xs text-gray-500 space-y-1">
         <p>
