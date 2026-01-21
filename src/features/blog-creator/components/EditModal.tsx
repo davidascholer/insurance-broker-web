@@ -1,4 +1,5 @@
-import { X } from "lucide-react";
+import { X, ChevronDown, ChevronRight } from "lucide-react";
+import { useState } from "react";
 import type { InternalComponentItem } from "../utils/internal-types";
 
 interface EditModalProps {
@@ -14,6 +15,30 @@ export const EditModal = ({
   onSave,
   renderPropEditor,
 }: EditModalProps) => {
+  const [advancedOpen, setAdvancedOpen] = useState(false);
+
+  // Separate className from other props
+  const regularProps = Object.entries(editingComponent.props).filter(
+    ([key]) => {
+      // Hide children field for SectionContainer
+      if (
+        editingComponent.type === "SectionContainer" &&
+        key === "children"
+      ) {
+        return false;
+      }
+      // Filter out className for Advanced section
+      if (key === "className") {
+        return false;
+      }
+      return true;
+    }
+  );
+
+  const advancedProps = Object.entries(editingComponent.props).filter(
+    ([key]) => key === "className"
+  );
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col">
@@ -38,25 +63,46 @@ export const EditModal = ({
         {/* Modal Body */}
         <div className="flex-1 overflow-y-auto p-6">
           <div className="space-y-4">
-            {Object.entries(editingComponent.props)
-              .filter(([key]) => {
-                // Hide children field for SectionContainer
-                if (editingComponent.type === "SectionContainer" && key === "children") {
-                  return false;
-                }
-                return true;
-              })
-              .map(([key, value]) => (
-                <div key={key}>
-                  <label className="block text-sm font-semibold text-(--primary-teal-dark) mb-2 capitalize">
-                    {key.replace(/([A-Z])/g, " $1").trim()}
-                  </label>
-                  {renderPropEditor(key, value)}
-                  <p className="text-xs text-gray-500 mt-1">
-                    Type: {Array.isArray(value) ? "array" : typeof value}
-                  </p>
-                </div>
-              ))}
+            {/* Regular Props */}
+            {regularProps.map(([key, value]) => (
+              <div key={key}>
+                <label className="block text-sm font-semibold text-(--primary-teal-dark) mb-2 capitalize">
+                  {key.replace(/([A-Z])/g, " $1").trim()}
+                </label>
+                {renderPropEditor(key, value)}
+              </div>
+            ))}
+
+            {/* Advanced Section */}
+            {advancedProps.length > 0 && (
+              <div className="mt-6 border-t pt-4">
+                <button
+                  type="button"
+                  onClick={() => setAdvancedOpen(!advancedOpen)}
+                  className="flex items-center gap-2 text-sm font-semibold text-(--primary-teal-dark) hover:text-(--primary-teal) transition-colors"
+                >
+                  {advancedOpen ? (
+                    <ChevronDown className="w-4 h-4" />
+                  ) : (
+                    <ChevronRight className="w-4 h-4" />
+                  )}
+                  Advanced
+                </button>
+                
+                {advancedOpen && (
+                  <div className="mt-4 space-y-4">
+                    {advancedProps.map(([key, value]) => (
+                      <div key={key}>
+                        <label className="block text-sm font-semibold text-(--primary-teal-dark) mb-2 capitalize">
+                          {key.replace(/([A-Z])/g, " $1").trim()}
+                        </label>
+                        {renderPropEditor(key, value)}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
