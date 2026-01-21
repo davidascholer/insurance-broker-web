@@ -26,7 +26,7 @@ const blogPosts: BlogCardData[] = [
     description:
       "Learn the essential pet insurance terms and definitions to help you make informed decisions about your pet's coverage. Understand deductibles, premiums, reimbursement rates, and more.",
     image: "/blog/blogpet1.webp",
-    date: "December 9, 2026",
+    date: "January 1, 2026",
     labels: ["Terminology", "Basics", "Coverage"],
   },
   {
@@ -35,7 +35,7 @@ const blogPosts: BlogCardData[] = [
     description:
       "A comprehensive guide to understanding pet insurance, how it works, what it covers, and why it's important for your pet's health and your financial peace of mind.",
     image: "/blog/blogpet2.webp",
-    date: "December 9, 2026",
+    date: "December 25, 2025",
     labels: ["Basics", "Coverage", "Benefits"],
   },
   {
@@ -44,7 +44,7 @@ const blogPosts: BlogCardData[] = [
     description:
       "Discover the top reasons to consider pet insurance for your furry friend. Learn about the financial protection, peace of mind, and access to better veterinary care that insurance provides.",
     image: "/blog/blogpet3.webp",
-    date: "December 9, 2026",
+    date: "December 18, 2025",
     labels: ["Benefits", "Pet Health", "Basics"],
   },
   {
@@ -53,7 +53,7 @@ const blogPosts: BlogCardData[] = [
     description:
       "Learn how to effectively compare different pet insurance policies. Understand key factors like coverage limits, deductibles, reimbursement rates, and exclusions to find the best plan for your pet.",
     image: "/blog/blogpet4.webp",
-    date: "December 9, 2026",
+    date: "December 11, 2025",
     labels: ["Comparison", "Coverage", "Basics"],
   },
   {
@@ -62,7 +62,7 @@ const blogPosts: BlogCardData[] = [
     description:
       "Explore the different types of pet insurance available, including accident-only, accident & illness, and wellness plans. Find out which type best suits your pet's needs and your budget.",
     image: "/blog/blogpet5.webp",
-    date: "December 9, 2026",
+    date: "December 6, 2025",
     labels: ["Types", "Coverage", "Comparison"],
   },
   {
@@ -71,7 +71,7 @@ const blogPosts: BlogCardData[] = [
     description:
       "Understand common pet insurance exclusions such as pre-existing conditions, breed-specific issues, and elective procedures. Learn strategies to work around these limitations.",
     image: "/blog/blogpet6.webp",
-    date: "December 9, 2026",
+    date: "November 27, 2025",
     labels: ["Exclusions", "Coverage", "Pet Health"],
   },
   {
@@ -80,7 +80,7 @@ const blogPosts: BlogCardData[] = [
     description:
       "Get a breakdown of pet insurance costs, including factors that affect premiums like your pet's age, breed, location, and coverage level. Learn how to find affordable options.",
     image: "/blog/blogpet7.webp",
-    date: "December 9, 2026",
+    date: "November 20, 2025",
     labels: ["Costs", "Comparison", "Basics"],
   },
 ];
@@ -108,9 +108,7 @@ const BlogPage = () => {
 
   const toggleLabel = (label: string) => {
     setSelectedLabels((prev) =>
-      prev.includes(label)
-        ? prev.filter((l) => l !== label)
-        : [...prev, label]
+      prev.includes(label) ? prev.filter((l) => l !== label) : [...prev, label]
     );
   };
 
