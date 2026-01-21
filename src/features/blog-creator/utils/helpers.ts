@@ -31,7 +31,9 @@ export const validateBlogMetadata = (
 };
 
 // Convert internal representation to export type ComponentItem
-export const internalToExport = (item: InternalComponentItem): ComponentItem => {
+export const internalToExport = (
+  item: InternalComponentItem
+): ComponentItem => {
   switch (item.type) {
     case "SectionContainer": {
       const component: SectionContainerType = {
@@ -61,8 +63,8 @@ export const internalToExport = (item: InternalComponentItem): ComponentItem => 
         title: (item.props.title as string) || "Title",
         imgUrl: (item.props.imgUrl as string) || "",
         reviewStars: (item.props.reviewStars as number) || 0,
-        innerText: item.props.innerText as InnerTextType || {
-          content: "<p>Description</p>",
+        description: (item.props.description as InnerTextType) || {
+          content: "<span>Description</span>",
           fontFamily: "nunito-sans",
         },
         className: item.props.className as string | undefined,
@@ -74,8 +76,8 @@ export const internalToExport = (item: InternalComponentItem): ComponentItem => 
     }
     case "PartnerFooter": {
       const component: PartnerFooterType = {
-        innerText: item.props.innerText as InnerTextType || {
-          content: "<p>Footer content</p>",
+        reviewContent: (item.props.reviewContent as InnerTextType) || {
+          content: "<span>Footer content</span>",
           fontFamily: "nunito-sans",
         },
         className: item.props.className as string | undefined,
@@ -89,9 +91,12 @@ export const internalToExport = (item: InternalComponentItem): ComponentItem => 
 };
 
 // Convert export type ComponentItem to internal representation
-export const exportToInternal = (item: ComponentItem, index: number): InternalComponentItem => {
+export const exportToInternal = (
+  item: ComponentItem,
+  index: number
+): InternalComponentItem => {
   const id = `${item.name}-${Date.now()}-${index}`;
-  
+
   switch (item.name) {
     case "SectionContainer": {
       const comp = item.component as SectionContainerType;
@@ -104,7 +109,9 @@ export const exportToInternal = (item: ComponentItem, index: number): InternalCo
           className: comp.className,
           id: comp.id,
         },
-        children: comp.children ? comp.children.map((child, idx) => exportToInternal(child, idx)) : [],
+        children: comp.children
+          ? comp.children.map((child, idx) => exportToInternal(child, idx))
+          : [],
       };
     }
     case "InnerText": {
@@ -130,7 +137,7 @@ export const exportToInternal = (item: ComponentItem, index: number): InternalCo
           title: comp.title,
           imgUrl: comp.imgUrl,
           reviewStars: comp.reviewStars,
-          innerText: comp.innerText,
+          description: comp.description,
           className: comp.className,
         },
       };
@@ -142,7 +149,7 @@ export const exportToInternal = (item: ComponentItem, index: number): InternalCo
         type: "PartnerFooter",
         name: "Partner Footer",
         props: {
-          innerText: comp.innerText,
+          reviewContent: comp.reviewContent,
           className: comp.className,
         },
       };
@@ -154,23 +161,27 @@ export const exportToInternal = (item: ComponentItem, index: number): InternalCo
   }
 };
 
-export const convertToSaved = (items: InternalComponentItem[]): SectionContainerType[] => {
+export const convertToSaved = (
+  items: InternalComponentItem[]
+): SectionContainerType[] => {
   // Convert InternalComponentItem[] to ComponentItem[] then to Section ContainerType[]
   const exported = items.map(internalToExport);
-  return exported.filter(item => item.name === "SectionContainer").map(item => {
-    return item.component as SectionContainerType;
-  });
+  return exported
+    .filter((item) => item.name === "SectionContainer")
+    .map((item) => {
+      return item.component as SectionContainerType;
+    });
 };
 
 export const convertFromSaved = (
   saved: SectionContainerType[]
 ): InternalComponentItem[] => {
   // Convert saved SectionContainerType[] back to ComponentItem[] then to InternalComponentItem[]
-  const componentItems: ComponentItem[] = saved.map(sectionContainer => ({
+  const componentItems: ComponentItem[] = saved.map((sectionContainer) => ({
     name: "SectionContainer" as const,
     component: sectionContainer,
   }));
-  
+
   return componentItems.map((item, index) => exportToInternal(item, index));
 };
 
@@ -221,9 +232,7 @@ export const savePage = (
     : [];
 
   // Check if page name already exists
-  const existingPageIndex = existingPages.findIndex(
-    (p) => p.name === pageName
-  );
+  const existingPageIndex = existingPages.findIndex((p) => p.name === pageName);
   if (existingPageIndex >= 0) {
     existingPages[existingPageIndex] = newPage;
   } else {

@@ -35,12 +35,12 @@ export interface PartnerHeaderType {
   title: string;
   imgUrl: string;
   reviewStars: number;
-  innerText: InnerTextType;
+  description: InnerTextType;
   className?: string;
 }
 
 export interface PartnerFooterType {
-  innerText: InnerTextType;
+  reviewContent: InnerTextType;
   className?: string;
 }
 

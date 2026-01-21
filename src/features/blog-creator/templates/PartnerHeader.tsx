@@ -7,7 +7,7 @@ const PartnerHeader = ({
   title,
   imgUrl,
   reviewStars,
-  innerText,
+  description,
   className
 }: PartnerHeaderType) => {
   return (
@@ -29,7 +29,7 @@ const PartnerHeader = ({
         <h1 className="text-(--primary-teal-dark) text-4xl md:text-5xl sansita-bold text-center">
           {title}
         </h1>
-        <p className="text-xs md:text-sm space-y-5"><InnerText {...innerText} /></p>
+        <p className="text-xs md:text-sm space-y-5"><InnerText {...description} /></p>
       </div>
       <img src={imgUrl} alt={title} className="mx-auto mb-4 w-48" />
     </div>

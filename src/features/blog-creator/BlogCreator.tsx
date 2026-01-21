@@ -15,6 +15,7 @@ import { useOutsideClick } from "@/hooks/useOutsideClick";
 // Import types
 import type { ModalState } from "./utils/types";
 import type { InternalComponentItem } from "./utils/internal-types";
+import type { InnerTextType } from "./utils/export-types";
 
 // Import components
 import { RichTextEditor } from "./components/RichTextEditor";
@@ -92,6 +93,7 @@ const BlogCreator = () => {
   >(null);
   const [isDraggingSectionContainer, setIsDraggingSectionContainer] =
     useState(false);
+  const [isInvalidDropTarget, setIsInvalidDropTarget] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [editingComponent, setEditingComponent] =
     useState<InternalComponentItem | null>(null);
@@ -202,9 +204,27 @@ const BlogCreator = () => {
     setIsDraggingSectionContainer(isContainer);
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleDragOver = (e: React.DragEvent, targetContainerId?: string) => {
     e.preventDefault();
-    e.dataTransfer.dropEffect = draggedIndex !== null ? "move" : "copy";
+    
+    // Check if this is an invalid drop target
+    const isInvalid = 
+      // Case 1: Section Container being dragged into another container
+      (targetContainerId && isDraggingSectionContainer) ||
+      // Case 2: Regular component being dragged onto canvas (not into a container)
+      (!targetContainerId && !isDraggingSectionContainer);
+    
+    setIsInvalidDropTarget(isInvalid);
+    
+    if (isInvalid) {
+      e.dataTransfer.dropEffect = "none";
+    } else {
+      e.dataTransfer.dropEffect = draggedIndex !== null ? "move" : "copy";
+    }
+  };
+
+  const handleDragEnd = () => {
+    setIsInvalidDropTarget(false);
   };
 
   const handleDrop = (
@@ -221,6 +241,7 @@ const BlogCreator = () => {
       setDraggedIndex(null);
       setDraggedFromContainer(null);
       setIsDraggingSectionContainer(false);
+      setIsInvalidDropTarget(false);
       return;
     }
 
@@ -228,6 +249,7 @@ const BlogCreator = () => {
     if (targetContainerId && isDraggingSectionContainer) {
       setDraggedComponent(null);
       setDraggedIndex(null);
+      setIsInvalidDropTarget(false);
       setDraggedFromContainer(null);
       setIsDraggingSectionContainer(false);
       return;
@@ -430,6 +452,52 @@ const BlogCreator = () => {
           onChange={(newValue) => updateProp(key, newValue)}
           editingComponent={editingComponent}
           onFontFamilyChange={(fontFamily) => updateProp("fontFamily", fontFamily)}
+        />
+      );
+    }
+
+    // Special handling for PartnerHeader description (InnerTextType)
+    if (key === "description" && editingComponent?.type === "PartnerHeader") {
+      const innerTextValue = value as InnerTextType;
+      return (
+        <RichTextEditor
+          value={innerTextValue.content || "<p>Enter description</p>"}
+          onChange={(newContent) => {
+            updateProp(key, {
+              ...innerTextValue,
+              content: newContent,
+            });
+          }}
+          editingComponent={editingComponent}
+          onFontFamilyChange={(fontFamily) => {
+            updateProp(key, {
+              ...innerTextValue,
+              fontFamily,
+            });
+          }}
+        />
+      );
+    }
+
+    // Special handling for PartnerFooter reviewContent (InnerTextType)
+    if (key === "reviewContent" && editingComponent?.type === "PartnerFooter") {
+      const innerTextValue = value as InnerTextType;
+      return (
+        <RichTextEditor
+          value={innerTextValue.content || "<p>Enter review content</p>"}
+          onChange={(newContent) => {
+            updateProp(key, {
+              ...innerTextValue,
+              content: newContent,
+            });
+          }}
+          editingComponent={editingComponent}
+          onFontFamilyChange={(fontFamily) => {
+            updateProp(key, {
+              ...innerTextValue,
+              fontFamily,
+            });
+          }}
         />
       );
     }
@@ -1219,6 +1287,7 @@ const BlogCreator = () => {
                           onDragStart={(e) =>
                             handleDragStart(component.type, e, true)
                           }
+                          onDragEnd={handleDragEnd}
                           className="p-3 bg-(--primary-coral) bg-opacity-20 border-2 border-(--primary-coral) rounded-lg cursor-move hover:bg-(--primary-coral) hover:text-white transition-colors group"
                         >
                           <div className="flex items-center gap-2 mb-1">
@@ -1248,6 +1317,7 @@ const BlogCreator = () => {
                           onDragStart={(e) =>
                             handleDragStart(component.type, e, false)
                           }
+                          onDragEnd={handleDragEnd}
                           className="p-3 bg-(--light-pink) rounded-lg cursor-move hover:bg-(--primary-teal) hover:text-white transition-colors group"
                         >
                           <div className="flex items-center gap-2 mb-1">
@@ -1276,17 +1346,23 @@ const BlogCreator = () => {
               <div className="bg-white rounded-lg shadow-lg p-6 min-h-[600px]">
                 {components.length === 0 ? (
                   <div
-                    onDragOver={handleDragOver}
+                    onDragOver={(e) => handleDragOver(e)}
                     onDrop={(e) => handleDrop(e)}
-                    className="flex items-center justify-center h-full border-4 border-dashed border-gray-300 rounded-lg"
+                    className={cn(
+                      "flex items-center justify-center h-full border-4 border-dashed rounded-lg transition-colors",
+                      isInvalidDropTarget ? "border-red-500 bg-red-50 cursor-not-allowed" : "border-gray-300"
+                    )}
                   >
                     <div className="text-center text-gray-500">
                       <p className="text-xl font-semibold mb-2">
-                        Drop Section Containers here
+                        {isInvalidDropTarget 
+                          ? "❌ Cannot drop components here" 
+                          : "Drop Section Containers here"}
                       </p>
                       <p className="text-sm">
-                        Start by dragging a Section Container from the
-                        Containers section
+                        {isInvalidDropTarget
+                          ? "Only Section Containers can be placed on the canvas"
+                          : "Start by dragging a Section Container from the Containers section"}
                       </p>
                     </div>
                   </div>
@@ -1303,7 +1379,7 @@ const BlogCreator = () => {
                             !showPreview &&
                             handleDragStartCanvas(index, e, undefined, true)
                           }
-                          onDragOver={!showPreview ? handleDragOver : undefined}
+                          onDragOver={!showPreview ? (e) => handleDragOver(e) : undefined}
                           onDrop={
                             !showPreview
                               ? (e) => handleDrop(e, index)
@@ -1366,7 +1442,7 @@ const BlogCreator = () => {
                           <div
                             onDragOver={(e) => {
                               e.stopPropagation();
-                              if (!showPreview) handleDragOver(e);
+                              if (!showPreview) handleDragOver(e, component.id);
                             }}
                             onDrop={(e) => {
                               e.stopPropagation();
@@ -1374,9 +1450,14 @@ const BlogCreator = () => {
                                 handleDrop(e, undefined, component.id);
                             }}
                             className={cn(
-                              "min-h-[150px] rounded-lg",
+                              "min-h-[150px] rounded-lg transition-colors",
                               !showPreview &&
-                                "border-2 border-dashed border-gray-300 p-4",
+                                "border-2 border-dashed p-4",
+                              !showPreview && isInvalidDropTarget
+                                ? "border-red-500 bg-red-50 cursor-not-allowed"
+                                : !showPreview
+                                  ? "border-gray-300"
+                                  : "",
                               showPreview &&
                               typeof component.props === "object" &&
                               component.props !== null &&
@@ -1406,7 +1487,7 @@ const BlogCreator = () => {
                                     }}
                                     onDragOver={(e) => {
                                       e.stopPropagation();
-                                      if (!showPreview) handleDragOver(e);
+                                      if (!showPreview) handleDragOver(e, component.id);
                                     }}
                                     onDrop={(e) => {
                                       e.stopPropagation();
@@ -1488,8 +1569,13 @@ const BlogCreator = () => {
                               </div>
                             ) : (
                               !showPreview && (
-                                <div className="flex items-center justify-center h-full text-gray-400 text-sm">
-                                  Drop components here
+                                <div className={cn(
+                                  "flex items-center justify-center h-full text-sm",
+                                  isInvalidDropTarget ? "text-red-500" : "text-gray-400"
+                                )}>
+                                  {isInvalidDropTarget 
+                                    ? "❌ Section Containers cannot be nested" 
+                                    : "Drop components here"}
                                 </div>
                               )
                             )}

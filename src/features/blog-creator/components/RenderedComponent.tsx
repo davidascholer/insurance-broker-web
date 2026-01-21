@@ -40,7 +40,7 @@ const RenderedComponent = ({ item }: { item: ComponentItem }) => {
           title={headerProps.title}
           imgUrl={headerProps.imgUrl}
           reviewStars={headerProps.reviewStars}
-          innerText={headerProps.innerText}
+          description={headerProps.description}
           className={headerProps.className}
         />
       );
@@ -50,7 +50,7 @@ const RenderedComponent = ({ item }: { item: ComponentItem }) => {
       return (
         <PartnerFooter
           className={footerProps.className}
-          innerText={footerProps.innerText}
+          reviewContent={footerProps.reviewContent}
         />
       );
     }
