@@ -1348,7 +1348,7 @@ const BlogCreator = () => {
               onClick={() => setShowPreview(!showPreview)}
               disabled={!pageName}
               className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors",
+                "flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-colors",
                 showPreview
                   ? "bg-(--primary-teal) text-white"
                   : "bg-white text-(--primary-teal-dark) border-2 border-(--primary-teal)",
@@ -1358,7 +1358,40 @@ const BlogCreator = () => {
               <Eye className="w-4 h-4" />
               {showPreview ? "Edit Mode" : "Preview"}
             </button>
+            <button
+              onClick={handleSavePage}
+              disabled={
+                !pageName ||
+                !validatePageName(pageName) ||
+                !validateBlogMetadata(
+                  blogTitle,
+                  blogDescription,
+                  blogDate,
+                  blogImageUrl,
+                  blogLabels
+                ) ||
+                components.length === 0 ||
+                pageSaved
+              }
+              className="flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-(--primary-teal) text-white font-semibold hover:bg-(--primary-teal-dark) disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              {pageSaved ? "Page Saved" : "Save Page"}
+            </button>
           </div>
+          {(components.length === 0 ||
+            !validateBlogMetadata(
+              blogTitle,
+              blogDescription,
+              blogDate,
+              blogImageUrl,
+              blogLabels
+            )) && (
+            <p className="text-center text-gray-500 text-sm mb-6">
+              {components.length === 0
+                ? "Add components to your page before saving"
+                : "Fill out all blog card fields to enable saving"}
+            </p>
+          )}
 
           <div
             className={cn(
@@ -1709,43 +1742,6 @@ const BlogCreator = () => {
           renderPropEditor={renderPropEditor}
         />
       )}
-
-      {/* Save Page Button */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <button
-          onClick={handleSavePage}
-          disabled={
-            !pageName ||
-            !validatePageName(pageName) ||
-            !validateBlogMetadata(
-              blogTitle,
-              blogDescription,
-              blogDate,
-              blogImageUrl,
-              blogLabels
-            ) ||
-            components.length === 0 ||
-            pageSaved
-          }
-          className="w-full max-w-md mx-auto flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-(--primary-teal) text-white font-semibold hover:bg-(--primary-teal-dark) disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-          {pageSaved ? "Page Saved" : "Save Page"}
-        </button>
-        {(components.length === 0 ||
-          !validateBlogMetadata(
-            blogTitle,
-            blogDescription,
-            blogDate,
-            blogImageUrl,
-            blogLabels
-          )) && (
-          <p className="text-center text-gray-500 text-sm mt-2">
-            {components.length === 0
-              ? "Add components to your page before saving"
-              : "Fill out all blog card fields to enable saving"}
-          </p>
-        )}
-      </div>
 
       {showToast && (
         <div className="fixed bottom-8 right-8 z-[70] animate-slide-up">
