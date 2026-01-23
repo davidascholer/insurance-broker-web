@@ -3,7 +3,7 @@
 
 export interface InternalComponentItem {
   id: string;
-  type: "SectionContainer" | "InnerText" | "PartnerHeader" | "PartnerFooter";
+  type: "SectionContainer" | "InnerText" | "PartnerHeader" | "PartnerFooter" | "HeaderWithText" | "ContentWithImage" | "ContentUnorderedList";
   name: string;
   props: Record<string, unknown>;
   children?: InternalComponentItem[];

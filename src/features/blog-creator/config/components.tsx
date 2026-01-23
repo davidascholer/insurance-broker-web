@@ -39,6 +39,21 @@ export const availableComponents: AvailableComponent[] = [
     },
   },
   {
+    type: "HeaderWithText",
+    name: "Header With Text",
+    icon: "📝",
+    description: "Header with description text",
+    defaultProps: {
+      headerContent: "Section Header",
+      description: {
+        content: "<p>Description text goes here</p>",
+        fontFamily: "nunito-sans",
+      },
+      className: "",
+      headerClassName: "",
+    },
+  },
+  {
     type: "PartnerHeader",
     name: "Partner Header",
     icon: "🏢",

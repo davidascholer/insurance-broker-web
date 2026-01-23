@@ -533,6 +533,29 @@ const BlogCreator = () => {
       );
     }
 
+    // Special handling for HeaderWithText description (InnerTextType)
+    if (key === "description" && editingComponent?.type === "HeaderWithText") {
+      const innerTextValue = value as InnerTextType;
+      return (
+        <RichTextEditor
+          value={innerTextValue.content || "<p>Enter description</p>"}
+          onChange={(newContent) => {
+            updateProp(key, {
+              ...innerTextValue,
+              content: newContent,
+            });
+          }}
+          editingComponent={editingComponent}
+          onFontFamilyChange={(fontFamily) => {
+            updateProp(key, {
+              ...innerTextValue,
+              fontFamily,
+            });
+          }}
+        />
+      );
+    }
+
     // Special handling for PartnerFooter reviewContent (InnerTextType)
     if (key === "reviewContent" && editingComponent?.type === "PartnerFooter") {
       const innerTextValue = value as InnerTextType;

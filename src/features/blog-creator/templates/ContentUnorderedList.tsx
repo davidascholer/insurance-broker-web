@@ -1,12 +1,11 @@
 import { cn } from "@/lib/utils";
+import type { ContentUnorderedListType } from "../utils/export-types";
+import InnerText from "../components/InnerText";
 
 const ContentUnorderedList = ({
-  children,
+  listItems,
   className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
+}: ContentUnorderedListType) => {
   return (
     <ul
       className={cn(
@@ -14,7 +13,11 @@ const ContentUnorderedList = ({
         className
       )}
     >
-      {children}
+      {listItems.map((item, index) => (
+        <li key={index}>
+          <InnerText {...item} />
+        </li>
+      ))}
     </ul>
   );
 };

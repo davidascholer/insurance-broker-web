@@ -15,6 +15,7 @@ export interface ComponentItem {
     | InnerTextType
     | PartnerHeaderType
     | PartnerFooterType
+    | HeaderWithTextType
     | Record<string, unknown>;
 }
 
@@ -42,6 +43,26 @@ export interface PartnerHeaderType {
 
 export interface PartnerFooterType {
   reviewContent: InnerTextType;
+  className?: string;
+}
+
+export interface HeaderWithTextType {
+  headerContent: string;
+  description: InnerTextType;
+  className?: string;
+  headerClassName?: string;
+}
+
+export interface ContentWithImageType {
+  heading: string;
+  imageSrc: string;
+  content: InnerTextType;
+  className?: string;
+  imageClassName?: string;
+}
+
+export interface ContentUnorderedListType {
+  listItems: InnerTextType[];
   className?: string;
 }
 

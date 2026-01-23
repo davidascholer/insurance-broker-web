@@ -1,11 +1,13 @@
 import PartnerFooter from "../templates/PartnerFooter";
 import PartnerHeader from "../templates/PartnerHeader";
+import HeaderWithText from "../templates/HeaderWithText";
 import SectionContainer from "../templates/SectionContainer";
 import InnerText from "../components/InnerText";
 import type {
   ComponentItem,
   PartnerFooterType,
   PartnerHeaderType,
+  HeaderWithTextType,
   SectionContainerType,
   InnerTextType,
 } from "../utils/export-types";
@@ -43,6 +45,17 @@ const RenderedComponent = ({ item }: { item: ComponentItem }) => {
           reviewCount={headerProps.reviewCount}
           description={headerProps.description}
           className={headerProps.className}
+        />
+      );
+    }
+    case "HeaderWithText": {
+      const headerWithTextProps = item.component as HeaderWithTextType;
+      return (
+        <HeaderWithText
+          headerContent={headerWithTextProps.headerContent}
+          description={headerWithTextProps.description}
+          className={headerWithTextProps.className}
+          headerClassName={headerWithTextProps.headerClassName}
         />
       );
     }

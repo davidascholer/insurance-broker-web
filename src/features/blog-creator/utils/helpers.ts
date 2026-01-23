@@ -4,6 +4,7 @@ import type {
   SectionContainerType,
   InnerTextType,
   PartnerHeaderType,
+  HeaderWithTextType,
   PartnerFooterType,
 } from "./export-types";
 import type { InternalComponentItem } from "./internal-types";
@@ -75,6 +76,21 @@ export const internalToExport = (
         component,
       };
     }
+    case "HeaderWithText": {
+      const component: HeaderWithTextType = {
+        headerContent: (item.props.headerContent as string) || "Header",
+        description: (item.props.description as InnerTextType) || {
+          content: "<p>Description</p>",
+          fontFamily: "nunito-sans",
+        },
+        className: item.props.className as string | undefined,
+        headerClassName: item.props.headerClassName as string | undefined,
+      };
+      return {
+        name: "HeaderWithText",
+        component,
+      };
+    }
     case "PartnerFooter": {
       const component: PartnerFooterType = {
         reviewContent: (item.props.reviewContent as InnerTextType) || {
@@ -141,6 +157,20 @@ export const exportToInternal = (
           reviewCount: comp.reviewCount,
           description: comp.description,
           className: comp.className,
+        },
+      };
+    }
+    case "HeaderWithText": {
+      const comp = item.component as HeaderWithTextType;
+      return {
+        id,
+        type: "HeaderWithText",
+        name: "Header With Text",
+        props: {
+          headerContent: comp.headerContent,
+          description: comp.description,
+          className: comp.className,
+          headerClassName: comp.headerClassName,
         },
       };
     }

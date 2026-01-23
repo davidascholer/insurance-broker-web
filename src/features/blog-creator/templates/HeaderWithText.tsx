@@ -1,16 +1,13 @@
 import { cn } from "@/lib/utils";
+import type { HeaderWithTextType } from "../utils/export-types";
+import InnerText from "../components/InnerText";
 
 const HeaderWithText = ({
-  heading,
-  children,
+  headerContent,
+  description,
   className,
   headerClassName,
-}: {
-  heading: string;
-  children: React.ReactNode;
-  className?: string;
-  headerClassName?: string;
-}) => {
+}: HeaderWithTextType) => {
   return (
     <div
       className={cn(
@@ -24,9 +21,9 @@ const HeaderWithText = ({
           headerClassName
         )}
       >
-        {heading}
+        {headerContent}
       </h2>
-      <div className="ml-4">{children}</div>
+      <div className="ml-4"><InnerText {...description} /></div>
     </div>
   );
 };

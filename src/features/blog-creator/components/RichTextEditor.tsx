@@ -51,7 +51,7 @@ export const RichTextEditor = ({
 
         setHtmlError("");
         return true;
-      } catch (e) {
+      } catch {
         setHtmlError("Invalid HTML syntax");
         return false;
       }

@@ -22,7 +22,7 @@ const PartnerFooter = ({ className, reviewContent }: PartnerFooterType) => {
             <h2 className="text-(--primary-teal-dark) sansita-bold text-xl">
               PIPA's Review
             </h2>
-            <div className="ml-4 cursor-pointer">
+            <div className="ml-4">
               <InnerText {...reviewContent} />
             </div>
           </div>
