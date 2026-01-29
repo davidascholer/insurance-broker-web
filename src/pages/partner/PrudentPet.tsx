@@ -104,8 +104,9 @@ const PrudentPet = () => {
 
       <SectionContainer color="bg-(--coral-light) p-5">
         <PartnerHeader
-          title="Prudent Pet Insurance"
+          title="Kanguro Insurance"
           reviewStars={4.8}
+          reviewCount={"2,353"}
           imgUrl="/text_logos/prudent_logo_blue_horz.svg"
           className=""
         >
