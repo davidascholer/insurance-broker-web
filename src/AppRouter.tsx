@@ -22,6 +22,7 @@ import KanguroEmbed from "./features/kanguro/pages/KanguroEmbed";
 import PartnerPage from "./pages/PartnerPage";
 import AboutUsPage from "./pages/AboutUsPage";
 import PrudentPet from "./pages/partner/PrudentPet";
+import Kanguro from "./pages/partner/Kanguro";
 import BlogPage from "./pages/BlogPage";
 import BlogCreationList from "./features/blog-creator/BlogCreationList";
 import BlogCreator from "./features/blog-creator/BlogCreator";
@@ -50,6 +51,7 @@ const AppRouter = () => {
         <Route path="/terminology" element={<Terminology />} />
         <Route path="/partner" element={<PartnerPage />} />
         <Route path="/partner/prudent-pet" element={<PrudentPet />} />
+        <Route path="/partner/kanguro" element={<Kanguro />} />
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog/creator" element={<BlogCreationList />} />
