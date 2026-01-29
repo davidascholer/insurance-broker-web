@@ -27,44 +27,41 @@ const sectionIDs = [
   { id: "cancellation-policy", label: "CANCELLATION POLICY" },
 ];
 
-const PrudentPet = () => {
+const Kanguro = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
     ReactGA.send({
       hitType: "pageview",
-      page: "/partner/prudent-pet",
-      title: "Prudent Pet Insurance Partner Page",
+      page: "/partner/kanguro",
+      title: "Kanguro Insurance Partner Page",
     });
   }, []);
 
   return (
     <div className="bg-(--light-pink) pt-24">
-      <meta
-        name="title"
-        content="Prudent Pet Insurance Partner | PIPA Broker"
-      />
+      <meta name="title" content="Kanguro Insurance Partner | PIPA Broker" />
       <meta
         name="description"
-        content="Learn about Prudent Pet Insurance plans, coverage options, pricing, and claims process through PIPA Broker."
+        content="Learn about Kanguro Insurance plans, coverage options, pricing, and claims process through PIPA Broker."
       />
       <meta
         name="keywords"
-        content="prudent pet insurance, pet insurance plans, accident coverage, illness coverage, pet insurance quotes"
+        content="kanguro insurance, pet insurance plans, accident coverage, illness coverage, pet insurance quotes"
       />
       <meta name="author" content="PIPA Broker" />
       <meta property="og:type" content="website" />
       <meta
         property="og:url"
-        content="https://www.pipabroker.com/partner/prudent-pet"
+        content="https://www.pipabroker.com/partner/kanguro"
       />
       <meta
         property="og:title"
-        content="Prudent Pet Insurance Partner | PIPA Broker"
+        content="Kanguro Insurance Partner | PIPA Broker"
       />
       <meta
         property="og:description"
-        content="Learn about Prudent Pet Insurance plans, coverage options, pricing, and claims process through PIPA Broker."
+        content="Learn about Kanguro Insurance plans, coverage options, pricing, and claims process through PIPA Broker."
       />
       <meta
         property="og:image"
@@ -74,15 +71,15 @@ const PrudentPet = () => {
       <meta property="twitter:card" content="summary_large_image" />
       <meta
         property="twitter:url"
-        content="https://www.pipabroker.com/partner/prudent-pet"
+        content="https://www.pipabroker.com/partner/kanguro"
       />
       <meta
         property="twitter:title"
-        content="Prudent Pet Insurance Partner | PIPA Broker"
+        content="Kanguro Insurance Partner | PIPA Broker"
       />
       <meta
         property="twitter:description"
-        content="Learn about Prudent Pet Insurance plans, coverage options, pricing, and claims process through PIPA Broker."
+        content="Learn about Kanguro Insurance plans, coverage options, pricing, and claims process through PIPA Broker."
       />
       <meta
         property="twitter:image"
@@ -93,26 +90,23 @@ const PrudentPet = () => {
       <meta name="robots" content="index, follow" />
       <meta name="language" content="English" />
       <meta name="revisit-after" content="7 days" />
-      <link
-        rel="canonical"
-        href="https://www.pipabroker.com/partner/prudent-pet"
-      />
+      <link rel="canonical" href="https://www.pipabroker.com/partner/kanguro" />
 
-      <title>Prudent Pet Insurance Partner | PIPA Broker</title>
+      <title>Kanguro Insurance Partner | PIPA Broker</title>
 
       <Header />
 
       <SectionContainer color="bg-(--coral-light) p-5">
         <PartnerHeader
           title="Kanguro Insurance"
-          reviewStars={4.8}
-          reviewCount={"2,353"}
-          imgUrl="/text_logos/prudent_logo_blue_horz.svg"
+          reviewStars={4.1}
+          reviewCount={"365"}
+          imgUrl="/text_logos/kanguro_logo_blue_horz.svg"
           className=""
         >
           Reviewed by Jeffrey Hanschmann, Licensed Insurance Producer
           <br />
-          Updated December 20, 2025
+          Updated January 9, 2026
         </PartnerHeader>
       </SectionContainer>
 
@@ -122,6 +116,18 @@ const PrudentPet = () => {
         id="section-navigation"
       >
         <HorizontalAnchorList anchors={sectionIDs} />
+      </SectionContainer>
+
+      <SectionContainer color="bg-white" className="py-6" id={sectionIDs[3].id}>
+        <ContentWithHeading heading="Why Kanguro?">
+          <p>
+            Kanguro describes itself as a bilingual, mobile-first pet insurance
+            platform built for today’s pet parents. The company aims to make
+            coverage simple, transparent, and easy to use through digital
+            claims, flexible plans, and real human support in both English and
+            Spanish.
+          </p>
+        </ContentWithHeading>
       </SectionContainer>
 
       <SectionContainer color="bg-white" id={sectionIDs[0].id}>
@@ -134,37 +140,47 @@ const PrudentPet = () => {
           </button>
         </ContentWithHeading>
       </SectionContainer>
+
       <SectionContainer color="bg-white" className="py-6" id={sectionIDs[1].id}>
         <ContentWithHeading heading="Plans Offered">
           <div className="flex flex-col gap-5 text-sm md:text-base">
             <span className="">
-              Prudent Pet offers the following main plan types:
+              Kanguro offers the following main plan types:
             </span>
             <div className="flex flex-col gap-2">
               <div className="flex flex-col gap-1">
-                <span className="font-bold tracking-widest">ACCIDENT-ONLY</span>
-                <span className="">Covers injuries caused by accidents.</span>
+                <span className="font-bold tracking-widest">
+                  ESSENTIAL CARE
+                </span>
+                <span className="">Covers accidents and illness.</span>
               </div>
               <div className="flex flex-col gap-1">
-                <span className="font-bold tracking-widest">ESSENTIAL</span>
+                <span className="font-bold tracking-widest">
+                  PREMIERE CARE +
+                </span>
                 <span className="">
-                  Accident & illness with limited annual benefit.
+                  Accidents and illnesses with limited wellness exams, tests and
+                  vaccines.
                 </span>
               </div>
               <div className="flex flex-col gap-1">
-                <span className="font-bold tracking-widest">ULTIMATE</span>
+                <span className="font-bold tracking-widest">
+                  EARLY YEARS CARE +{" "}
+                </span>
                 <span className="">
-                  Accident & illness with unlimited annual benefit.
+                  Accident & illness with wellness care for puppies.
                 </span>
               </div>
             </div>
             <span className="">
-              Each plan includes 24/7 Vet Chat and customizable deductible &
-              reimbursement levels.
+              Every plan comes with the Kanguro App, giving you 24/7 Televet,
+              pharmacy savings, cashback perks, missing-pet support, and easy
+              digital claims; plus customizable coverage (limits and
+              deductibles) and reimbursement levels from 70% to 90%.
             </span>
             <div className="flex flex-col gap-1">
               <span className="">
-                <span className="font-bold">Deductible Levels:</span> $100, 250,
+                <span className="font-bold">Deductible Levels:</span> $100, 200,
                 500, or 1,000
               </span>
               <span className="">
@@ -172,8 +188,8 @@ const PrudentPet = () => {
                 80%, or 90%
               </span>
               <span className="">
-                <span className="font-bold">Annual Limit Options:</span> $10,000
-                or Unlimited
+                <span className="font-bold">Annual Limit Options:</span>
+                {" "}$5,000–$30,000
               </span>
             </div>
           </div>
@@ -181,7 +197,7 @@ const PrudentPet = () => {
         <FetchQuoteButton className="mt-2" />
       </SectionContainer>
       <SectionContainer color="bg-white" className="py-6" id={sectionIDs[2].id}>
-        <ContentWithHeading heading="What’s Covered / Not Covered">
+        <ContentWithHeading heading="What's Covered / Not Covered">
           <div className="flex flex-col gap-6">
             <ContentWithImage
               heading="COVERED (ACCIDENT & ILLNESS PLANS)"
@@ -189,22 +205,22 @@ const PrudentPet = () => {
             >
               <div className="flex flex-col gap-2">
                 <span>
-                  Prudent Pet covers treatment for pet injuries and illnesses,
+                  Kanguro covers treatment for pet injuries and illnesses,
                   including but not limited to:
                 </span>
                 <ContentUnorderedList>
-                  <li>Accidents</li>
-                  <li>Illnesses, cancer & hospitalizations</li>
-                  <li>Behavioral issues (vet-treated)</li>
-                  <li>Breed-specific or orthopedic conditions</li>
-                  <li>Dental injuries & disease</li>
-                  <li>Alternative/holistic therapies</li>
+                  <li>Vet exam fees</li>
+                  <li>Diagnostics (lab work, imaging)</li>
+                  <li>Surgery & hospitalization</li>
+                  <li>Emergency care</li>
+                  <li>Medications and prescriptions</li>
+                  <li>Prosthetics and mobility aids</li>
+                  <li>Cancer treatments</li>
+                  <li>Behavioral exams/other medically necessary services</li>
+                  <li>Euthanasia</li>
                 </ContentUnorderedList>
               </div>
             </ContentWithImage>
-            <span className="px-2">
-              <em>Note: coverage depends on plan type and limits selected.</em>
-            </span>
             <ContentWithImage
               heading="NOT COVERED"
               imageSrc="/pages/partner/prudentpet/none.svg"
@@ -214,21 +230,16 @@ const PrudentPet = () => {
                 <ContentUnorderedList>
                   <li>Pre-existing conditions</li>
                   <li>Cosmetic or elective procedures</li>
-                  <li>Grooming, housing, training</li>
-                  <li>Routine care & exams (unless add-on purchased)</li>
-                  <li>Pet food or supplements</li>
-                  <li>Breeding, pregnancy, whelping</li>
+                  <li>Breeding, pregnancy, or whelping issues</li>
                   <li>
-                    Ligaments with Prior Conditions on the Opposing Knee or
-                    Ligament
+                    Some states may restrict alternative/behavioral treatments
                   </li>
-                  <li>Funerals, Urns, and burials</li>
                 </ContentUnorderedList>
               </div>
-            </ContentWithImage>
             <span className="w-full">
-              <em>Routine care isn’t covered without a wellness add-on.</em>
+              <em>Routine care isn't covered without a wellness add-on.</em>
             </span>
+            </ContentWithImage>
           </div>
         </ContentWithHeading>
         <FetchQuoteButton className="mt-2" />
@@ -237,17 +248,14 @@ const PrudentPet = () => {
         <ContentWithHeading heading="Routine Care Add-Ons">
           <ContentUnorderedList>
             <li>
-              <strong>Wellness Coverage Add-On:</strong> Reimburses basic
-              preventive care like vaccines, annual exams, fecal/blood tests,
-              heartworm/flea prevention, microchipping, etc. Wellness coverage
-              has no waiting period and does not require meeting deductibles
-              before reimbursement.
+              <strong>Premiere Care+ (Wellness):</strong> Includes added support
+              for prevention and overall health. Includes routine care like
+              checkups and vaccinations, with no deductible or waiting.
             </li>
             <li>
-              <strong>Veterinary Exam Fee Coverage:</strong> Helps cover exam or
-              consultation fees for diagnoses/treatment. Wellness coverage has
-              no waiting period and does not require meeting deductibles before
-              reimbursement.
+              <strong>Early Years Care+ (Puppy Care + Wellness):</strong> Made
+              for puppies. Covers early-stage needs and allows as well as a
+              wellness plan for everyday care from the very beginning.
             </li>
           </ContentUnorderedList>
         </ContentWithHeading>
@@ -255,11 +263,11 @@ const PrudentPet = () => {
       <SectionContainer color="bg-white" className="py-6" id={sectionIDs[4].id}>
         <ContentWithHeading heading="Enrollment Requirements">
           <ContentUnorderedList>
-            <li>Minimum age for enrollment: 8 weeks old.</li>
+            <li>Cat/Dog must be between 6 weeks and 14 years old.</li>
             <li>Must reside at a valid U.S. address.</li>
             <li>
-              Some reports mention an annual health check and dental exam to
-              maintain coverage.
+              Provide medical records for the past 12 months or as required to
+              understand the cat/dog current health status.
             </li>
           </ContentUnorderedList>
         </ContentWithHeading>
@@ -267,22 +275,13 @@ const PrudentPet = () => {
       <SectionContainer color="bg-white" className="py-6" id={sectionIDs[5].id}>
         <ContentWithHeading heading="Waiting Periods">
           <ContentUnorderedList>
-            <li>Accidents: 5 days</li>
-            <li>Illnesses: 14 days</li>
-            <li>Wellness: 0 days</li>
-            <li>
-              Knee / ligament/orthopedic issues: ~6 months (may be waived with
-              veterinary exam)
-            </li>
+            <li>Accident and Illness plans: 14 days</li>
+            <li>Prevention and wellness plans: 1 day</li>
           </ContentUnorderedList>
-          <em>
-            Waiting periods may vary by state and policy. Check the terms of
-            your policy’s details to confirm actual effective date of coverage.
-          </em>
         </ContentWithHeading>
       </SectionContainer>
       <SectionContainer color="bg-white" className="py-6" id={sectionIDs[6].id}>
-        <ContentWithHeading heading="How to File a Claim with Prudent Pet">
+        <ContentWithHeading heading="How to File a Claim with Kanguro Insurance">
           <ContentImageList>
             <ContentImageListItem
               imageUrl="/pages/partner/prudentpet/pet_insurance.svg"
@@ -303,9 +302,9 @@ const PrudentPet = () => {
                       className="font-bold cursor-pointer"
                       onClick={() => navigate("/info")}
                     >
-                      PIPA’s free tool
+                      PIPA's free tool
                     </a>{" "}
-                    to see if Prudent Pet is the best option for you and your
+                    to see if Kanguro is the best option for you and your
                     pet(s).
                   </em>
                 </span>
@@ -334,14 +333,12 @@ const PrudentPet = () => {
               </h3>
               <div className="ml-4">
                 <span>
-                  Claims can be submitted through one of the following Prudent
-                  Pet channels.
+                  Claims can be submitted through your Kanguro App. To file a
+                  claim, have the following documents ready:
                 </span>
                 <ul className="list-disc list-inside">
-                  <li>Online via portal</li>
-                  <li>Email</li>
-                  <li>Phone</li>
-                  <li>Fax</li>
+                  <li>A finalized invoice</li>
+                  <li>Detailed medical records</li>
                 </ul>
               </div>
             </ContentImageListItem>
@@ -354,27 +351,23 @@ const PrudentPet = () => {
               </h3>
               <div className="ml-4">
                 <span>
-                  Typical claim reimbursement average is approximately 1 to 3
-                  days after submission (may vary). The reimbursement amount
-                  will depend on your plan’s coverage.
+                  Typical claim reimbursement average is approximately 1 to 7
+                  days after submission in the Kanguro App (may vary). The
+                  reimbursement amount will depend on your plan’s coverage.
+                  You’ll know the status of your claim in real time and when
+                  your payment is on the way.
                 </span>
               </div>
             </ContentImageListItem>
           </ContentImageList>
         </ContentWithHeading>
-        <span className="px-2 w-full max-w-3xl">
-          <em>
-            Note: Claims must be filed within ~90 days after the end of the
-            policy term to be eligible.
-          </em>
-        </span>
       </SectionContainer>
       <SectionContainer color="bg-white" className="py-6" id={sectionIDs[7].id}>
-        <ContentWithHeading heading="Discounts Offered by Prudent Pet">
+        <ContentWithHeading heading="Discounts Offered by Kanguro">
           <ContentUnorderedList>
             <li>
-              <strong>Multi-pet discount:</strong> ~10% off premium when
-              enrolling more than one pet.
+              <strong>Multi-pet discount:</strong> 10% off when enrolling more
+              than one pet.
             </li>
           </ContentUnorderedList>
         </ContentWithHeading>
@@ -383,16 +376,22 @@ const PrudentPet = () => {
         <ContentWithHeading heading="Customer Support">
           <div className="flex flex-col gap-2 mb-2">
             <span className="mb-2">
-              Prudent Pet support can generally be reached via:
+              Kanguro support can generally be reached via:
             </span>
-            <span>Phone: 1-888-820-7739</span>
-            <span>Sales Email: sales@prudentpet.com</span>
-            <span>Veterinary / Info: info@prudentpet.com</span>
+            <span>Phone / Text / WhatsApp: 1-888-546-5264</span>
+            <span>Email: customersupport@kanguroinsurance.com</span>
+            <span>Bilingual English/Spanish support available.</span>
             <span>
               24/7 Vet Chat: included with policies (online chat with vet
               professionals)
             </span>
             <span></span>
+            <span>
+              <em>
+                Once you have coverage through Kanguro, the app also becomes a
+                key point of contact.
+              </em>
+            </span>
           </div>
         </ContentWithHeading>
       </SectionContainer>
@@ -404,12 +403,7 @@ const PrudentPet = () => {
               date and no claims filed.
             </li>
             <li>
-              After 30 days, a pro-rata refund of unused premium is issued.
-            </li>
-            <li>Policies automatically renew unless notified otherwise.</li>
-            <li>
-              Company may cancel for nonpayment or material misrepresentation
-              after specific timeframes.
+              After 30 days, a pro-rata refund of unused premium is issued
             </li>
           </ContentUnorderedList>
         </ContentWithHeading>
@@ -417,15 +411,18 @@ const PrudentPet = () => {
       <PartnerFooter>
         <div className="flex flex-col gap-4">
           <ContentWithHeading
-            heading="Prudent Pet is a highly rated modern pet insurer known for:"
+            heading="Kanguro is a digitally focused pet insurer known for:"
             headerClassName="text-sm sm:text-base"
             className="ml-0"
           >
             <ContentUnorderedList className="text-sm sm:text-base gap-1">
-              <li>High Trustpilot satisfaction (4.8-4.9 stars)</li>
-              <li>Flexible customizable plans and coverage levels</li>
-              <li>Fast claim reimbursement reported by many reviews</li>
-              <li>Optional wellness & exam fee add-ons available</li>
+              <li>
+                Competitive pricing with flexible deductible and reimbursement
+                options
+              </li>
+              <li>Bilingual English/Spanish customer support</li>
+              <li>Fast, app-based claims experience</li>
+              <li>Optional wellness coverage available as an add-on</li>
             </ContentUnorderedList>
           </ContentWithHeading>
           <ContentWithHeading
@@ -434,13 +431,13 @@ const PrudentPet = () => {
             className="ml-0"
           >
             <ContentUnorderedList className="text-sm sm:text-base gap-1">
-              <li>Minimum age for enrollment is 8 weeks old.</li>
-              <li>Routine and preventive care require optional add-ons.</li>
-              <li>Pre-existing conditions are excluded.</li>
-              <li>No deductible option higher than $1,000</li>
+              <li>Availability is limited to select U.S. states.</li>
               <li>
-                Some policy fine print (waiting period specifics) may vary by
-                state.
+                Routine and preventive care require an optional wellness add-on.
+              </li>
+              <li>
+                Pre-existing conditions are excluded, and coverage details may
+                vary by state.
               </li>
             </ContentUnorderedList>
           </ContentWithHeading>
@@ -451,4 +448,4 @@ const PrudentPet = () => {
   );
 };
 
-export default PrudentPet;
+export default Kanguro;

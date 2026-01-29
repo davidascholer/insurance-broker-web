@@ -1,0 +1,123 @@
+import type { AvailableComponent } from "../utils/types";
+
+export const ALL_LABELS = [
+  "Basics",
+  "Coverage",
+  "Costs",
+  "Comparison",
+  "Exclusions",
+  "Claims",
+  "Benefits",
+  "Pet Health",
+  "Types",
+  "Terminology",
+];
+
+export const sectionContainerComponents: AvailableComponent[] = [
+  {
+    type: "SectionContainer",
+    name: "Section Container",
+    icon: "📦",
+    description: "A container for grouping content with scroll behavior",
+    defaultProps: {
+      color: "bg-white",
+      id: "section-1",
+      children: [],
+    },
+  },
+];
+
+export const availableComponents: AvailableComponent[] = [
+  {
+    type: "InnerText",
+    name: "Inner Text",
+    icon: "✍️",
+    description: "Rich text with formatting options",
+    defaultProps: {
+      content: "<span>Enter your text here</span>",
+      fontFamily: "nunito-sans",
+    },
+  },
+  {
+    type: "HeaderWithText",
+    name: "Header With Text",
+    icon: "📝",
+    description: "Header with description text",
+    defaultProps: {
+      headerContent: "Section Header",
+      description: {
+        content: "<p>Description text goes here</p>",
+        fontFamily: "nunito-sans",
+      },
+      className: "",
+      headerClassName: "",
+    },
+  },
+  {
+    type: "PartnerHeader",
+    name: "Partner Header",
+    icon: "🏢",
+    description: "Header with logo, title, and review stars",
+    defaultProps: {
+      title: "Partner Name",
+      imgUrl: "/text_logos/prudent_logo_blue_horz.svg",
+      reviewStars: 4.5,
+      reviewCount: 1000,
+      description: {
+        content: "<p>Partner description goes here</p>",
+        fontFamily: "nunito-sans",
+      },
+    },
+  },
+  {
+    type: "PartnerFooter",
+    name: "Partner Footer",
+    icon: "👣",
+    description: "Footer with review section and CTA",
+    defaultProps: {
+      reviewContent: {
+        content: "<p>Review content goes here</p>",
+        fontFamily: "nunito-sans",
+      },
+    },
+  },
+  {
+    type: "ContentWithImage",
+    name: "Content With Image",
+    icon: "🖼️",
+    description: "Content section with heading, image, and text",
+    defaultProps: {
+      heading: "Section Heading",
+      imageSrc: "/backgrounds/cats_dogs_photo_3x2.webp",
+      content: {
+        content: "<p>Enter your content here</p>",
+        fontFamily: "nunito-sans",
+      },
+      className: "",
+      imageClassName: "",
+    },
+  },
+  {
+    type: "ContentUnorderedList",
+    name: "Content Unordered List",
+    icon: "📋",
+    description: "Bulleted list with multiple items",
+    defaultProps: {
+      listItems: [
+        {
+          content: "<p>List item 1</p>",
+          fontFamily: "nunito-sans",
+        },
+        {
+          content: "<p>List item 2</p>",
+          fontFamily: "nunito-sans",
+        },
+        {
+          content: "<p>List item 3</p>",
+          fontFamily: "nunito-sans",
+        },
+      ],
+      className: "",
+    },
+  },
+];

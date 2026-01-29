@@ -22,7 +22,11 @@ import KanguroEmbed from "./features/kanguro/pages/KanguroEmbed";
 import PartnerPage from "./pages/PartnerPage";
 import AboutUsPage from "./pages/AboutUsPage";
 import PrudentPet from "./pages/partner/PrudentPet";
+import Kanguro from "./pages/partner/Kanguro";
 import BlogPage from "./pages/BlogPage";
+import BlogCreationList from "./features/blog-creator/BlogCreationList";
+import BlogCreator from "./features/blog-creator/BlogCreator";
+import TestServer from "./pages/TestServer";
 
 const RouterWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -47,8 +51,11 @@ const AppRouter = () => {
         <Route path="/terminology" element={<Terminology />} />
         <Route path="/partner" element={<PartnerPage />} />
         <Route path="/partner/prudent-pet" element={<PrudentPet />} />
+        <Route path="/partner/kanguro" element={<Kanguro />} />
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/creator" element={<BlogCreationList />} />
+        <Route path="/blog/creator/:pageName" element={<BlogCreator />} />
         <Route
           path="/blog/what-is-pet-insurance"
           element={<WhatIsPetInsurance />}
@@ -80,6 +87,7 @@ const AppRouter = () => {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/licenses" element={<Licenses />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/test-server" element={<TestServer />} />
       </Routes>
     </RouterWrapper>
   );

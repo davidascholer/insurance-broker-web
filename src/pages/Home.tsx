@@ -147,7 +147,7 @@ const Home = () => {
               setKanguroImage("/insurers/kanguro_logo_white_wide.svg")
             }
             onClick={() => {
-              navigate("/partner");
+              navigate("/partner/kanguro");
             }}
           />
         </div>
