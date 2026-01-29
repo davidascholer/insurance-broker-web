@@ -6,6 +6,8 @@ import type {
   PartnerHeaderType,
   HeaderWithTextType,
   PartnerFooterType,
+  ContentWithImageType,
+  ContentUnorderedListType,
 } from "./export-types";
 import type { InternalComponentItem } from "./internal-types";
 
@@ -104,6 +106,34 @@ export const internalToExport = (
         component,
       };
     }
+    case "ContentWithImage": {
+      const component: ContentWithImageType = {
+        heading: (item.props.heading as string) || "Heading",
+        imageSrc: (item.props.imageSrc as string) || "",
+        content: (item.props.content as InnerTextType) || {
+          content: "<p>Content</p>",
+          fontFamily: "nunito-sans",
+        },
+        className: item.props.className as string | undefined,
+        imageClassName: item.props.imageClassName as string | undefined,
+      };
+      return {
+        name: "ContentWithImage",
+        component,
+      };
+    }
+    case "ContentUnorderedList": {
+      const component: ContentUnorderedListType = {
+        listItems: (item.props.listItems as InnerTextType[]) || [
+          { content: "<p>Item 1</p>", fontFamily: "nunito-sans" },
+        ],
+        className: item.props.className as string | undefined,
+      };
+      return {
+        name: "ContentUnorderedList",
+        component,
+      };
+    }
   }
 };
 
@@ -182,6 +212,33 @@ export const exportToInternal = (
         name: "Partner Footer",
         props: {
           reviewContent: comp.reviewContent,
+          className: comp.className,
+        },
+      };
+    }
+    case "ContentWithImage": {
+      const comp = item.component as ContentWithImageType;
+      return {
+        id,
+        type: "ContentWithImage",
+        name: "Content With Image",
+        props: {
+          heading: comp.heading,
+          imageSrc: comp.imageSrc,
+          content: comp.content,
+          className: comp.className,
+          imageClassName: comp.imageClassName,
+        },
+      };
+    }
+    case "ContentUnorderedList": {
+      const comp = item.component as ContentUnorderedListType;
+      return {
+        id,
+        type: "ContentUnorderedList",
+        name: "Content Unordered List",
+        props: {
+          listItems: comp.listItems,
           className: comp.className,
         },
       };

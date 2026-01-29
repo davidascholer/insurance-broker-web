@@ -16,6 +16,8 @@ export interface ComponentItem {
     | PartnerHeaderType
     | PartnerFooterType
     | HeaderWithTextType
+    | ContentWithImageType
+    | ContentUnorderedListType
     | Record<string, unknown>;
 }
 

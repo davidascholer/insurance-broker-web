@@ -579,6 +579,124 @@ const BlogCreator = () => {
       );
     }
 
+    // Special handling for ContentWithImage content (InnerTextType)
+    if (key === "content" && editingComponent?.type === "ContentWithImage") {
+      const innerTextValue = value as InnerTextType;
+      return (
+        <RichTextEditor
+          value={innerTextValue.content || "<p>Enter content</p>"}
+          onChange={(newContent) => {
+            updateProp(key, {
+              ...innerTextValue,
+              content: newContent,
+            });
+          }}
+          editingComponent={editingComponent}
+          onFontFamilyChange={(fontFamily) => {
+            updateProp(key, {
+              ...innerTextValue,
+              fontFamily,
+            });
+          }}
+        />
+      );
+    }
+
+    // Special handling for ContentUnorderedList listItems (Array<InnerTextType>)
+    if (key === "listItems" && editingComponent?.type === "ContentUnorderedList" && Array.isArray(value)) {
+      const items = value as InnerTextType[];
+
+      const addItem = () => {
+        const newItems = [
+          ...items,
+          {
+            content: "<p>New list item</p>",
+            fontFamily: "nunito-sans",
+          },
+        ];
+        updateProp(key, newItems);
+      };
+
+      const removeItem = (index: number) => {
+        const newItems = items.filter((_, i) => i !== index);
+        updateProp(key, newItems);
+      };
+
+      const updateItem = (index: number, field: keyof InnerTextType, newValue: unknown) => {
+        const newItems = [...items];
+        newItems[index] = { ...newItems[index], [field]: newValue };
+        updateProp(key, newItems);
+      };
+
+      return (
+        <div className="space-y-3">
+          {items.map((item, index) => (
+            <div
+              key={index}
+              className="p-4 border-2 border-gray-200 rounded-lg space-y-2 bg-gray-50"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-semibold text-sm text-(--primary-teal-dark)">
+                  Item {index + 1}
+                </span>
+                <button
+                  onClick={() => removeItem(index)}
+                  className="p-1 text-red-500 hover:bg-red-50 rounded"
+                  title="Remove item"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1">
+                  Content (Rich Text)
+                </label>
+                <div className="border border-gray-200 rounded p-2 bg-white">
+                  <RichTextEditor
+                    value={item.content || "<p>Enter content</p>"}
+                    editingComponent={null}
+                    onChange={(newContent) => {
+                      updateItem(index, "content", newContent);
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1">
+                  Font Family
+                </label>
+                <select
+                  value={item.fontFamily || "nunito-sans"}
+                  onChange={(e) => {
+                    updateItem(index, "fontFamily", e.target.value);
+                  }}
+                  className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:border-(--primary-teal)"
+                >
+                  <option value="nunito-sans">Nunito Sans</option>
+                  <option value="nunito-sans-light">Nunito Sans Light</option>
+                  <option value="nunito-sans-medium">Nunito Sans Medium</option>
+                  <option value="nunito-sans-semibold">Nunito Sans SemiBold</option>
+                  <option value="nunito-sans-bold">Nunito Sans Bold</option>
+                  <option value="sansita-regular">Sansita Regular</option>
+                  <option value="sansita-bold">Sansita Bold</option>
+                  <option value="sansita-extrabold">Sansita Extra Bold</option>
+                  <option value="sansita-black">Sansita Black</option>
+                </select>
+              </div>
+            </div>
+          ))}
+          <button
+            onClick={addItem}
+            className="w-full px-4 py-2 border-2 border-dashed border-(--primary-teal) text-(--primary-teal) rounded-lg hover:bg-(--light-pink) transition-colors font-semibold"
+          >
+            + Add Item
+          </button>
+        </div>
+      );
+    }
+
     // Special handling for imageListItems
     if (key === "imageListItems" && Array.isArray(value)) {
       const items = value as Array<{

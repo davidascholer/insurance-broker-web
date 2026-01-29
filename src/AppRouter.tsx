@@ -25,6 +25,7 @@ import PrudentPet from "./pages/partner/PrudentPet";
 import BlogPage from "./pages/BlogPage";
 import BlogCreationList from "./features/blog-creator/BlogCreationList";
 import BlogCreator from "./features/blog-creator/BlogCreator";
+import TestServer from "./pages/TestServer";
 
 const RouterWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -84,6 +85,7 @@ const AppRouter = () => {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/licenses" element={<Licenses />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/test-server" element={<TestServer />} />
       </Routes>
     </RouterWrapper>
   );

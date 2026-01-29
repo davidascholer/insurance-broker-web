@@ -81,4 +81,43 @@ export const availableComponents: AvailableComponent[] = [
       },
     },
   },
+  {
+    type: "ContentWithImage",
+    name: "Content With Image",
+    icon: "🖼️",
+    description: "Content section with heading, image, and text",
+    defaultProps: {
+      heading: "Section Heading",
+      imageSrc: "/backgrounds/cats_dogs_photo_3x2.webp",
+      content: {
+        content: "<p>Enter your content here</p>",
+        fontFamily: "nunito-sans",
+      },
+      className: "",
+      imageClassName: "",
+    },
+  },
+  {
+    type: "ContentUnorderedList",
+    name: "Content Unordered List",
+    icon: "📋",
+    description: "Bulleted list with multiple items",
+    defaultProps: {
+      listItems: [
+        {
+          content: "<p>List item 1</p>",
+          fontFamily: "nunito-sans",
+        },
+        {
+          content: "<p>List item 2</p>",
+          fontFamily: "nunito-sans",
+        },
+        {
+          content: "<p>List item 3</p>",
+          fontFamily: "nunito-sans",
+        },
+      ],
+      className: "",
+    },
+  },
 ];

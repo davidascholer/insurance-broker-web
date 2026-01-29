@@ -3,6 +3,8 @@ import PartnerHeader from "../templates/PartnerHeader";
 import HeaderWithText from "../templates/HeaderWithText";
 import SectionContainer from "../templates/SectionContainer";
 import InnerText from "../components/InnerText";
+import ContentWithImage from "../templates/ContentWithImage";
+import ContentUnorderedList from "../templates/ContentUnorderedList";
 import type {
   ComponentItem,
   PartnerFooterType,
@@ -10,6 +12,8 @@ import type {
   HeaderWithTextType,
   SectionContainerType,
   InnerTextType,
+  ContentWithImageType,
+  ContentUnorderedListType,
 } from "../utils/export-types";
 
 const RenderedComponent = ({ item }: { item: ComponentItem }) => {
@@ -65,6 +69,27 @@ const RenderedComponent = ({ item }: { item: ComponentItem }) => {
         <PartnerFooter
           className={footerProps.className}
           reviewContent={footerProps.reviewContent}
+        />
+      );
+    }
+    case "ContentWithImage": {
+      const contentWithImageProps = item.component as ContentWithImageType;
+      return (
+        <ContentWithImage
+          heading={contentWithImageProps.heading}
+          imageSrc={contentWithImageProps.imageSrc}
+          content={contentWithImageProps.content}
+          className={contentWithImageProps.className}
+          imageClassName={contentWithImageProps.imageClassName}
+        />
+      );
+    }
+    case "ContentUnorderedList": {
+      const contentUnorderedListProps = item.component as ContentUnorderedListType;
+      return (
+        <ContentUnorderedList
+          listItems={contentUnorderedListProps.listItems}
+          className={contentUnorderedListProps.className}
         />
       );
     }
