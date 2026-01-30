@@ -13,7 +13,7 @@ const PartnerFooter = ({
       <div className="flex flow-row flex-wrap justify-center items-start gap-0 max-w-5xl mx-auto">
         <div className="max-w-2xl p-8 w-full items-start justify-start flex flex-row flex-nowrap max-[500px]:flex-wrap max-[500px]:justify-center gap-4">
           <img
-            src={"/pages/partner/prudentpet/pipa_logo_sans_type.svg"}
+            src={"/pages/partner/pipa_logo_sans_type.svg"}
             alt={"PIPA Logo"}
             className={cn("w-20")}
           />

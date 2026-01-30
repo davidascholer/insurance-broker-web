@@ -104,7 +104,7 @@ const PrudentPet = () => {
 
       <SectionContainer color="bg-(--coral-light) p-5">
         <PartnerHeader
-          title="Kanguro Insurance"
+          title="Prudent Pet Insurance"
           reviewStars={4.8}
           reviewCount={"2,353"}
           imgUrl="/text_logos/prudent_logo_blue_horz.svg"
@@ -185,7 +185,7 @@ const PrudentPet = () => {
           <div className="flex flex-col gap-6">
             <ContentWithImage
               heading="COVERED (ACCIDENT & ILLNESS PLANS)"
-              imageSrc="/pages/partner/prudentpet/coverage.svg"
+              imageSrc="/pages/partner/coverage.svg"
             >
               <div className="flex flex-col gap-2">
                 <span>
@@ -207,7 +207,7 @@ const PrudentPet = () => {
             </span>
             <ContentWithImage
               heading="NOT COVERED"
-              imageSrc="/pages/partner/prudentpet/none.svg"
+              imageSrc="/pages/partner/none.svg"
             >
               <div className="flex flex-col gap-1">
                 <span>Standard exclusions include:</span>
@@ -285,7 +285,7 @@ const PrudentPet = () => {
         <ContentWithHeading heading="How to File a Claim with Prudent Pet">
           <ContentImageList>
             <ContentImageListItem
-              imageUrl="/pages/partner/prudentpet/pet_insurance.svg"
+              imageUrl="/pages/partner/pet_insurance.svg"
               imageAlt="Claim Step 1"
             >
               <h3>
@@ -312,7 +312,7 @@ const PrudentPet = () => {
               </div>
             </ContentImageListItem>
             <ContentImageListItem
-              imageUrl="/pages/partner/prudentpet/out_of_pocket.svg"
+              imageUrl="/pages/partner/out_of_pocket.svg"
               imageAlt="Claim Step 2"
             >
               <h3>
@@ -326,7 +326,7 @@ const PrudentPet = () => {
               </div>
             </ContentImageListItem>
             <ContentImageListItem
-              imageUrl="/pages/partner/prudentpet/submit.svg"
+              imageUrl="/pages/partner/submit.svg"
               imageAlt="Claim Step 3"
             >
               <h3>
@@ -346,7 +346,7 @@ const PrudentPet = () => {
               </div>
             </ContentImageListItem>
             <ContentImageListItem
-              imageUrl="/pages/partner/prudentpet/reimburse.svg"
+              imageUrl="/pages/partner/reimburse.svg"
               imageAlt="Claim Step 4"
             >
               <h3>

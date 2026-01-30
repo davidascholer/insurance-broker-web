@@ -21,8 +21,8 @@ const sectionIDs = [
   { id: "routine-care-add-ons", label: "ROUTINE CARE ADD-ONS" },
   { id: "enrollment-requirements", label: "ENROLLMENT REQUIREMENTS" },
   { id: "waiting-periods", label: "WAITING PERIODS" },
-  { id: "how-to-file-claim", label: "HOW TO FILE A CLAIM WITH PRUDENT PET" },
-  { id: "discounts-offered", label: "DISCOUNTS OFFERED BY PRUDENT PET" },
+  { id: "how-to-file-claim", label: "HOW TO FILE A CLAIM WITH KANGURO" },
+  { id: "discounts-offered", label: "DISCOUNTS OFFERED BY KANGURO" },
   { id: "customer-support", label: "CUSTOMER SUPPORT" },
   { id: "cancellation-policy", label: "CANCELLATION POLICY" },
 ];
@@ -201,7 +201,7 @@ const Kanguro = () => {
           <div className="flex flex-col gap-6">
             <ContentWithImage
               heading="COVERED (ACCIDENT & ILLNESS PLANS)"
-              imageSrc="/pages/partner/prudentpet/coverage.svg"
+              imageSrc="/pages/partner/coverage.svg"
             >
               <div className="flex flex-col gap-2">
                 <span>
@@ -223,7 +223,7 @@ const Kanguro = () => {
             </ContentWithImage>
             <ContentWithImage
               heading="NOT COVERED"
-              imageSrc="/pages/partner/prudentpet/none.svg"
+              imageSrc="/pages/partner/none.svg"
             >
               <div className="flex flex-col gap-1">
                 <span>Standard exclusions include:</span>
@@ -284,7 +284,7 @@ const Kanguro = () => {
         <ContentWithHeading heading="How to File a Claim with Kanguro Insurance">
           <ContentImageList>
             <ContentImageListItem
-              imageUrl="/pages/partner/prudentpet/pet_insurance.svg"
+              imageUrl="/pages/partner/pet_insurance.svg"
               imageAlt="Claim Step 1"
             >
               <h3>
@@ -311,7 +311,7 @@ const Kanguro = () => {
               </div>
             </ContentImageListItem>
             <ContentImageListItem
-              imageUrl="/pages/partner/prudentpet/out_of_pocket.svg"
+              imageUrl="/pages/partner/out_of_pocket.svg"
               imageAlt="Claim Step 2"
             >
               <h3>
@@ -325,7 +325,7 @@ const Kanguro = () => {
               </div>
             </ContentImageListItem>
             <ContentImageListItem
-              imageUrl="/pages/partner/prudentpet/submit.svg"
+              imageUrl="/pages/partner/submit.svg"
               imageAlt="Claim Step 3"
             >
               <h3>
@@ -343,7 +343,7 @@ const Kanguro = () => {
               </div>
             </ContentImageListItem>
             <ContentImageListItem
-              imageUrl="/pages/partner/prudentpet/reimburse.svg"
+              imageUrl="/pages/partner/reimburse.svg"
               imageAlt="Claim Step 4"
             >
               <h3>
