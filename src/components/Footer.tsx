@@ -120,7 +120,7 @@ const Footer = ({ className }: { className?: string }) => {
             items={[{ url: "/partner", msg: "Partner with Us" }]}
           >
             <Link
-              to="mailto:admin@pipabroker.com"
+              to="mailto:Support@pipabroker.com"
               target="_blank"
               className="cursor-pointer nunito-sans-medium transition-transform duration-200 ease hover:-translate-y-0.5"
             >

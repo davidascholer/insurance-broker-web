@@ -167,7 +167,7 @@ const MobileHeader = ({ showFetchButton = true }: HeaderProps) => {
             </button>
 
             <Link
-              to="mailto:admin@pipabroker.com"
+              to="mailto:Support@pipabroker.com"
               className="cursor-pointer active:scale-95 transition-transform duration-150 ease-in-out touch-manipulation w-full text-center"
               aria-label="Contact PIPA Broker via email"
               onClick={closeMenu}

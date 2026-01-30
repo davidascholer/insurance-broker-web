@@ -487,7 +487,7 @@ const Privacy = () => {
           By default, we disable the submission of personal information to our
           Sites from users using European Union and United Kingdom IP addresses.
           If you need access to your account and are using an E.U. or U.K. IP
-          address, please email&nbsp;<strong>admin@pipabroker.com</strong>
+          address, please email&nbsp;<strong>Support@pipabroker.com</strong>
           &nbsp;with (i) a description of the access and/or help you need, and
           (ii) an express consent to use any personal information in our
           possession to respond to your request.
@@ -538,7 +538,7 @@ const Privacy = () => {
         </p>
         <p className="whitespace-pre-wrap">
           If you wish to opt-out of certain uses of your personal information by
-          our Services, email us at&nbsp;<strong>admin@pipabroker.com</strong>
+          our Services, email us at&nbsp;<strong>Support@pipabroker.com</strong>
           &nbsp;and let us know what you wish to opt-out of. Please be advised
           that certain uses and sharing of your information may be required to
           continue providing certain Services to you, and that you will not be
@@ -573,7 +573,7 @@ const Privacy = () => {
         </p>
         <p className="whitespace-pre-wrap">
           You can opt out of receiving marketing communications by emailing us
-          at&nbsp;<strong>admin@pipabroker.com</strong>, clicking the
+          at&nbsp;<strong>Support@pipabroker.com</strong>, clicking the
           unsubscribe link at the bottom of email communications (to opt out of
           marketing emails), or replying <strong>STOP</strong> to text message
           communications (to opt out of marketing text messages).
@@ -793,7 +793,7 @@ const Privacy = () => {
           If you have additional questions or would like more information
           regarding our information collection, use of information, or
           disclosure practices, please feel free to contact us at&nbsp;
-          <strong>admin@pipabroker.com</strong>.
+          <strong>Support@pipabroker.com</strong>.
         </p>
       </div>
       <Footer />

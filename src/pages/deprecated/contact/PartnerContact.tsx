@@ -54,7 +54,7 @@ const PartnerContact = () => {
             potential customers? Let’s connect!
           </p>
           <p>
-            admin@pipabroker.com<br></br>(747) 276-8262
+            Support@pipabroker.com<br></br>(747) 276-8262
           </p>
           <ContactForm type={"partner"} />
         </div>
