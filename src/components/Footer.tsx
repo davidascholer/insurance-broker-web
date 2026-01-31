@@ -101,7 +101,7 @@ const Footer = ({ className }: { className?: string }) => {
             className="min-[768px]:max-w-[175px]"
             items={[
               { url: "/partner/prudent-pet", msg: "Prudent Pet" },
-              { url: "/partner", msg: "Kanguro" },
+              { url: "/partner/kanguro", msg: "Kanguro" },
               { url: "/partner", msg: "Become a Partner" },
             ]}
           />
