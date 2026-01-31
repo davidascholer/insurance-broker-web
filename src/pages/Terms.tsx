@@ -414,7 +414,7 @@ const Terms = () => {
         <p className="whitespace-pre-wrap">Copyright Agent:</p>
         <p className="whitespace-pre-wrap">
           For clarity, only copyright infringement notices should be sent to our
-          Copyright Agent at&nbsp;<strong>admin@pipabroker.com</strong>
+          Copyright Agent at&nbsp;<strong>Support@pipabroker.com</strong>
           .&nbsp;&nbsp;You acknowledge that if you fail to comply with all of
           the requirements of this section, your notice may not be valid.
         </p>
@@ -812,7 +812,7 @@ const Terms = () => {
           a statement of the legal and factual basis of the claim, and (3) a
           description of the remedy sought. Any demand for arbitration by you
           must be delivered to Attn. Director of Legal PIPA Broker, LLC, 1706 SW
-          Holly St, Seattle, WA, 98106 and <strong>admin@pipabroker.com</strong>
+          Holly St, Seattle, WA, 98106 and <strong>Support@pipabroker.com</strong>
           . The arbitration will be conducted by the American Arbitration
           Association (“&nbsp;<strong>AAA</strong>”), an established alternative
           dispute resolution provider, and conducted under AAA’s most current
@@ -905,7 +905,7 @@ const Terms = () => {
           any future material change to this Arbitration Agreement, you may
           reject that change within thirty (30) days of such change becoming
           effective by emailing PIPA a notice of your rejection to{" "}
-          <strong>admin@pipabroker.com</strong>&nbsp;&nbsp;Your rejection of any
+          <strong>Support@pipabroker.com</strong>&nbsp;&nbsp;Your rejection of any
           such changes shall not affect the enforceability of any prior version
           of this Arbitration Agreement, or of any other agreement to arbitrate,
           that you previously entered into with PIPA.

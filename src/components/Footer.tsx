@@ -101,7 +101,7 @@ const Footer = ({ className }: { className?: string }) => {
             className="min-[768px]:max-w-[175px]"
             items={[
               { url: "/partner/prudent-pet", msg: "Prudent Pet" },
-              { url: "/partner", msg: "Kanguro" },
+              { url: "/partner/kanguro", msg: "Kanguro" },
               { url: "/partner", msg: "Become a Partner" },
             ]}
           />
@@ -120,7 +120,7 @@ const Footer = ({ className }: { className?: string }) => {
             items={[{ url: "/partner", msg: "Partner with Us" }]}
           >
             <Link
-              to="mailto:admin@pipabroker.com"
+              to="mailto:Support@pipabroker.com"
               target="_blank"
               className="cursor-pointer nunito-sans-medium transition-transform duration-200 ease hover:-translate-y-0.5"
             >
