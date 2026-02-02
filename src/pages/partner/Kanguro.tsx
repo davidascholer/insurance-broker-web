@@ -118,7 +118,7 @@ const Kanguro = () => {
         <HorizontalAnchorList anchors={sectionIDs} />
       </SectionContainer>
 
-      <SectionContainer color="bg-white" className="py-6" id={sectionIDs[3].id}>
+      <SectionContainer color="bg-white" className="py-6">
         <ContentWithHeading heading="Why Kanguro?">
           <p>
             Kanguro describes itself as a bilingual, mobile-first pet insurance
@@ -188,8 +188,8 @@ const Kanguro = () => {
                 80%, or 90%
               </span>
               <span className="">
-                <span className="font-bold">Annual Limit Options:</span>
-                {" "}$5,000–$30,000
+                <span className="font-bold">Annual Limit Options:</span>{" "}
+                $5,000–$30,000
               </span>
             </div>
           </div>
@@ -236,9 +236,9 @@ const Kanguro = () => {
                   </li>
                 </ContentUnorderedList>
               </div>
-            <span className="w-full">
-              <em>Routine care isn't covered without a wellness add-on.</em>
-            </span>
+              <span className="w-full">
+                <em>Routine care isn't covered without a wellness add-on.</em>
+              </span>
             </ContentWithImage>
           </div>
         </ContentWithHeading>
