@@ -247,76 +247,79 @@ const AnalyticsCharts = () => {
     return Object.entries(counts).map(([name, value]) => ({ name, value }));
   }, [linksData]);
 
-  // // Map zip codes to states (first 3 digits to state mapping)
-  // const zipToState = (zip: string): string => {
-  //   const zipNum = parseInt(zip.substring(0, 3));
-  //   if (zipNum >= 35 && zipNum <= 36) return "AL";
-  //   if (zipNum >= 995 && zipNum <= 999) return "AK";
-  //   if (zipNum >= 85 && zipNum <= 86) return "AZ";
-  //   if (zipNum >= 716 && zipNum <= 729) return "AR";
-  //   if (zipNum >= 90 && zipNum <= 96) return "CA";
-  //   if (zipNum >= 80 && zipNum <= 81) return "CO";
-  //   if (zipNum >= 60 && zipNum <= 69) return "CT";
-  //   if (zipNum >= 197 && zipNum <= 199) return "DE";
-  //   if (zipNum >= 320 && zipNum <= 349) return "FL";
-  //   if (zipNum >= 30 && zipNum <= 31) return "GA";
-  //   if (zipNum >= 967 && zipNum <= 968) return "HI";
-  //   if (zipNum >= 832 && zipNum <= 838) return "ID";
-  //   if (zipNum >= 60 && zipNum <= 62) return "IL";
-  //   if (zipNum >= 46 && zipNum <= 47) return "IN";
-  //   if (zipNum >= 50 && zipNum <= 52) return "IA";
-  //   if (zipNum >= 66 && zipNum <= 67) return "KS";
-  //   if (zipNum >= 40 && zipNum <= 42) return "KY";
-  //   if (zipNum >= 700 && zipNum <= 714) return "LA";
-  //   if (zipNum >= 39 && zipNum <= 49) return "ME";
-  //   if (zipNum >= 206 && zipNum <= 219) return "MD";
-  //   if (zipNum >= 10 && zipNum <= 27) return "MA";
-  //   if (zipNum >= 480 && zipNum <= 499) return "MI";
-  //   if (zipNum >= 550 && zipNum <= 567) return "MN";
-  //   if (zipNum >= 386 && zipNum <= 397) return "MS";
-  //   if (zipNum >= 630 && zipNum <= 658) return "MO";
-  //   if (zipNum >= 590 && zipNum <= 599) return "MT";
-  //   if (zipNum >= 680 && zipNum <= 693) return "NE";
-  //   if (zipNum >= 889 && zipNum <= 898) return "NV";
-  //   if (zipNum >= 30 && zipNum <= 38) return "NH";
-  //   if (zipNum >= 70 && zipNum <= 89) return "NJ";
-  //   if (zipNum >= 870 && zipNum <= 884) return "NM";
-  //   if (zipNum >= 100 && zipNum <= 149) return "NY";
-  //   if (zipNum >= 270 && zipNum <= 289) return "NC";
-  //   if (zipNum >= 580 && zipNum <= 588) return "ND";
-  //   if (zipNum >= 430 && zipNum <= 458) return "OH";
-  //   if (zipNum >= 730 && zipNum <= 749) return "OK";
-  //   if (zipNum >= 970 && zipNum <= 979) return "OR";
-  //   if (zipNum >= 150 && zipNum <= 196) return "PA";
-  //   if (zipNum >= 28 && zipNum <= 29) return "RI";
-  //   if (zipNum >= 290 && zipNum <= 299) return "SC";
-  //   if (zipNum >= 570 && zipNum <= 577) return "SD";
-  //   if (zipNum >= 370 && zipNum <= 385) return "TN";
-  //   if ((zipNum >= 750 && zipNum <= 799) || (zipNum >= 885 && zipNum <= 888))
-  //     return "TX";
-  //   if (zipNum >= 840 && zipNum <= 847) return "UT";
-  //   if (zipNum >= 50 && zipNum <= 59) return "VT";
-  //   if (zipNum >= 220 && zipNum <= 246) return "VA";
-  //   if (zipNum >= 980 && zipNum <= 994) return "WA";
-  //   if (zipNum >= 247 && zipNum <= 268) return "WV";
-  //   if (zipNum >= 530 && zipNum <= 549) return "WI";
-  //   if (zipNum >= 820 && zipNum <= 831) return "WY";
-  //   if (zipNum >= 200 && zipNum <= 205) return "DC";
-  //   return "Unknown";
-  // };
+  // Map zip codes to states (first 3 digits to state mapping)
+  const zipToState = (zip: string): string => {
+    const zipNum = parseInt(zip.substring(0, 3));
+    if (zipNum >= 35 && zipNum <= 36) return "AL";
+    if (zipNum >= 995 && zipNum <= 999) return "AK";
+    if (zipNum >= 85 && zipNum <= 86) return "AZ";
+    if (zipNum >= 716 && zipNum <= 729) return "AR";
+    if (zipNum >= 90 && zipNum <= 96) return "CA";
+    if (zipNum >= 80 && zipNum <= 81) return "CO";
+    if (zipNum >= 60 && zipNum <= 69) return "CT";
+    if (zipNum >= 197 && zipNum <= 199) return "DE";
+    if (zipNum >= 320 && zipNum <= 349) return "FL";
+    if (zipNum >= 30 && zipNum <= 31) return "GA";
+    if (zipNum >= 967 && zipNum <= 968) return "HI";
+    if (zipNum >= 832 && zipNum <= 838) return "ID";
+    if (zipNum >= 60 && zipNum <= 62) return "IL";
+    if (zipNum >= 46 && zipNum <= 47) return "IN";
+    if (zipNum >= 50 && zipNum <= 52) return "IA";
+    if (zipNum >= 66 && zipNum <= 67) return "KS";
+    if (zipNum >= 40 && zipNum <= 42) return "KY";
+    if (zipNum >= 700 && zipNum <= 714) return "LA";
+    if (zipNum >= 39 && zipNum <= 49) return "ME";
+    if (zipNum >= 206 && zipNum <= 219) return "MD";
+    if (zipNum >= 10 && zipNum <= 27) return "MA";
+    if (zipNum >= 480 && zipNum <= 499) return "MI";
+    if (zipNum >= 550 && zipNum <= 567) return "MN";
+    if (zipNum >= 386 && zipNum <= 397) return "MS";
+    if (zipNum >= 630 && zipNum <= 658) return "MO";
+    if (zipNum >= 590 && zipNum <= 599) return "MT";
+    if (zipNum >= 680 && zipNum <= 693) return "NE";
+    if (zipNum >= 889 && zipNum <= 898) return "NV";
+    if (zipNum >= 30 && zipNum <= 38) return "NH";
+    if (zipNum >= 70 && zipNum <= 89) return "NJ";
+    if (zipNum >= 870 && zipNum <= 884) return "NM";
+    if (zipNum >= 100 && zipNum <= 149) return "NY";
+    if (zipNum >= 270 && zipNum <= 289) return "NC";
+    if (zipNum >= 580 && zipNum <= 588) return "ND";
+    if (zipNum >= 430 && zipNum <= 458) return "OH";
+    if (zipNum >= 730 && zipNum <= 749) return "OK";
+    if (zipNum >= 970 && zipNum <= 979) return "OR";
+    if (zipNum >= 150 && zipNum <= 196) return "PA";
+    if (zipNum >= 28 && zipNum <= 29) return "RI";
+    if (zipNum >= 290 && zipNum <= 299) return "SC";
+    if (zipNum >= 570 && zipNum <= 577) return "SD";
+    if (zipNum >= 370 && zipNum <= 385) return "TN";
+    if ((zipNum >= 750 && zipNum <= 799) || (zipNum >= 885 && zipNum <= 888))
+      return "TX";
+    if (zipNum >= 840 && zipNum <= 847) return "UT";
+    if (zipNum >= 50 && zipNum <= 59) return "VT";
+    if (zipNum >= 220 && zipNum <= 246) return "VA";
+    if (zipNum >= 980 && zipNum <= 994) return "WA";
+    if (zipNum >= 247 && zipNum <= 268) return "WV";
+    if (zipNum >= 530 && zipNum <= 549) return "WI";
+    if (zipNum >= 820 && zipNum <= 831) return "WY";
+    if (zipNum >= 200 && zipNum <= 205) return "DC";
+    return "Unknown";
+  };
 
-  // const stateDistribution = useMemo(() => {
-  //   const counts: Record<string, number> = {};
-  //   userObjectsData.forEach((user) => {
-  //     if (user.zip) {
-  //       const state = zipToState(user.zip);
-  //       if (state !== "Unknown") {
-  //         counts[state] = (counts[state] || 0) + 1;
-  //       }
-  //     }
-  //   });
-  //   return counts;
-  // }, [userObjectsData]);
+  const stateDistribution = useMemo(() => {
+    const counts: Record<string, number> = {};
+    userObjectsData.forEach((user) => {
+      if (user.zip) {
+        const state = zipToState(user.zip);
+        if (state !== "Unknown") {
+          counts[state] = (counts[state] || 0) + 1;
+        }
+      }
+    });
+    // Convert to array format for charts and sort by count descending
+    return Object.entries(counts)
+      .map(([name, value]) => ({ name, value }))
+      .sort((a, b) => b.value - a.value);
+  }, [userObjectsData]);
 
   // Create tables
   const linksTable = useReactTable({
@@ -774,6 +777,23 @@ const AnalyticsCharts = () => {
             </BarChart>
           </ResponsiveContainer>
         </div>
+      </div>
+
+      {/* State Distribution Chart */}
+      <div className="bg-white p-6 rounded-lg shadow mt-8">
+        <h2 className="text-xl font-semibold mb-4 text-(--primary-teal-dark)">
+          User Distribution by State
+        </h2>
+        <ResponsiveContainer width="100%" height={400}>
+          <BarChart data={stateDistribution}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="value" fill="#2d6a7b" name="Number of Users" />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
 
       {/* Summary Stats */}
