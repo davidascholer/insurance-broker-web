@@ -92,6 +92,11 @@ const Admin = () => {
     localStorage.setItem("pipa-data-token", token);
   };
 
+  const handleSignOut = () => {
+    localStorage.removeItem("pipaAdminAccessToken");
+    window.location.reload();
+  };
+
   if (loading) {
     return (
       <PageContainer>
@@ -143,11 +148,20 @@ const Admin = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center p-8">
-      <h3 className="text-xl font-semibold mb-4">Blog Tool</h3>
+    <div className="flex flex-col items-center justify-center p-8 gap-6">
       <Link to="/blog/creator">
         <Button className="px-6 py-2">Go to Blog Tool</Button>
       </Link>
+      <Link to="/analytics">
+        <Button className="px-6 py-2">Go to Analytics</Button>
+      </Link>
+      <Button
+        onClick={handleSignOut}
+        variant="outline"
+        className="px-6 py-2 border-red-500 text-red-500 hover:bg-red-50"
+      >
+        Sign Out
+      </Button>
     </div>
   );
 };
