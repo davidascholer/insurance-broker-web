@@ -31,14 +31,14 @@ const UITCustomContainer = ({
       className={cn(
         "w-full m-0 p-0 mx-auto",
         backgroundColorClassName,
-        className
+        className,
       )}
     >
       <div
         className={cn(
           "flex flex-row flex-wrap justify-center items-center gap-2 p-2 max-w-7xl mx-auto",
           flexClassNames,
-          flexDirection
+          flexDirection,
         )}
       >
         {children}
@@ -60,7 +60,7 @@ const UITCustomPreHeader = ({
     <h2
       className={cn(
         `text-(${textColor}) text-lg font-bold whitespace-pre-wrap tracking-widest text-center`,
-        preHeaderClassNames
+        preHeaderClassNames,
       )}
     >
       {text}
@@ -82,7 +82,7 @@ const UITCustomHeaderH1 = ({
       <h1
         className={cn(
           `text-(${textColor}) text-5xl sansita-bold whitespace-pre-wrap text-center`,
-          headerClassNames
+          headerClassNames,
         )}
       >
         {text}
@@ -105,7 +105,7 @@ const UITCustomHeader = ({
       <h2
         className={cn(
           `text-(${textColor}) text-5xl sansita-bold whitespace-pre-wrap text-center`,
-          headerClassNames
+          headerClassNames,
         )}
       >
         {text}
@@ -128,7 +128,7 @@ const UITCustomHeaderH3 = ({
       <h3
         className={cn(
           `text-(${textColor}) text-5xl sansita-bold whitespace-pre-wrap text-center`,
-          headerClassNames
+          headerClassNames,
         )}
       >
         {text}
@@ -150,7 +150,7 @@ const UITCustomSecondaryHeader = ({
     <h3
       className={cn(
         `text-(${textColor}) text-4xl sansita-bold whitespace-pre-wrap text-center`,
-        headerClassNames
+        headerClassNames,
       )}
     >
       {text}
@@ -193,7 +193,7 @@ const UITCustomParagraph = ({
     <p
       className={cn(
         `text-(${textColor}) nunito-sans font-light whitespace-pre-wrap text-center`,
-        paragraphClassNames
+        paragraphClassNames,
       )}
     >
       {text}
@@ -245,7 +245,7 @@ const UITCustomText = ({
     <span
       className={cn(
         `text-(${textColor}) w-full nunito-sans font-bold tracking-normal whitespace-pre-wrap text-sm text-center`,
-        textClassNames
+        textClassNames,
       )}
     >
       {text}
@@ -296,7 +296,7 @@ const UITCustomCircularImage = ({
         alt={alt ?? ""}
         className={cn(
           `rounded-full w-56 aspect-square object-cover object-center`,
-          imageClassName
+          imageClassName,
         )}
       />
     </div>
@@ -308,38 +308,60 @@ const AboutUsPage = () => {
 
   return (
     <div className="bg-(--light-pink) pt-24">
+      <meta
+        name="title"
+        content="About PIPA Broker | Simplifying Pet Insurance Decisions"
+      />
+      <meta
+        name="description"
+        content="Learn about PIPA Broker and our mission to simplify pet insurance. We help pet owners compare trusted plans, understand coverage, and make smarter decisions with confidence."
+      />
+      <meta
+        name="keywords"
+        content="about PIPA Broker, pet insurance broker, pet insurance comparison, dog insurance, cat insurance, pet coverage options"
+      />
+      <meta name="author" content="PIPA Broker" />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="https://www.pipabroker.com/about-us" />
+      <meta
+        property="og:title"
+        content="About PIPA Broker | Simplifying Pet Insurance Decisions"
+      />
+      <meta
+        property="og:description"
+        content="Learn about PIPA Broker and our mission to simplify pet insurance. We help pet owners compare trusted plans, understand coverage, and make smarter decisions with confidence."
+      />
+      <meta
+        property="og:image"
+        content="https://www.pipabroker.com/og-image.png"
+      />
+      <meta property="og:site_name" content="PIPA Broker" />
+      <meta property="twitter:card" content="summary_large_image" />
+      <meta
+        property="twitter:url"
+        content="https://www.pipabroker.com/about-us"
+      />
+      <meta
+        property="twitter:title"
+        content="About PIPA Broker | Simplifying Pet Insurance Decisions"
+      />
+      <meta
+        property="twitter:description"
+        content="Learn about PIPA Broker and our mission to simplify pet insurance. We help pet owners compare trusted plans, understand coverage, and make smarter decisions with confidence."
+      />
+      <meta
+        property="twitter:image"
+        content="https://www.pipabroker.com/twitter-image.png"
+      />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta name="robots" content="index, follow" />
+      <meta name="language" content="English" />
+      <meta name="revisit-after" content="7 days" />
+      <link rel="canonical" href="https://www.pipabroker.com/about-us" />
 
-      <meta name="title" content="About PIPA Broker | Simplifying Pet Insurance Decisions" />
-<meta name="description"
-  content="Learn about PIPA Broker and our mission to simplify pet insurance. We help pet owners compare trusted plans, understand coverage, and make smarter decisions with confidence." />
-<meta name="keywords"
-  content="about PIPA Broker, pet insurance broker, pet insurance comparison, dog insurance, cat insurance, pet coverage options" />
-<meta name="author" content="PIPA Broker" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://www.pipabroker.com/about-us" />
-<meta property="og:title" content="About PIPA Broker | Simplifying Pet Insurance Decisions" />
-<meta property="og:description"
-  content="Learn about PIPA Broker and our mission to simplify pet insurance. We help pet owners compare trusted plans, understand coverage, and make smarter decisions with confidence." />
-<meta property="og:image" content="https://www.pipabroker.com/og-image.png" />
-<meta property="og:site_name" content="PIPA Broker" />
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content="https://www.pipabroker.com/about-us" />
-<meta property="twitter:title" content="About PIPA Broker | Simplifying Pet Insurance Decisions" />
-<meta property="twitter:description"
-  content="Learn about PIPA Broker and our mission to simplify pet insurance. We help pet owners compare trusted plans, understand coverage, and make smarter decisions with confidence." />
-<meta property="twitter:image" content="https://www.pipabroker.com/twitter-image.png" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta name="robots" content="index, follow" />
-<meta name="language" content="English" />
-<meta name="revisit-after" content="7 days" />
-<link rel="canonical" href="https://www.pipabroker.com/about-us" />
+      <title>About PIPA Broker | Simplifying Pet Insurance Decisions</title>
 
-<title>About PIPA Broker | Simplifying Pet Insurance Decisions</title>
-
-      
-
-      
       <Header />
       <UITCustomContainer
         backgroundColorClassName={`bg-(${pipaColorOptions.tealDark})`}
@@ -659,7 +681,7 @@ Fast and simple, we make finding pet insurance modern and stress-free. Answer a 
       </UITCustomContainer>
       <section
         className={cn(
-          "w-full bg-[url('/backgrounds/bear_quote_16x9.webp')] min-h-[600px] bg-no-repeat bg-cover bg-[30%_90%] flex justify-start py-8 text-white min-md:bg-left-top"
+          "w-full bg-[url('/backgrounds/bear_quote_16x9.webp')] min-h-[600px] bg-no-repeat bg-cover bg-[30%_90%] flex justify-start py-8 text-white min-md:bg-left-top",
         )}
         aria-label="Hero section with main call to action"
       >

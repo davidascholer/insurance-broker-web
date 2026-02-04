@@ -1,16 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import {
-  GripVertical,
-  Trash2,
-  Eye,
-  X,
-  Edit,
-} from "lucide-react";
+import { GripVertical, Trash2, Eye, X, Edit } from "lucide-react";
 import Header from "@/components/header/Header";
 import Footer from "@/components/Footer";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 
 // Import types
 import type { ModalState } from "./utils/types";
@@ -42,7 +37,9 @@ import { internalToExport } from "./utils/helpers";
 import { savePage as savePageApi } from "./api/blogApi";
 
 const BlogCreator = () => {
+  useRequireAuth();
   const { pageName: urlPageName } = useParams<{ pageName: string }>();
+  const navigate = useNavigate();
   const [components, setComponents] = useState<InternalComponentItem[]>([]);
   const [pageName, setPageName] = useState("");
 
@@ -50,7 +47,7 @@ const BlogCreator = () => {
   const [blogTitle, setBlogTitle] = useState("");
   const [blogDescription, setBlogDescription] = useState("");
   const [blogDate, setBlogDate] = useState(
-    new Date().toISOString().split("T")[0]
+    new Date().toISOString().split("T")[0],
   );
   const [blogImageUrl, setBlogImageUrl] = useState("https://picsum.photos/200");
   const [blogLabels, setBlogLabels] = useState<string[]>([]);
@@ -150,7 +147,7 @@ const BlogCreator = () => {
 
       // Find the page by name
       const existingPageIndex = existingPages.findIndex(
-        (p) => p.name === pageName
+        (p) => p.name === pageName,
       );
 
       if (existingPageIndex >= 0) {
@@ -187,7 +184,7 @@ const BlogCreator = () => {
   const handleDragStart = (
     type: string,
     e: React.DragEvent,
-    isContainer = false
+    isContainer = false,
   ) => {
     e.dataTransfer.effectAllowed = "copy";
     setDraggedComponent(type);
@@ -198,7 +195,7 @@ const BlogCreator = () => {
     index: number,
     e: React.DragEvent,
     containerId?: string,
-    isContainer = false
+    isContainer = false,
   ) => {
     e.dataTransfer.effectAllowed = "move";
     setDraggedIndex(index);
@@ -208,16 +205,16 @@ const BlogCreator = () => {
 
   const handleDragOver = (e: React.DragEvent, targetContainerId?: string) => {
     e.preventDefault();
-    
+
     // Check if this is an invalid drop target
-    const isInvalid = 
+    const isInvalid =
       // Case 1: Section Container being dragged into another container
       (targetContainerId && isDraggingSectionContainer) ||
       // Case 2: Regular component being dragged onto canvas (not into a container)
       (!targetContainerId && !isDraggingSectionContainer);
-    
+
     setIsInvalidDropTarget(isInvalid);
-    
+
     if (isInvalid) {
       e.dataTransfer.dropEffect = "none";
     } else {
@@ -232,7 +229,7 @@ const BlogCreator = () => {
   const handleDrop = (
     e: React.DragEvent,
     dropIndex?: number,
-    targetContainerId?: string
+    targetContainerId?: string,
   ) => {
     e.preventDefault();
     e.stopPropagation();
@@ -277,14 +274,14 @@ const BlogCreator = () => {
         // Drop into a container
         const newComponents = [...components];
         const containerIndex = newComponents.findIndex(
-          (c) => c.id === targetContainerId
+          (c) => c.id === targetContainerId,
         );
         if (containerIndex >= 0 && newComponents[containerIndex].children) {
           if (dropIndex !== undefined) {
             newComponents[containerIndex].children!.splice(
               dropIndex,
               0,
-              newComponent
+              newComponent,
             );
           } else {
             newComponents[containerIndex].children!.push(newComponent);
@@ -311,7 +308,7 @@ const BlogCreator = () => {
         // Reordering within the same container
         const newComponents = [...components];
         const containerIndex = newComponents.findIndex(
-          (c) => c.id === targetContainerId
+          (c) => c.id === targetContainerId,
         );
         if (
           containerIndex >= 0 &&
@@ -340,10 +337,10 @@ const BlogCreator = () => {
         // Moving between containers
         const newComponents = [...components];
         const sourceIndex = newComponents.findIndex(
-          (c) => c.id === draggedFromContainer
+          (c) => c.id === draggedFromContainer,
         );
         const targetIndex = newComponents.findIndex(
-          (c) => c.id === targetContainerId
+          (c) => c.id === targetContainerId,
         );
 
         if (
@@ -399,7 +396,11 @@ const BlogCreator = () => {
     });
   };
 
-  const handleEdit = (component: InternalComponentItem, index: number, parentId?: string) => {
+  const handleEdit = (
+    component: InternalComponentItem,
+    index: number,
+    parentId?: string,
+  ) => {
     const componentCopy = JSON.parse(JSON.stringify(component));
     setEditingComponent(componentCopy);
     setOriginalEditingComponent(componentCopy);
@@ -410,10 +411,12 @@ const BlogCreator = () => {
   const handleSaveEdit = () => {
     if (editingComponent && editingIndex !== null) {
       const newComponents = [...components];
-      
+
       if (editingParentId) {
         // Editing a child component - save it back to its parent container
-        const parentIndex = newComponents.findIndex((c) => c.id === editingParentId);
+        const parentIndex = newComponents.findIndex(
+          (c) => c.id === editingParentId,
+        );
         if (parentIndex >= 0 && newComponents[parentIndex].children) {
           newComponents[parentIndex].children![editingIndex] = editingComponent;
         }
@@ -421,7 +424,7 @@ const BlogCreator = () => {
         // Editing a root-level component
         newComponents[editingIndex] = editingComponent;
       }
-      
+
       setComponents(newComponents);
       setEditingComponent(null);
       setOriginalEditingComponent(null);
@@ -456,15 +459,19 @@ const BlogCreator = () => {
 
   const handleCancelEdit = () => {
     // Check if changes were made
-    const hasChanges = editingComponent && originalEditingComponent && 
-      JSON.stringify(editingComponent) !== JSON.stringify(originalEditingComponent);
+    const hasChanges =
+      editingComponent &&
+      originalEditingComponent &&
+      JSON.stringify(editingComponent) !==
+        JSON.stringify(originalEditingComponent);
 
     if (hasChanges) {
       setModalState({
         isOpen: true,
         type: "confirm",
         title: "Discard Changes?",
-        message: "You have unsaved changes. Are you sure you want to cancel? All changes will be lost.",
+        message:
+          "You have unsaved changes. Are you sure you want to cancel? All changes will be lost.",
         inputValue: "",
         onConfirm: () => {
           setEditingComponent(null);
@@ -505,7 +512,9 @@ const BlogCreator = () => {
           value={value as string}
           onChange={(newValue) => updateProp(key, newValue)}
           editingComponent={editingComponent}
-          onFontFamilyChange={(fontFamily) => updateProp("fontFamily", fontFamily)}
+          onFontFamilyChange={(fontFamily) =>
+            updateProp("fontFamily", fontFamily)
+          }
         />
       );
     }
@@ -603,7 +612,11 @@ const BlogCreator = () => {
     }
 
     // Special handling for ContentUnorderedList listItems (Array<InnerTextType>)
-    if (key === "listItems" && editingComponent?.type === "ContentUnorderedList" && Array.isArray(value)) {
+    if (
+      key === "listItems" &&
+      editingComponent?.type === "ContentUnorderedList" &&
+      Array.isArray(value)
+    ) {
       const items = value as InnerTextType[];
 
       const addItem = () => {
@@ -622,7 +635,11 @@ const BlogCreator = () => {
         updateProp(key, newItems);
       };
 
-      const updateItem = (index: number, field: keyof InnerTextType, newValue: unknown) => {
+      const updateItem = (
+        index: number,
+        field: keyof InnerTextType,
+        newValue: unknown,
+      ) => {
         const newItems = [...items];
         newItems[index] = { ...newItems[index], [field]: newValue };
         updateProp(key, newItems);
@@ -677,7 +694,9 @@ const BlogCreator = () => {
                   <option value="nunito-sans">Nunito Sans</option>
                   <option value="nunito-sans-light">Nunito Sans Light</option>
                   <option value="nunito-sans-medium">Nunito Sans Medium</option>
-                  <option value="nunito-sans-semibold">Nunito Sans SemiBold</option>
+                  <option value="nunito-sans-semibold">
+                    Nunito Sans SemiBold
+                  </option>
                   <option value="nunito-sans-bold">Nunito Sans Bold</option>
                   <option value="sansita-regular">Sansita Regular</option>
                   <option value="sansita-bold">Sansita Bold</option>
@@ -1069,7 +1088,7 @@ const BlogCreator = () => {
                   }}
                   className={cn(
                     "px-3 py-2 cursor-pointer hover:bg-(--light-pink) transition-colors",
-                    option.value === value && "bg-(--light-pink)"
+                    option.value === value && "bg-(--light-pink)",
                   )}
                   style={{
                     fontFamily: option.fontFamily,
@@ -1120,7 +1139,7 @@ const BlogCreator = () => {
               <div
                 className={cn(
                   "w-8 h-8 rounded border-2 border-gray-300",
-                  selectedOption.value
+                  selectedOption.value,
                 )}
               />
               <span>{selectedOption.label}</span>
@@ -1150,13 +1169,13 @@ const BlogCreator = () => {
                   }}
                   className={cn(
                     "px-3 py-2 cursor-pointer hover:bg-(--light-pink) transition-colors flex items-center gap-3",
-                    option.value === value && "bg-(--light-pink)"
+                    option.value === value && "bg-(--light-pink)",
                   )}
                 >
                   <div
                     className={cn(
                       "w-8 h-8 rounded border-2 border-gray-300",
-                      option.value
+                      option.value,
                     )}
                   />
                   <span>{option.label}</span>
@@ -1254,7 +1273,7 @@ const BlogCreator = () => {
           <div
             className={cn(
               "bg-white rounded-lg shadow-lg p-6 mb-6 transition-opacity",
-              !pageName && "opacity-50 pointer-events-none"
+              !pageName && "opacity-50 pointer-events-none",
             )}
           >
             <h2 className="text-2xl font-bold text-(--primary-teal-dark) sansita-bold mb-4">
@@ -1353,7 +1372,7 @@ const BlogCreator = () => {
                             onClick={() => {
                               if (blogLabels.includes(label)) {
                                 setBlogLabels(
-                                  blogLabels.filter((l) => l !== label)
+                                  blogLabels.filter((l) => l !== label),
                                 );
                               } else {
                                 setBlogLabels([...blogLabels, label]);
@@ -1361,7 +1380,7 @@ const BlogCreator = () => {
                             }}
                             className={cn(
                               "px-4 py-2 cursor-pointer hover:bg-(--light-pink) transition-colors flex items-center gap-2",
-                              blogLabels.includes(label) && "bg-(--light-pink)"
+                              blogLabels.includes(label) && "bg-(--light-pink)",
                             )}
                           >
                             <div
@@ -1369,7 +1388,7 @@ const BlogCreator = () => {
                                 "w-4 h-4 border-2 rounded flex items-center justify-center",
                                 blogLabels.includes(label)
                                   ? "border-(--primary-teal) bg-(--primary-teal)"
-                                  : "border-gray-300"
+                                  : "border-gray-300",
                               )}
                             >
                               {blogLabels.includes(label) && (
@@ -1405,7 +1424,7 @@ const BlogCreator = () => {
                           <button
                             onClick={() =>
                               setBlogLabels(
-                                blogLabels.filter((l) => l !== label)
+                                blogLabels.filter((l) => l !== label),
                               )
                             }
                             className="hover:bg-white hover:text-(--primary-teal) rounded-full p-0.5"
@@ -1454,7 +1473,7 @@ const BlogCreator = () => {
                               year: "numeric",
                               month: "long",
                               day: "numeric",
-                            }
+                            },
                           )
                         : "Date"}
                     </p>
@@ -1493,7 +1512,7 @@ const BlogCreator = () => {
                 showPreview
                   ? "bg-(--primary-teal) text-white"
                   : "bg-white text-(--primary-teal-dark) border-2 border-(--primary-teal)",
-                !pageName && "opacity-50 cursor-not-allowed"
+                !pageName && "opacity-50 cursor-not-allowed",
               )}
             >
               <Eye className="w-4 h-4" />
@@ -1509,7 +1528,7 @@ const BlogCreator = () => {
                   blogDescription,
                   blogDate,
                   blogImageUrl,
-                  blogLabels
+                  blogLabels,
                 ) ||
                 components.length === 0 ||
                 pageSaved
@@ -1525,7 +1544,7 @@ const BlogCreator = () => {
               blogDescription,
               blogDate,
               blogImageUrl,
-              blogLabels
+              blogLabels,
             )) && (
             <p className="text-center text-gray-500 text-sm mb-6">
               {components.length === 0
@@ -1537,7 +1556,7 @@ const BlogCreator = () => {
           <div
             className={cn(
               "grid grid-cols-1 lg:grid-cols-4 gap-6 transition-opacity",
-              !pageName && "opacity-50 pointer-events-none"
+              !pageName && "opacity-50 pointer-events-none",
             )}
           >
             {/* Component Palette */}
@@ -1609,9 +1628,7 @@ const BlogCreator = () => {
 
             {/* Canvas Area */}
             <div
-              className={cn(
-                showPreview ? "lg:col-span-4" : "lg:col-span-3"
-              )}
+              className={cn(showPreview ? "lg:col-span-4" : "lg:col-span-3")}
             >
               <div className="bg-white rounded-lg shadow-lg p-6 min-h-[600px]">
                 {components.length === 0 ? (
@@ -1620,13 +1637,15 @@ const BlogCreator = () => {
                     onDrop={(e) => handleDrop(e)}
                     className={cn(
                       "flex items-center justify-center h-full border-4 border-dashed rounded-lg transition-colors",
-                      isInvalidDropTarget ? "border-red-500 bg-red-50 cursor-not-allowed" : "border-gray-300"
+                      isInvalidDropTarget
+                        ? "border-red-500 bg-red-50 cursor-not-allowed"
+                        : "border-gray-300",
                     )}
                   >
                     <div className="text-center text-gray-500">
                       <p className="text-xl font-semibold mb-2">
-                        {isInvalidDropTarget 
-                          ? "❌ Cannot drop components here" 
+                        {isInvalidDropTarget
+                          ? "❌ Cannot drop components here"
                           : "Drop Section Containers here"}
                       </p>
                       <p className="text-sm">
@@ -1649,7 +1668,9 @@ const BlogCreator = () => {
                             !showPreview &&
                             handleDragStartCanvas(index, e, undefined, true)
                           }
-                          onDragOver={!showPreview ? (e) => handleDragOver(e) : undefined}
+                          onDragOver={
+                            !showPreview ? (e) => handleDragOver(e) : undefined
+                          }
                           onDrop={
                             !showPreview
                               ? (e) => handleDrop(e, index)
@@ -1662,11 +1683,16 @@ const BlogCreator = () => {
                               : cn(
                                   "border-transparent",
                                   typeof component.props === "object" &&
-                                  component.props !== null &&
-                                  "color" in component.props
-                                    ? (component.props as Record<string, unknown>).color as string
-                                    : ""
-                                )
+                                    component.props !== null &&
+                                    "color" in component.props
+                                    ? ((
+                                        component.props as Record<
+                                          string,
+                                          unknown
+                                        >
+                                      ).color as string)
+                                    : "",
+                                ),
                           )}
                         >
                           {!showPreview && (
@@ -1721,19 +1747,19 @@ const BlogCreator = () => {
                             }}
                             className={cn(
                               "min-h-[150px] rounded-lg transition-colors",
-                              !showPreview &&
-                                "border-2 border-dashed p-4",
+                              !showPreview && "border-2 border-dashed p-4",
                               !showPreview && isInvalidDropTarget
                                 ? "border-red-500 bg-red-50 cursor-not-allowed"
                                 : !showPreview
                                   ? "border-gray-300"
                                   : "",
                               showPreview &&
-                              typeof component.props === "object" &&
-                              component.props !== null &&
-                              "color" in component.props
-                                ? (component.props as Record<string, unknown>).color as string
-                                : ""
+                                typeof component.props === "object" &&
+                                component.props !== null &&
+                                "color" in component.props
+                                ? ((component.props as Record<string, unknown>)
+                                    .color as string)
+                                : "",
                             )}
                           >
                             {component.children &&
@@ -1752,12 +1778,13 @@ const BlogCreator = () => {
                                           childIndex,
                                           e,
                                           component.id,
-                                          false
+                                          false,
                                         );
                                     }}
                                     onDragOver={(e) => {
                                       e.stopPropagation();
-                                      if (!showPreview) handleDragOver(e, component.id);
+                                      if (!showPreview)
+                                        handleDragOver(e, component.id);
                                     }}
                                     onDrop={(e) => {
                                       e.stopPropagation();
@@ -1770,20 +1797,24 @@ const BlogCreator = () => {
                                         // Find the child in the parent's children array
                                         const parentIndex =
                                           components.findIndex(
-                                            (c) => c.id === component.id
+                                            (c) => c.id === component.id,
                                           );
                                         if (
                                           parentIndex >= 0 &&
                                           components[parentIndex].children
                                         ) {
-                                          handleEdit(child, childIndex, component.id);
+                                          handleEdit(
+                                            child,
+                                            childIndex,
+                                            component.id,
+                                          );
                                         }
                                       }
                                     }}
                                     className={cn(
                                       "relative group",
                                       !showPreview &&
-                                        "border-2 border-transparent hover:border-(--primary-teal) rounded-lg cursor-pointer p-2"
+                                        "border-2 border-transparent hover:border-(--primary-teal) rounded-lg cursor-pointer p-2",
                                     )}
                                   >
                                     {!showPreview && (
@@ -1808,7 +1839,7 @@ const BlogCreator = () => {
                                               ];
                                               const parentIndex =
                                                 newComponents.findIndex(
-                                                  (c) => c.id === component.id
+                                                  (c) => c.id === component.id,
                                                 );
                                               if (
                                                 parentIndex >= 0 &&
@@ -1820,7 +1851,7 @@ const BlogCreator = () => {
                                                 ].children = newComponents[
                                                   parentIndex
                                                 ].children!.filter(
-                                                  (_, i) => i !== childIndex
+                                                  (_, i) => i !== childIndex,
                                                 );
                                                 setComponents(newComponents);
                                               }
@@ -1833,18 +1864,26 @@ const BlogCreator = () => {
                                         </div>
                                       </>
                                     )}
-                                    {<RenderedComponent item={internalToExport(child)} />}
+                                    {
+                                      <RenderedComponent
+                                        item={internalToExport(child)}
+                                      />
+                                    }
                                   </div>
                                 ))}
                               </div>
                             ) : (
                               !showPreview && (
-                                <div className={cn(
-                                  "flex items-center justify-center h-full text-sm",
-                                  isInvalidDropTarget ? "text-red-500" : "text-gray-400"
-                                )}>
-                                  {isInvalidDropTarget 
-                                    ? "❌ Section Containers cannot be nested" 
+                                <div
+                                  className={cn(
+                                    "flex items-center justify-center h-full text-sm",
+                                    isInvalidDropTarget
+                                      ? "text-red-500"
+                                      : "text-gray-400",
+                                  )}
+                                >
+                                  {isInvalidDropTarget
+                                    ? "❌ Section Containers cannot be nested"
                                     : "Drop components here"}
                                 </div>
                               )
@@ -1855,7 +1894,7 @@ const BlogCreator = () => {
                         <div key={component.id}>
                           Unexpected non-container component at root level
                         </div>
-                      )
+                      ),
                     )}
                   </div>
                 )}
@@ -1891,7 +1930,7 @@ const BlogCreator = () => {
               "bg-white border-2 px-6 py-4 rounded-lg shadow-lg flex items-center gap-3",
               toastMessage === "Failed to save page"
                 ? "border-red-500"
-                : "border-(--primary-teal)"
+                : "border-(--primary-teal)",
             )}
           >
             <div
@@ -1899,7 +1938,7 @@ const BlogCreator = () => {
                 "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",
                 toastMessage === "Failed to save page"
                   ? "bg-red-500"
-                  : "bg-(--primary-teal)"
+                  : "bg-(--primary-teal)",
               )}
             >
               <svg
@@ -1930,7 +1969,7 @@ const BlogCreator = () => {
                 "font-semibold nunito-sans",
                 toastMessage === "Failed to save page"
                   ? "text-red-700"
-                  : "text-(--primary-teal-dark)"
+                  : "text-(--primary-teal-dark)",
               )}
             >
               {toastMessage}

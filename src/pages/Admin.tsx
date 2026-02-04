@@ -9,15 +9,16 @@ import AdminBlogForm from "@/components/admin/AdminBlogForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { PIPA_API_URL, PIPA_AUTH_URL } from "@/api/constants";
 
 /* deprecated admin page - see Admin.tsx for new version */
 const Admin = () => {
   const navigate = useNavigate();
-  const [loading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   const [emailResponse, setEmailResponse] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loginError, setLoginError] = useState<string>("");
 
@@ -25,20 +26,57 @@ const Admin = () => {
     // Redirect to home page if in production build
     if (import.meta.env.PROD) {
       navigate("/");
+      return;
+    }
+
+    // Check if user is already authenticated via stored token
+    const storedToken = localStorage.getItem("pipaAdminAccessToken");
+    if (storedToken) {
+      setAuthenticated(true);
     }
   }, [navigate]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginError("");
+    setLoading(true);
 
-    // Simple authentication check - you should replace this with actual API call
-    // For now, using hardcoded credentials (CHANGE THIS IN PRODUCTION)
-    if (username === "admin" && password === "admin123") {
-      setAuthenticated(true);
-    } else {
-      setLoginError("Invalid username or password");
+    try {
+      const response = await fetch(
+        PIPA_API_URL + "api/v1/analytics/auth/login",
+        {
+          // const response = await fetch(PIPA_AUTH_URL + "/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        },
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        setLoginError(errorData.message || "Invalid email or password");
+        setPassword("");
+        setLoading(false);
+        return;
+      }
+
+      const res = await response.json();
+      const { data } = res;
+      console.log("Login successful:", data);
+      if (data.accessToken) {
+        localStorage.setItem("pipaAdminAccessToken", data.accessToken);
+        setAuthenticated(true);
+      } else {
+        setLoginError("Login failed: No access token received");
+        setPassword("");
+      }
+    } catch (error) {
+      setLoginError("Connection error. Please try again.");
       setPassword("");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -66,18 +104,18 @@ const Admin = () => {
 
   if (!authenticated) {
     return (
-      <PageContainer className="flex flex-col items-center justify-center min-h-[70vh]">
+      <div className="flex flex-col items-center justify-center min-h-[70vh]">
         <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
           <h2 className="text-2xl font-bold text-center mb-6">Admin Login</h2>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
-                id="username"
+                id="email"
                 type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter username"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter email"
                 required
               />
             </div>
@@ -95,34 +133,22 @@ const Admin = () => {
             {loginError && (
               <p className="text-red-500 text-sm text-center">{loginError}</p>
             )}
-            <Button type="submit" className="w-full">
-              Login
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
             </Button>
           </form>
         </div>
-      </PageContainer>
+      </div>
     );
   }
 
   return (
-    <PageContainer>
-      <Tabs defaultValue="blog">
-        <TabsList className="w-full flex justify-center text-center  mb-8">
-          <TabsTrigger value="blog" className="cursor-pointer">
-            Blog
-          </TabsTrigger>
-          <TabsTrigger value="other" className="cursor-pointer">
-            Other
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="blog">
-          <AdminBlogForm onSubmit={(data) => console.log(data)} />
-        </TabsContent>
-        <TabsContent value="other">
-          <div>No content. Implemented for future use.</div>
-        </TabsContent>
-      </Tabs>
-    </PageContainer>
+    <div className="flex flex-col items-center justify-center p-8">
+      <h3 className="text-xl font-semibold mb-4">Blog Tool</h3>
+      <Link to="/blog/creator">
+        <Button className="px-6 py-2">Go to Blog Tool</Button>
+      </Link>
+    </div>
   );
 };
 

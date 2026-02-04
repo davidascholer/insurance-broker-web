@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "@/components/header/Header";
 import Footer from "@/components/Footer";
 import { Plus, Edit, Trash2 } from "lucide-react";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 
 type SavedPage = {
   name: string;
@@ -18,6 +19,7 @@ type SavedPage = {
 };
 
 const BlogCreationList = () => {
+  useRequireAuth();
   const [pages, setPages] = useState<SavedPage[]>([]);
   const [isCreatingNew, setIsCreatingNew] = useState(false);
   const [newPageName, setNewPageName] = useState("");
@@ -212,10 +214,7 @@ const BlogCreationList = () => {
                 </div>
               )}
               {pages.map((page) => (
-                <div
-                  key={page.name}
-                  className="group"
-                >
+                <div key={page.name} className="group">
                   <div className="mb-2">
                     <h3 className="text-lg font-bold text-(--primary-teal-dark) sansita-bold">
                       {page.name}
@@ -245,7 +244,9 @@ const BlogCreationList = () => {
                       </h4>
                       <p className="text-(--text-dark) text-sm nunito-sans">
                         {page.card?.date
-                          ? new Date(page.card.date + 'T00:00:00').toLocaleDateString("en-US", {
+                          ? new Date(
+                              page.card.date + "T00:00:00",
+                            ).toLocaleDateString("en-US", {
                               year: "numeric",
                               month: "long",
                               day: "numeric",
