@@ -2,12 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import { getLinksClicked, getUserObjects } from "@/api/api";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import Loader from "@/components/Loader";
-import {
-  ComposableMap,
-  Geographies,
-  Geography,
-  ZoomableGroup,
-} from "react-simple-maps";
+// import {
+//   ComposableMap,
+//   Geographies,
+//   Geography,
+//   ZoomableGroup,
+// } from "react-simple-maps";
 import {
   BarChart,
   Bar,
@@ -84,7 +84,7 @@ const AnalyticsCharts = () => {
   const [error, setError] = useState<string>("");
   const [linksSorting, setLinksSorting] = useState<SortingState>([]);
   const [usersSorting, setUsersSorting] = useState<SortingState>([]);
-  const [tooltipContent, setTooltipContent] = useState<string>("");
+  // const [tooltipContent, setTooltipContent] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -247,76 +247,76 @@ const AnalyticsCharts = () => {
     return Object.entries(counts).map(([name, value]) => ({ name, value }));
   }, [linksData]);
 
-  // Map zip codes to states (first 3 digits to state mapping)
-  const zipToState = (zip: string): string => {
-    const zipNum = parseInt(zip.substring(0, 3));
-    if (zipNum >= 35 && zipNum <= 36) return "AL";
-    if (zipNum >= 995 && zipNum <= 999) return "AK";
-    if (zipNum >= 85 && zipNum <= 86) return "AZ";
-    if (zipNum >= 716 && zipNum <= 729) return "AR";
-    if (zipNum >= 90 && zipNum <= 96) return "CA";
-    if (zipNum >= 80 && zipNum <= 81) return "CO";
-    if (zipNum >= 60 && zipNum <= 69) return "CT";
-    if (zipNum >= 197 && zipNum <= 199) return "DE";
-    if (zipNum >= 320 && zipNum <= 349) return "FL";
-    if (zipNum >= 30 && zipNum <= 31) return "GA";
-    if (zipNum >= 967 && zipNum <= 968) return "HI";
-    if (zipNum >= 832 && zipNum <= 838) return "ID";
-    if (zipNum >= 60 && zipNum <= 62) return "IL";
-    if (zipNum >= 46 && zipNum <= 47) return "IN";
-    if (zipNum >= 50 && zipNum <= 52) return "IA";
-    if (zipNum >= 66 && zipNum <= 67) return "KS";
-    if (zipNum >= 40 && zipNum <= 42) return "KY";
-    if (zipNum >= 700 && zipNum <= 714) return "LA";
-    if (zipNum >= 39 && zipNum <= 49) return "ME";
-    if (zipNum >= 206 && zipNum <= 219) return "MD";
-    if (zipNum >= 10 && zipNum <= 27) return "MA";
-    if (zipNum >= 480 && zipNum <= 499) return "MI";
-    if (zipNum >= 550 && zipNum <= 567) return "MN";
-    if (zipNum >= 386 && zipNum <= 397) return "MS";
-    if (zipNum >= 630 && zipNum <= 658) return "MO";
-    if (zipNum >= 590 && zipNum <= 599) return "MT";
-    if (zipNum >= 680 && zipNum <= 693) return "NE";
-    if (zipNum >= 889 && zipNum <= 898) return "NV";
-    if (zipNum >= 30 && zipNum <= 38) return "NH";
-    if (zipNum >= 70 && zipNum <= 89) return "NJ";
-    if (zipNum >= 870 && zipNum <= 884) return "NM";
-    if (zipNum >= 100 && zipNum <= 149) return "NY";
-    if (zipNum >= 270 && zipNum <= 289) return "NC";
-    if (zipNum >= 580 && zipNum <= 588) return "ND";
-    if (zipNum >= 430 && zipNum <= 458) return "OH";
-    if (zipNum >= 730 && zipNum <= 749) return "OK";
-    if (zipNum >= 970 && zipNum <= 979) return "OR";
-    if (zipNum >= 150 && zipNum <= 196) return "PA";
-    if (zipNum >= 28 && zipNum <= 29) return "RI";
-    if (zipNum >= 290 && zipNum <= 299) return "SC";
-    if (zipNum >= 570 && zipNum <= 577) return "SD";
-    if (zipNum >= 370 && zipNum <= 385) return "TN";
-    if ((zipNum >= 750 && zipNum <= 799) || (zipNum >= 885 && zipNum <= 888))
-      return "TX";
-    if (zipNum >= 840 && zipNum <= 847) return "UT";
-    if (zipNum >= 50 && zipNum <= 59) return "VT";
-    if (zipNum >= 220 && zipNum <= 246) return "VA";
-    if (zipNum >= 980 && zipNum <= 994) return "WA";
-    if (zipNum >= 247 && zipNum <= 268) return "WV";
-    if (zipNum >= 530 && zipNum <= 549) return "WI";
-    if (zipNum >= 820 && zipNum <= 831) return "WY";
-    if (zipNum >= 200 && zipNum <= 205) return "DC";
-    return "Unknown";
-  };
+  // // Map zip codes to states (first 3 digits to state mapping)
+  // const zipToState = (zip: string): string => {
+  //   const zipNum = parseInt(zip.substring(0, 3));
+  //   if (zipNum >= 35 && zipNum <= 36) return "AL";
+  //   if (zipNum >= 995 && zipNum <= 999) return "AK";
+  //   if (zipNum >= 85 && zipNum <= 86) return "AZ";
+  //   if (zipNum >= 716 && zipNum <= 729) return "AR";
+  //   if (zipNum >= 90 && zipNum <= 96) return "CA";
+  //   if (zipNum >= 80 && zipNum <= 81) return "CO";
+  //   if (zipNum >= 60 && zipNum <= 69) return "CT";
+  //   if (zipNum >= 197 && zipNum <= 199) return "DE";
+  //   if (zipNum >= 320 && zipNum <= 349) return "FL";
+  //   if (zipNum >= 30 && zipNum <= 31) return "GA";
+  //   if (zipNum >= 967 && zipNum <= 968) return "HI";
+  //   if (zipNum >= 832 && zipNum <= 838) return "ID";
+  //   if (zipNum >= 60 && zipNum <= 62) return "IL";
+  //   if (zipNum >= 46 && zipNum <= 47) return "IN";
+  //   if (zipNum >= 50 && zipNum <= 52) return "IA";
+  //   if (zipNum >= 66 && zipNum <= 67) return "KS";
+  //   if (zipNum >= 40 && zipNum <= 42) return "KY";
+  //   if (zipNum >= 700 && zipNum <= 714) return "LA";
+  //   if (zipNum >= 39 && zipNum <= 49) return "ME";
+  //   if (zipNum >= 206 && zipNum <= 219) return "MD";
+  //   if (zipNum >= 10 && zipNum <= 27) return "MA";
+  //   if (zipNum >= 480 && zipNum <= 499) return "MI";
+  //   if (zipNum >= 550 && zipNum <= 567) return "MN";
+  //   if (zipNum >= 386 && zipNum <= 397) return "MS";
+  //   if (zipNum >= 630 && zipNum <= 658) return "MO";
+  //   if (zipNum >= 590 && zipNum <= 599) return "MT";
+  //   if (zipNum >= 680 && zipNum <= 693) return "NE";
+  //   if (zipNum >= 889 && zipNum <= 898) return "NV";
+  //   if (zipNum >= 30 && zipNum <= 38) return "NH";
+  //   if (zipNum >= 70 && zipNum <= 89) return "NJ";
+  //   if (zipNum >= 870 && zipNum <= 884) return "NM";
+  //   if (zipNum >= 100 && zipNum <= 149) return "NY";
+  //   if (zipNum >= 270 && zipNum <= 289) return "NC";
+  //   if (zipNum >= 580 && zipNum <= 588) return "ND";
+  //   if (zipNum >= 430 && zipNum <= 458) return "OH";
+  //   if (zipNum >= 730 && zipNum <= 749) return "OK";
+  //   if (zipNum >= 970 && zipNum <= 979) return "OR";
+  //   if (zipNum >= 150 && zipNum <= 196) return "PA";
+  //   if (zipNum >= 28 && zipNum <= 29) return "RI";
+  //   if (zipNum >= 290 && zipNum <= 299) return "SC";
+  //   if (zipNum >= 570 && zipNum <= 577) return "SD";
+  //   if (zipNum >= 370 && zipNum <= 385) return "TN";
+  //   if ((zipNum >= 750 && zipNum <= 799) || (zipNum >= 885 && zipNum <= 888))
+  //     return "TX";
+  //   if (zipNum >= 840 && zipNum <= 847) return "UT";
+  //   if (zipNum >= 50 && zipNum <= 59) return "VT";
+  //   if (zipNum >= 220 && zipNum <= 246) return "VA";
+  //   if (zipNum >= 980 && zipNum <= 994) return "WA";
+  //   if (zipNum >= 247 && zipNum <= 268) return "WV";
+  //   if (zipNum >= 530 && zipNum <= 549) return "WI";
+  //   if (zipNum >= 820 && zipNum <= 831) return "WY";
+  //   if (zipNum >= 200 && zipNum <= 205) return "DC";
+  //   return "Unknown";
+  // };
 
-  const stateDistribution = useMemo(() => {
-    const counts: Record<string, number> = {};
-    userObjectsData.forEach((user) => {
-      if (user.zip) {
-        const state = zipToState(user.zip);
-        if (state !== "Unknown") {
-          counts[state] = (counts[state] || 0) + 1;
-        }
-      }
-    });
-    return counts;
-  }, [userObjectsData]);
+  // const stateDistribution = useMemo(() => {
+  //   const counts: Record<string, number> = {};
+  //   userObjectsData.forEach((user) => {
+  //     if (user.zip) {
+  //       const state = zipToState(user.zip);
+  //       if (state !== "Unknown") {
+  //         counts[state] = (counts[state] || 0) + 1;
+  //       }
+  //     }
+  //   });
+  //   return counts;
+  // }, [userObjectsData]);
 
   // Create tables
   const linksTable = useReactTable({
@@ -341,72 +341,72 @@ const AnalyticsCharts = () => {
     getSortedRowModel: getSortedRowModel(),
   });
 
-  // Map state abbreviations to full names for the map
-  const stateAbbrToName: Record<string, string> = {
-    AL: "Alabama",
-    AK: "Alaska",
-    AZ: "Arizona",
-    AR: "Arkansas",
-    CA: "California",
-    CO: "Colorado",
-    CT: "Connecticut",
-    DE: "Delaware",
-    FL: "Florida",
-    GA: "Georgia",
-    HI: "Hawaii",
-    ID: "Idaho",
-    IL: "Illinois",
-    IN: "Indiana",
-    IA: "Iowa",
-    KS: "Kansas",
-    KY: "Kentucky",
-    LA: "Louisiana",
-    ME: "Maine",
-    MD: "Maryland",
-    MA: "Massachusetts",
-    MI: "Michigan",
-    MN: "Minnesota",
-    MS: "Mississippi",
-    MO: "Missouri",
-    MT: "Montana",
-    NE: "Nebraska",
-    NV: "Nevada",
-    NH: "New Hampshire",
-    NJ: "New Jersey",
-    NM: "New Mexico",
-    NY: "New York",
-    NC: "North Carolina",
-    ND: "North Dakota",
-    OH: "Ohio",
-    OK: "Oklahoma",
-    OR: "Oregon",
-    PA: "Pennsylvania",
-    RI: "Rhode Island",
-    SC: "South Carolina",
-    SD: "South Dakota",
-    TN: "Tennessee",
-    TX: "Texas",
-    UT: "Utah",
-    VT: "Vermont",
-    VA: "Virginia",
-    WA: "Washington",
-    WV: "West Virginia",
-    WI: "Wisconsin",
-    WY: "Wyoming",
-    DC: "District of Columbia",
-  };
+  // // Map state abbreviations to full names for the map
+  // const stateAbbrToName: Record<string, string> = {
+  //   AL: "Alabama",
+  //   AK: "Alaska",
+  //   AZ: "Arizona",
+  //   AR: "Arkansas",
+  //   CA: "California",
+  //   CO: "Colorado",
+  //   CT: "Connecticut",
+  //   DE: "Delaware",
+  //   FL: "Florida",
+  //   GA: "Georgia",
+  //   HI: "Hawaii",
+  //   ID: "Idaho",
+  //   IL: "Illinois",
+  //   IN: "Indiana",
+  //   IA: "Iowa",
+  //   KS: "Kansas",
+  //   KY: "Kentucky",
+  //   LA: "Louisiana",
+  //   ME: "Maine",
+  //   MD: "Maryland",
+  //   MA: "Massachusetts",
+  //   MI: "Michigan",
+  //   MN: "Minnesota",
+  //   MS: "Mississippi",
+  //   MO: "Missouri",
+  //   MT: "Montana",
+  //   NE: "Nebraska",
+  //   NV: "Nevada",
+  //   NH: "New Hampshire",
+  //   NJ: "New Jersey",
+  //   NM: "New Mexico",
+  //   NY: "New York",
+  //   NC: "North Carolina",
+  //   ND: "North Dakota",
+  //   OH: "Ohio",
+  //   OK: "Oklahoma",
+  //   OR: "Oregon",
+  //   PA: "Pennsylvania",
+  //   RI: "Rhode Island",
+  //   SC: "South Carolina",
+  //   SD: "South Dakota",
+  //   TN: "Tennessee",
+  //   TX: "Texas",
+  //   UT: "Utah",
+  //   VT: "Vermont",
+  //   VA: "Virginia",
+  //   WA: "Washington",
+  //   WV: "West Virginia",
+  //   WI: "Wisconsin",
+  //   WY: "Wyoming",
+  //   DC: "District of Columbia",
+  // };
 
-  // Create reverse lookup: state name -> count
-  const stateNameDistribution = useMemo(() => {
-    const nameCounts: Record<string, number> = {};
-    Object.entries(stateDistribution).forEach(([abbr, count]) => {
-      const name = stateAbbrToName[abbr];
-      if (name) {
-        nameCounts[name] = count;
-      }
-    });
-    return nameCounts;
-  }, [stateDistribution]);
+  // // Create reverse lookup: state name -> count
+  // const stateNameDistribution = useMemo(() => {
+  //   const nameCounts: Record<string, number> = {};
+  //   Object.entries(stateDistribution).forEach(([abbr, count]) => {
+  //     const name = stateAbbrToName[abbr];
+  //     if (name) {
+  //       nameCounts[name] = count;
+  //     }
+  //   });
+  //   return nameCounts;
+  // }, [stateDistribution]);
 
   const downloadLinksCSV = () => {
     const headers = [
@@ -819,7 +819,7 @@ const AnalyticsCharts = () => {
       </div>
 
       {/* US Map */}
-      <div className="bg-white p-6 rounded-lg shadow mt-8">
+      {/* <div className="bg-white p-6 rounded-lg shadow mt-8">
         <h2 className="text-2xl font-semibold mb-6 text-(--primary-teal-dark)">
           Geographic Distribution (by State)
         </h2>
@@ -883,7 +883,7 @@ const AnalyticsCharts = () => {
             </div>
           )}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
