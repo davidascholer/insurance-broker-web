@@ -3,6 +3,12 @@ import { getLinksClicked, getUserObjects } from "@/api/api";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import Loader from "@/components/Loader";
 import {
+  ComposableMap,
+  Geographies,
+  Geography,
+  ZoomableGroup,
+} from "react-simple-maps";
+import {
   BarChart,
   Bar,
   PieChart,
@@ -55,14 +61,6 @@ type UserObjectData = {
   updatedAt: string;
 };
 
-type CombinedData = LinkClickedData & {
-  firstName?: string;
-  lastName?: string;
-  petName?: string;
-  animal?: string;
-  petBreed?: string;
-};
-
 const COLORS = [
   "#2d6a7b", // primary-teal
   "#ed9690", // primary-coral
@@ -74,7 +72,8 @@ const COLORS = [
   "#89a6b2", // light teal
 ];
 
-const columnHelper = createColumnHelper<CombinedData>();
+const linksColumnHelper = createColumnHelper<LinkClickedData>();
+const usersColumnHelper = createColumnHelper<UserObjectData>();
 
 const AnalyticsCharts = () => {
   useRequireAuth();
@@ -83,7 +82,9 @@ const AnalyticsCharts = () => {
   const [userObjectsData, setUserObjectsData] = useState<UserObjectData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [linksSorting, setLinksSorting] = useState<SortingState>([]);
+  const [usersSorting, setUsersSorting] = useState<SortingState>([]);
+  const [tooltipContent, setTooltipContent] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -108,19 +109,97 @@ const AnalyticsCharts = () => {
     fetchData();
   }, []);
 
-  const combinedData = useMemo(() => {
-    return linksData.map((link) => {
-      const user = userObjectsData.find((u) => u.email === link.email);
-      return {
-        ...link,
-        firstName: user?.firstName,
-        lastName: user?.lastName,
-        petName: user?.petName,
-        animal: user?.animal,
-        petBreed: user?.petBreed,
-      };
-    });
-  }, [linksData, userObjectsData]);
+  // Links table columns
+  const linksColumns = [
+    linksColumnHelper.accessor("email", {
+      header: "Email",
+      cell: (info) => info.getValue(),
+    }),
+    linksColumnHelper.accessor("provider", {
+      header: "Provider",
+      cell: (info) => info.getValue(),
+    }),
+    linksColumnHelper.accessor("planName", {
+      header: "Plan Name",
+      cell: (info) => info.getValue(),
+    }),
+    linksColumnHelper.accessor("planDeductible", {
+      header: "Deductible",
+      cell: (info) => `$${info.getValue()}`,
+    }),
+    linksColumnHelper.accessor("planReimbursementPercentage", {
+      header: "Reimbursement %",
+      cell: (info) => `${info.getValue()}%`,
+    }),
+    linksColumnHelper.accessor("planReimbursementLimit", {
+      header: "Reimbursement Limit",
+      cell: (info) => `$${info.getValue()}`,
+    }),
+    linksColumnHelper.accessor("planMonthlyPrice", {
+      header: "Monthly Price",
+      cell: (info) => `$${info.getValue().toFixed(2)}`,
+    }),
+    linksColumnHelper.accessor("createdAt", {
+      header: "Date Clicked",
+      cell: (info) => new Date(info.getValue()).toLocaleDateString(),
+    }),
+  ];
+
+  // Users table columns
+  const usersColumns = [
+    usersColumnHelper.accessor("email", {
+      header: "Email",
+      cell: (info) => info.getValue(),
+    }),
+    usersColumnHelper.accessor("firstName", {
+      header: "First Name",
+      cell: (info) => info.getValue(),
+    }),
+    usersColumnHelper.accessor("lastName", {
+      header: "Last Name",
+      cell: (info) => info.getValue(),
+    }),
+    usersColumnHelper.accessor("zip", {
+      header: "ZIP Code",
+      cell: (info) => info.getValue(),
+    }),
+    usersColumnHelper.accessor("petName", {
+      header: "Pet Name",
+      cell: (info) => info.getValue(),
+    }),
+    usersColumnHelper.accessor("animal", {
+      header: "Pet Type",
+      cell: (info) => info.getValue(),
+    }),
+    usersColumnHelper.accessor("breed", {
+      header: "Breed",
+      cell: (info) => info.getValue(),
+    }),
+    usersColumnHelper.accessor("petBreed", {
+      header: "Pet Breed",
+      cell: (info) => info.getValue(),
+    }),
+    usersColumnHelper.accessor("age", {
+      header: "Pet Age",
+      cell: (info) => info.getValue(),
+    }),
+    usersColumnHelper.accessor("petGender", {
+      header: "Pet Gender",
+      cell: (info) => info.getValue(),
+    }),
+    usersColumnHelper.accessor("petWeight", {
+      header: "Pet Weight",
+      cell: (info) => info.getValue(),
+    }),
+    usersColumnHelper.accessor("reference", {
+      header: "Reference",
+      cell: (info) => info.getValue() || "-",
+    }),
+    usersColumnHelper.accessor("createdAt", {
+      header: "Created At",
+      cell: (info) => new Date(info.getValue()).toLocaleDateString(),
+    }),
+  ];
 
   const providerDistribution = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -168,63 +247,264 @@ const AnalyticsCharts = () => {
     return Object.entries(counts).map(([name, value]) => ({ name, value }));
   }, [linksData]);
 
-  const columns = [
-    columnHelper.accessor("email", {
-      header: "Email",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("firstName", {
-      header: "First Name",
-      cell: (info) => info.getValue() || "-",
-    }),
-    columnHelper.accessor("lastName", {
-      header: "Last Name",
-      cell: (info) => info.getValue() || "-",
-    }),
-    columnHelper.accessor("petName", {
-      header: "Pet Name",
-      cell: (info) => info.getValue() || "-",
-    }),
-    columnHelper.accessor("animal", {
-      header: "Pet Type",
-      cell: (info) => info.getValue() || "-",
-    }),
-    columnHelper.accessor("provider", {
-      header: "Provider",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("planName", {
-      header: "Plan Name",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("planDeductible", {
-      header: "Deductible",
-      cell: (info) => `$${info.getValue()}`,
-    }),
-    columnHelper.accessor("planReimbursementPercentage", {
-      header: "Reimbursement %",
-      cell: (info) => `${info.getValue()}%`,
-    }),
-    columnHelper.accessor("planMonthlyPrice", {
-      header: "Monthly Price",
-      cell: (info) => `$${info.getValue().toFixed(2)}`,
-    }),
-    columnHelper.accessor("createdAt", {
-      header: "Date Clicked",
-      cell: (info) => new Date(info.getValue()).toLocaleDateString(),
-    }),
-  ];
+  // Map zip codes to states (first 3 digits to state mapping)
+  const zipToState = (zip: string): string => {
+    const zipNum = parseInt(zip.substring(0, 3));
+    if (zipNum >= 35 && zipNum <= 36) return "AL";
+    if (zipNum >= 995 && zipNum <= 999) return "AK";
+    if (zipNum >= 85 && zipNum <= 86) return "AZ";
+    if (zipNum >= 716 && zipNum <= 729) return "AR";
+    if (zipNum >= 90 && zipNum <= 96) return "CA";
+    if (zipNum >= 80 && zipNum <= 81) return "CO";
+    if (zipNum >= 60 && zipNum <= 69) return "CT";
+    if (zipNum >= 197 && zipNum <= 199) return "DE";
+    if (zipNum >= 320 && zipNum <= 349) return "FL";
+    if (zipNum >= 30 && zipNum <= 31) return "GA";
+    if (zipNum >= 967 && zipNum <= 968) return "HI";
+    if (zipNum >= 832 && zipNum <= 838) return "ID";
+    if (zipNum >= 60 && zipNum <= 62) return "IL";
+    if (zipNum >= 46 && zipNum <= 47) return "IN";
+    if (zipNum >= 50 && zipNum <= 52) return "IA";
+    if (zipNum >= 66 && zipNum <= 67) return "KS";
+    if (zipNum >= 40 && zipNum <= 42) return "KY";
+    if (zipNum >= 700 && zipNum <= 714) return "LA";
+    if (zipNum >= 39 && zipNum <= 49) return "ME";
+    if (zipNum >= 206 && zipNum <= 219) return "MD";
+    if (zipNum >= 10 && zipNum <= 27) return "MA";
+    if (zipNum >= 480 && zipNum <= 499) return "MI";
+    if (zipNum >= 550 && zipNum <= 567) return "MN";
+    if (zipNum >= 386 && zipNum <= 397) return "MS";
+    if (zipNum >= 630 && zipNum <= 658) return "MO";
+    if (zipNum >= 590 && zipNum <= 599) return "MT";
+    if (zipNum >= 680 && zipNum <= 693) return "NE";
+    if (zipNum >= 889 && zipNum <= 898) return "NV";
+    if (zipNum >= 30 && zipNum <= 38) return "NH";
+    if (zipNum >= 70 && zipNum <= 89) return "NJ";
+    if (zipNum >= 870 && zipNum <= 884) return "NM";
+    if (zipNum >= 100 && zipNum <= 149) return "NY";
+    if (zipNum >= 270 && zipNum <= 289) return "NC";
+    if (zipNum >= 580 && zipNum <= 588) return "ND";
+    if (zipNum >= 430 && zipNum <= 458) return "OH";
+    if (zipNum >= 730 && zipNum <= 749) return "OK";
+    if (zipNum >= 970 && zipNum <= 979) return "OR";
+    if (zipNum >= 150 && zipNum <= 196) return "PA";
+    if (zipNum >= 28 && zipNum <= 29) return "RI";
+    if (zipNum >= 290 && zipNum <= 299) return "SC";
+    if (zipNum >= 570 && zipNum <= 577) return "SD";
+    if (zipNum >= 370 && zipNum <= 385) return "TN";
+    if ((zipNum >= 750 && zipNum <= 799) || (zipNum >= 885 && zipNum <= 888))
+      return "TX";
+    if (zipNum >= 840 && zipNum <= 847) return "UT";
+    if (zipNum >= 50 && zipNum <= 59) return "VT";
+    if (zipNum >= 220 && zipNum <= 246) return "VA";
+    if (zipNum >= 980 && zipNum <= 994) return "WA";
+    if (zipNum >= 247 && zipNum <= 268) return "WV";
+    if (zipNum >= 530 && zipNum <= 549) return "WI";
+    if (zipNum >= 820 && zipNum <= 831) return "WY";
+    if (zipNum >= 200 && zipNum <= 205) return "DC";
+    return "Unknown";
+  };
 
-  const table = useReactTable({
-    data: combinedData,
-    columns,
+  const stateDistribution = useMemo(() => {
+    const counts: Record<string, number> = {};
+    userObjectsData.forEach((user) => {
+      if (user.zip) {
+        const state = zipToState(user.zip);
+        if (state !== "Unknown") {
+          counts[state] = (counts[state] || 0) + 1;
+        }
+      }
+    });
+    return counts;
+  }, [userObjectsData]);
+
+  // Create tables
+  const linksTable = useReactTable({
+    data: linksData,
+    columns: linksColumns,
     state: {
-      sorting,
+      sorting: linksSorting,
     },
-    onSortingChange: setSorting,
+    onSortingChange: setLinksSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
+
+  const usersTable = useReactTable({
+    data: userObjectsData,
+    columns: usersColumns,
+    state: {
+      sorting: usersSorting,
+    },
+    onSortingChange: setUsersSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
+
+  // Map state abbreviations to full names for the map
+  const stateAbbrToName: Record<string, string> = {
+    AL: "Alabama",
+    AK: "Alaska",
+    AZ: "Arizona",
+    AR: "Arkansas",
+    CA: "California",
+    CO: "Colorado",
+    CT: "Connecticut",
+    DE: "Delaware",
+    FL: "Florida",
+    GA: "Georgia",
+    HI: "Hawaii",
+    ID: "Idaho",
+    IL: "Illinois",
+    IN: "Indiana",
+    IA: "Iowa",
+    KS: "Kansas",
+    KY: "Kentucky",
+    LA: "Louisiana",
+    ME: "Maine",
+    MD: "Maryland",
+    MA: "Massachusetts",
+    MI: "Michigan",
+    MN: "Minnesota",
+    MS: "Mississippi",
+    MO: "Missouri",
+    MT: "Montana",
+    NE: "Nebraska",
+    NV: "Nevada",
+    NH: "New Hampshire",
+    NJ: "New Jersey",
+    NM: "New Mexico",
+    NY: "New York",
+    NC: "North Carolina",
+    ND: "North Dakota",
+    OH: "Ohio",
+    OK: "Oklahoma",
+    OR: "Oregon",
+    PA: "Pennsylvania",
+    RI: "Rhode Island",
+    SC: "South Carolina",
+    SD: "South Dakota",
+    TN: "Tennessee",
+    TX: "Texas",
+    UT: "Utah",
+    VT: "Vermont",
+    VA: "Virginia",
+    WA: "Washington",
+    WV: "West Virginia",
+    WI: "Wisconsin",
+    WY: "Wyoming",
+    DC: "District of Columbia",
+  };
+
+  // Create reverse lookup: state name -> count
+  const stateNameDistribution = useMemo(() => {
+    const nameCounts: Record<string, number> = {};
+    Object.entries(stateDistribution).forEach(([abbr, count]) => {
+      const name = stateAbbrToName[abbr];
+      if (name) {
+        nameCounts[name] = count;
+      }
+    });
+    return nameCounts;
+  }, [stateDistribution]);
+
+  const downloadLinksCSV = () => {
+    const headers = [
+      "Email",
+      "Provider",
+      "Plan Name",
+      "Deductible",
+      "Reimbursement %",
+      "Reimbursement Limit",
+      "Monthly Price",
+      "Date Clicked",
+    ];
+
+    const rows = linksData.map((row) => [
+      row.email,
+      row.provider,
+      row.planName,
+      row.planDeductible,
+      row.planReimbursementPercentage,
+      row.planReimbursementLimit,
+      row.planMonthlyPrice.toFixed(2),
+      new Date(row.createdAt).toLocaleDateString(),
+    ]);
+
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((row) =>
+        row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(","),
+      ),
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute(
+      "download",
+      `analytics-links-${new Date().toISOString().split("T")[0]}.csv`,
+    );
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const downloadUsersCSV = () => {
+    const headers = [
+      "Email",
+      "First Name",
+      "Last Name",
+      "ZIP Code",
+      "Pet Name",
+      "Pet Type",
+      "Breed",
+      "Pet Breed",
+      "Pet Age (in days)",
+      "Pet Gender",
+      "Pet Weight",
+      "Reference",
+      "Created At",
+    ];
+
+    const rows = userObjectsData.map((row) => [
+      row.email,
+      row.firstName,
+      row.lastName,
+      row.zip,
+      row.petName,
+      row.animal,
+      row.breed,
+      row.petBreed,
+      row.age,
+      row.petGender,
+      row.petWeight,
+      row.reference || "",
+      new Date(row.createdAt).toLocaleDateString(),
+    ]);
+
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((row) =>
+        row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(","),
+      ),
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute(
+      "download",
+      `analytics-users-${new Date().toISOString().split("T")[0]}.csv`,
+    );
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   if (loading) {
     return (
@@ -249,15 +529,37 @@ const AnalyticsCharts = () => {
         Analytics Dashboard
       </h1>
 
-      {/* Sortable Table */}
+      {/* Links Clicked Table */}
       <div className="mb-12 bg-white rounded-lg shadow overflow-hidden">
-        <h2 className="text-2xl font-semibold p-6 border-b text-(--primary-teal-dark)">
-          Links Clicked ({combinedData.length} total)
-        </h2>
+        <div className="flex justify-between items-center p-6 border-b">
+          <h2 className="text-2xl font-semibold text-(--primary-teal-dark)">
+            Links Clicked ({linksData.length} total)
+          </h2>
+          <button
+            onClick={downloadLinksCSV}
+            className="flex items-center gap-2 px-4 py-2 bg-(--primary-teal) text-white rounded-lg hover:bg-(--primary-teal-dark) transition-colors"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            Download CSV
+          </button>
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-(--light-pink)">
-              {table.getHeaderGroups().map((headerGroup) => (
+              {linksTable.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
                     <th
@@ -281,7 +583,81 @@ const AnalyticsCharts = () => {
               ))}
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {table.getRowModel().rows.map((row) => (
+              {linksTable.getRowModel().rows.map((row) => (
+                <tr key={row.id} className="hover:bg-(--background-light)">
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      className="px-4 py-3 whitespace-nowrap text-sm text-(--text-dark)"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Form Submissions Table */}
+      <div className="mb-12 bg-white rounded-lg shadow overflow-hidden">
+        <div className="flex justify-between items-center p-6 border-b">
+          <h2 className="text-2xl font-semibold text-(--primary-teal-dark)">
+            Form Submissions (unique) ({userObjectsData.length} total)
+          </h2>
+          <button
+            onClick={downloadUsersCSV}
+            className="flex items-center gap-2 px-4 py-2 bg-(--primary-teal) text-white rounded-lg hover:bg-(--primary-teal-dark) transition-colors"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            Download CSV
+          </button>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-(--light-pink)">
+              {usersTable.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      className="px-4 py-3 text-left text-xs font-medium text-(--primary-teal-dark) uppercase tracking-wider cursor-pointer hover:bg-(--coral-pink)"
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
+                      <div className="flex items-center gap-2">
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                        {{
+                          asc: " 🔼",
+                          desc: " 🔽",
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {usersTable.getRowModel().rows.map((row) => (
                 <tr key={row.id} className="hover:bg-(--background-light)">
                   {row.getVisibleCells().map((cell) => (
                     <td
@@ -439,6 +815,73 @@ const AnalyticsCharts = () => {
           <p className="text-3xl font-bold mt-2 text-(--primary-coral)">
             {new Set(linksData.map((l) => l.provider.toLowerCase())).size}
           </p>
+        </div>
+      </div>
+
+      {/* US Map */}
+      <div className="bg-white p-6 rounded-lg shadow mt-8">
+        <h2 className="text-2xl font-semibold mb-6 text-(--primary-teal-dark)">
+          Geographic Distribution (by State)
+        </h2>
+        <div className="relative w-full max-w-4xl mx-auto">
+          <ComposableMap projection="geoAlbersUsa">
+            <ZoomableGroup>
+              <Geographies geography="https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json">
+                {({ geographies }) =>
+                  geographies.map((geo) => {
+                    const stateName = geo.properties.name;
+                    const count = stateNameDistribution[stateName] || 0;
+                    const maxCount = Math.max(
+                      ...Object.values(stateNameDistribution),
+                      1,
+                    );
+                    const opacity =
+                      count > 0 ? 0.3 + (count / maxCount) * 0.7 : 0.1;
+
+                    return (
+                      <Geography
+                        key={geo.rsmKey}
+                        geography={geo}
+                        fill={
+                          count > 0
+                            ? `rgba(237, 150, 144, ${opacity})`
+                            : "#e0e0e0"
+                        }
+                        stroke="#fff"
+                        strokeWidth={0.5}
+                        onMouseEnter={() => {
+                          if (count > 0) {
+                            setTooltipContent(
+                              `${stateName}: ${count} user${count !== 1 ? "s" : ""}`,
+                            );
+                          }
+                        }}
+                        onMouseLeave={() => {
+                          setTooltipContent("");
+                        }}
+                        style={{
+                          default: { outline: "none" },
+                          hover: {
+                            fill: count > 0 ? "#2d6a7b" : "#e0e0e0",
+                            outline: "none",
+                            cursor: count > 0 ? "pointer" : "default",
+                          },
+                          pressed: { outline: "none" },
+                        }}
+                      />
+                    );
+                  })
+                }
+              </Geographies>
+            </ZoomableGroup>
+          </ComposableMap>
+          {tooltipContent && (
+            <div className="absolute top-4 left-4 bg-white px-4 py-2 rounded-lg shadow-lg border border-gray-200 pointer-events-none">
+              <p className="text-sm font-semibold text-(--primary-teal-dark)">
+                {tooltipContent}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
