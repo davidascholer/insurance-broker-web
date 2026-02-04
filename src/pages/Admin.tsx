@@ -1,16 +1,12 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { adminEmailPassword } from "@/api/api";
 import Loader from "@/components/Loader";
 import PageContainer from "@/components/PageContainer";
 import { useState, useEffect } from "react";
-import AdminTokenForm from "@/components/admin/AdminTokenForm";
-import AdminLoginForm from "@/components/admin/AdminLoginForm";
-import AdminBlogForm from "@/components/admin/AdminBlogForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate, Link } from "react-router-dom";
-import { PIPA_API_URL, PIPA_AUTH_URL } from "@/api/constants";
+import { PIPA_API_URL } from "@/api/constants";
 
 /* deprecated admin page - see Admin.tsx for new version */
 const Admin = () => {
@@ -23,12 +19,6 @@ const Admin = () => {
   const [loginError, setLoginError] = useState<string>("");
 
   useEffect(() => {
-    // Redirect to home page if in production build
-    if (import.meta.env.PROD) {
-      navigate("/");
-      return;
-    }
-
     // Check if user is already authenticated via stored token
     const storedToken = localStorage.getItem("pipaAdminAccessToken");
     if (storedToken) {
