@@ -14,7 +14,6 @@ import PrudentContent from "../features/prudent/components/PrudentContent";
 import { registerQuoteLinkClick } from "@/features/analytics/emitters";
 import { getPrudentLink } from "@/features/prudent/lib/util";
 import KanguroContent from "@/features/kanguro/pages/KanguroContent";
-import { trackLinkClick } from "@/api/api";
 
 // Keys must match the providerId in the QuoteItem type
 const providers = new Map();
@@ -65,7 +64,7 @@ const BottomDrawer = ({
   keyId: number;
   isPortrait: boolean;
   card: QuoteItem;
-  handleInsurerClicked: (insurer: string) => void;
+  handleInsurerClicked: (insurer: string, card: QuoteItem) => void;
 }) => {
   const [value, setValue] = useState<string | undefined>();
 
@@ -130,7 +129,9 @@ const BottomDrawer = ({
                 providerId={providerId}
                 relatedPlans={card.extras?.relatedPlans || []}
                 isPortrait={isPortrait}
-                handleInsurerClicked={handleInsurerClicked}
+                handleInsurerClicked={(insurer) =>
+                  handleInsurerClicked(insurer, card)
+                }
               />
             )}
             {providers.get(providerId).providerName === "Kanguro" && (
@@ -139,7 +140,7 @@ const BottomDrawer = ({
                 providerId={card.providerId}
                 isPortrait={isPortrait}
                 handleInsurerClicked={(insurer) => {
-                  handleInsurerClicked(insurer);
+                  handleInsurerClicked(insurer, card);
                 }}
               />
             )}
@@ -158,7 +159,7 @@ function QuoteResults({
 }: {
   cards: QuoteItem[];
   showFullResults: boolean;
-  handleInsurerClicked: (insurer: string) => void;
+  handleInsurerClicked: (insurer: string, card: QuoteItem) => void;
   petObject: AnswersType;
 }) {
   const [active, setActive] = useState<
@@ -214,18 +215,7 @@ function QuoteResults({
       petObject: petObject,
     });
 
-    // Track link click for analytics
-    trackLinkClick({
-      email: petObject.email,
-      provider: insurer,
-      planName: card.extras?.planDesc || insurer,
-      planDeductible: card.deductibleOption,
-      planReimbursementPercentage: card.reimbursementPercentageOption,
-      planReimbursementLimit: card.reimbursementLimitOption,
-      planMonthlyPrice: card.monthlyPrice,
-    });
-
-    handleInsurerClicked(insurer);
+    handleInsurerClicked(insurer, card);
   };
 
   return (
@@ -386,6 +376,7 @@ function QuoteResults({
                         onClick={async () => {
                           handleInsurerClicked(
                             providers.get(active.providerId).providerName,
+                            active,
                           );
                           if (active.extras?.planObj) {
                             const windowReference = window.open();
@@ -606,8 +597,8 @@ function QuoteResults({
                     providerId={card.providerId}
                     isPortrait={isPortrait}
                     card={card}
-                    handleInsurerClicked={() =>
-                      handleInsurerClick(card.providerId, card)
+                    handleInsurerClicked={(insurer, cardData) =>
+                      handleInsurerClick(insurer, cardData)
                     }
                   />
                 </motion.div>

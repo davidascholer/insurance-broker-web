@@ -98,7 +98,7 @@ export const formSubmitted = async (petObject: AnswersType) => {
       "Content-Type": "application/json",
       // "Access-Control-Allow-Origin": "*", // Not needed for POST requests
     },
-    body: JSON.stringify({ petObject }),
+    body: JSON.stringify({ ...petObject }),
   });
   if (!data.ok) {
     throw new Error(`Error: ${data.status} ${data.statusText}`);
@@ -115,7 +115,7 @@ export const submitFormToAnalytics = async (answers: AnswersType) => {
     zip: answers.zip,
     animal: answers.animal,
     breed: answers.breed,
-    age: answers.age,
+    age: answers.age.value,
     petGender: answers.gender,
     petName: answers.petName,
     petWeight: answers.weight,
@@ -180,8 +180,9 @@ export const trackLinkClick = async (linkData: {
   planReimbursementLimit: number;
   planMonthlyPrice: number;
 }) => {
+  console.log("trackLinkClick linkData:", linkData);
   try {
-    const response = await fetch(PIPA_ANALYTICS_URL + "/get-links-clicked", {
+    const response = await fetch(PIPA_ANALYTICS_URL + "/link-clicked", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -201,4 +202,21 @@ export const trackLinkClick = async (linkData: {
   } catch (error) {
     console.error("Error tracking link click:", error);
   }
+};
+
+export const getLinksClicked = async (token: string) => {
+  const response = await fetch(PIPA_ANALYTICS_URL + "/get-links-clicked", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ token }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Error: ${response.status} ${response.statusText}`);
+  }
+
+  const parsedData = await response.json();
+  return parsedData.data;
 };

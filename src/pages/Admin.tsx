@@ -152,7 +152,7 @@ const Admin = () => {
       <Link to="/blog/creator">
         <Button className="px-6 py-2">Go to Blog Tool</Button>
       </Link>
-      <Link to="/analytics">
+      <Link to="/analytics/charts">
         <Button className="px-6 py-2">Go to Analytics</Button>
       </Link>
       <Button

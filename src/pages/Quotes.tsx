@@ -39,6 +39,7 @@ import { gatherQuotesFromInsurer } from "@/api/util";
 import LoadingOverlay from "@/components/LoadingOverlay";
 import { mapFilterOptionToKanguroDeductible } from "@/features/kanguro/lib/util";
 import type { KanguroCoverageType } from "@/features/kanguro/lib/types";
+import { trackLinkClick } from "@/api/api";
 // import { registerQuoteLinkClick } from "@/features/analytics/emitters";
 
 const LOAD_TIMER = 20; // seconds
@@ -57,16 +58,16 @@ const Quotes = () => {
   const [showFullResults, setShowFullResults] = useState<boolean>(false);
   const [selectedDeductible, setSelectedDeductible] =
     useState<FilterOptionType>(
-      DEDUCTIBLE_OPTIONS.find((d) => d.value === 250) || DEDUCTIBLE_OPTIONS[0]
+      DEDUCTIBLE_OPTIONS.find((d) => d.value === 250) || DEDUCTIBLE_OPTIONS[0],
     );
   const [selectedReimbursement, setSelectedReimbursement] =
     useState<FilterOptionType>(
       REIMBURSEMENT_RATE_OPTIONS.find((rr) => rr.value === 80) ||
-        REIMBURSEMENT_RATE_OPTIONS[0]
+        REIMBURSEMENT_RATE_OPTIONS[0],
     );
   const [selectedLimit, setSelectedLimit] = useState<FilterOptionType>(
     ANNUAL_LIMIT_OPTIONS.find((al) => al.value === 10000) ||
-      ANNUAL_LIMIT_OPTIONS[0]
+      ANNUAL_LIMIT_OPTIONS[0],
   );
 
   const [deductibles, setDeductibles] = useState<FilterOptionType[]>([]);
@@ -85,7 +86,7 @@ const Quotes = () => {
   const handleDeductibleClicked = (deductible: FilterOptionType) => {
     setSelectedDeductible(deductible);
     const filteredList: FilterOptionType[] = DEDUCTIBLE_OPTIONS.filter(
-      (i) => i.value === deductible.value
+      (i) => i.value === deductible.value,
     );
     setDeductibles(filteredList);
   };
@@ -93,7 +94,7 @@ const Quotes = () => {
   const handleReimbursementRateClicked = (rate: FilterOptionType) => {
     setSelectedReimbursement(rate);
     const filteredList: FilterOptionType[] = REIMBURSEMENT_RATE_OPTIONS.filter(
-      (i) => i.value === rate.value
+      (i) => i.value === rate.value,
     );
     setReimbursementRates(filteredList);
   };
@@ -101,14 +102,14 @@ const Quotes = () => {
   const handleAnnualLimitClick = (limit: FilterOptionType) => {
     setSelectedLimit(limit);
     const filteredList: FilterOptionType[] = ANNUAL_LIMIT_OPTIONS.filter(
-      (i) => i.value === limit.value
+      (i) => i.value === limit.value,
     );
     setAnnualLimits(filteredList);
   };
 
   const handleSortQuoteData = (
     sortItem: SortItemType,
-    quoteData: QuoteItem[]
+    quoteData: QuoteItem[],
   ): QuoteItem[] => {
     // setSortItemSelected(item);
 
@@ -173,12 +174,12 @@ const Quotes = () => {
   const fetchQuotesFromAPI = async (
     insurer: ProviderIdTypes,
     answers: AnswersType,
-    isFallback = false
+    isFallback = false,
   ): Promise<QuoteItem[]> => {
     const insurerQuotes = await gatherQuotesFromInsurer(
       insurer,
       answers,
-      isFallback
+      isFallback,
     );
     if (insurerQuotes) {
       // Append the provider Id (ProviderIdTypes) to the quote data
@@ -191,7 +192,7 @@ const Quotes = () => {
         JSON.stringify({
           coverageOptions: insurerQuotes,
           timestamp: Date.now(),
-        })
+        }),
       );
 
       return insurerQuotes;
@@ -224,7 +225,7 @@ const Quotes = () => {
         const embraceQuotes = await fetchQuotesFromAPI(
           "embrace",
           answers,
-          true
+          true,
         );
         if (embraceQuotes.length > 0) {
           fetchedQuotes.push(...embraceQuotes);
@@ -311,7 +312,7 @@ const Quotes = () => {
 
         // Todo: put this into a function fro here...
         const kanguroDeductible = mapFilterOptionToKanguroDeductible(
-          selectedDeductible.value
+          selectedDeductible.value,
         );
         const kanguroAnnualLimit: string =
           selectedLimit.value === 999999
@@ -331,7 +332,7 @@ const Quotes = () => {
         // To here.
         const kanguroQuotes = await fetchQuotesFromAPI(
           "kanguro",
-          kanguroPetObject
+          kanguroPetObject,
         );
         if (DEV) console.log("DEV LOG", "Kanguro Quotes:", kanguroQuotes);
         if (kanguroQuotes.length > 0) {
@@ -347,19 +348,30 @@ const Quotes = () => {
     const sortedFetchedData = handleSortQuoteData("price", fetchedQuotes);
     const sortedSuggestedQuoteData = handleSortQuoteData(
       "price",
-      suggestedQuoteData
+      suggestedQuoteData,
     );
     const quoteDataWithBackupsAtEnd = pushBackupsToEnd(sortedFetchedData);
     setQuoteData(
-      quoteDataWithBackupsAtEnd?.length > 0 ? quoteDataWithBackupsAtEnd : []
+      quoteDataWithBackupsAtEnd?.length > 0 ? quoteDataWithBackupsAtEnd : [],
     );
     setSuggestedQuoteData(
-      sortedSuggestedQuoteData?.length > 0 ? sortedSuggestedQuoteData : []
+      sortedSuggestedQuoteData?.length > 0 ? sortedSuggestedQuoteData : [],
     );
   };
 
-  const handleInsurerClicked = async (insurer: string) => {
+  const handleInsurerClicked = async (insurer: string, card: QuoteItem) => {
     if (DEV) console.log("insurer clicked", insurer);
+    // Track link click for analytics
+    trackLinkClick({
+      email: petObject.email,
+      provider: insurer,
+      planName: card.extras?.planDesc || insurer,
+      planDeductible: card.deductibleOption,
+      planReimbursementPercentage: card.reimbursementPercentageOption,
+      planReimbursementLimit: card.reimbursementLimitOption,
+      planMonthlyPrice: card.monthlyPrice,
+    });
+
     setOverlayVisible(true);
     setTimeout(() => {
       setOverlayVisible(false);
@@ -415,7 +427,7 @@ const Quotes = () => {
         return (
           quote.reimbursementPercentageOption === selectedReimbursement.value
         );
-      }
+      },
     );
 
     const selectedLimitsQuoteData = selectedReimbursementsQuoteData.filter(
@@ -425,7 +437,7 @@ const Quotes = () => {
         }
         // Match exact value for all other options
         return quote.reimbursementLimitOption === selectedLimit.value;
-      }
+      },
     );
 
     if (DEV) {
@@ -433,18 +445,18 @@ const Quotes = () => {
       console.log(
         "DEV LOG",
         "selectedReimbursements",
-        selectedReimbursementsQuoteData
+        selectedReimbursementsQuoteData,
       );
       console.log(
         "DEV LOG",
         "selectedDeductibles",
-        selectedDeductiblesQuoteData
+        selectedDeductiblesQuoteData,
       );
     }
 
     const sortedQuoteData = handleSortQuoteData(
       "price",
-      selectedLimitsQuoteData
+      selectedLimitsQuoteData,
     );
     const quoteDataWithBackupsAtEnd = pushBackupsToEnd(sortedQuoteData);
     setActiveQuoteData(quoteDataWithBackupsAtEnd);
@@ -464,7 +476,7 @@ const Quotes = () => {
         cachedKanguroQuotes?.filter((quote) => {
           const deductibleMatch = matchDeductibleValue(
             quote.deductibleOption,
-            selectedDeductible.value
+            selectedDeductible.value,
           );
           return (
             deductibleMatch &&
@@ -482,7 +494,7 @@ const Quotes = () => {
 
         // Todo: put this into a function fro here...
         const kanguroDeductible = mapFilterOptionToKanguroDeductible(
-          selectedDeductible.value
+          selectedDeductible.value,
         );
         const kanguroAnnualLimit: string =
           selectedLimit.value === 999999
@@ -505,7 +517,7 @@ const Quotes = () => {
         if (!isLoading) setOverlayVisible(true);
         const kanguroQuotes = await fetchQuotesFromAPI(
           "kanguro",
-          kanguroPetObject
+          kanguroPetObject,
         );
         // Hide the loading screen
         setOverlayVisible(false);
@@ -514,7 +526,7 @@ const Quotes = () => {
         if (kanguroQuotes.length > 0) {
           // Replace the old kanguro quotes with the new ones
           const updatedQuoteData = quoteData.filter(
-            (quote) => quote.providerId !== "kanguro"
+            (quote) => quote.providerId !== "kanguro",
           );
           const newQuoteData = [...updatedQuoteData, ...kanguroQuotes];
           setQuoteData(newQuoteData);
@@ -638,7 +650,7 @@ const Quotes = () => {
                 className={cn(
                   "flex-1 flex flex-col justify-center items-center sansita-bold cursor-pointer mx-auto mt-6 animate-pulse transition-transform duration-200 ease hover:-translate-y-0.5 z-1",
                   showFullResults && "hidden",
-                  suggestedQuoteData.length >= 10 ? "visible" : "hidden"
+                  suggestedQuoteData.length >= 10 ? "visible" : "hidden",
                 )}
                 onClick={() => setShowFullResults(true)}
               >

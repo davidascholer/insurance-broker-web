@@ -27,6 +27,7 @@ import BlogPage from "./pages/BlogPage";
 import BlogCreationList from "./features/blog-creator/BlogCreationList";
 import BlogCreator from "./features/blog-creator/BlogCreator";
 import TestServer from "./pages/TestServer";
+import AnalyticsCharts from "./pages/AnalyticsCharts";
 
 const RouterWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -87,6 +88,7 @@ const AppRouter = () => {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/licenses" element={<Licenses />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/analytics/charts" element={<AnalyticsCharts />} />
         <Route path="/test-server" element={<TestServer />} />
       </Routes>
     </RouterWrapper>
