@@ -1,15 +1,89 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getLinksClicked, getUserObjects } from "@/api/api";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import Loader from "@/components/Loader";
+import {
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+import {
+  useReactTable,
+  getCoreRowModel,
+  getSortedRowModel,
+  flexRender,
+  createColumnHelper,
+  type SortingState,
+} from "@tanstack/react-table";
+
+type LinkClickedData = {
+  id: string;
+  email: string;
+  provider: string;
+  planName: string;
+  planDeductible: number;
+  planReimbursementPercentage: number;
+  planReimbursementLimit: number;
+  planMonthlyPrice: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type UserObjectData = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  zip: string;
+  animal: string;
+  breed: string;
+  age: number;
+  petGender: string;
+  petName: string;
+  petWeight: string;
+  petBreed: string;
+  reference: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type CombinedData = LinkClickedData & {
+  firstName?: string;
+  lastName?: string;
+  petName?: string;
+  animal?: string;
+  petBreed?: string;
+};
+
+const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#8884D8",
+  "#82CA9D",
+  "#FFC658",
+  "#FF6B9D",
+];
+
+const columnHelper = createColumnHelper<CombinedData>();
 
 const AnalyticsCharts = () => {
   useRequireAuth();
 
-  const [linksData, setLinksData] = useState<unknown>(null);
-  const [userObjectsData, setUserObjectsData] = useState<unknown>(null);
+  const [linksData, setLinksData] = useState<LinkClickedData[]>([]);
+  const [userObjectsData, setUserObjectsData] = useState<UserObjectData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
+  const [sorting, setSorting] = useState<SortingState>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,8 +96,8 @@ const AnalyticsCharts = () => {
           getUserObjects(token),
         ]);
 
-        setLinksData(links);
-        setUserObjectsData(userObjects);
+        setLinksData(links || []);
+        setUserObjectsData(userObjects || []);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to fetch data");
       } finally {
@@ -33,6 +107,124 @@ const AnalyticsCharts = () => {
 
     fetchData();
   }, []);
+
+  const combinedData = useMemo(() => {
+    return linksData.map((link) => {
+      const user = userObjectsData.find((u) => u.email === link.email);
+      return {
+        ...link,
+        firstName: user?.firstName,
+        lastName: user?.lastName,
+        petName: user?.petName,
+        animal: user?.animal,
+        petBreed: user?.petBreed,
+      };
+    });
+  }, [linksData, userObjectsData]);
+
+  const providerDistribution = useMemo(() => {
+    const counts: Record<string, number> = {};
+    linksData.forEach((link) => {
+      const provider = link.provider.toLowerCase();
+      counts[provider] = (counts[provider] || 0) + 1;
+    });
+    return Object.entries(counts).map(([name, value]) => ({ name, value }));
+  }, [linksData]);
+
+  const animalDistribution = useMemo(() => {
+    const counts: Record<string, number> = {};
+    userObjectsData.forEach((user) => {
+      const animal = user.animal;
+      counts[animal] = (counts[animal] || 0) + 1;
+    });
+    return Object.entries(counts).map(([name, value]) => ({ name, value }));
+  }, [userObjectsData]);
+
+  const priceRangeDistribution = useMemo(() => {
+    const ranges = {
+      "$0-$25": 0,
+      "$25-$50": 0,
+      "$50-$75": 0,
+      "$75-$100": 0,
+      "$100+": 0,
+    };
+    linksData.forEach((link) => {
+      const price = link.planMonthlyPrice;
+      if (price < 25) ranges["$0-$25"]++;
+      else if (price < 50) ranges["$25-$50"]++;
+      else if (price < 75) ranges["$50-$75"]++;
+      else if (price < 100) ranges["$75-$100"]++;
+      else ranges["$100+"]++;
+    });
+    return Object.entries(ranges).map(([name, value]) => ({ name, value }));
+  }, [linksData]);
+
+  const deductibleDistribution = useMemo(() => {
+    const counts: Record<string, number> = {};
+    linksData.forEach((link) => {
+      const deductible = `$${link.planDeductible}`;
+      counts[deductible] = (counts[deductible] || 0) + 1;
+    });
+    return Object.entries(counts).map(([name, value]) => ({ name, value }));
+  }, [linksData]);
+
+  const columns = [
+    columnHelper.accessor("email", {
+      header: "Email",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("firstName", {
+      header: "First Name",
+      cell: (info) => info.getValue() || "-",
+    }),
+    columnHelper.accessor("lastName", {
+      header: "Last Name",
+      cell: (info) => info.getValue() || "-",
+    }),
+    columnHelper.accessor("petName", {
+      header: "Pet Name",
+      cell: (info) => info.getValue() || "-",
+    }),
+    columnHelper.accessor("animal", {
+      header: "Pet Type",
+      cell: (info) => info.getValue() || "-",
+    }),
+    columnHelper.accessor("provider", {
+      header: "Provider",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("planName", {
+      header: "Plan Name",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("planDeductible", {
+      header: "Deductible",
+      cell: (info) => `$${info.getValue()}`,
+    }),
+    columnHelper.accessor("planReimbursementPercentage", {
+      header: "Reimbursement %",
+      cell: (info) => `${info.getValue()}%`,
+    }),
+    columnHelper.accessor("planMonthlyPrice", {
+      header: "Monthly Price",
+      cell: (info) => `$${info.getValue().toFixed(2)}`,
+    }),
+    columnHelper.accessor("createdAt", {
+      header: "Date Clicked",
+      cell: (info) => new Date(info.getValue()).toLocaleDateString(),
+    }),
+  ];
+
+  const table = useReactTable({
+    data: combinedData,
+    columns,
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
 
   if (loading) {
     return (
@@ -52,21 +244,188 @@ const AnalyticsCharts = () => {
   }
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8">Analytics Charts</h1>
+    <div className="p-8 max-w-[1800px] mx-auto">
+      <h1 className="text-3xl font-bold mb-8">Analytics Dashboard</h1>
 
-      <div className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4">Links Clicked Data</h2>
-        <pre className="bg-gray-100 p-4 rounded-lg overflow-auto max-h-96">
-          {JSON.stringify(linksData, null, 2)}
-        </pre>
+      {/* Sortable Table */}
+      <div className="mb-12 bg-white rounded-lg shadow overflow-hidden">
+        <h2 className="text-2xl font-semibold p-6 border-b">
+          Links Clicked ({combinedData.length} total)
+        </h2>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
+                      <div className="flex items-center gap-2">
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                        {{
+                          asc: " 🔼",
+                          desc: " 🔽",
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {table.getRowModel().rows.map((row) => (
+                <tr key={row.id} className="hover:bg-gray-50">
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      className="px-4 py-3 whitespace-nowrap text-sm text-gray-900"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <div className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4">User Pet Objects Data</h2>
-        <pre className="bg-gray-100 p-4 rounded-lg overflow-auto max-h-96">
-          {JSON.stringify(userObjectsData, null, 2)}
-        </pre>
+      {/* Charts Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Provider Distribution */}
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4">Clicks by Provider</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={providerDistribution}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={({ name, percent }) =>
+                  `${name}: ${((percent ?? 0) * 100).toFixed(0)}%`
+                }
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="value"
+              >
+                {providerDistribution.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Animal Distribution */}
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4">Pet Type Distribution</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={animalDistribution}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={({ name, percent }) =>
+                  `${name}: ${((percent ?? 0) * 100).toFixed(0)}%`
+                }
+                outerRadius={80}
+                fill="#82ca9d"
+                dataKey="value"
+              >
+                {animalDistribution.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Price Range Distribution */}
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4">
+            Monthly Price Distribution
+          </h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={priceRangeDistribution}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="value" fill="#8884d8" name="Number of Plans" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Deductible Distribution */}
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4">
+            Deductible Distribution
+          </h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={deductibleDistribution}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="value" fill="#82ca9d" name="Number of Plans" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Summary Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h3 className="text-gray-500 text-sm font-medium">Total Clicks</h3>
+          <p className="text-3xl font-bold mt-2">{linksData.length}</p>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h3 className="text-gray-500 text-sm font-medium">Total Users</h3>
+          <p className="text-3xl font-bold mt-2">{userObjectsData.length}</p>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h3 className="text-gray-500 text-sm font-medium">
+            Avg Monthly Price
+          </h3>
+          <p className="text-3xl font-bold mt-2">
+            $
+            {linksData.length > 0
+              ? (
+                  linksData.reduce((sum, l) => sum + l.planMonthlyPrice, 0) /
+                  linksData.length
+                ).toFixed(2)
+              : "0.00"}
+          </p>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h3 className="text-gray-500 text-sm font-medium">
+            Unique Providers
+          </h3>
+          <p className="text-3xl font-bold mt-2">
+            {new Set(linksData.map((l) => l.provider.toLowerCase())).size}
+          </p>
+        </div>
       </div>
     </div>
   );
