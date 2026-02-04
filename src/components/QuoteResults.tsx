@@ -14,6 +14,7 @@ import PrudentContent from "../features/prudent/components/PrudentContent";
 import { registerQuoteLinkClick } from "@/features/analytics/emitters";
 import { getPrudentLink } from "@/features/prudent/lib/util";
 import KanguroContent from "@/features/kanguro/pages/KanguroContent";
+import { trackLinkClick } from "@/api/api";
 
 // Keys must match the providerId in the QuoteItem type
 const providers = new Map();
@@ -87,7 +88,7 @@ const BottomDrawer = ({
         <AccordionItem value={keyId + ""} className="">
           <Button
             className={cn(
-              "justify-center items-center flex cursor-pointer z-0 w-full hover:bg-none h-14"
+              "justify-center items-center flex cursor-pointer z-0 w-full hover:bg-none h-14",
             )}
             variant={"ghost"}
             onClick={() => {
@@ -167,7 +168,7 @@ function QuoteResults({
   const id = useId();
 
   const [isPortrait, setIsPortrait] = useState(
-    window.innerWidth < window.innerHeight
+    window.innerWidth < window.innerHeight,
   );
 
   useEffect(() => {
@@ -212,6 +213,18 @@ function QuoteResults({
       },
       petObject: petObject,
     });
+
+    // Track link click for analytics
+    trackLinkClick({
+      email: petObject.email,
+      provider: insurer,
+      planName: card.extras?.planDesc || insurer,
+      planDeductible: card.deductibleOption,
+      planReimbursementPercentage: card.reimbursementPercentageOption,
+      planReimbursementLimit: card.reimbursementLimitOption,
+      planMonthlyPrice: card.monthlyPrice,
+    });
+
     handleInsurerClicked(insurer);
   };
 
@@ -327,7 +340,7 @@ function QuoteResults({
                           className="nunito-sans-bold px-4 py-3 text-lg rounded-3xl font-bold text-center w-full"
                         >
                           {formatNumberToPercent(
-                            active.reimbursementPercentageOption
+                            active.reimbursementPercentageOption,
                           )}
                         </motion.p>
                       </div>
@@ -347,7 +360,7 @@ function QuoteResults({
                           {active.reimbursementLimitOption === 999999
                             ? "Unlimited"
                             : formatNumberToPrice(
-                                active.reimbursementLimitOption
+                                active.reimbursementLimitOption,
                               )}
                         </motion.p>
                       </div>
@@ -372,12 +385,12 @@ function QuoteResults({
                         layoutId={`button-${active.providerId}-${id}-${active.key}`}
                         onClick={async () => {
                           handleInsurerClicked(
-                            providers.get(active.providerId).providerName
+                            providers.get(active.providerId).providerName,
                           );
                           if (active.extras?.planObj) {
                             const windowReference = window.open();
                             const url = await getPrudentLink(
-                              active.extras?.planObj
+                              active.extras?.planObj,
                             );
                             if (windowReference) {
                               windowReference.location = url;
@@ -391,7 +404,7 @@ function QuoteResults({
                         }}
                         className={cn(
                           active.providerId + "-select-coverage-button",
-                          "px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
+                          "px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full",
                         )}
                       >
                         Select this coverage for {petObject.petName}
@@ -465,7 +478,7 @@ function QuoteResults({
                   onClick={() => isPortrait && setActive({ ...card, key })}
                   className={cn(
                     "mt-3 p-4 pb-1 bg-white hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl border-2 border-(--primary-coral) hover:shadow-lg transition-all duration-300 ease max-w-4xl mx-auto",
-                    isPortrait ? "cursor-pointer" : ""
+                    isPortrait ? "cursor-pointer" : "",
                   )}
                 >
                   <div className="flex gap-1 flex-col md:flex-row items-center md:items-start justify-center w-full max-w-4xl">
@@ -505,7 +518,7 @@ function QuoteResults({
                           className="nunito-sans-bold text-neutral-600 dark:text-neutral-400 text-center"
                         >
                           {formatNumberToPercent(
-                            card.reimbursementPercentageOption
+                            card.reimbursementPercentageOption,
                           )}
                         </motion.p>
                       </div>
@@ -523,7 +536,7 @@ function QuoteResults({
                           {card.reimbursementLimitOption === 999999
                             ? "Unlimited"
                             : formatNumberToPrice(
-                                card.reimbursementLimitOption
+                                card.reimbursementLimitOption,
                               )}
                         </motion.p>
                       </div>
@@ -563,12 +576,12 @@ function QuoteResults({
                       onClick={async () => {
                         handleInsurerClick(
                           providers.get(card.providerId).providerName,
-                          card
+                          card,
                         );
                         if (card.extras?.planObj) {
                           const windowReference = window.open();
                           const url = await getPrudentLink(
-                            card.extras?.planObj
+                            card.extras?.planObj,
                           );
                           if (windowReference) {
                             windowReference.location = url;
@@ -582,7 +595,7 @@ function QuoteResults({
                       }}
                       className={cn(
                         card.providerId + "-select-coverage-button",
-                        "px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
+                        "px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full",
                       )}
                     >
                       Select this coverage for {petObject.petName}

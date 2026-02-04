@@ -20,7 +20,7 @@ import { PIPA_PET_KEY } from "@/lib/constants";
 import { petAges } from "@/data/petAges";
 import InfoFormUserInfo from "@/components/forms/sections/InfoFormUserInfo";
 // import InfoFormAdditionalInfo from "@/components/forms/sections/InfoFormAdditionalInfo";
-import { formSubmitted } from "@/api/api";
+import { formSubmitted, submitFormToAnalytics } from "@/api/api";
 import { registerPetFormCompleted } from "@/features/analytics/emitters";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -88,7 +88,9 @@ function InfoFormPage() {
     setAnswers(updatedAnswers);
 
     formSubmitted(updatedAnswers);
+    submitFormToAnalytics(updatedAnswers);
     registerPetFormCompleted({ petObject: updatedAnswers });
+    // Insert analytics function here
     navigate("/quotes");
   };
 
@@ -101,7 +103,7 @@ function InfoFormPage() {
   //   setAnswers(updatedAnswers);
 
   //   formSubmitted(updatedAnswers);
-    // registerPetFormCompleted({ petObject: updatedAnswers });
+  // registerPetFormCompleted({ petObject: updatedAnswers });
   //   navigate("/quotes");
   // };
 
@@ -127,7 +129,10 @@ function InfoFormPage() {
         </div>
       </header>
       <InfoFormBanner />
-      <Carousel className="w-full mx-auto my-8 flex flex-col items-center" ref={scrollRef}>
+      <Carousel
+        className="w-full mx-auto my-8 flex flex-col items-center"
+        ref={scrollRef}
+      >
         <CarouselDots className="max-w-4xl" items={2} />
         <CarouselContent className="min-w-[300px] max-w-screen">
           <CarouselItem>
@@ -158,7 +163,7 @@ function InfoFormPage() {
                         animal: data.animal,
                         gender: data.gender,
                         age: petAges.find(
-                          (a) => a.value === data.age.value
+                          (a) => a.value === data.age.value,
                         ) ?? {
                           value: 0,
                           label: "",

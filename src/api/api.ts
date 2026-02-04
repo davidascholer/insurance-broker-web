@@ -17,7 +17,7 @@ import {
 export const getQuotes = async (
   answers: AnswersType,
   insurer: ProviderIdTypes,
-  isFallback = false
+  isFallback = false,
 ): Promise<QuotesResultType> => {
   const quotesUrl = isFallback ? PIPA_FALLBACK_QUOTES_URL : PIPA_QUOTES_URL;
   const response = await fetch(quotesUrl + "/" + insurer, {
@@ -40,7 +40,7 @@ export const getQuotes = async (
 };
 
 export const sendEmail = async (
-  contactInfo: ContactFormType
+  contactInfo: ContactFormType,
 ): Promise<{ success: boolean; msg: string }> => {
   const response = await fetch(PIPA_EMAIL_URL, {
     method: "POST",
@@ -59,7 +59,7 @@ export const sendEmail = async (
 };
 
 export const chatWithBot = async (
-  botInfo: BotRequestType
+  botInfo: BotRequestType,
 ): Promise<{ success: boolean; msg: string }> => {
   console.log("chatWithBot botInfo:", botInfo);
   console.log("PIPA_BOT_URL:", PIPA_BOT_URL);
@@ -107,6 +107,38 @@ export const formSubmitted = async (petObject: AnswersType) => {
   return parsedData.data;
 };
 
+export const submitFormToAnalytics = async (answers: AnswersType) => {
+  const formData = {
+    firstName: answers.name.firstName,
+    lastName: answers.name.lastName,
+    email: answers.email,
+    zip: answers.zip,
+    animal: answers.animal,
+    breed: answers.breed,
+    age: answers.age,
+    petGender: answers.gender,
+    petName: answers.petName,
+    petWeight: answers.weight,
+    petBreed: answers.breed,
+    reference: answers.reference,
+  };
+
+  const response = await fetch(PIPA_ANALYTICS_URL + "/form-submitted", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Error: ${response.status} ${response.statusText}`);
+  }
+
+  const parsedData = await response.json();
+  return parsedData.data;
+};
+
 export const getUserObjects = async (token: string) => {
   const data = await fetch(PIPA_ANALYTICS_URL + "/get-user-pet-objects", {
     method: "POST",
@@ -137,4 +169,36 @@ export const adminEmailPassword = async (email: string) => {
     return "Error: " + data.statusText;
   }
   return "Email sent successfully!";
+};
+
+export const trackLinkClick = async (linkData: {
+  email: string;
+  provider: string;
+  planName: string;
+  planDeductible: number;
+  planReimbursementPercentage: number;
+  planReimbursementLimit: number;
+  planMonthlyPrice: number;
+}) => {
+  try {
+    const response = await fetch(PIPA_ANALYTICS_URL + "/get-links-clicked", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(linkData),
+    });
+
+    if (!response.ok) {
+      console.error(
+        `Error tracking link click: ${response.status} ${response.statusText}`,
+      );
+      return;
+    }
+
+    const parsedData = await response.json();
+    return parsedData.data;
+  } catch (error) {
+    console.error("Error tracking link click:", error);
+  }
 };
