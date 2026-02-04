@@ -64,14 +64,14 @@ type CombinedData = LinkClickedData & {
 };
 
 const COLORS = [
-  "#0088FE",
-  "#00C49F",
-  "#FFBB28",
-  "#FF8042",
-  "#8884D8",
-  "#82CA9D",
-  "#FFC658",
-  "#FF6B9D",
+  "#2d6a7b", // primary-teal
+  "#ed9690", // primary-coral
+  "#0c5163", // primary-teal-dark
+  "#f5b5af", // coral-light
+  "#f4c2c2", // coral-pink
+  "#5d8a9a", // lighter teal
+  "#d88781", // darker coral
+  "#89a6b2", // light teal
 ];
 
 const columnHelper = createColumnHelper<CombinedData>();
@@ -245,22 +245,24 @@ const AnalyticsCharts = () => {
 
   return (
     <div className="p-8 max-w-[1800px] mx-auto">
-      <h1 className="text-3xl font-bold mb-8">Analytics Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-8 text-(--primary-teal-dark)">
+        Analytics Dashboard
+      </h1>
 
       {/* Sortable Table */}
       <div className="mb-12 bg-white rounded-lg shadow overflow-hidden">
-        <h2 className="text-2xl font-semibold p-6 border-b">
+        <h2 className="text-2xl font-semibold p-6 border-b text-(--primary-teal-dark)">
           Links Clicked ({combinedData.length} total)
         </h2>
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className="bg-(--light-pink)">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
                     <th
                       key={header.id}
-                      className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                      className="px-4 py-3 text-left text-xs font-medium text-(--primary-teal-dark) uppercase tracking-wider cursor-pointer hover:bg-(--coral-pink)"
                       onClick={header.column.getToggleSortingHandler()}
                     >
                       <div className="flex items-center gap-2">
@@ -280,11 +282,11 @@ const AnalyticsCharts = () => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {table.getRowModel().rows.map((row) => (
-                <tr key={row.id} className="hover:bg-gray-50">
+                <tr key={row.id} className="hover:bg-(--background-light)">
                   {row.getVisibleCells().map((cell) => (
                     <td
                       key={cell.id}
-                      className="px-4 py-3 whitespace-nowrap text-sm text-gray-900"
+                      className="px-4 py-3 whitespace-nowrap text-sm text-(--text-dark)"
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
@@ -303,7 +305,9 @@ const AnalyticsCharts = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Provider Distribution */}
         <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">Clicks by Provider</h2>
+          <h2 className="text-xl font-semibold mb-4 text-(--primary-teal-dark)">
+            Clicks by Provider
+          </h2>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
@@ -332,7 +336,9 @@ const AnalyticsCharts = () => {
 
         {/* Animal Distribution */}
         <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">Pet Type Distribution</h2>
+          <h2 className="text-xl font-semibold mb-4 text-(--primary-teal-dark)">
+            Pet Type Distribution
+          </h2>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
@@ -361,7 +367,7 @@ const AnalyticsCharts = () => {
 
         {/* Price Range Distribution */}
         <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">
+          <h2 className="text-xl font-semibold mb-4 text-(--primary-teal-dark)">
             Monthly Price Distribution
           </h2>
           <ResponsiveContainer width="100%" height={300}>
@@ -371,14 +377,14 @@ const AnalyticsCharts = () => {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="value" fill="#8884d8" name="Number of Plans" />
+              <Bar dataKey="value" fill="#ed9690" name="Number of Plans" />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
         {/* Deductible Distribution */}
         <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">
+          <h2 className="text-xl font-semibold mb-4 text-(--primary-teal-dark)">
             Deductible Distribution
           </h2>
           <ResponsiveContainer width="100%" height={300}>
@@ -388,7 +394,7 @@ const AnalyticsCharts = () => {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="value" fill="#82ca9d" name="Number of Plans" />
+              <Bar dataKey="value" fill="#2d6a7b" name="Number of Plans" />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -397,18 +403,26 @@ const AnalyticsCharts = () => {
       {/* Summary Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
         <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-gray-500 text-sm font-medium">Total Clicks</h3>
-          <p className="text-3xl font-bold mt-2">{linksData.length}</p>
+          <h3 className="text-(--text-light) text-sm font-medium">
+            Total Clicks
+          </h3>
+          <p className="text-3xl font-bold mt-2 text-(--primary-coral)">
+            {linksData.length}
+          </p>
         </div>
         <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-gray-500 text-sm font-medium">Total Users</h3>
-          <p className="text-3xl font-bold mt-2">{userObjectsData.length}</p>
+          <h3 className="text-(--text-light) text-sm font-medium">
+            Total Users
+          </h3>
+          <p className="text-3xl font-bold mt-2 text-(--primary-coral)">
+            {userObjectsData.length}
+          </p>
         </div>
         <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-gray-500 text-sm font-medium">
+          <h3 className="text-(--text-light) text-sm font-medium">
             Avg Monthly Price
           </h3>
-          <p className="text-3xl font-bold mt-2">
+          <p className="text-3xl font-bold mt-2 text-(--primary-coral)">
             $
             {linksData.length > 0
               ? (
@@ -419,10 +433,10 @@ const AnalyticsCharts = () => {
           </p>
         </div>
         <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-gray-500 text-sm font-medium">
+          <h3 className="text-(--text-light) text-sm font-medium">
             Unique Providers
           </h3>
-          <p className="text-3xl font-bold mt-2">
+          <p className="text-3xl font-bold mt-2 text-(--primary-coral)">
             {new Set(linksData.map((l) => l.provider.toLowerCase())).size}
           </p>
         </div>
