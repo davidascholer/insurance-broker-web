@@ -10,3 +10,4 @@ export const PIPA_LOGGER_URL = PIPA_API_URL + "api/v1/logger";
 export const PIPA_BOT_URL = PIPA_API_URL + "api/v1/bot";
 export const PIPA_ANALYTICS_URL = PIPA_API_URL + "api/v1/analytics";
 export const PIPA_AUTH_URL = PIPA_API_URL + "api/v1/auth";
+export const PIPA_BLOG_URL = PIPA_API_URL + "api/v1/blog";
