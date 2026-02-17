@@ -17,6 +17,7 @@ const ALL_LABELS = [
   "Pet Health",
   "Types",
   "Terminology",
+  "Dogs",
 ];
 
 const blogPosts: BlogCardData[] = [
@@ -83,6 +84,15 @@ const blogPosts: BlogCardData[] = [
     date: "November 20, 2025",
     labels: ["Costs", "Comparison", "Basics"],
   },
+  {
+    title: "Pet Insurance for Dogs",
+    path: "/blog/petinsurancedogs",
+    description:
+      "For many dog owners pet insurance is more than just a safety net. It’s a core part of responsible, long-term pet care planning. While no insurance plan is perfect (and coverage will vary by provider, breed, age, and policy terms), the rising costs of veterinary care make insurance an increasingly valuable tool to help manage both expected and unexpected expenses.",
+    image: "/blog/blog_pet-insurance_for_dogs.jpg",
+    date: "February 13, 2026",
+    labels: ["Basics", "Coverage", "Costs", "Dogs"],
+  },
 ];
 
 const BlogPage = () => {
@@ -108,7 +118,7 @@ const BlogPage = () => {
 
   const toggleLabel = (label: string) => {
     setSelectedLabels((prev) =>
-      prev.includes(label) ? prev.filter((l) => l !== label) : [...prev, label]
+      prev.includes(label) ? prev.filter((l) => l !== label) : [...prev, label],
     );
   };
 
@@ -161,7 +171,7 @@ const BlogPage = () => {
                     "px-4 py-2 rounded-full nunito-sans font-semibold transition-colors duration-200",
                     selectedLabels.includes(label)
                       ? "bg-(--primary-teal) text-white"
-                      : "bg-white text-(--primary-teal-dark) hover:bg-(--light-pink)"
+                      : "bg-white text-(--primary-teal-dark) hover:bg-(--light-pink)",
                   )}
                 >
                   {label}

@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { GripVertical, Trash2, Eye, X, Edit } from "lucide-react";
 import Header from "@/components/header/Header";
 import Footer from "@/components/Footer";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
+import { getBlogByName } from "@/api/admin/blog";
 
 // Import types
 import type { ModalState } from "./utils/types";
@@ -29,17 +30,14 @@ import {
   validatePageName,
   validateBlogMetadata,
   convertFromSaved,
-  convertToSaved,
 } from "./utils/helpers";
 import RenderedComponent from "./components/RenderedComponent";
-import type { SavedPage } from "./utils/export-types";
 import { internalToExport } from "./utils/helpers";
 import { savePage as savePageApi } from "./api/blogApi";
 
 const BlogCreator = () => {
   useRequireAuth();
   const { pageName: urlPageName } = useParams<{ pageName: string }>();
-  const navigate = useNavigate();
   const [components, setComponents] = useState<InternalComponentItem[]>([]);
   const [pageName, setPageName] = useState("");
 
@@ -54,33 +52,37 @@ const BlogCreator = () => {
   const [labelsDropdownOpen, setLabelsDropdownOpen] = useState(false);
   const labelsDropdownRef = useRef<HTMLDivElement>(null!);
 
-  // Load page data from localStorage if editing existing page
+  // Load page data from server if editing existing page
   useEffect(() => {
-    if (urlPageName) {
-      const pagesJson = localStorage.getItem("pages");
-      if (pagesJson) {
-        const pages: SavedPage[] = JSON.parse(pagesJson);
-        const existingPage = pages.find((p) => p.name === urlPageName);
-        if (existingPage) {
-          setPageName(existingPage.name);
-          const loadedComponents = convertFromSaved(existingPage.components);
-          setComponents(loadedComponents);
-
-          // Load blog card data
-          if (existingPage.card) {
-            setBlogTitle(existingPage.card.title);
-            setBlogDescription(existingPage.card.description);
-            setBlogDate(existingPage.card.date);
-            setBlogImageUrl(existingPage.card.imageUrl);
-            setBlogLabels(existingPage.card.labels);
-          }
-        } else {
-          setPageName(urlPageName);
-        }
-      } else {
+    const loadBlogData = async () => {
+      if (urlPageName) {
         setPageName(urlPageName);
+
+        try {
+          const token = localStorage.getItem("pipaAdminAccessToken") || "";
+          const result = await getBlogByName(urlPageName, token);
+
+          if (result.success && result.data) {
+            const blog = result.data;
+            const loadedComponents = convertFromSaved(blog.components);
+            setComponents(loadedComponents);
+
+            // Load blog card data
+            setBlogTitle(blog.card.title);
+            setBlogDescription(blog.card.description);
+            setBlogDate(blog.card.date);
+            setBlogImageUrl(
+              blog.card.imageURLs[0] || "https://picsum.photos/200",
+            );
+            setBlogLabels(blog.card.labels);
+          }
+        } catch (error) {
+          console.error("Error loading blog:", error);
+        }
       }
-    }
+    };
+
+    loadBlogData();
   }, [urlPageName]);
 
   const [draggedComponent, setDraggedComponent] = useState<string | null>(null);
@@ -118,58 +120,6 @@ const BlogCreator = () => {
   useOutsideClick(fontDropdownRef, () => setFontDropdownOpen(false));
   useOutsideClick(labelsDropdownRef, () => setLabelsDropdownOpen(false));
   useOutsideClick(colorDropdownRef, () => setColorDropdownOpen(false));
-
-  // Auto-save entire page after 1 second of editing
-  useEffect(() => {
-    if (!pageName) return;
-
-    const timer = setTimeout(() => {
-      const savedComponents = convertToSaved(components);
-
-      const pageData: SavedPage = {
-        name: pageName,
-        components: savedComponents,
-        timestamp: new Date(),
-        card: {
-          title: blogTitle,
-          description: blogDescription,
-          date: blogDate,
-          imageUrl: blogImageUrl,
-          labels: blogLabels,
-        },
-      };
-
-      // Get existing pages from localStorage
-      const existingPagesJson = localStorage.getItem("pages");
-      const existingPages: SavedPage[] = existingPagesJson
-        ? JSON.parse(existingPagesJson)
-        : [];
-
-      // Find the page by name
-      const existingPageIndex = existingPages.findIndex(
-        (p) => p.name === pageName,
-      );
-
-      if (existingPageIndex >= 0) {
-        existingPages[existingPageIndex] = pageData;
-      } else {
-        existingPages.push(pageData);
-      }
-
-      // Save to localStorage without showing toast
-      localStorage.setItem("pages", JSON.stringify(existingPages));
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [
-    pageName,
-    blogTitle,
-    blogDescription,
-    blogDate,
-    blogImageUrl,
-    blogLabels,
-    components,
-  ]);
 
   // Re-enable save button when page content changes
   const [lastSavedState, setLastSavedState] = useState("");

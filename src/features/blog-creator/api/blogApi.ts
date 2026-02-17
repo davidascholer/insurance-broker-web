@@ -1,4 +1,7 @@
 import type { InternalComponentItem } from "../utils/internal-types";
+import { createBlog, updateBlog, getBlogByName } from "@/api/admin/blog";
+import type { CreateBlogData, UpdateBlogData } from "@/api/admin/types";
+import { internalToExport } from "../utils/helpers";
 
 interface SavePageData {
   pageName: string;
@@ -10,29 +13,75 @@ interface SavePageData {
   blogLabels: string[];
 }
 
-export const savePage = async (data: SavePageData): Promise<{ success: boolean; message: string }> => {
+export const savePage = async (
+  data: SavePageData,
+): Promise<{ success: boolean; message: string }> => {
   try {
     console.log("Saving page to server:", data);
 
-    const response = await fetch("http://localhost:3000/api/save-page", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    const token = localStorage.getItem("pipaAdminAccessToken") || "";
+    if (!token) {
+      return {
+        success: false,
+        message: "Authentication token not found. Please log in.",
+      };
     }
 
-    const result = await response.json();
-    console.log("Server response:", result);
+    // Convert internal components to export format
+    const exportComponents: ComponentItem[] = data.components.map((comp) =>
+      internalToExport(comp),
+    );
 
-    return {
-      success: true,
-      message: "Page saved successfully",
-    };
+    // Check if blog already exists
+    const existingBlog = await getBlogByName(data.pageName, token);
+
+    let result;
+    if (existingBlog.success && existingBlog.data) {
+      // Update existing blog
+      const updateData: UpdateBlogData = {
+        card: {
+          title: data.blogTitle,
+          description: data.blogDescription,
+          date: data.blogDate,
+          imageURLs: [data.blogImageUrl],
+          labels: data.blogLabels,
+        },
+        component: exportComponents,
+        user: "admin", // You might want to get this from auth context
+      };
+
+      result = await updateBlog(data.pageName, updateData, token);
+    } else {
+      // Create new blog
+      const createData: CreateBlogData = {
+        pageName: data.pageName,
+        card: {
+          title: data.blogTitle,
+          description: data.blogDescription,
+          date: data.blogDate,
+          imageURLs: [data.blogImageUrl],
+          labels: data.blogLabels,
+        },
+        component: exportComponents,
+        user: "admin",
+        isPublished: false,
+      };
+
+      result = await createBlog(createData, token);
+    }
+
+    if (result.success) {
+      console.log("Server response:", result);
+      return {
+        success: true,
+        message: "Page saved successfully",
+      };
+    } else {
+      return {
+        success: false,
+        message: result.error || "Failed to save page",
+      };
+    }
   } catch (error) {
     console.error("Error saving page:", error);
     return {

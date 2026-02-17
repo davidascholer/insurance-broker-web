@@ -18,6 +18,7 @@ import HowToComparePetInsurancePolicies from "./pages/blog/HowToComparePetInsura
 import UnderstandPetInsuranceTypes from "./pages/blog/UnderstandingPetInsuranceTypes";
 import PetInsuranceExclusions from "./pages/blog/PetInsuranceExclusions";
 import HowMuchDoesPetInsuranceCost from "./pages/blog/HowMuchDoesPetInsuranceCost";
+import PetInsuranceDogs from "./pages/blog/PetInsuranceDogs";
 import KanguroEmbed from "./features/kanguro/pages/KanguroEmbed";
 import PartnerPage from "./pages/PartnerPage";
 import AboutUsPage from "./pages/AboutUsPage";
@@ -81,6 +82,7 @@ const AppRouter = () => {
           path="/blog/how-much-does-pet-insurance-cost"
           element={<HowMuchDoesPetInsuranceCost />}
         />
+        <Route path="/blog/petinsurancedogs" element={<PetInsuranceDogs />} />
         {/* <Route path="/partner-contact" element={<PartnerContact />} /> */}
         <Route path="/info" element={<InfoForm />} />
         <Route path="/quotes" element={<Quotes />} />

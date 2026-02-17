@@ -1,3 +1,5 @@
+import type { ComponentItem } from "@/features/blog-creator/utils/export-types";
+
 // Types
 export interface BlogCard {
   title: string;
@@ -7,15 +9,10 @@ export interface BlogCard {
   labels: string[];
 }
 
-export interface BlogComponent {
-  children: unknown;
-  [key: string]: unknown;
-}
-
 export interface BlogData {
+  pageName: string;
   card: BlogCard;
-  components: BlogComponent[];
-  name: string;
+  component: ComponentItem;
   user: string;
   createdAt?: string;
   updatedAt?: string;
@@ -24,14 +21,14 @@ export interface BlogData {
 
 export interface CreateBlogData {
   card: BlogCard;
-  components: BlogComponent[];
-  name: string;
+  component: ComponentItem;
+  pageName: string;
   user: string;
   isPublished: boolean;
 }
 
 export interface UpdateBlogData {
   card?: BlogCard;
-  components?: BlogComponent[];
+  component?: ComponentItem;
   user?: string;
 }

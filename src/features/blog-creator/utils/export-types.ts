@@ -19,6 +19,7 @@ export interface ComponentItem {
     | ContentWithImageType
     | ContentUnorderedListType
     | Record<string, unknown>;
+  children?: ComponentItem[];
 }
 
 export type SectionContainerType = {

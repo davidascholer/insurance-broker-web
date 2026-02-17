@@ -1,9 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/header/Header";
 import Footer from "@/components/Footer";
 import { Plus, Edit, Trash2 } from "lucide-react";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
+import { getAllBlogs, deleteBlog } from "@/api/admin/blog";
+import type { BlogData } from "@/api/admin/types";
+import Loader from "@/components/Loader";
 
 type SavedPage = {
   name: string;
@@ -24,32 +27,69 @@ const BlogCreationList = () => {
   const [isCreatingNew, setIsCreatingNew] = useState(false);
   const [newPageName, setNewPageName] = useState("");
   const [nameError, setNameError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    loadPages();
+  const loadPages = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError("");
+      const token = localStorage.getItem("pipaAdminAccessToken") || "";
+      const result = await getAllBlogs(token);
+
+      if (result.success && result.data) {
+        // Convert BlogData to SavedPage format
+        const convertedPages: SavedPage[] = result.data.map(
+          (blog: BlogData) => ({
+            name: blog.name,
+            components: blog.components,
+            timestamp: new Date(blog.updatedAt || blog.createdAt || new Date()),
+            card: {
+              title: blog.card.title,
+              description: blog.card.description,
+              date: blog.card.date,
+              imageUrl: blog.card.imageURLs[0] || "",
+              labels: blog.card.labels,
+            },
+          }),
+        );
+        setPages(convertedPages);
+      } else {
+        setError(result.error || "Failed to load blogs");
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to load blogs");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  const loadPages = () => {
-    const pagesJson = localStorage.getItem("pages");
-    if (pagesJson) {
-      const loadedPages: SavedPage[] = JSON.parse(pagesJson);
-      setPages(loadedPages);
-    }
-  };
+  // Fetch blogs every time the page loads
+  useEffect(() => {
+    loadPages();
+  }, [loadPages]);
 
   const handleEdit = (pageName: string) => {
     navigate(`/blog/creator/${pageName}`);
   };
 
-  const handleDelete = (pageName: string) => {
+  const handleDelete = async (pageName: string) => {
     if (window.confirm(`Are you sure you want to delete "${pageName}"?`)) {
-      const pagesJson = localStorage.getItem("pages");
-      if (pagesJson) {
-        const currentPages: SavedPage[] = JSON.parse(pagesJson);
-        const updatedPages = currentPages.filter((p) => p.name !== pageName);
-        localStorage.setItem("pages", JSON.stringify(updatedPages));
-        setPages(updatedPages);
+      try {
+        const token = localStorage.getItem("pipaAdminAccessToken") || "";
+        const result = await deleteBlog(pageName, token);
+
+        if (result.success) {
+          // Remove from local state
+          setPages(pages.filter((p) => p.name !== pageName));
+        } else {
+          alert(`Failed to delete blog: ${result.error}`);
+        }
+      } catch (err) {
+        alert(
+          `Error deleting blog: ${err instanceof Error ? err.message : "Unknown error"}`,
+        );
       }
     }
   };
@@ -90,6 +130,43 @@ const BlogCreationList = () => {
     }
     navigate(`/blog/creator/${newPageName}`);
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="flex items-center justify-center h-screen">
+          <Loader />
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="pt-30 pb-8">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+              <h2 className="text-xl font-bold text-red-700 mb-2">
+                Error Loading Blogs
+              </h2>
+              <p className="text-red-600">{error}</p>
+              <button
+                onClick={() => loadPages()}
+                className="mt-4 px-6 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 transition-colors"
+              >
+                Retry
+              </button>
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
