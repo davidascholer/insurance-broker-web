@@ -71,7 +71,7 @@ const BlogCreationList = () => {
   }, [loadPages]);
 
   const handleEdit = (pageName: string) => {
-    navigate(`/blog/creator/${pageName}`);
+    navigate(`/admin/blog/creator/${pageName}`);
   };
 
   const handleDelete = async (pageName: string) => {
@@ -128,7 +128,7 @@ const BlogCreationList = () => {
       setNameError(error);
       return;
     }
-    navigate(`/blog/creator/${newPageName}`);
+    navigate(`/admin/blog/creator/${newPageName}`);
   };
 
   if (loading) {

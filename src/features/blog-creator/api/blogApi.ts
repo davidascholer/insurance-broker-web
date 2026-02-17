@@ -2,6 +2,7 @@ import type { InternalComponentItem } from "../utils/internal-types";
 import { createBlog, updateBlog, getBlogByName } from "@/api/admin/blog";
 import type { CreateBlogData, UpdateBlogData } from "@/api/admin/types";
 import { internalToExport } from "../utils/helpers";
+import type { ComponentItem } from "../utils/export-types";
 
 interface SavePageData {
   pageName: string;

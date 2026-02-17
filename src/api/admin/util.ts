@@ -1,9 +1,5 @@
-import type {
-  BlogCard,
-  BlogComponent,
-  CreateBlogData,
-  UpdateBlogData,
-} from "./types";
+import type { ComponentItem } from "@/features/blog-creator/utils/export-types";
+import type { BlogCard, CreateBlogData, UpdateBlogData } from "./types";
 
 // Validation helpers
 const validateBlogCard = (card: unknown): card is BlogCard => {
@@ -24,7 +20,7 @@ const validateBlogCard = (card: unknown): card is BlogCard => {
 
 const validateComponents = (
   components: unknown,
-): components is BlogComponent[] => {
+): components is ComponentItem[] => {
   if (!Array.isArray(components)) return false;
   return components.every((comp: unknown) => {
     return comp && typeof comp === "object" && "children" in comp;

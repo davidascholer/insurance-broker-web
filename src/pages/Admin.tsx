@@ -139,10 +139,10 @@ const Admin = () => {
 
   return (
     <div className="flex flex-col items-center justify-center p-8 gap-6">
-      <Link to="/blog/creator">
+      <Link to="/admin/blog/creator">
         <Button className="px-6 py-2">Go to Blog Tool</Button>
       </Link>
-      <Link to="/analytics/charts">
+      <Link to="/admin/analytics/charts">
         <Button className="px-6 py-2">Go to Analytics</Button>
       </Link>
       <Button

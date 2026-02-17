@@ -11,6 +11,7 @@ import InfoForm from "./pages/InfoFormPage";
 
 import React, { useLayoutEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { IS_PROD } from "./lib/constants";
 import Admin from "./pages/Admin";
 import WhatIsPetInsurance from "./pages/blog/WhatIsPetInsurance";
 import WhyConsiderPetInsurance from "./pages/blog/WhyConsiderPetInsurance";
@@ -56,8 +57,6 @@ const AppRouter = () => {
         <Route path="/partner/kanguro" element={<Kanguro />} />
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="/blog" element={<BlogPage />} />
-        <Route path="/blog/creator" element={<BlogCreationList />} />
-        <Route path="/blog/creator/:pageName" element={<BlogCreator />} />
         <Route
           path="/blog/what-is-pet-insurance"
           element={<WhatIsPetInsurance />}
@@ -89,9 +88,21 @@ const AppRouter = () => {
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/licenses" element={<Licenses />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/analytics/charts" element={<AnalyticsCharts />} />
-        <Route path="/test-server" element={<TestServer />} />
+        {!IS_PROD && (
+          <>
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/admin/blog/creator" element={<BlogCreationList />} />
+            <Route
+              path="/admin/blog/creator/:pageName"
+              element={<BlogCreator />}
+            />
+            <Route
+              path="/admin/analytics/charts"
+              element={<AnalyticsCharts />}
+            />
+            <Route path="/admin/test-server" element={<TestServer />} />
+          </>
+        )}
       </Routes>
     </RouterWrapper>
   );
