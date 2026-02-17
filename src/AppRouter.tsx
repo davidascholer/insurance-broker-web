@@ -82,7 +82,7 @@ const AppRouter = () => {
           path="/blog/how-much-does-pet-insurance-cost"
           element={<HowMuchDoesPetInsuranceCost />}
         />
-        <Route path="/blog/petinsurancedogs" element={<PetInsuranceDogs />} />
+        <Route path="/blog/pet-insurance-dogs" element={<PetInsuranceDogs />} />
         {/* <Route path="/partner-contact" element={<PartnerContact />} /> */}
         <Route path="/info" element={<InfoForm />} />
         <Route path="/quotes" element={<Quotes />} />

@@ -86,7 +86,7 @@ const blogPosts: BlogCardData[] = [
   },
   {
     title: "Pet Insurance for Dogs",
-    path: "/blog/petinsurancedogs",
+    path: "/blog/pet-insurance-dogs",
     description:
       "For many dog owners pet insurance is more than just a safety net. It’s a core part of responsible, long-term pet care planning. While no insurance plan is perfect (and coverage will vary by provider, breed, age, and policy terms), the rising costs of veterinary care make insurance an increasingly valuable tool to help manage both expected and unexpected expenses.",
     image: "/blog/blog_pet-insurance_for_dogs.jpg",

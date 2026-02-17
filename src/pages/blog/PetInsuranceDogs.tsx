@@ -107,11 +107,10 @@ const PetInsuranceDogs = () => {
         <p>
           Recent data reveals that the average monthly premium for a dog on a
           full "accident and illness" policy in 2025 was about{" "}
-          <strong>$62.44</strong> (roughly
-          <strong>$749.29 per year</strong>)<sup>2</sup>. For an "accident-only"
-          policy, the 2024 U.S. average was approximately{" "}
-          <strong>$193 per year</strong> (about <strong>$16.10/month</strong>)
-          for dogs<sup>3</sup>.
+          <strong>$62.44</strong> (roughly <strong>$749.29 per year</strong>)
+          <sup>2</sup>. For an "accident-only" policy, the 2024 U.S. average was
+          approximately <strong>$193 per year</strong> (about{" "}
+          <strong>$16.10/month</strong>) for dogs<sup>3</sup>.
         </p>
         <p>
           Routine veterinary care alone for many dogs can run{" "}
@@ -438,7 +437,7 @@ const PetInsuranceDogs = () => {
           <li>
             <Link
               target="_blank"
-              to="https://www.healthypawspetinsurance.com/blog/pet-insurance-101/veterinary-care-cost.html"
+              to="https://www.healthypawspetinsurance.com/blog/pet-insurance-101.html"
               className="underline font-bold"
             >
               Healthy Paws Pet Insurance
