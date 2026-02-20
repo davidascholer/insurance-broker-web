@@ -18,6 +18,7 @@ const ALL_LABELS = [
   "Types",
   "Terminology",
   "Dogs",
+  "Cats",
 ];
 
 const blogPosts: BlogCardData[] = [
@@ -89,9 +90,18 @@ const blogPosts: BlogCardData[] = [
     path: "/blog/pet-insurance-dogs",
     description:
       "For many dog owners pet insurance is more than just a safety net. It’s a core part of responsible, long-term pet care planning. While no insurance plan is perfect (and coverage will vary by provider, breed, age, and policy terms), the rising costs of veterinary care make insurance an increasingly valuable tool to help manage both expected and unexpected expenses.",
-    image: "/blog/blog_pet-insurance_for_dogs.jpg",
+    image: "/blog/blog_pet-insurance-dogs.jpg",
     date: "February 13, 2026",
     labels: ["Basics", "Coverage", "Costs", "Dogs"],
+  },
+  {
+    title: "Pet Insurance for Cats",
+    path: "/blog/pet-insurance-cats",
+    description:
+      "Pet insurance for cats may not be fun to shop for as a cozy cat bed or a fancy scratching post but it can be one of the most important investments in your cat’s health and longevity. For modest monthly premiums you gain a safety net that reduces financial stress when your cat needs serious care.",
+    image: "/blog/blog_pet-insurance-cats.jpg",
+    date: "February 13, 2026",
+    labels: ["Basics", "Coverage", "Costs", "Cats"],
   },
 ];
 
