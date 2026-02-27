@@ -171,6 +171,16 @@ export const adminEmailPassword = async (email: string) => {
   return "Email sent successfully!";
 };
 
+export const trackUTM = (reqBody: { utmOrigin: string }) => {
+  fetch(PIPA_ANALYTICS_URL + "/utm", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(reqBody),
+  });
+};
+
 export const trackLinkClick = async (linkData: {
   email: string;
   provider: string;
