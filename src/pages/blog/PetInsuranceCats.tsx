@@ -132,7 +132,7 @@ const PetInsuranceCats = () => {
           <strong>$386 per year</strong>) for a standard "accident & illness"
           plan. Accident-only plans are significantly cheaper - around{" "}
           <strong>$110 per year</strong> (approximately{" "}
-          <strong>$9–10 per month</strong>)<sup>1</sup>.
+          <strong>$9–10 per month</strong>).<sup>1</sup>
         </p>
 
         <h2 className="text-(--primary-coral) text-2xl sansita-bold whitespace-pre-wrap flex-1">
@@ -236,30 +236,30 @@ const PetInsuranceCats = () => {
         <ul className="list-disc ml-5 space-y-2">
           <li>
             <strong>Abyssinian cat:</strong> These are purebred cats with known
-            health-risk predispositions tend to generate higher premiums
-            <sup>2</sup>.
+            health-risk predispositions tend to generate higher premiums.
+            <sup>2</sup>
           </li>
           <li>
             <strong>Maine Coon:</strong> These cats are often cited among the
             high-cost insured cat breeds because of size, genetic risks, and
-            propensity for chronic or hereditary conditions<sup>3</sup>.
+            propensity for chronic or hereditary conditions.<sup>3</sup>
           </li>
           <li>
             <strong>Bengal cat:</strong> These also appears frequently in "most
             expensive to insure" lists due to potential genetic or organ-related
-            risks<sup>3</sup>.
+            risks.<sup>3</sup>
           </li>
           <li>
             <strong>In general:</strong> Pedigreed breeds tend to carry higher
             premiums compared to mixed or domestic-shorthair cats, because of
-            increased probability of hereditary or chronic issues<sup>2</sup>.
+            increased probability of hereditary or chronic issues.<sup>2</sup>
           </li>
         </ul>
         <p>
           According to one 2025 survey, a typical Domestic Shorthair has average
           insurance cost around <strong>$54/month</strong>, while a purebred cat
           might average <strong>$74/month</strong> under similar coverage
-          assumptions<sup>2</sup>.
+          assumptions.<sup>2</sup>
         </p>
         <p>
           Because breed matters, healthy mixed-breed cats or domestic shorthairs

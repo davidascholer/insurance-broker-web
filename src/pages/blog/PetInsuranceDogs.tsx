@@ -102,15 +102,15 @@ const PetInsuranceDogs = () => {
           responsibility of caring for their health, which increasingly means
           financial preparedness. Veterinary care costs have risen sharply:
           routine care, emergencies, and specialized treatments are all more
-          expensive than just a few years ago<sup>1</sup>.
+          expensive than just a few years ago.<sup>1</sup>
         </p>
         <p>
           Recent data reveals that the average monthly premium for a dog on a
           full "accident and illness" policy in 2025 was about{" "}
-          <strong>$62.44</strong> (roughly <strong>$749.29 per year</strong>)
-          <sup>2</sup>. For an "accident-only" policy, the 2024 U.S. average was
+          <strong>$62.44</strong> (roughly <strong>$749.29 per year</strong>).
+          <sup>2</sup> For an "accident-only" policy, the 2024 U.S. average was
           approximately <strong>$193 per year</strong> (about{" "}
-          <strong>$16.10/month</strong>) for dogs<sup>3</sup>.
+          <strong>$16.10/month</strong>) for dogs.<sup>3</sup>
         </p>
         <p>
           Routine veterinary care alone for many dogs can run{" "}
@@ -134,14 +134,14 @@ const PetInsuranceDogs = () => {
             <strong>Accident-Only (AO):</strong> Covers unexpected injuries like
             broken bones, lacerations, foreign object ingestion, poisoning,
             motor vehicle accidents, etc. It does not cover illnesses, chronic
-            conditions, or routine care<sup>3</sup>.
+            conditions, or routine care.<sup>3</sup>
           </li>
           <li>
             <strong>Accident and Illness (A&I):</strong> Covers both accidental
             injuries and many common illnesses. The illness portions covers
             things like infections, digestive problems, and skin issues, and
             more serious diseases. This is the most comprehensive coverage most
-            dog owners think of when they think of "pet insurance<sup>3</sup>."
+            dog owners think of when they think of "pet insurance".<sup>3</sup>
           </li>
           <li>
             <strong>Wellness (Optional Add-On):</strong> This type of coverage
@@ -202,7 +202,7 @@ const PetInsuranceDogs = () => {
             Chronic conditions like allergies, skin conditions, digestive
             issues, urinary tract infections, kidney disease, diabetes, and
             arthritis. Many of these are among the most common veterinary claims
-            for dogs<sup>5</sup>.
+            for dogs.<sup>5</sup>
           </li>
           <li>
             Serious acute illnesses like tick-borne diseases, infections,
@@ -258,25 +258,24 @@ const PetInsuranceDogs = () => {
           <li>
             A 2025 industry report shows the average dog pet insurance premium
             at <strong>$62.44 per month</strong> (A&I), or about{" "}
-            <strong>$749/year</strong>
-            <sup>2</sup>.
+            <strong>$749/year</strong>.<sup>2</sup>
           </li>
           <li>
             The average cost for accident-only dog insurance in 2024 was{" "}
-            <strong>$193 per year</strong> (~<strong>$16/month</strong>)
-            <sup>3</sup>.
+            <strong>$193 per year</strong> (~<strong>$16/month</strong>).
+            <sup>3</sup>
           </li>
           <li>
             Routine veterinary care for dogs (wellness, dental, bloodwork,
             vaccines, etc.) typically runs <strong>$700–$1,500 per year</strong>
-            <sup>4</sup>.
+            .<sup>4</sup>
           </li>
           <li>
             As overall pet-related spending rises which include food, grooming,
             supplies, and medical care, annual dog care costs in 2024 are
             estimated between{" "}
             <strong>about $1,000 up to $5,225 per year</strong>, depending on
-            size, health, and lifestyle<sup>6</sup>.
+            size, health, and lifestyle.<sup>6</sup>
           </li>
         </ul>
         <p>
@@ -292,8 +291,7 @@ const PetInsuranceDogs = () => {
           It's not hypothetical anymore. Serious dog illnesses or emergencies
           frequently lead to large vet bills. According to an analysis cited in
           2025, one of the highest medical-related insurance payouts for a dog
-          in the prior year was <strong>$60,882</strong>
-          <sup>5</sup>.
+          in the prior year was <strong>$60,882</strong>.<sup>5</sup>
         </p>
         <p>
           Even if your dog avoids worst-case scenarios, repeated moderate
@@ -356,7 +354,7 @@ const PetInsuranceDogs = () => {
           <li>
             <strong>Rising vet costs</strong> - veterinary care costs have
             surged over the past decade. In fact, services have increased more
-            than 60% since 2014<sup>7</sup>.
+            than 60% since 2014.<sup>7</sup>
           </li>
           <li>
             <strong>Unpredictability of emergencies</strong> - even healthy dogs
@@ -377,8 +375,8 @@ const PetInsuranceDogs = () => {
             <strong>Peace of mind and better care access</strong> - with
             insurance, you might be more likely to pursue appropriate treatment
             (rather than delaying or avoiding costly vet care). Some data
-            suggest insured dogs visit the vet more often than uninsured ones
-            <sup>2</sup>.
+            suggest insured dogs visit the vet more often than uninsured ones.
+            <sup>2</sup>
           </li>
         </ol>
 
