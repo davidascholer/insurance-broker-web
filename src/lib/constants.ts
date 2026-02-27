@@ -3,7 +3,7 @@
 import type { ProviderIdTypes } from "./types";
 
 export const DEV = import.meta.env.DEV;
-export const IS_PROD = true;
+export const IS_PROD = false;
 export const PIPA_STORAGE_PREFIX = "pipa-";
 export const PIPA_COLOR_THEME_KEY = PIPA_STORAGE_PREFIX + "color-theme";
 export const PIPA_USER_ID_KEY = PIPA_STORAGE_PREFIX + "user-id";
