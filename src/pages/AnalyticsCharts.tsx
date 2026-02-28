@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { getLinksClicked, getUserObjects, getUTMData, deleteUTMData } from "@/api/api";
+import {
+  getLinksClicked,
+  getUserObjects,
+  getUTMData,
+  deleteUTMData,
+} from "@/api/api";
 import { zipToState } from "@/api/admin/util";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import Loader from "@/components/Loader";
