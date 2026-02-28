@@ -1,5 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { getLinksClicked, getUserObjects } from "@/api/api";
+import {
+  getLinksClicked,
+  getUserObjects,
+  getUTMData,
+  deleteUTMData,
+} from "@/api/api";
+import { zipToState } from "@/api/admin/util";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import Loader from "@/components/Loader";
 // import {
@@ -25,9 +31,11 @@ import {
   useReactTable,
   getCoreRowModel,
   getSortedRowModel,
+  getPaginationRowModel,
   flexRender,
   createColumnHelper,
   type SortingState,
+  type PaginationState,
 } from "@tanstack/react-table";
 
 type LinkClickedData = {
@@ -61,6 +69,15 @@ type UserObjectData = {
   updatedAt: string;
 };
 
+type UTMData = {
+  id: string;
+  ipAddress: string | null;
+  location: string | null;
+  date: string;
+  type: string;
+  origin: string;
+};
+
 const COLORS = [
   "#2d6a7b", // primary-teal
   "#ed9690", // primary-coral
@@ -74,16 +91,31 @@ const COLORS = [
 
 const linksColumnHelper = createColumnHelper<LinkClickedData>();
 const usersColumnHelper = createColumnHelper<UserObjectData>();
+const utmColumnHelper = createColumnHelper<UTMData>();
 
 const AnalyticsCharts = () => {
   useRequireAuth();
 
   const [linksData, setLinksData] = useState<LinkClickedData[]>([]);
   const [userObjectsData, setUserObjectsData] = useState<UserObjectData[]>([]);
+  const [utmData, setUtmData] = useState<UTMData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
   const [linksSorting, setLinksSorting] = useState<SortingState>([]);
   const [usersSorting, setUsersSorting] = useState<SortingState>([]);
+  const [utmSorting, setUtmSorting] = useState<SortingState>([]);
+  const [linksPagination, setLinksPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 20,
+  });
+  const [usersPagination, setUsersPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 20,
+  });
+  const [utmPagination, setUtmPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 20,
+  });
   // const [tooltipContent, setTooltipContent] = useState<string>("");
 
   useEffect(() => {
@@ -97,8 +129,16 @@ const AnalyticsCharts = () => {
           getUserObjects(token),
         ]);
 
+        let utm = [];
+        try {
+          utm = (await getUTMData(token)) || [];
+        } catch (utmError) {
+          console.warn("Failed to fetch UTM data", utmError);
+        }
+
         setLinksData(links || []);
         setUserObjectsData(userObjects || []);
+        setUtmData(utm || []);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to fetch data");
       } finally {
@@ -108,6 +148,25 @@ const AnalyticsCharts = () => {
 
     fetchData();
   }, []);
+
+  // Handle delete UTM record
+  const handleDeleteUTM = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this UTM record?")) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("pipaAdminAccessToken") || "";
+      await deleteUTMData(id, token);
+      // Refresh the UTM data after deletion
+      const updatedUtm = await getUTMData(token);
+      setUtmData(updatedUtm || []);
+    } catch (err) {
+      alert(
+        `Failed to delete record: ${err instanceof Error ? err.message : "Unknown error"}`,
+      );
+    }
+  };
 
   // Links table columns
   const linksColumns = [
@@ -201,6 +260,32 @@ const AnalyticsCharts = () => {
     }),
   ];
 
+  const utmColumns = [
+    utmColumnHelper.accessor("origin", {
+      header: "Origin",
+      cell: (info) => info.getValue() || "-",
+    }),
+    utmColumnHelper.accessor("type", {
+      header: "Type",
+      cell: (info) => info.getValue() || "-",
+    }),
+    utmColumnHelper.accessor("date", {
+      header: "Date",
+      cell: (info) => new Date(info.getValue()).toLocaleString(),
+    }),
+    utmColumnHelper.accessor("id", {
+      header: "Actions",
+      cell: (info) => (
+        <button
+          onClick={() => handleDeleteUTM(info.getValue())}
+          className="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600 transition-colors"
+        >
+          Delete
+        </button>
+      ),
+    }),
+  ];
+
   const providerDistribution = useMemo(() => {
     const counts: Record<string, number> = {};
     linksData.forEach((link) => {
@@ -247,69 +332,13 @@ const AnalyticsCharts = () => {
     return Object.entries(counts).map(([name, value]) => ({ name, value }));
   }, [linksData]);
 
-  // Map zip codes to states (first 3 digits to state mapping)
-  const zipToState = (zip: string): string => {
-    const zipNum = parseInt(zip.substring(0, 3));
-    if (zipNum >= 35 && zipNum <= 36) return "AL";
-    if (zipNum >= 995 && zipNum <= 999) return "AK";
-    if (zipNum >= 85 && zipNum <= 86) return "AZ";
-    if (zipNum >= 716 && zipNum <= 729) return "AR";
-    if (zipNum >= 90 && zipNum <= 96) return "CA";
-    if (zipNum >= 80 && zipNum <= 81) return "CO";
-    if (zipNum >= 60 && zipNum <= 69) return "CT";
-    if (zipNum >= 197 && zipNum <= 199) return "DE";
-    if (zipNum >= 320 && zipNum <= 349) return "FL";
-    if (zipNum >= 30 && zipNum <= 31) return "GA";
-    if (zipNum >= 967 && zipNum <= 968) return "HI";
-    if (zipNum >= 832 && zipNum <= 838) return "ID";
-    if (zipNum >= 60 && zipNum <= 62) return "IL";
-    if (zipNum >= 46 && zipNum <= 47) return "IN";
-    if (zipNum >= 50 && zipNum <= 52) return "IA";
-    if (zipNum >= 66 && zipNum <= 67) return "KS";
-    if (zipNum >= 40 && zipNum <= 42) return "KY";
-    if (zipNum >= 700 && zipNum <= 714) return "LA";
-    if (zipNum >= 39 && zipNum <= 49) return "ME";
-    if (zipNum >= 206 && zipNum <= 219) return "MD";
-    if (zipNum >= 10 && zipNum <= 27) return "MA";
-    if (zipNum >= 480 && zipNum <= 499) return "MI";
-    if (zipNum >= 550 && zipNum <= 567) return "MN";
-    if (zipNum >= 386 && zipNum <= 397) return "MS";
-    if (zipNum >= 630 && zipNum <= 658) return "MO";
-    if (zipNum >= 590 && zipNum <= 599) return "MT";
-    if (zipNum >= 680 && zipNum <= 693) return "NE";
-    if (zipNum >= 889 && zipNum <= 898) return "NV";
-    if (zipNum >= 30 && zipNum <= 38) return "NH";
-    if (zipNum >= 70 && zipNum <= 89) return "NJ";
-    if (zipNum >= 870 && zipNum <= 884) return "NM";
-    if (zipNum >= 100 && zipNum <= 149) return "NY";
-    if (zipNum >= 270 && zipNum <= 289) return "NC";
-    if (zipNum >= 580 && zipNum <= 588) return "ND";
-    if (zipNum >= 430 && zipNum <= 458) return "OH";
-    if (zipNum >= 730 && zipNum <= 749) return "OK";
-    if (zipNum >= 970 && zipNum <= 979) return "OR";
-    if (zipNum >= 150 && zipNum <= 196) return "PA";
-    if (zipNum >= 28 && zipNum <= 29) return "RI";
-    if (zipNum >= 290 && zipNum <= 299) return "SC";
-    if (zipNum >= 570 && zipNum <= 577) return "SD";
-    if (zipNum >= 370 && zipNum <= 385) return "TN";
-    if ((zipNum >= 750 && zipNum <= 799) || (zipNum >= 885 && zipNum <= 888))
-      return "TX";
-    if (zipNum >= 840 && zipNum <= 847) return "UT";
-    if (zipNum >= 50 && zipNum <= 59) return "VT";
-    if (zipNum >= 220 && zipNum <= 246) return "VA";
-    if (zipNum >= 980 && zipNum <= 994) return "WA";
-    if (zipNum >= 247 && zipNum <= 268) return "WV";
-    if (zipNum >= 530 && zipNum <= 549) return "WI";
-    if (zipNum >= 820 && zipNum <= 831) return "WY";
-    if (zipNum >= 200 && zipNum <= 205) return "DC";
-    return "Unknown";
-  };
-
   const stateDistribution = useMemo(() => {
     const counts: Record<string, number> = {};
     userObjectsData.forEach((user) => {
       if (user.zip) {
+        console.log("Processing ZIP code:", user.zip);
         const state = zipToState(user.zip);
+        console.log("from state:", state);
         if (state !== "Unknown") {
           counts[state] = (counts[state] || 0) + 1;
         }
@@ -327,10 +356,13 @@ const AnalyticsCharts = () => {
     columns: linksColumns,
     state: {
       sorting: linksSorting,
+      pagination: linksPagination,
     },
     onSortingChange: setLinksSorting,
+    onPaginationChange: setLinksPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
   const usersTable = useReactTable({
@@ -338,10 +370,27 @@ const AnalyticsCharts = () => {
     columns: usersColumns,
     state: {
       sorting: usersSorting,
+      pagination: usersPagination,
     },
     onSortingChange: setUsersSorting,
+    onPaginationChange: setUsersPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+  });
+
+  const utmTable = useReactTable({
+    data: utmData,
+    columns: utmColumns,
+    state: {
+      sorting: utmSorting,
+      pagination: utmPagination,
+    },
+    onSortingChange: setUtmSorting,
+    onPaginationChange: setUtmPagination,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
   // // Map state abbreviations to full names for the map
@@ -603,6 +652,36 @@ const AnalyticsCharts = () => {
               ))}
             </tbody>
           </table>
+          <div className="flex items-center justify-between px-4 py-3 border-t text-sm text-(--text-light)">
+            <span>
+              Showing {linksTable.getState().pagination.pageIndex * 20 + 1} to{" "}
+              {Math.min(
+                (linksTable.getState().pagination.pageIndex + 1) * 20,
+                linksData.length,
+              )}{" "}
+              of {linksData.length}
+            </span>
+            <div className="flex gap-2">
+              <button
+                onClick={() => linksTable.previousPage()}
+                disabled={!linksTable.getCanPreviousPage()}
+                className="px-3 py-1 rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+              >
+                Previous
+              </button>
+              <span className="px-3 py-1">
+                Page {linksTable.getState().pagination.pageIndex + 1} of{" "}
+                {linksTable.getPageCount()}
+              </span>
+              <button
+                onClick={() => linksTable.nextPage()}
+                disabled={!linksTable.getCanNextPage()}
+                className="px-3 py-1 rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+              >
+                Next
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -677,6 +756,120 @@ const AnalyticsCharts = () => {
               ))}
             </tbody>
           </table>
+          <div className="flex items-center justify-between px-4 py-3 border-t text-sm text-(--text-light)">
+            <span>
+              Showing {usersTable.getState().pagination.pageIndex * 20 + 1} to{" "}
+              {Math.min(
+                (usersTable.getState().pagination.pageIndex + 1) * 20,
+                userObjectsData.length,
+              )}{" "}
+              of {userObjectsData.length}
+            </span>
+            <div className="flex gap-2">
+              <button
+                onClick={() => usersTable.previousPage()}
+                disabled={!usersTable.getCanPreviousPage()}
+                className="px-3 py-1 rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+              >
+                Previous
+              </button>
+              <span className="px-3 py-1">
+                Page {usersTable.getState().pagination.pageIndex + 1} of{" "}
+                {usersTable.getPageCount()}
+              </span>
+              <button
+                onClick={() => usersTable.nextPage()}
+                disabled={!usersTable.getCanNextPage()}
+                className="px-3 py-1 rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* UTM Data Table */}
+      <div className="mb-12 bg-white rounded-lg shadow overflow-hidden">
+        <div className="flex justify-between items-center p-6 border-b">
+          <h2 className="text-2xl font-semibold text-(--primary-teal-dark)">
+            UTM Data ({utmData.length} total)
+          </h2>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-(--light-pink)">
+              {utmTable.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      className="px-4 py-3 text-left text-xs font-medium text-(--primary-teal-dark) uppercase tracking-wider cursor-pointer hover:bg-(--coral-pink)"
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
+                      <div className="flex items-center gap-2">
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                        {{
+                          asc: " 🔼",
+                          desc: " 🔽",
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {utmTable.getRowModel().rows.map((row) => (
+                <tr key={row.id} className="hover:bg-(--background-light)">
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      className="px-4 py-3 whitespace-nowrap text-sm text-(--text-dark)"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="flex items-center justify-between px-4 py-3 border-t text-sm text-(--text-light)">
+            <span>
+              Showing {utmTable.getState().pagination.pageIndex * 20 + 1} to{" "}
+              {Math.min(
+                (utmTable.getState().pagination.pageIndex + 1) * 20,
+                utmData.length,
+              )}{" "}
+              of {utmData.length}
+            </span>
+            <div className="flex gap-2">
+              <button
+                onClick={() => utmTable.previousPage()}
+                disabled={!utmTable.getCanPreviousPage()}
+                className="px-3 py-1 rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+              >
+                Previous
+              </button>
+              <span className="px-3 py-1">
+                Page {utmTable.getState().pagination.pageIndex + 1} of{" "}
+                {utmTable.getPageCount()}
+              </span>
+              <button
+                onClick={() => utmTable.nextPage()}
+                disabled={!utmTable.getCanNextPage()}
+                className="px-3 py-1 rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+              >
+                Next
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -701,7 +894,7 @@ const AnalyticsCharts = () => {
                 fill="#8884d8"
                 dataKey="value"
               >
-                {providerDistribution.map((entry, index) => (
+                {providerDistribution.map((_, index) => (
                   <Cell
                     key={`cell-${index}`}
                     fill={COLORS[index % COLORS.length]}
@@ -732,7 +925,7 @@ const AnalyticsCharts = () => {
                 fill="#82ca9d"
                 dataKey="value"
               >
-                {animalDistribution.map((entry, index) => (
+                {animalDistribution.map((_, index) => (
                   <Cell
                     key={`cell-${index}`}
                     fill={COLORS[index % COLORS.length]}
@@ -784,16 +977,25 @@ const AnalyticsCharts = () => {
         <h2 className="text-xl font-semibold mb-4 text-(--primary-teal-dark)">
           User Distribution by State
         </h2>
-        <ResponsiveContainer width="100%" height={400}>
-          <BarChart data={stateDistribution}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="value" fill="#2d6a7b" name="Number of Users" />
-          </BarChart>
-        </ResponsiveContainer>
+        <div className="overflow-x-auto">
+          <div
+            style={{
+              minWidth: `${Math.max(800, stateDistribution.length * 60)}px`,
+              height: "400px",
+            }}
+          >
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={stateDistribution}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend align="left" />
+                <Bar dataKey="value" fill="#2d6a7b" name="Number of Users" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
       </div>
 
       {/* Summary Stats */}
