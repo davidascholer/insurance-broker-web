@@ -250,3 +250,22 @@ export const getUTMData = async (token?: string) => {
   const parsedData = await response.json();
   return parsedData.data;
 };
+
+export const deleteUTMData = async (id: string, token?: string) => {
+  const url = token
+    ? `${PIPA_ANALYTICS_URL}/utm/${id}?token=${encodeURIComponent(token)}`
+    : `${PIPA_ANALYTICS_URL}/utm/${id}`;
+
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Error: ${response.status} ${response.statusText}`);
+  }
+
+  return response.json();
+};

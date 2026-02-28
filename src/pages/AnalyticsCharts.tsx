@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { getLinksClicked, getUserObjects, getUTMData } from "@/api/api";
+import { getLinksClicked, getUserObjects, getUTMData, deleteUTMData } from "@/api/api";
 import { zipToState } from "@/api/admin/util";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import Loader from "@/components/Loader";
@@ -26,9 +26,11 @@ import {
   useReactTable,
   getCoreRowModel,
   getSortedRowModel,
+  getPaginationRowModel,
   flexRender,
   createColumnHelper,
   type SortingState,
+  type PaginationState,
 } from "@tanstack/react-table";
 
 type LinkClickedData = {
@@ -63,6 +65,7 @@ type UserObjectData = {
 };
 
 type UTMData = {
+  id: string;
   ipAddress: string | null;
   location: string | null;
   date: string;
@@ -96,7 +99,18 @@ const AnalyticsCharts = () => {
   const [linksSorting, setLinksSorting] = useState<SortingState>([]);
   const [usersSorting, setUsersSorting] = useState<SortingState>([]);
   const [utmSorting, setUtmSorting] = useState<SortingState>([]);
-  const [showUtmTable, setShowUtmTable] = useState<boolean>(false);
+  const [linksPagination, setLinksPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 20,
+  });
+  const [usersPagination, setUsersPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 20,
+  });
+  const [utmPagination, setUtmPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 20,
+  });
   // const [tooltipContent, setTooltipContent] = useState<string>("");
 
   useEffect(() => {
@@ -129,6 +143,25 @@ const AnalyticsCharts = () => {
 
     fetchData();
   }, []);
+
+  // Handle delete UTM record
+  const handleDeleteUTM = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this UTM record?")) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("pipaAdminAccessToken") || "";
+      await deleteUTMData(id, token);
+      // Refresh the UTM data after deletion
+      const updatedUtm = await getUTMData(token);
+      setUtmData(updatedUtm || []);
+    } catch (err) {
+      alert(
+        `Failed to delete record: ${err instanceof Error ? err.message : "Unknown error"}`,
+      );
+    }
+  };
 
   // Links table columns
   const linksColumns = [
@@ -231,17 +264,20 @@ const AnalyticsCharts = () => {
       header: "Type",
       cell: (info) => info.getValue() || "-",
     }),
-    utmColumnHelper.accessor("location", {
-      header: "Location",
-      cell: (info) => info.getValue() || "-",
-    }),
-    utmColumnHelper.accessor("ipAddress", {
-      header: "IP Address",
-      cell: (info) => info.getValue() || "-",
-    }),
     utmColumnHelper.accessor("date", {
       header: "Date",
       cell: (info) => new Date(info.getValue()).toLocaleString(),
+    }),
+    utmColumnHelper.accessor("id", {
+      header: "Actions",
+      cell: (info) => (
+        <button
+          onClick={() => handleDeleteUTM(info.getValue())}
+          className="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600 transition-colors"
+        >
+          Delete
+        </button>
+      ),
     }),
   ];
 
@@ -291,17 +327,6 @@ const AnalyticsCharts = () => {
     return Object.entries(counts).map(([name, value]) => ({ name, value }));
   }, [linksData]);
 
-  const utmOriginDistribution = useMemo(() => {
-    const counts: Record<string, number> = {};
-    utmData.forEach((utm) => {
-      const origin = utm.origin?.trim() || "unknown";
-      counts[origin] = (counts[origin] || 0) + 1;
-    });
-    return Object.entries(counts)
-      .map(([name, value]) => ({ name, value }))
-      .sort((a, b) => b.value - a.value);
-  }, [utmData]);
-
   const stateDistribution = useMemo(() => {
     const counts: Record<string, number> = {};
     userObjectsData.forEach((user) => {
@@ -326,10 +351,13 @@ const AnalyticsCharts = () => {
     columns: linksColumns,
     state: {
       sorting: linksSorting,
+      pagination: linksPagination,
     },
     onSortingChange: setLinksSorting,
+    onPaginationChange: setLinksPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
   const usersTable = useReactTable({
@@ -337,10 +365,13 @@ const AnalyticsCharts = () => {
     columns: usersColumns,
     state: {
       sorting: usersSorting,
+      pagination: usersPagination,
     },
     onSortingChange: setUsersSorting,
+    onPaginationChange: setUsersPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
   const utmTable = useReactTable({
@@ -348,10 +379,13 @@ const AnalyticsCharts = () => {
     columns: utmColumns,
     state: {
       sorting: utmSorting,
+      pagination: utmPagination,
     },
     onSortingChange: setUtmSorting,
+    onPaginationChange: setUtmPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
   // // Map state abbreviations to full names for the map
@@ -613,6 +647,36 @@ const AnalyticsCharts = () => {
               ))}
             </tbody>
           </table>
+          <div className="flex items-center justify-between px-4 py-3 border-t text-sm text-(--text-light)">
+            <span>
+              Showing {linksTable.getState().pagination.pageIndex * 20 + 1} to{" "}
+              {Math.min(
+                (linksTable.getState().pagination.pageIndex + 1) * 20,
+                linksData.length,
+              )}{" "}
+              of {linksData.length}
+            </span>
+            <div className="flex gap-2">
+              <button
+                onClick={() => linksTable.previousPage()}
+                disabled={!linksTable.getCanPreviousPage()}
+                className="px-3 py-1 rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+              >
+                Previous
+              </button>
+              <span className="px-3 py-1">
+                Page {linksTable.getState().pagination.pageIndex + 1} of{" "}
+                {linksTable.getPageCount()}
+              </span>
+              <button
+                onClick={() => linksTable.nextPage()}
+                disabled={!linksTable.getCanNextPage()}
+                className="px-3 py-1 rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+              >
+                Next
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -687,36 +751,125 @@ const AnalyticsCharts = () => {
               ))}
             </tbody>
           </table>
+          <div className="flex items-center justify-between px-4 py-3 border-t text-sm text-(--text-light)">
+            <span>
+              Showing {usersTable.getState().pagination.pageIndex * 20 + 1} to{" "}
+              {Math.min(
+                (usersTable.getState().pagination.pageIndex + 1) * 20,
+                userObjectsData.length,
+              )}{" "}
+              of {userObjectsData.length}
+            </span>
+            <div className="flex gap-2">
+              <button
+                onClick={() => usersTable.previousPage()}
+                disabled={!usersTable.getCanPreviousPage()}
+                className="px-3 py-1 rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+              >
+                Previous
+              </button>
+              <span className="px-3 py-1">
+                Page {usersTable.getState().pagination.pageIndex + 1} of{" "}
+                {usersTable.getPageCount()}
+              </span>
+              <button
+                onClick={() => usersTable.nextPage()}
+                disabled={!usersTable.getCanNextPage()}
+                className="px-3 py-1 rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* UTM Data Table */}
+      <div className="mb-12 bg-white rounded-lg shadow overflow-hidden">
+        <div className="flex justify-between items-center p-6 border-b">
+          <h2 className="text-2xl font-semibold text-(--primary-teal-dark)">
+            UTM Data ({utmData.length} total)
+          </h2>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-(--light-pink)">
+              {utmTable.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      className="px-4 py-3 text-left text-xs font-medium text-(--primary-teal-dark) uppercase tracking-wider cursor-pointer hover:bg-(--coral-pink)"
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
+                      <div className="flex items-center gap-2">
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                        {{
+                          asc: " 🔼",
+                          desc: " 🔽",
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {utmTable.getRowModel().rows.map((row) => (
+                <tr key={row.id} className="hover:bg-(--background-light)">
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      className="px-4 py-3 whitespace-nowrap text-sm text-(--text-dark)"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="flex items-center justify-between px-4 py-3 border-t text-sm text-(--text-light)">
+            <span>
+              Showing {utmTable.getState().pagination.pageIndex * 20 + 1} to{" "}
+              {Math.min(
+                (utmTable.getState().pagination.pageIndex + 1) * 20,
+                utmData.length,
+              )}{" "}
+              of {utmData.length}
+            </span>
+            <div className="flex gap-2">
+              <button
+                onClick={() => utmTable.previousPage()}
+                disabled={!utmTable.getCanPreviousPage()}
+                className="px-3 py-1 rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+              >
+                Previous
+              </button>
+              <span className="px-3 py-1">
+                Page {utmTable.getState().pagination.pageIndex + 1} of{" "}
+                {utmTable.getPageCount()}
+              </span>
+              <button
+                onClick={() => utmTable.nextPage()}
+                disabled={!utmTable.getCanNextPage()}
+                className="px-3 py-1 rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+              >
+                Next
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* UTM Origin Distribution */}
-        <div className="bg-white p-6 rounded-lg shadow lg:col-span-2">
-          <div className="flex items-center justify-between mb-4 gap-4">
-            <h2 className="text-xl font-semibold text-(--primary-teal-dark)">
-              UTM Origin Distribution
-            </h2>
-            <button
-              onClick={() => setShowUtmTable((prev) => !prev)}
-              className="px-4 py-2 bg-(--primary-teal) text-white rounded-lg hover:bg-(--primary-teal-dark) transition-colors"
-            >
-              {showUtmTable ? "Hide UTM Data" : "View UTM Data"}
-            </button>
-          </div>
-          <ResponsiveContainer width="100%" height={320}>
-            <BarChart data={utmOriginDistribution}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="value" fill="#0c5163" name="Origin Count" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
         {/* Provider Distribution */}
         <div className="bg-white p-6 rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-4 text-(--primary-teal-dark)">
@@ -813,61 +966,6 @@ const AnalyticsCharts = () => {
           </ResponsiveContainer>
         </div>
       </div>
-
-      {showUtmTable && (
-        <div className="mt-8 mb-12 bg-white rounded-lg shadow overflow-hidden">
-          <div className="flex justify-between items-center p-6 border-b">
-            <h2 className="text-2xl font-semibold text-(--primary-teal-dark)">
-              UTM Data ({utmData.length} total)
-            </h2>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-(--light-pink)">
-                {utmTable.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <th
-                        key={header.id}
-                        className="px-4 py-3 text-left text-xs font-medium text-(--primary-teal-dark) uppercase tracking-wider cursor-pointer hover:bg-(--coral-pink)"
-                        onClick={header.column.getToggleSortingHandler()}
-                      >
-                        <div className="flex items-center gap-2">
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                          {{
-                            asc: " 🔼",
-                            desc: " 🔽",
-                          }[header.column.getIsSorted() as string] ?? null}
-                        </div>
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {utmTable.getRowModel().rows.map((row) => (
-                  <tr key={row.id} className="hover:bg-(--background-light)">
-                    {row.getVisibleCells().map((cell) => (
-                      <td
-                        key={cell.id}
-                        className="px-4 py-3 whitespace-nowrap text-sm text-(--text-dark)"
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
 
       {/* State Distribution Chart */}
       <div className="bg-white p-6 rounded-lg shadow mt-8">
