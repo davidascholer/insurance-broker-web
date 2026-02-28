@@ -10,21 +10,21 @@ function App() {
   useEffect(() => {
     // Send initial pageview with UTM data
     const urlParams = new URLSearchParams(window.location.search);
-    const utmSource = urlParams.get("utm_source") || urlParams.get("utm");
+    const utmOrigin = urlParams.get("utm_source") || urlParams.get("utm");
     // const utmMedium = urlParams.get("utm_medium") || "none";
     // const utmCampaign = urlParams.get("utm_campaign") || "none";
 
-    if (!utmSource) return;
+    if (!utmOrigin) return;
 
     console.log("Tracking initial pageview with UTM data:", {
-      utm_source: utmSource,
-      // utm_medium: utmMedium,
-      // utm_campaign: utmCampaign,
+      type: "source",
+      origin: utmOrigin,
     });
 
     // Track UTM data in our backend
     trackUTM({
-      utmOrigin: utmSource,
+      type: "source",
+      origin: utmOrigin,
     });
   }, []);
 

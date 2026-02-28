@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { getLinksClicked, getUserObjects } from "@/api/api";
+import { getLinksClicked, getUserObjects, getUTMData } from "@/api/api";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import Loader from "@/components/Loader";
 // import {
@@ -61,6 +61,14 @@ type UserObjectData = {
   updatedAt: string;
 };
 
+type UTMData = {
+  ipAddress: string | null;
+  location: string | null;
+  date: string;
+  type: string;
+  origin: string;
+};
+
 const COLORS = [
   "#2d6a7b", // primary-teal
   "#ed9690", // primary-coral
@@ -74,16 +82,20 @@ const COLORS = [
 
 const linksColumnHelper = createColumnHelper<LinkClickedData>();
 const usersColumnHelper = createColumnHelper<UserObjectData>();
+const utmColumnHelper = createColumnHelper<UTMData>();
 
 const AnalyticsCharts = () => {
   useRequireAuth();
 
   const [linksData, setLinksData] = useState<LinkClickedData[]>([]);
   const [userObjectsData, setUserObjectsData] = useState<UserObjectData[]>([]);
+  const [utmData, setUtmData] = useState<UTMData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
   const [linksSorting, setLinksSorting] = useState<SortingState>([]);
   const [usersSorting, setUsersSorting] = useState<SortingState>([]);
+  const [utmSorting, setUtmSorting] = useState<SortingState>([]);
+  const [showUtmTable, setShowUtmTable] = useState<boolean>(false);
   // const [tooltipContent, setTooltipContent] = useState<string>("");
 
   useEffect(() => {
@@ -97,8 +109,16 @@ const AnalyticsCharts = () => {
           getUserObjects(token),
         ]);
 
+        let utm = [];
+        try {
+          utm = (await getUTMData(token)) || [];
+        } catch (utmError) {
+          console.warn("Failed to fetch UTM data", utmError);
+        }
+
         setLinksData(links || []);
         setUserObjectsData(userObjects || []);
+        setUtmData(utm || []);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to fetch data");
       } finally {
@@ -201,6 +221,29 @@ const AnalyticsCharts = () => {
     }),
   ];
 
+  const utmColumns = [
+    utmColumnHelper.accessor("origin", {
+      header: "Origin",
+      cell: (info) => info.getValue() || "-",
+    }),
+    utmColumnHelper.accessor("type", {
+      header: "Type",
+      cell: (info) => info.getValue() || "-",
+    }),
+    utmColumnHelper.accessor("location", {
+      header: "Location",
+      cell: (info) => info.getValue() || "-",
+    }),
+    utmColumnHelper.accessor("ipAddress", {
+      header: "IP Address",
+      cell: (info) => info.getValue() || "-",
+    }),
+    utmColumnHelper.accessor("date", {
+      header: "Date",
+      cell: (info) => new Date(info.getValue()).toLocaleString(),
+    }),
+  ];
+
   const providerDistribution = useMemo(() => {
     const counts: Record<string, number> = {};
     linksData.forEach((link) => {
@@ -246,6 +289,17 @@ const AnalyticsCharts = () => {
     });
     return Object.entries(counts).map(([name, value]) => ({ name, value }));
   }, [linksData]);
+
+  const utmOriginDistribution = useMemo(() => {
+    const counts: Record<string, number> = {};
+    utmData.forEach((utm) => {
+      const origin = utm.origin?.trim() || "unknown";
+      counts[origin] = (counts[origin] || 0) + 1;
+    });
+    return Object.entries(counts)
+      .map(([name, value]) => ({ name, value }))
+      .sort((a, b) => b.value - a.value);
+  }, [utmData]);
 
   // Map zip codes to states (first 3 digits to state mapping)
   const zipToState = (zip: string): string => {
@@ -309,7 +363,9 @@ const AnalyticsCharts = () => {
     const counts: Record<string, number> = {};
     userObjectsData.forEach((user) => {
       if (user.zip) {
+        console.log("Processing ZIP code:", user.zip);
         const state = zipToState(user.zip);
+        console.log("from state:", state);
         if (state !== "Unknown") {
           counts[state] = (counts[state] || 0) + 1;
         }
@@ -340,6 +396,17 @@ const AnalyticsCharts = () => {
       sorting: usersSorting,
     },
     onSortingChange: setUsersSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
+
+  const utmTable = useReactTable({
+    data: utmData,
+    columns: utmColumns,
+    state: {
+      sorting: utmSorting,
+    },
+    onSortingChange: setUtmSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
@@ -682,6 +749,31 @@ const AnalyticsCharts = () => {
 
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* UTM Origin Distribution */}
+        <div className="bg-white p-6 rounded-lg shadow lg:col-span-2">
+          <div className="flex items-center justify-between mb-4 gap-4">
+            <h2 className="text-xl font-semibold text-(--primary-teal-dark)">
+              UTM Origin Distribution
+            </h2>
+            <button
+              onClick={() => setShowUtmTable((prev) => !prev)}
+              className="px-4 py-2 bg-(--primary-teal) text-white rounded-lg hover:bg-(--primary-teal-dark) transition-colors"
+            >
+              {showUtmTable ? "Hide UTM Data" : "View UTM Data"}
+            </button>
+          </div>
+          <ResponsiveContainer width="100%" height={320}>
+            <BarChart data={utmOriginDistribution}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="value" fill="#0c5163" name="Origin Count" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
         {/* Provider Distribution */}
         <div className="bg-white p-6 rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-4 text-(--primary-teal-dark)">
@@ -701,7 +793,7 @@ const AnalyticsCharts = () => {
                 fill="#8884d8"
                 dataKey="value"
               >
-                {providerDistribution.map((entry, index) => (
+                {providerDistribution.map((_, index) => (
                   <Cell
                     key={`cell-${index}`}
                     fill={COLORS[index % COLORS.length]}
@@ -732,7 +824,7 @@ const AnalyticsCharts = () => {
                 fill="#82ca9d"
                 dataKey="value"
               >
-                {animalDistribution.map((entry, index) => (
+                {animalDistribution.map((_, index) => (
                   <Cell
                     key={`cell-${index}`}
                     fill={COLORS[index % COLORS.length]}
@@ -778,6 +870,61 @@ const AnalyticsCharts = () => {
           </ResponsiveContainer>
         </div>
       </div>
+
+      {showUtmTable && (
+        <div className="mt-8 mb-12 bg-white rounded-lg shadow overflow-hidden">
+          <div className="flex justify-between items-center p-6 border-b">
+            <h2 className="text-2xl font-semibold text-(--primary-teal-dark)">
+              UTM Data ({utmData.length} total)
+            </h2>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-(--light-pink)">
+                {utmTable.getHeaderGroups().map((headerGroup) => (
+                  <tr key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <th
+                        key={header.id}
+                        className="px-4 py-3 text-left text-xs font-medium text-(--primary-teal-dark) uppercase tracking-wider cursor-pointer hover:bg-(--coral-pink)"
+                        onClick={header.column.getToggleSortingHandler()}
+                      >
+                        <div className="flex items-center gap-2">
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                          {{
+                            asc: " 🔼",
+                            desc: " 🔽",
+                          }[header.column.getIsSorted() as string] ?? null}
+                        </div>
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {utmTable.getRowModel().rows.map((row) => (
+                  <tr key={row.id} className="hover:bg-(--background-light)">
+                    {row.getVisibleCells().map((cell) => (
+                      <td
+                        key={cell.id}
+                        className="px-4 py-3 whitespace-nowrap text-sm text-(--text-dark)"
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
       {/* State Distribution Chart */}
       <div className="bg-white p-6 rounded-lg shadow mt-8">

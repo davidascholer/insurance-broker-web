@@ -171,7 +171,7 @@ export const adminEmailPassword = async (email: string) => {
   return "Email sent successfully!";
 };
 
-export const trackUTM = (reqBody: { utmOrigin: string }) => {
+export const trackUTM = (reqBody: { origin: string; type: string }) => {
   fetch(PIPA_ANALYTICS_URL + "/utm", {
     method: "POST",
     headers: {
@@ -221,6 +221,26 @@ export const getLinksClicked = async (token: string) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ token }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Error: ${response.status} ${response.statusText}`);
+  }
+
+  const parsedData = await response.json();
+  return parsedData.data;
+};
+
+export const getUTMData = async (token?: string) => {
+  const url = token
+    ? `${PIPA_ANALYTICS_URL}/utm?token=${encodeURIComponent(token)}`
+    : `${PIPA_ANALYTICS_URL}/utm`;
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 
   if (!response.ok) {
