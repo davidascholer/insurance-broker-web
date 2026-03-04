@@ -21,6 +21,7 @@ import PetInsuranceExclusions from "./pages/blog/PetInsuranceExclusions";
 import HowMuchDoesPetInsuranceCost from "./pages/blog/HowMuchDoesPetInsuranceCost";
 import PetInsuranceDogs from "./pages/blog/PetInsuranceDogs";
 import PetInsuranceCats from "./pages/blog/PetInsuranceCats";
+import RescuesAndPetInsurance from "./pages/blog/RescuesAndPetInsurance";
 import KanguroEmbed from "./features/kanguro/pages/KanguroEmbed";
 import PartnerPage from "./pages/PartnerPage";
 import AboutUsPage from "./pages/AboutUsPage";
@@ -84,6 +85,10 @@ const AppRouter = () => {
         />
         <Route path="/blog/pet-insurance-dogs" element={<PetInsuranceDogs />} />
         <Route path="/blog/pet-insurance-cats" element={<PetInsuranceCats />} />
+        <Route
+          path="/blog/pet-insurance-rescue-partners"
+          element={<RescuesAndPetInsurance />}
+        />
         {/* <Route path="/partner-contact" element={<PartnerContact />} /> */}
         <Route path="/info" element={<InfoForm />} />
         <Route path="/quotes" element={<Quotes />} />

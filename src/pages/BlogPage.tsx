@@ -8,17 +8,20 @@ import { Search, X } from "lucide-react";
 // Common themes/labels across blog pages
 const ALL_LABELS = [
   "Basics",
-  "Coverage",
-  "Costs",
-  "Comparison",
-  "Exclusions",
-  "Claims",
   "Benefits",
-  "Pet Health",
-  "Types",
-  "Terminology",
-  "Dogs",
+  "Breeder",
   "Cats",
+  "Claims",
+  "Comparison",
+  "Costs",
+  "Coverage",
+  "Dogs",
+  "Exclusions",
+  "Pet Health",
+  "Rescues",
+  "Responsible",
+  "Terminology",
+  "Types",
 ];
 
 const blogPosts: BlogCardData[] = [
@@ -100,8 +103,17 @@ const blogPosts: BlogCardData[] = [
     description:
       "Pet insurance for cats may not be fun to shop for as a cozy cat bed or a fancy scratching post but it can be one of the most important investments in your cat’s health and longevity. For modest monthly premiums you gain a safety net that reduces financial stress when your cat needs serious care.",
     image: "/blog/blog_pet-insurance-cats.jpg",
-    date: "February 13, 2026",
+    date: "February 28, 2026",
     labels: ["Basics", "Coverage", "Costs", "Cats"],
+  },
+  {
+    title: "Rescues and Shelters",
+    path: "/blog/pet-insurance-rescue-partners",
+    description:
+      "You should know your pet insurance options and what fits you and your newly adopted pet the best. As millennials and Gen Z’ers age and continue to responsibly adopt pets from rescues and shelters, one of the facets of sound personal financial behavior that gets overlooked in the modern age is the financial responsibility to your dog or cat – and for that, there’s PIPA Broker.",
+    image: "/blog/blog_rescues-and-shelters.webp",
+    date: "March 6, 2026",
+    labels: ["Costs", "Rescues", "Responsible", "Shelter", "Breeder"],
   },
 ];
 
