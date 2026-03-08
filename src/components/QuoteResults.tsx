@@ -19,6 +19,7 @@ import PrudentContent from "../features/prudent/components/PrudentContent";
 // import { registerQuoteLinkClick } from "@/features/analytics/emitters";
 import { getPrudentLink } from "@/features/prudent/lib/util";
 import KanguroContent from "@/features/kanguro/pages/KanguroContent";
+import EmbraceContent from "@/features/embrace/components/EmbraceContent";
 
 // Keys must match the providerId in the QuoteItem type
 const providers = new Map();
@@ -118,8 +119,7 @@ const BottomDrawer = ({
           </Button>
           <AccordionContent className="flex flex-col gap-4">
             {(providers.get(providerId).providerName === "Fetch" ||
-              providers.get(providerId).providerName === "Figo" ||
-              providers.get(providerId).providerName === "Embrace") && (
+              providers.get(providerId).providerName === "Figo") && (
               <>
                 <p className="px-4 pt-4 w-full font-medium text-(--primary-teal-dark) dark:text-neutral-200 text-left sansita-bold">
                   {providers.get(providerId).content}
@@ -141,6 +141,16 @@ const BottomDrawer = ({
             )}
             {providers.get(providerId).providerName === "Kanguro" && (
               <KanguroContent
+                relatedPlans={card.extras?.relatedPlans || []}
+                providerId={card.providerId}
+                isPortrait={isPortrait}
+                handleInsurerClicked={(insurer, selectedCard) => {
+                  handleInsurerClicked(insurer, selectedCard);
+                }}
+              />
+            )}
+            {providers.get(providerId).providerName === "Embrace" && (
+              <EmbraceContent
                 relatedPlans={card.extras?.relatedPlans || []}
                 providerId={card.providerId}
                 isPortrait={isPortrait}
@@ -417,9 +427,7 @@ function QuoteResults({
                         {(providers.get(active.providerId).providerName ===
                           "Fetch" ||
                           providers.get(active.providerId).providerName ===
-                            "Figo" ||
-                          providers.get(active.providerId).providerName ===
-                            "Embrace") && (
+                            "Figo") && (
                           <>
                             <p className="px-4 pt-4 w-full font-medium text-(--primary-teal-dark) dark:text-neutral-200 text-left sansita-bold">
                               {providers.get(active.providerId).content}
@@ -445,6 +453,17 @@ function QuoteResults({
                         {providers.get(active.providerId).providerName ===
                           "Kanguro" && (
                           <KanguroContent
+                            relatedPlans={active.extras?.relatedPlans || []}
+                            providerId={active.providerId}
+                            isPortrait={isPortrait}
+                            handleInsurerClicked={(insurer, selectedCard) => {
+                              handleInsurerClick(insurer, selectedCard);
+                            }}
+                          />
+                        )}
+                        {providers.get(active.providerId).providerName ===
+                          "Embrace" && (
+                          <EmbraceContent
                             relatedPlans={active.extras?.relatedPlans || []}
                             providerId={active.providerId}
                             isPortrait={isPortrait}
