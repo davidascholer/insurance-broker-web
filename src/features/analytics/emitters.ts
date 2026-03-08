@@ -10,54 +10,54 @@ declare global {
 
 import { DEV } from "@/lib/constants";
 import type {
-  InsurerLinkTrackingInfo,
+  // InsurerLinkTrackingInfo,
   AnswersType as PetInfoType,
 } from "@/lib/types";
 
-export const registerQuoteLinkClick = ({
-  insurer,
-  petObject,
-}: {
-  insurer: InsurerLinkTrackingInfo;
-  petObject: PetInfoType;
-}) => {
-  // Validate the params
-  if (
-    !petObject.age?.value ||
-    !petObject.animal ||
-    !petObject.breed ||
-    !petObject.email ||
-    !petObject.weight ||
-    !petObject.zip ||
-    !insurer.name ||
-    !insurer.deductibleOption ||
-    !insurer.reimbursementPercentageOption ||
-    !insurer.reimbursementLimitOption ||
-    !insurer.monthlyPrice
-  ) {
-    console.error(
-      "Insurer or pet objects are incomplete or invalid in registerPetFormCompleted:",
-      insurer,
-      petObject
-    );
-    return;
-  }
+// export const registerQuoteLinkClick = ({
+//   insurer,
+//   petObject,
+// }: {
+//   insurer: InsurerLinkTrackingInfo;
+//   petObject: PetInfoType;
+// }) => {
+//   // Validate the params
+//   if (
+//     !petObject.age?.value ||
+//     !petObject.animal ||
+//     !petObject.breed ||
+//     !petObject.email ||
+//     !petObject.weight ||
+//     !petObject.zip ||
+//     !insurer.name ||
+//     !insurer.deductibleOption ||
+//     !insurer.reimbursementPercentageOption ||
+//     !insurer.reimbursementLimitOption ||
+//     !insurer.monthlyPrice
+//   ) {
+//     console.error(
+//       "Insurer or pet objects are incomplete or invalid in registerPetFormCompleted:",
+//       insurer,
+//       petObject
+//     );
+//     return;
+//   }
 
-  // Push event to dataLayer for Google Tag Manager
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({
-    event: "insurer_quote_click",
-    userEmail: petObject.email,
-    petAgeDays: petObject.age.value,
-    petType: petObject.animal,
-    petBreed: petObject.breed,
-    petWeightLbs: petObject.weight,
-    userZipCode: petObject.zip,
-    insurerClicked: insurer,
-  });
+//   // Push event to dataLayer for Google Tag Manager
+//   window.dataLayer = window.dataLayer || [];
+//   window.dataLayer.push({
+//     event: "insurer_quote_click",
+//     userEmail: petObject.email,
+//     petAgeDays: petObject.age.value,
+//     petType: petObject.animal,
+//     petBreed: petObject.breed,
+//     petWeightLbs: petObject.weight,
+//     userZipCode: petObject.zip,
+//     insurerClicked: insurer,
+//   });
 
-  if (DEV) console.log("Quote link clicked:", { insurer, petObject });
-};
+//   if (DEV) console.log("Quote link clicked:", { insurer, petObject });
+// };
 
 export const registerPetFormCompleted = ({
   petObject,
@@ -79,7 +79,7 @@ export const registerPetFormCompleted = ({
   ) {
     console.error(
       "Pet objects incomplete or invalid in registerPetFormCompleted:",
-      petObject
+      petObject,
     );
     return;
   }

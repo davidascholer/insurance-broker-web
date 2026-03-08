@@ -1,7 +1,12 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
-import type { AnswersType, ProviderIdTypes, QuoteItem } from "@/lib/types";
+import type {
+  AnswersType,
+  DataQuoteItem,
+  ProviderIdTypes,
+  QuoteItem,
+} from "@/lib/types";
 import { cn, formatNumberToPercent, formatNumberToPrice } from "@/lib/utils";
 import {
   Accordion,
@@ -11,7 +16,7 @@ import {
 import { Button } from "./ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import PrudentContent from "../features/prudent/components/PrudentContent";
-import { registerQuoteLinkClick } from "@/features/analytics/emitters";
+// import { registerQuoteLinkClick } from "@/features/analytics/emitters";
 import { getPrudentLink } from "@/features/prudent/lib/util";
 import KanguroContent from "@/features/kanguro/pages/KanguroContent";
 
@@ -64,7 +69,7 @@ const BottomDrawer = ({
   keyId: number;
   isPortrait: boolean;
   card: QuoteItem;
-  handleInsurerClicked: (insurer: string, card: QuoteItem) => void;
+  handleInsurerClicked: (insurer: string, card: DataQuoteItem) => void;
 }) => {
   const [value, setValue] = useState<string | undefined>();
 
@@ -129,8 +134,8 @@ const BottomDrawer = ({
                 providerId={providerId}
                 relatedPlans={card.extras?.relatedPlans || []}
                 isPortrait={isPortrait}
-                handleInsurerClicked={(insurer) =>
-                  handleInsurerClicked(insurer, card)
+                handleInsurerClicked={(insurer, selectedCard) =>
+                  handleInsurerClicked(insurer, selectedCard)
                 }
               />
             )}
@@ -139,8 +144,8 @@ const BottomDrawer = ({
                 relatedPlans={card.extras?.relatedPlans || []}
                 providerId={card.providerId}
                 isPortrait={isPortrait}
-                handleInsurerClicked={(insurer) => {
-                  handleInsurerClicked(insurer, card);
+                handleInsurerClicked={(insurer, selectedCard) => {
+                  handleInsurerClicked(insurer, selectedCard);
                 }}
               />
             )}
@@ -159,7 +164,7 @@ function QuoteResults({
 }: {
   cards: QuoteItem[];
   showFullResults: boolean;
-  handleInsurerClicked: (insurer: string, card: QuoteItem) => void;
+  handleInsurerClicked: (insurer: string, card: DataQuoteItem) => void;
   petObject: AnswersType;
 }) {
   const [active, setActive] = useState<
@@ -203,18 +208,17 @@ function QuoteResults({
 
   useOutsideClick(ref, () => setActive(null));
 
-  const handleInsurerClick = (insurer: string, card: QuoteItem) => {
-    registerQuoteLinkClick({
-      insurer: {
-        name: insurer,
-        deductibleOption: card.deductibleOption,
-        reimbursementPercentageOption: card.reimbursementPercentageOption,
-        reimbursementLimitOption: card.reimbursementLimitOption,
-        monthlyPrice: card.monthlyPrice,
-      },
-      petObject: petObject,
-    });
-
+  const handleInsurerClick = (insurer: string, card: DataQuoteItem) => {
+    // registerQuoteLinkClick({
+    //   insurer: {
+    //     name: insurer,
+    //     deductibleOption: card.deductibleOption,
+    //     reimbursementPercentageOption: card.reimbursementPercentageOption,
+    //     reimbursementLimitOption: card.reimbursementLimitOption,
+    //     monthlyPrice: card.monthlyPrice,
+    //   },
+    //   petObject: petObject,
+    // });
     handleInsurerClicked(insurer, card);
   };
 
@@ -433,8 +437,8 @@ function QuoteResults({
                             relatedPlans={active.extras?.relatedPlans || []}
                             providerId={active.providerId}
                             isPortrait={isPortrait}
-                            handleInsurerClicked={(insurer) => {
-                              handleInsurerClick(insurer, active);
+                            handleInsurerClicked={(insurer, selectedCard) => {
+                              handleInsurerClick(insurer, selectedCard);
                             }}
                           />
                         )}
@@ -444,8 +448,8 @@ function QuoteResults({
                             relatedPlans={active.extras?.relatedPlans || []}
                             providerId={active.providerId}
                             isPortrait={isPortrait}
-                            handleInsurerClicked={(insurer) => {
-                              handleInsurerClick(insurer, active);
+                            handleInsurerClicked={(insurer, selectedCard) => {
+                              handleInsurerClick(insurer, selectedCard);
                             }}
                           />
                         )}

@@ -25,13 +25,11 @@ const KanguroContentDetail = ({
     <div
       className={cn(
         "w-full min-w-[150px] border-(--primary-coral) border-2 px-8 py-2 rounded-lg text-(--primary-coral) flex flex-col items-center gap-4 flex-1 shadow-lg",
-        className
+        className,
       )}
     >
       <h2 className="text-xl text-center sansita-bold">{title}</h2>
       <ul className="list-none list-inside text-(--primary-teal-dark) text-sm flex flex-col gap-2 w-full">
-
-        
         <KanguroContentDetailListItem
           label="Hospitalization"
           isCovered={title === "Essential" || title === "Essential Plus"}
@@ -73,7 +71,6 @@ const KanguroContentDetail = ({
           label="Routine Hygiene Services"
           isCovered={title === "Essential Plus"}
         />
-        
 
         <KanguroContentDetailListItem
           label="Spaying / Neutering"
@@ -83,10 +80,7 @@ const KanguroContentDetail = ({
           label="Additional Vaccines / Boosters"
           isCovered={false}
         />
-        <KanguroContentDetailListItem
-          label="Microchipping"
-          isCovered={false}
-        />
+        <KanguroContentDetailListItem label="Microchipping" isCovered={false} />
       </ul>
     </div>
   );
@@ -100,14 +94,14 @@ const KanguroQuoteDetail = ({
 }: {
   providerId: string;
   relatedPlan: DataQuoteItem;
-  handleInsurerClicked: (insurer: string) => void;
+  handleInsurerClicked: (insurer: string, card: DataQuoteItem) => void;
   className?: string;
 }) => {
   return (
     <div
       className={cn(
         " border-(--primary-coral) border-2 p-4 rounded-lg text-(--primary-teal-dark) flex flex-col items-center gap-1 flex-1 shadow-lg",
-        className
+        className,
       )}
     >
       <div className="mb-4">
@@ -119,9 +113,17 @@ const KanguroQuoteDetail = ({
         </p>
         {relatedPlan.extras?.planId &&
         relatedPlan.extras.planId.includes("EssentialPlus") ? (
-          <p className="text-center">A&I & Wellness<br/>(Essential Plus)</p>
+          <p className="text-center">
+            A&I & Wellness
+            <br />
+            (Essential Plus)
+          </p>
         ) : (
-          <p className="text-center">Accident & Illness<br/>(Essential)</p>
+          <p className="text-center">
+            Accident & Illness
+            <br />
+            (Essential)
+          </p>
         )}
       </div>
       <div className="flex flex-col justify-center items-center">
@@ -155,12 +157,12 @@ const KanguroQuoteDetail = ({
       <div className="flex-1 flex items-center justify-center mt-4 w-full cursor-pointer">
         <span
           onClick={async () => {
-            handleInsurerClicked(providerId);
+            handleInsurerClicked(providerId, relatedPlan);
             window.open(relatedPlan.extras?.precheckoutUrl, "_blank");
           }}
           className={cn(
             "kanguro-select-coverage-button",
-            "px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
+            "px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full",
           )}
         >
           Select this coverage
@@ -179,7 +181,7 @@ const KanguroContent = ({
   relatedPlans: DataQuoteItem[];
   providerId: string;
   isPortrait: boolean;
-  handleInsurerClicked: (insurer: string) => void;
+  handleInsurerClicked: (insurer: string, card: DataQuoteItem) => void;
 }) => (
   <div className="flex flex-col gap-8 m-auto">
     {relatedPlans.length > 0 && (
@@ -190,7 +192,7 @@ const KanguroContent = ({
 
     <div
       className={cn(
-        "flex justify-evenly items-center gap-2 py-2 flex-row flex-wrap"
+        "flex justify-evenly items-center gap-2 py-2 flex-row flex-wrap",
       )}
     >
       {relatedPlans.map((relatedPlan, index) => (
@@ -215,7 +217,7 @@ const KanguroContent = ({
     <div
       className={cn(
         "flex justify-center items-center gap-2 py-2 no-wrap flex-col",
-        isPortrait ? "" : "min-[600px]:flex-row"
+        isPortrait ? "" : "min-[600px]:flex-row",
       )}
     >
       <KanguroContentDetail title="Essential" />

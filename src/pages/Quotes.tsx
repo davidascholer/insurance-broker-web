@@ -1,5 +1,6 @@
 import type {
   AnswersType,
+  DataQuoteItem,
   FilterOptionType,
   ProviderIdTypes,
   QuoteItem,
@@ -330,6 +331,12 @@ const Quotes = () => {
           coverage: kanguroCoverage,
         };
         // To here.
+        if (DEV)
+          console.log(
+            "DEV LOG",
+            "Fetching kanguro quotes with pet object:",
+            kanguroPetObject,
+          );
         const kanguroQuotes = await fetchQuotesFromAPI(
           "kanguro",
           kanguroPetObject,
@@ -359,7 +366,7 @@ const Quotes = () => {
     );
   };
 
-  const handleInsurerClicked = async (insurer: string, card: QuoteItem) => {
+  const handleInsurerClicked = async (insurer: string, card: DataQuoteItem) => {
     if (DEV) console.log("insurer clicked", insurer);
     // Track link click for analytics
     trackLinkClick({

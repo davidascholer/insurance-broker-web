@@ -15,7 +15,7 @@ const PrudentContentDetail = ({
     <div
       className={cn(
         "w-full min-w-[150px] border-(--primary-coral) border-2 px-8 py-2 rounded-lg text-(--primary-coral) flex flex-col items-center gap-4 flex-1 shadow-lg",
-        className
+        className,
       )}
     >
       <h2 className="text-xl text-center sansita-bold">{title}</h2>
@@ -133,14 +133,14 @@ const PrudentQuoteDetail = ({
 }: {
   providerId: string;
   relatedPlan: DataQuoteItem;
-  handleInsurerClicked: (insurer: string) => void;
+  handleInsurerClicked: (insurer: string, card: DataQuoteItem) => void;
   className?: string;
 }) => {
   return (
     <div
       className={cn(
         " border-(--primary-coral) border-2 p-4 rounded-lg text-(--primary-teal-dark) flex flex-col items-center gap-1 flex-1 shadow-lg",
-        className
+        className,
       )}
     >
       <div className="mb-4">
@@ -188,7 +188,7 @@ const PrudentQuoteDetail = ({
       <div className="flex-1 flex items-center justify-center mt-4 w-full cursor-pointer">
         <span
           onClick={async () => {
-            handleInsurerClicked(providerId);
+            handleInsurerClicked(providerId, relatedPlan);
             if (relatedPlan.extras?.planObj) {
               const windowReference = window.open();
               const url = await getPrudentLink(relatedPlan.extras?.planObj);
@@ -201,7 +201,7 @@ const PrudentQuoteDetail = ({
           }}
           className={cn(
             "prudent-select-coverage-button",
-            "px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full"
+            "px-4 py-3 text-sm rounded-3xl font-bold bg-(--primary-coral) hover:bg-(--coral-light) hover:shadow-sm animate-all text-white text-center w-full",
           )}
         >
           Select this coverage
@@ -220,7 +220,7 @@ const PrudentContent = ({
   relatedPlans: DataQuoteItem[];
   providerId: string;
   isPortrait: boolean;
-  handleInsurerClicked: (insurer: string) => void;
+  handleInsurerClicked: (insurer: string, card: DataQuoteItem) => void;
 }) => (
   <div className="flex flex-col gap-8 m-auto">
     {relatedPlans.length > 0 && (
@@ -231,7 +231,7 @@ const PrudentContent = ({
 
     <div
       className={cn(
-        "flex justify-evenly items-center gap-2 py-2 flex-row flex-wrap"
+        "flex justify-evenly items-center gap-2 py-2 flex-row flex-wrap",
       )}
     >
       {relatedPlans.map((relatedPlan, index) => (
@@ -256,7 +256,7 @@ const PrudentContent = ({
     <div
       className={cn(
         "flex justify-center items-center gap-2 py-2 no-wrap flex-col",
-        isPortrait ? "" : "min-[600px]:flex-row"
+        isPortrait ? "" : "min-[600px]:flex-row",
       )}
     >
       <PrudentContentDetail title="Accident Only" accidentOnly={true} />
