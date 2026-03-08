@@ -2,7 +2,7 @@
 
 import type { ProviderIdTypes } from "./types";
 
-export const IS_PROD = true;
+export const IS_PROD = false;
 export const DEV = !IS_PROD;
 export const PIPA_STORAGE_PREFIX = "pipa-";
 export const PIPA_COLOR_THEME_KEY = PIPA_STORAGE_PREFIX + "color-theme";
