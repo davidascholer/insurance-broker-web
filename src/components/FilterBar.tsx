@@ -36,7 +36,7 @@ const FilterOptions = ({
           <DropdownMenuTrigger className="mr-auto text-(--coral-light) hover:text-(--coral-light) transition-colors duration-300 cursor-pointer nunito-sans-medium outline-none">
             <div
               className={cn(
-                "flex-1 text-sm text-(--primary-teal-dark) text-center px-4 py-2 rounded-2xl shadow-md hover:shadow-lg transition-shadow cursor-pointer nunito-sans-medium bg-(--coral-light) hover:bg-(--primary-coral)"
+                "flex-1 text-sm text-(--primary-teal-dark) text-center px-4 py-2 rounded-2xl shadow-md hover:shadow-lg transition-shadow cursor-pointer nunito-sans-medium bg-(--coral-light) hover:bg-(--primary-coral)",
               )}
             >
               <ListCheck size={16} className="inline mb-1 mr-2" />
@@ -50,7 +50,7 @@ const FilterOptions = ({
                 className={cn(
                   "sansita-bold cursor-pointer p-2 mt-1 rounded-full justify-center focus:bg-(--primary-coral)",
                   option.value === selectedOption.value &&
-                    "bg-(--coral-light) text-(--primary-teal-dark)"
+                    "bg-(--coral-light) text-(--primary-teal-dark)",
                 )}
                 onClick={() => handleClick(option)}
               >
@@ -159,7 +159,7 @@ const FilterBar = ({
     <>
       <div
         className={cn(
-          "w-full max-w-4xl pb-4 mx-auto mt-4 text-(--coral-light) bg-(--primary-teal-dark) rounded-t-lg p-4 flex flex-col gap-2 md:gap-6 items-center justify-between shadow-md "
+          "w-full max-w-4xl pb-4 mx-auto mt-4 text-(--coral-light) bg-(--primary-teal-dark) rounded-t-lg p-4 flex flex-col gap-2 md:gap-6 items-center justify-between shadow-md ",
         )}
       >
         <div className="flex flex-row flex-wrap justify-evenly items-start w-full gap-12">
@@ -267,8 +267,8 @@ const FilterBar = ({
               backToTopHidden
                 ? "hidden"
                 : backToTopTransparent
-                ? "animate-fade-out-long pointer-events-none"
-                : "animate-fade-in"
+                  ? "animate-fade-out-long pointer-events-none"
+                  : "animate-fade-in",
             )}
             onClick={handleFilterButtonClick}
           >

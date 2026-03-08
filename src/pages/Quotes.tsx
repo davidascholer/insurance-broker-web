@@ -327,6 +327,40 @@ const Quotes = () => {
       console.error("Error fetching kanguro quotes:", e);
     }
 
+    /* EMBRACE */
+    try {
+      // Check if quotes are cached before fetching from API
+      const cachedEmbraceQuotes = getQuoteFromCache("embrace");
+      if (cachedEmbraceQuotes) {
+        if (DEV) console.log("DEV LOG", "Using cached embrace quotes");
+        fetchedQuotes.push(...cachedEmbraceQuotes);
+        suggestedQuoteData.push(...cachedEmbraceQuotes);
+      } else {
+        // If no cached quotes, fetch from API
+        if (DEV) console.log("DEV LOG", "Fetching new embrace quotes");
+        if (DEV)
+          console.log("EMBRACE REQUEST DATA:", {
+            name: answers.name,
+            email: answers.email,
+            zip: answers.zip,
+            petName: answers.petName,
+            animal: answers.animal,
+            gender: answers.gender,
+            age: answers.age,
+            breed: answers.breed,
+          });
+        allCached = false;
+        const embraceQuotes = await fetchQuotesFromAPI("embrace", answers);
+        console.log("EMBRACE RESPONSE:", embraceQuotes);
+        if (embraceQuotes.length > 0) {
+          fetchedQuotes.push(...embraceQuotes);
+          suggestedQuoteData.push(...embraceQuotes);
+        }
+      }
+    } catch (e) {
+      console.error("Error fetching embrace quotes:", e);
+    }
+
     if (allCached) setIsLoading(false);
     const sortedFetchedData = handleSortQuoteData("price", fetchedQuotes);
     const sortedSuggestedQuoteData = handleSortQuoteData(
