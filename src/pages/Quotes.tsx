@@ -212,30 +212,6 @@ const Quotes = () => {
     const suggestedQuoteData: QuoteItem[] = [];
     let allCached = true;
 
-    /* EMBRACE */
-    try {
-      // Check if quotes are cached before fetching from API
-      const cachedEmbraceQuotes = getQuoteFromCache("embrace");
-      if (cachedEmbraceQuotes) {
-        if (DEV) console.log("DEV LOG", "Using cached embrace quotes");
-        fetchedQuotes.push(...cachedEmbraceQuotes);
-      } else {
-        // If no cached quotes, fetch from API
-        if (DEV) console.log("DEV LOG", "Fetching new embrace quotes");
-        allCached = false;
-        const embraceQuotes = await fetchQuotesFromAPI(
-          "embrace",
-          answers,
-          true,
-        );
-        if (embraceQuotes.length > 0) {
-          fetchedQuotes.push(...embraceQuotes);
-        }
-      }
-    } catch (e) {
-      console.error("Error fetching embrace quotes:", e);
-    }
-
     /* FETCH */
     try {
       // Check if quotes are cached before fetching from API

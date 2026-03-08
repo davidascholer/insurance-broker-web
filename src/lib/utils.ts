@@ -30,7 +30,7 @@ export const formatNumberToPercent = (num: number) => {
 };
 
 export const findCurrentQuestionProperty = (
-  answers: AnswersType | undefined
+  answers: AnswersType | undefined,
 ) => {
   if (!answers) return "name";
   if (!answers.name.firstName || !answers.name.lastName) return "name";
@@ -109,10 +109,10 @@ export const generateRandomAlphanumeric = (length: number) => {
 };
 
 export const getQuoteFromCache = (
-  insurer: ProviderIdTypes
+  insurer: ProviderIdTypes,
 ): QuoteItem[] | null => {
   const storedQuotes = localStorage.getItem(
-    PIPA_STORAGE_PREFIX + insurer + "-quotes"
+    PIPA_STORAGE_PREFIX + insurer + "-quotes",
   );
   if (storedQuotes) {
     const parsedQuotes = JSON.parse(storedQuotes);
@@ -136,11 +136,12 @@ export const clearCache = () => {
   localStorage.removeItem(PIPA_STORAGE_PREFIX + "fetch-quotes");
   localStorage.removeItem(PIPA_STORAGE_PREFIX + "figo-quotes");
   localStorage.removeItem(PIPA_STORAGE_PREFIX + "prudent-quotes");
+  localStorage.removeItem(PIPA_STORAGE_PREFIX + "kanguro-quotes");
 };
 
 export const matchDeductibleValue = (
   deductibleValue: number,
-  selectedDeductibleValue: number
+  selectedDeductibleValue: number,
 ) => {
   if (
     selectedDeductibleValue === 0 &&
