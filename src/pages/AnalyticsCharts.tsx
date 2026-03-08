@@ -176,7 +176,12 @@ const AnalyticsCharts = () => {
     }),
     linksColumnHelper.accessor("provider", {
       header: "Provider",
-      cell: (info) => info.getValue(),
+      cell: (info) => {
+        const provider = info.getValue();
+        return provider
+          ? provider.charAt(0).toUpperCase() + provider.slice(1)
+          : "-";
+      },
     }),
     linksColumnHelper.accessor("planName", {
       header: "Plan Name",
