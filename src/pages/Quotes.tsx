@@ -70,6 +70,9 @@ const Quotes = () => {
     ANNUAL_LIMIT_OPTIONS.find((al) => al.value === 10000) ||
       ANNUAL_LIMIT_OPTIONS[0],
   );
+  const [sortType, setSortType] = useState<
+    "price-low" | "price-high" | "insurer"
+  >("price-low");
 
   const [deductibles, setDeductibles] = useState<FilterOptionType[]>([]);
   const [reimbursementRates, setReimbursementRates] = useState<
@@ -137,6 +140,32 @@ const Quotes = () => {
       default:
         return quoteData.sort((a, b) => a.monthlyPrice - b.monthlyPrice);
     }
+  };
+
+  const applySortToQuoteData = (
+    quotes: QuoteItem[],
+    sort: "price-low" | "price-high" | "insurer",
+  ): QuoteItem[] => {
+    const sortedQuotes = [...quotes];
+
+    switch (sort) {
+      case "price-low":
+        return sortedQuotes.sort((a, b) => a.monthlyPrice - b.monthlyPrice);
+      case "price-high":
+        return sortedQuotes.sort((a, b) => b.monthlyPrice - a.monthlyPrice);
+      case "insurer":
+        return sortedQuotes.sort((a, b) =>
+          a.providerId.localeCompare(b.providerId),
+        );
+      default:
+        return sortedQuotes;
+    }
+  };
+
+  const handleSortChanged = (sort: "price-low" | "price-high" | "insurer") => {
+    setSortType(sort);
+    const sorted = applySortToQuoteData(activeQuoteData, sort);
+    setActiveQuoteData(sorted);
   };
 
   const pushBackupsToEnd = (quoteData: QuoteItem[]): QuoteItem[] => {
@@ -476,8 +505,12 @@ const Quotes = () => {
       selectedLimitsQuoteData,
     );
     const quoteDataWithBackupsAtEnd = pushBackupsToEnd(sortedQuoteData);
-    setActiveQuoteData(quoteDataWithBackupsAtEnd);
-  }, [annualLimits, deductibles, quoteData, reimbursementRates]);
+    const finalSortedData = applySortToQuoteData(
+      quoteDataWithBackupsAtEnd,
+      sortType,
+    );
+    setActiveQuoteData(finalSortedData);
+  }, [annualLimits, deductibles, quoteData, reimbursementRates, sortType]);
 
   useEffect(() => {
     /* KANGURO */
@@ -602,6 +635,7 @@ const Quotes = () => {
                 selectedReimbursement={selectedReimbursement}
                 selectedLimit={selectedLimit}
                 selectedPetType={petObject?.animal || "dog"}
+                handleSortChanged={handleSortChanged}
               />
               <div className="text-start w-full max-w-4xl sansita-regular my-4 text-lg mx-auto">
                 <HoverCard>

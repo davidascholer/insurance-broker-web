@@ -1,7 +1,7 @@
 // Create a full width filter bar with a light pink background and rounded corners that contains dropdowns for filtering quotes
 import { cn } from "@/lib/utils";
 import ChatBot from "./ChatBot";
-import { ListCheck, ListFilter } from "lucide-react";
+import { ArrowUpDown, ListCheck, ListFilter } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import {
   ANNUAL_LIMIT_OPTIONS,
@@ -89,6 +89,7 @@ const FilterBar = ({
   selectedReimbursement,
   selectedLimit,
   selectedPetType,
+  handleSortChanged,
 }: // sortItem,
 // sortItemSelected,
 {
@@ -99,8 +100,9 @@ const FilterBar = ({
   selectedReimbursement: FilterOptionType;
   selectedLimit: FilterOptionType;
   selectedPetType: string;
-  // sortItem: SortItemType;
-  // sortItemSelected: (item: SortItemType) => void;
+  handleSortChanged?: (
+    sortType: "price-low" | "price-high" | "insurer",
+  ) => void;
 }) => {
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
@@ -108,6 +110,9 @@ const FilterBar = ({
   const [backToTopTransparent, setBackToTopTransparent] = useState(true);
   const [backToTopHidden, setBackToTopHidden] = useState(true);
   const [firstClick, setFirstClick] = useState(true);
+  const [sortSelected, setSortSelected] = useState<
+    "price-low" | "price-high" | "insurer"
+  >("price-low");
 
   const handleScroll = () => {
     const scrollContainer = document.getElementById("quotes-scroll-container");
@@ -151,9 +156,14 @@ const FilterBar = ({
     }
   };
 
-  // const handleSortItemClicked = (item: SortItemType) => {
-  //   sortItems(item);
-  // };
+  const handleSortItemClicked = (
+    sortType: "price-low" | "price-high" | "insurer",
+  ) => {
+    setSortSelected(sortType);
+    if (handleSortChanged) {
+      handleSortChanged(sortType);
+    }
+  };
 
   return (
     <>
@@ -206,7 +216,7 @@ const FilterBar = ({
         ref={stickyRef}
         className="w-full -mt-4 max-w-4xl mx-auto rounded-b-lg p-4 items-center justify-center flex flex-col gap-4 min-[600px]:flex-row bg-(--primary-teal-dark) min-h-[60px] sticky top-0"
       >
-        {/* <div>
+        <div>
           <DropdownMenu>
             <DropdownMenuTrigger className="mr-auto text-(--coral-light) hover:text-(--coral-light) transition-colors duration-300 cursor-pointer nunito-sans-medium outline-none">
               <div className="flex flex-row gap-2 items-center justify-center transition-transform duration-200 ease hover:-translate-y-0.5">
@@ -218,46 +228,36 @@ const FilterBar = ({
               <DropdownMenuItem
                 className={cn(
                   "sansita-bold cursor-pointer p-2 mt-1",
-                  sortItemSelected === "price" &&
-                    "bg-(--coral-light) text-(--primary-teal-dark)"
+                  sortSelected === "price-low" &&
+                    "bg-(--coral-light) text-(--primary-teal-dark)",
                 )}
-                onClick={() => handleSortItemClicked("price")}
+                onClick={() => handleSortItemClicked("price-low")}
               >
-                Monthly Price
+                Price: Low to High
               </DropdownMenuItem>
               <DropdownMenuItem
                 className={cn(
                   "sansita-bold cursor-pointer p-2 mt-1",
-                  sortItemSelected === "deductible" &&
-                    "bg-(--coral-light) text-(--primary-teal-dark)"
+                  sortSelected === "price-high" &&
+                    "bg-(--coral-light) text-(--primary-teal-dark)",
                 )}
-                onClick={() => handleSortItemClicked("deductible")}
+                onClick={() => handleSortItemClicked("price-high")}
               >
-                Annual Deductible
+                Price: High to Low
               </DropdownMenuItem>
               <DropdownMenuItem
                 className={cn(
                   "sansita-bold cursor-pointer p-2 mt-1",
-                  sortItemSelected === "reimbursement" &&
-                    "bg-(--coral-light) text-(--primary-teal-dark)"
+                  sortSelected === "insurer" &&
+                    "bg-(--coral-light) text-(--primary-teal-dark)",
                 )}
-                onClick={() => handleSortItemClicked("reimbursement")}
+                onClick={() => handleSortItemClicked("insurer")}
               >
-                Reimbursement Rate
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className={cn(
-                  "sansita-bold cursor-pointer p-2 mt-1",
-                  sortItemSelected === "limit" &&
-                    "bg-(--coral-light) text-(--primary-teal-dark)"
-                )}
-                onClick={() => handleSortItemClicked("limit")}
-              >
-                Annual Limit
+                Filter by Insurer
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div> */}
+        </div>
 
         <div className="flex-1 flex justify-center items-center">
           <button
