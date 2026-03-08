@@ -122,20 +122,22 @@ const BlogPage = () => {
   const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
 
   const filteredPosts = useMemo(() => {
-    return blogPosts.filter((post) => {
-      // Filter by search query
-      const matchesSearch =
-        searchQuery === "" ||
-        post.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.title.toLowerCase().includes(searchQuery.toLowerCase());
+    return blogPosts
+      .filter((post) => {
+        // Filter by search query
+        const matchesSearch =
+          searchQuery === "" ||
+          post.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          post.title.toLowerCase().includes(searchQuery.toLowerCase());
 
-      // Filter by selected labels
-      const matchesLabels =
-        selectedLabels.length === 0 ||
-        selectedLabels.some((label) => post.labels.includes(label));
+        // Filter by selected labels
+        const matchesLabels =
+          selectedLabels.length === 0 ||
+          selectedLabels.some((label) => post.labels.includes(label));
 
-      return matchesSearch && matchesLabels;
-    });
+        return matchesSearch && matchesLabels;
+      })
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }, [searchQuery, selectedLabels]);
 
   const toggleLabel = (label: string) => {
